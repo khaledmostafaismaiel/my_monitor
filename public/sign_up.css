@@ -7,7 +7,21 @@ html{
 
 }
 
- 
+.bg-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: -1;
+    opacity: .7;
+    overflow: hidden; 
+}
+.bg-video__content {
+      height: 100%;
+      width: 100%;
+      object-fit: cover; 
+}
 
 
 
@@ -18,7 +32,7 @@ html{
 
     border-radius: 1rem;
 
-    background: rgba(245, 222, 179,.4);
+    background: rgba(245, 222, 179,.5);
 
     text-align: left;
 
@@ -50,7 +64,7 @@ html{
     margin: 1rem 2rem;
     padding: 1rem 2rem;
     
-    background: rgba(245, 222, 179,.4);
+    background: rgba(245, 222, 179,.6);
 
     border-radius: 2rem;
 
@@ -62,7 +76,7 @@ html{
 
 
 .footer__copyright .footer--link{
-    color: wheat;
+    color: navy;
 }
 
 

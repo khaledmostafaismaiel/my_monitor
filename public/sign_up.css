@@ -1,0 +1,71 @@
+html{
+
+    background-image:url(images/hero.jpg);
+    background-size: cover;
+    background-position: top;/* what ever the width of the view port it will allways at the top of the view port */
+    background-repeat: no-repeat;
+
+}
+
+ 
+
+
+
+.header{
+
+    height: 5rem;
+    width: 200vh;
+
+    border-radius: 1rem;
+
+    background: rgba(245, 222, 179,.4);
+
+    text-align: left;
+
+    position: fixed;
+    top: 1.3rem;
+    left: 1rem;
+
+}
+
+.header-image{
+
+    width: 5rem;
+    height: 5rem;
+
+    position: fixed;
+    top: 1.1rem;
+    left: 2rem;
+
+}
+
+
+.footer{
+
+    height: auto;
+    width: 200vh;
+
+    font-size: 2rem;
+
+    margin: 1rem 2rem;
+    padding: 1rem 2rem;
+    
+    background: rgba(245, 222, 179,.4);
+
+    border-radius: 2rem;
+
+    position: fixed;
+    top: 55rem;
+    left: -1rem ;
+
+}
+
+
+.footer__copyright .footer--link{
+    color: wheat;
+}
+
+
+.footer__copyright .footer--link:active{
+    color: red;
+}

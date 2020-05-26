@@ -1,0 +1,115 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+
+
+
+body{
+    background-color:indianred;
+}
+
+a{
+    color: blue;
+ 
+}
+a:hover{
+    color: blueviolet ;
+    font-weight: bold ;
+}
+
+a:active{
+    color: red;
+}
+
+
+ul{
+    list-style-type: disc;
+    list-style-position: inside;
+}
+
+
+.basic_info_div h1{
+    text-transform: capitalize;
+}
+
+
+
+.profile_pic_div,.basic_info_div,.objective_div,.personal_info_div,.working_div,.projects_div,
+.achievements_div,.technical_skils_div,.programs_div,.soft_skils_div{
+    background-color: wheat;
+    margin: 1% ;
+    padding : 1% ;
+    width : auto ;
+    height: auto;
+
+    border-width: 3px;
+    border-style: solid;
+    border-color: navy;
+    border-radius: 25px;
+
+}
+
+
+.profile_pic_div img{
+    border-radius: 25px;
+}
+
+.profile_pic_div{
+    text-align: center;
+    width: 12%;
+    padding : .3% ;
+    display: all;
+}
+
+
+
+
+
+p{
+
+    font-size: 16px;
+    color: black;
+    letter-spacing: normal;
+    line-height: normal;
+    direction: ltr;
+    text-align: left;
+
+    text-decoration: none;
+    text-indent: 5px;
+    text-transform: none;
+    white-space: normal;
+    word-spacing: normal;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-size: medium;
+    font-weight: normal;
+
+}
+
+
+
+.personal_info_div table{
+     width: 100%  ;/*width of cell*/
+     overflow-x :auto ;
+
+}
+
+
+
+.programs_div table{
+    width: 100% ;/*width of cell*/
+    overflow-x :auto ;
+   
+
+}
+
+
+.soft_skils_div table{
+
+    width: 100% ;/*width of cell*/
+    overflow-x :auto ;
+
+
+}

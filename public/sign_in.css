@@ -1,0 +1,147 @@
+/*universal selector*/
+*,
+*::after,
+*::before{
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+
+html{
+    /*this define 1rem*/
+    font-size: 62.5%;/*this percantage is to take ratio from the user font size*/
+
+    background-image:url(images/hero.jpg);
+    background-size: cover;
+    background-position: top;/* what ever the width of the view port it will allways at the top of the view port */
+    background-repeat: no-repeat;
+
+}
+
+body{
+
+    box-sizing: border-box;
+  
+}
+ 
+
+@keyframes move_from_up{
+
+    0% {
+        opacity: 0;
+        transform: translateY(-25rem);
+        z-index: 7;
+     }
+  
+  
+    50% {
+        transform: translateY(50rem); 
+        z-index: 7;
+ 
+    }
+
+    100%{
+        opacity: 1;
+        transform: translateY(0rem);
+        z-index: 7;
+
+    }
+  
+  
+}
+
+.header{
+
+    height: 5rem;
+    width: 200vh;
+
+    border-radius: 1rem;
+
+    background: rgba(245, 222, 179,.4);
+
+    text-align: left;
+
+    position: fixed;
+    top: 1.3rem;
+    left: 1rem;
+
+}
+
+.header-image{
+
+    width: 5rem;
+    height: 5rem;
+
+    position: fixed;
+    top: 1.1rem;
+    left: 2rem;
+
+}
+
+.welcome_message{
+
+    text-align: center;
+
+    color: black;
+    
+    position: relative;
+    top: 7.5rem;
+
+    font-size: 5rem;
+    font-weight: bold;
+
+    animation: move_from_up;
+    animation-duration: 5s;
+    backface-visibility: hidden; /*to prevent shake of the chars when its animated*/
+
+}
+
+
+ 
+.sign_in_form{
+
+    font-size: 2rem;
+
+    z-index: 10;
+
+    color: navajowhite;
+
+    text-align: center;
+
+    position: relative;
+    top: 18rem;
+    left:-30rem;
+
+}
+
+
+.footer{
+
+    height: auto;
+    width: 200vh;
+
+    font-size: 2rem;
+
+    margin: 1rem 2rem;
+    padding: 1rem 2rem;
+    
+    background: rgba(245, 222, 179,.4);
+
+    border-radius: 2rem;
+
+    position: fixed;
+    top: 55rem;
+    left: -1rem ;
+
+}
+
+
+.footer__copyright .footer--link{
+    color: wheat;
+}
+
+
+.footer__copyright .footer--link:active{
+    color: red;
+}

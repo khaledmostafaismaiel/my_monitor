@@ -43,35 +43,58 @@
         </h1>
 
 
-        <div class="sign_in_form">
-
-
-            <h2 class="sign_in_form-header">
-                Please, Sign in ...
-            </h2>
-
-            <br />
+        <div class="form">
 
             
-            <form action= "home.php" method="post">
+            <form action= "home.php" class="form-aplication" method="post">
+
+                <h2 class="form-aplication-header">
+                    Please, Sign in ...
+                </h2>
+    
+                <br />
 
                 <p>
 
                     User Name:
-                    <input type="text" name="user name" value="">
+                    <input type="text" class="form-aplication-user_name" name="user name" value="">
 
                 </p>
-
                 
                 <br />
 
-
                 <p>
                     Password: &nbsp;
-                    <input type="password" name="password" value="">
+                    <input type="password" class="form-aplication-password" name="password" value="">
 
                 </p>
 
+                <br />
+                
+                <input type="checkbox" class="form-aplication-checkbox" id="navi-toggle">
+                <label for="navi-toggle" class="form-aplication-button">
+                    <span class="form-aplication-icon">Remember Me.</span>
+                </label>
+
+                <br />
+                <br />
+
+
+                <div class="from-sign_in">
+                    <a href="home.html" class="form-sign_in-animated btn">
+                        sign in.
+                    </a>
+                </div>
+
+                <br />
+
+
+                <div class="form-sign_up">
+                    <a href="sign_up.html" class="form-sign_up-animated btn">
+                        sign up.
+                    </a>
+                </div>
+            
             </form>
 
         </div>
@@ -96,7 +119,6 @@
             </div>
 
         </footer>
-
 
     </body>
 

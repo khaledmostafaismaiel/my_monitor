@@ -12,7 +12,7 @@ html{
     /*this define 1rem*/
     font-size: 62.5%;/*this percantage is to take ratio from the user font size*/
 
-    background-image:url(images/hero.jpg);
+    background-image:url(images/hero3.jpg);
     background-size: cover;
     background-position: top;/* what ever the width of the view port it will allways at the top of the view port */
     background-repeat: no-repeat;
@@ -81,9 +81,9 @@ body{
 
 .welcome_message{
 
-    text-align: center;
+    color: gold;
 
-    color: black;
+    text-align: center;
     
     position: relative;
     top: 7.5rem;
@@ -98,22 +98,57 @@ body{
 }
 
 
- 
-.sign_in_form{
+.form{
+
+    padding: 2rem;
+
+    background-color: rgba(245, 222, 179,.4);
+
+    border-radius: 2rem;
+
+    position: absolute;
+    top: 13rem;
+    left: 10rem;
+}
+
+
+.form-aplication{
 
     font-size: 2rem;
 
     z-index: 10;
 
-    color: navajowhite;
+    color: gold;
 
     text-align: center;
 
+}
+
+
+.btn{
+
+    background-color: #fff;
+    color: #777; 
+
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 1.5rem 4rem;
+    display: inline-block;
+    border-radius: 10rem;
+    transition: all .2s;
     position: relative;
-    top: 18rem;
-    left:-30rem;
+    font-size: 1.6rem;
+    border: none;
+    cursor: pointer;
 
 }
+
+.btn:hover{
+    transform: translateY(-3px);
+    box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2);
+}
+
+
 
 
 .footer{

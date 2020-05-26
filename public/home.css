@@ -18,7 +18,7 @@ html{
     /*this define 1rem*/
     font-size: 62.5%;/*this percantage is to take ratio from the user font size*/
 
-    background-image:url(images/hero.jpg);
+    background-image:url(images/hero3.jpg);
     background-size: cover;
     background-position: top;/* what ever the width of the view port it will allways at the top of the view port */
     background-repeat: no-repeat;
@@ -169,8 +169,6 @@ body{
     position: absolute;
 }
 .money_spent{
-
-    color: black;
     
     font-weight: bold;
 
@@ -231,7 +229,7 @@ body{
 .money_spent-first_line{
 
 
-    color: navy;
+    color: palevioletred;
 
     font-size: 10rem;
     
@@ -247,10 +245,12 @@ body{
 
 .money_spent-second_line{
     
+    color: gold;
+
     font-size: 5rem;
 
     position: relative;
-    top: 5rem;
+    top: 3.5rem;
     left: -15rem;
 
 

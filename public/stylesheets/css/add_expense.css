@@ -18,7 +18,7 @@ html{
     /*this define 1rem*/
     font-size: 62.5%;/*this percantage is to take ratio from the user font size*/
 
-    background-image:url(images/hero3.jpg);
+    background-image:url(../images/hero3.jpg);
     background-size: cover;
     background-position: top;/* what ever the width of the view port it will allways at the top of the view port */
     background-repeat: no-repeat;
@@ -165,6 +165,7 @@ body{
 
     z-index: 1;
 
+
 }
 
 .header-image{
@@ -176,98 +177,9 @@ body{
     top: 1.1rem;
     left: 2rem;
 
-}
-
-
-.money_spent{
-    
-    font-weight: bold;
-
-    position: absolute;  
-    
-    top: 15rem;
-    left: 50rem;
+    cursor: pointer;
 
 }
-
-
-@keyframes flash{
-
-    0% {
-        opacity: 1;
-    }
-
-    10% {
-        opacity: 0;
-    }
-
-    20% {
-        opacity: 1;
-    }
-
-    30% {
-        opacity: 0;
-    }
-
-    40% {
-        opacity: 1;
-    }
-
-    50% {
-        opacity: 0;
-    }
-
-    60% {
-        opacity: 1;
-    }
-
-    70% {
-        opacity: 0;
-    }
-    80% {
-        opacity: 1;
-    }
-
-    90% {
-        opacity: 0;
-    }
-    100%{
-        opacity: 1;
-
-    }
-}
-.money_spent-first_line{
-
-
-    color: silver;
-
-    font-size: 10rem;
-    
-    animation: flash;
-    animation-duration: 5s;
-    backface-visibility: hidden; /*to prevent shake of the chars when its animated*/
-
-
-}
-
-
-
-
-.money_spent-second_line{
-    
-    color: gold;
-
-    font-size: 5rem;
-
-    position: relative;
-    top: 3.5rem;
-    left: -15rem;
-
-
-}
-
-
-
 
 .footer{
 
@@ -288,7 +200,6 @@ body{
     left: -1rem ;
 
 }
-
 
 .footer__copyright .footer--link{
     color: navy;

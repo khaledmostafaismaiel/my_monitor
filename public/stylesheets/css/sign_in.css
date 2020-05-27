@@ -18,7 +18,7 @@ html{
     /*this define 1rem*/
     font-size: 62.5%;/*this percantage is to take ratio from the user font size*/
 
-    background-image:url(images/hero3.jpg);
+    background-image:url(../images/hero3.jpg);
     background-size: cover;
     background-position: top;/* what ever the width of the view port it will allways at the top of the view port */
     background-repeat: no-repeat;
@@ -95,7 +95,7 @@ body{
 }
 
 
-.form{
+form{
 
     padding: 2rem;
 
@@ -106,20 +106,18 @@ body{
     position: absolute;
     top: 13rem;
     left: 10rem;
-}
-
-
-.form-aplication{
 
     font-size: 2rem;
 
     z-index: 10;
 
-    color: gold;
+    color: black;
 
     text-align: center;
-
 }
+
+
+
 
 
 .btn{

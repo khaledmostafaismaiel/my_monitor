@@ -16,7 +16,7 @@
 
 html{
     /*this define 1rem*/
-    font-size: 62.5%;/*this percantage is to take ratio from the user font size*/
+    font-size: 10px;/*this percantage is to take ratio from the user font size*/
 
     background-image:url(../images/hero3.jpg);
     background-size: cover;
@@ -53,14 +53,16 @@ body{
 
 
 .navigation__button {
-    background-image: linear-gradient(to right ,#7ed56f,#28b485);
+    background-image: linear-gradient(to right ,rgba(126, 213, 111,.8),rgba(40, 180, 133,.8));
     height: 5rem;
     width: 5rem;
-    position: fixed;
-    top: 1rem;
+
+    position: absolute;
+    top: -.3rem;
     right: 5rem;
+
     border-radius: 50%;
-    z-index: 20;
+    z-index: 200;
     text-align: center;
     cursor: pointer;
     box-shadow: 0rem  0rem 2rem 0rem   black;
@@ -71,19 +73,22 @@ body{
     height: 5rem;
     width: 5rem;
     border-radius: 50%;
-    position: fixed;
-    top: 1rem;
+    
+    position: absolute;
+    top: -.3rem;
     right: 5rem;
-    background-image: radial-gradient(#7ed56f,#28b485);
-    z-index: 10;
+
+    background-image: radial-gradient(rgba(126, 213, 111,.8),rgba(40, 180, 133,.8));
+    z-index: 100;
     transition: transform 1s cubic-bezier(0.86, 0, 0.07, 1);
 }
 
 .navigation__icon{
 
-    position: fixed;
-    top: 3rem;
-    right: 6.3rem; 
+    position: absolute;
+    top: 2rem;
+    right: 1.3rem; 
+
     font-weight: bold;   
 
 }
@@ -95,7 +100,7 @@ body{
     position: fixed;
     top: -1rem;
     left: -50rem;
-    z-index: 15;
+    z-index: 150;
     opacity: 0;
     transition: all 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
@@ -148,18 +153,35 @@ body{
 }
 
 
-.bg-video {
+header{
+
+    height: 7%;
+    width: 95%;
+
+    margin: 1rem 2rem ;
+    padding: 1rem 2rem ;
+
+    border-radius: 1rem;
+
+    background: rgba(245, 222, 179,.6);
+
+    text-align: left;
+
     position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    z-index: -1;
-    opacity: .15;
-    overflow: hidden; 
+    top: 1.3rem;
+    left: 1rem;
+
+    z-index: 1;
+
 }
-.bg-video__content {
-      height: 100%;
-      width: 100%;
-      object-fit: cover; 
+
+.header-image{
+
+    width: 5rem;
+    height: 5rem;
+
+    position: absolute;
+    top: 0rem;
+    left: 2rem;
+
 }

@@ -1,10 +1,10 @@
 {
   "name": "my_monitor",
   "version": "1.0.0",
-  "description": "smart monitor which recored every money spent in my day",
+  "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "compile:sass": "node-sass sass/main.scss css/style.css"
   },
   "author": "Khaled Mostafa",
   "license": "ISC",

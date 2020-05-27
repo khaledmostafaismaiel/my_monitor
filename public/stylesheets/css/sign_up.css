@@ -44,25 +44,29 @@ html{
 body{
 
     box-sizing: border-box;
-
   
 }
- 
+
 
 .header{
 
-    height: 5rem;
-    width: 200vh;
+    height: 7%;
+    width: 95%;
+
+    margin: 1rem 2rem ;
+    padding: 1rem 2rem ;
 
     border-radius: 1rem;
 
-    background: rgba(245, 222, 179,.5);
+    background: rgba(245, 222, 179,.6);
 
     text-align: left;
 
-    position: fixed;
+    position: absolute;
     top: 1.3rem;
     left: 1rem;
+
+    z-index: 1;
 
 }
 
@@ -71,14 +75,17 @@ body{
     width: 5rem;
     height: 5rem;
 
-    position: fixed;
-    top: 1.1rem;
+    position: absolute;
+    top: 0rem;
     left: 2rem;
 
 }
 
 
 form{
+
+    height: 69%;
+    width: 60%;
 
     padding: 2rem 4rem 2rem 8rem;
 
@@ -96,7 +103,7 @@ form{
 
     position: absolute;
     top: 9rem;
-    left: 5rem;
+    left: 20%;
 
 }
 
@@ -162,23 +169,21 @@ form{
 .footer{
 
     height: auto;
-    width: 200vh;
+    width: 95%;
 
     font-size: 2rem;
 
-    margin: 1rem 2rem;
-    padding: 1rem 2rem;
+    margin: 1rem 2rem ;
+    padding: 1rem 2rem ;
     
     background: rgba(245, 222, 179,.6);
 
     border-radius: 2rem;
 
-    position: fixed;
-    top: 55rem;
-    left: -1rem ;
-
+    position: absolute;
+    bottom: 0rem;
+    
 }
-
 
 .footer__copyright .footer--link{
     color: navy;

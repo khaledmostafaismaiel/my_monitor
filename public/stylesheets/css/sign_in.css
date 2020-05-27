@@ -48,20 +48,26 @@ body{
 }
  
 
+
 .header{
 
-    height: 5rem;
-    width: 200vh;
+    height: 7%;
+    width: 95%;
+
+    margin: 1rem 2rem ;
+    padding: 1rem 2rem ;
 
     border-radius: 1rem;
 
-    background: rgba(245, 222, 179,.5);
+    background: rgba(245, 222, 179,.6);
 
     text-align: left;
 
-    position: fixed;
+    position: absolute;
     top: 1.3rem;
     left: 1rem;
+
+    z-index: 1;
 
 }
 
@@ -70,20 +76,40 @@ body{
     width: 5rem;
     height: 5rem;
 
-    position: fixed;
-    top: 1.1rem;
+    position: absolute;
+    top: 0rem;
     left: 2rem;
 
 }
+@keyframes move_from_up{
 
+    0% {
+        opacity: 0;
+        transform: translateX(-80rem);
+    }
+  
+  
+    50% {
+        transform: translateX(20rem); 
+    }
+
+    100%{
+        opacity: 1;
+        transform: translateX(0rem);
+
+    }
+  
+  
+}
 .welcome_message{
 
     color: gold;
 
     text-align: center;
     
-    position: relative;
+    position: absolute;
     top: 7.5rem;
+    left: 38rem;
 
     font-size: 5rem;
     font-weight: bold;
@@ -97,6 +123,9 @@ body{
 
 form{
 
+    height: 60%;
+    width: 30%;
+
     padding: 2rem;
 
     background-color: rgba(245, 222, 179,.4);
@@ -104,8 +133,8 @@ form{
     border-radius: 2rem;
 
     position: absolute;
-    top: 13rem;
-    left: 10rem;
+    top: 15rem;
+    left: 45rem;
 
     font-size: 2rem;
 
@@ -149,21 +178,20 @@ form{
 .footer{
 
     height: auto;
-    width: 200vh;
+    width: 95%;
 
     font-size: 2rem;
 
-    margin: 1rem 2rem;
-    padding: 1rem 2rem;
+    margin: 1rem 2rem ;
+    padding: 1rem 2rem ;
     
     background: rgba(245, 222, 179,.6);
 
     border-radius: 2rem;
 
-    position: fixed;
-    top: 55rem;
-    left: -1rem ;
-
+    position: absolute;
+    bottom: 0rem;
+    
 }
 
 

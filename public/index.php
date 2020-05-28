@@ -6,11 +6,11 @@
 
         <meta charset="utf-8">
 
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
 
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
          
-        <link rel="stylesheet"  href= "stylesheets/css/add_expense.css"  media="screen and (min-width:300px)" > 
+        <link rel="stylesheet"  href= "stylesheets/css/index.css"  media="screen and (min-width:300px)" > 
 
         <link rel="shortcut icon" type="image/png" href="stylesheets/images/favicon.png">
 
@@ -31,10 +31,10 @@
                 Your browser is not supported!
             </video>
         </div>
-
+        
 
         <header>
-            <a href="index.html" class="">
+            <a href="index.php" class="">
                 <img src="stylesheets/images/favicon.png" class="header-image" alt="faveicon">
             </a>
             
@@ -52,15 +52,42 @@
     
                 <nav class="navigation__nav">
                     <ul class="navigation__list">
-                        <li class="navigation__item"><a href="add_expense.html" class="navigation__link">Add Expense</a></li>
-                        <li class="navigation__item"><a href="expenses.html" class="navigation__link">Expenses</a></li>
-                        <li class="navigation__item"><a href="sign_in.html" class="navigation__link">Sign Out</a></li>
+                        <li class="navigation__item"><a href="add_expense.php" class="navigation__link">Add Expense</a></li>
+                        <li class="navigation__item"><a href="expenses.php" class="navigation__link">Expenses</a></li>
+                        <li class="navigation__item"><a href="sign_in.php" class="navigation__link">Sign Out</a></li>
                     </ul>
                 </nav>
             </div>
 
 
         </header>
+
+
+        <div class="money_spent">
+            
+
+            <p class="money_spent-first_line">
+                Hi,khaled you spent 
+            </p>
+
+
+            <p class="money_spent-second_line">
+
+             
+                100 E£
+
+            </p>
+
+            
+            <p class="money_spent-third_line">
+
+                1-1-2020 &nbsp; TO &nbsp; 1-2-2020
+
+            </p>            
+            
+        </div>
+
+
 
         <footer >
 

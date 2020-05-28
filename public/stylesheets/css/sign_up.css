@@ -185,10 +185,10 @@ header{
 }
 
 
-form{
+.form-sign_up{
 
-    height: 69%;
-    width: 60%;
+    height: 60%;
+    width: 55%;
 
     padding: 2rem 4rem 2rem 8rem;
 
@@ -203,8 +203,8 @@ form{
     text-align: center;
 
     position: absolute;
-    top: 9rem;
-    left: 20%;
+    top: 12rem;
+    left: 31rem;
 
 }
 
@@ -293,4 +293,9 @@ footer{
 
 .footer__copyright .footer--link:active{
     color: red;
+}
+
+legend{
+    color: gold;
+    font-size: 2.5rem;
 }

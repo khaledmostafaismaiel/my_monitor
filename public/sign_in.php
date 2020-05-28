@@ -35,7 +35,7 @@
         </div>
 
         <header>
-            <a href="index.html" class="">
+            <a href="index.php" class="">
                 <img src="stylesheets/images/favicon.png" class="header-image" alt="faveicon">
             </a>
             
@@ -53,9 +53,9 @@
     
                 <nav class="navigation__nav">
                     <ul class="navigation__list">
-                        <li class="navigation__item"><a href="add_expense.html" class="navigation__link">Add Expense</a></li>
-                        <li class="navigation__item"><a href="expenses.html" class="navigation__link">Expenses</a></li>
-                        <li class="navigation__item"><a href="sign_in.html" class="navigation__link">Sign Out</a></li>
+                        <li class="navigation__item"><a href="add_expense.php" class="navigation__link">Add Expense</a></li>
+                        <li class="navigation__item"><a href="expenses.php" class="navigation__link">Expenses</a></li>
+                        <li class="navigation__item"><a href="sign_in.php" class="navigation__link">Sign Out</a></li>
                     </ul>
                 </nav>
             </div>
@@ -74,55 +74,57 @@
         <div class="form">
 
             
-            <form action= "home.php" class="form-aplication" method="post">
-
-                <h2 class="form-aplication-header">
-                    Please, Sign in ...
-                </h2>
-    
-                <br />
-
-                <p>
-
-                    User Name:
-                    <input type="text" class="form-aplication-user_name" name="user name" value="">
-
-                </p>
-                
-                <br />
-
-                <p>
-                    Password: &nbsp;
-                    <input type="password" class="form-aplication-password" name="password" value="">
-
-                </p>
-
-                <br />
-                
-                <input type="checkbox" class="form-aplication-checkbox" id="navi-toggle">
-                <label for="navi-toggle" class="form-aplication-button">
-                    <span class="form-aplication-icon">Remember Me</span>
-                </label>
-
-                <br />
-                <br />
+            <form action= "index.php"  method="post">
 
 
-                <div class="from-sign_in">
-                    <a href="index.html" class="form-sign_in-animated btn">
-                        sign in
-                    </a>
-                </div>
+                <fieldset class="form-aplication">
+                    <legend> 
+                        <h2>
+                            Please, Sign in ...
+                        </h2>   
+                    </legend>
+                    
+                    <p>
 
-                <br />
+                        User Name:
+                        <input type="text" class="form-aplication-user_name" name="user name" value="">
+
+                    </p>
+                    
+                    <br />
+
+                    <p>
+                        Password: &nbsp;
+                        <input type="password" class="form-aplication-password" name="password" value="">
+                    </p>
+
+                    <br />
+                    
+                    <input type="checkbox" class="form-aplication-checkbox" id="navi-toggle">
+                    <label for="navi-toggle" class="form-aplication-button">
+                        <span class="form-aplication-icon">Remember Me</span>
+                    </label>
+
+                    <br />
+                    <br />
 
 
-                <div class="form-sign_up">
-                    <a href="sign_up.html" class="form-sign_up-animated btn">
-                        sign up
-                    </a>
-                </div>
-            
+                    <div class="from-sign_in">
+
+                        <input type="submit" class="btn" value="sign in"/>
+
+                    </div>
+
+                    <br />
+
+
+                    <div class="form-sign_up">
+                        <a href="sign_up.php" class="form-sign_up-animated btn">
+                            sign up
+                        </a>
+                    </div>
+                    
+                </fieldset>
             </form>
 
         </div>

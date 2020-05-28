@@ -212,3 +212,109 @@ footer{
 .footer__copyright .footer--link:active{
     color: red;
 }
+
+
+.form_add_expense{
+
+    color: silver;
+
+
+    height: 67%;
+    width: 30%;
+
+
+    position: absolute;
+    top: 7rem;
+    left: 42rem;
+
+    margin: 2rem;
+    padding: 3rem 4rem;
+
+    background-color: rgba(245, 222, 179,.4);
+
+    font-size: 2rem;
+
+    border-radius: 2rem;
+
+
+}
+
+.form_add_expense-price{
+    position: relative;
+    left: 1rem;
+
+    padding: 1rem;
+}
+
+.form_add_expense-category{
+
+    position: relative;
+    left: 1rem;
+
+    padding: 1rem;
+
+    position: relative;
+    left: -3rem;
+}
+
+.form_add_expense-category-menu{
+    position: relative;
+    left: 1rem;
+
+
+    width: 18rem;    
+    text-align: center;
+}
+
+.form_add_expense-comment{
+    padding: 1rem;
+
+    position: relative;
+    left: -2.5rem;
+}
+
+.form_add_expense-date{
+    padding: 1rem;
+
+    position: relative;
+    left: 1.7rem;
+}
+
+
+.btn{
+
+    background-color: #fff;
+    color: #777; 
+
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 1.5rem 4rem;
+    display: inline-block;
+    border-radius: 10rem;
+    transition: all .2s;
+    position: relative;
+    font-size: 1.6rem;
+    border: none;
+    cursor: pointer;
+
+}
+
+.btn:hover{
+    transform: translateY(-3px);
+    box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2);
+}
+
+.form_add_expense-submit{
+    text-align: center;
+    padding: 1rem;
+
+    position: relative;
+    top: 2rem;
+
+}
+
+
+legend{
+    color: gold;
+    font-size: 2.5rem;
+}

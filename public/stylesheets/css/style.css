@@ -86,7 +86,7 @@ legend {
     color: black;
     font-size: 4rem;
     position: relative;
-    left: 3.5rem;
+    left: 5.5rem;
     animation: from_right_to_left;
     animation-duration: 5s;
     backface-visibility: hidden;
@@ -99,14 +99,16 @@ legend {
     backface-visibility: hidden;
     /*to prevent shake of the chars when its animated*/
     position: relative;
-    left: 12rem; }
+    left: 10rem; }
   .money_spent-third_line {
     color: black;
     font-size: 4rem;
     animation: from_left_to_right;
     animation-duration: 5s;
     backface-visibility: hidden;
-    /*to prevent shake of the chars when its animated*/ }
+    /*to prevent shake of the chars when its animated*/
+    position: relative;
+    left: 3rem; }
 
 .welcome_message {
   color: silver;

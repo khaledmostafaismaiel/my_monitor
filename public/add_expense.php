@@ -10,7 +10,8 @@
 
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
          
-        <link rel="stylesheet"  href= "stylesheets/css/add_expense.css"  media="screen and (min-width:300px)" > 
+        <link rel="stylesheet"  href= "stylesheets/css/style.css"  media="screen and (min-width:1200px)" > 
+
 
         <link rel="shortcut icon" type="image/png" href="stylesheets/images/favicon.png">
 
@@ -74,7 +75,7 @@
                 <div class="form_add_expense-price">
                     <label>Price:</label> 
 
-                    <input type="text">  
+                    <input type="text" placeholder="Item Price ?">  
                 </div>
 
                 <div class="form_add_expense-category">
@@ -92,7 +93,7 @@
                 <div class="form_add_expense-comment">
                     <label>Comment:</label> 
 
-                    <textarea id="" cols="20" rows="3"></textarea>
+                    <textarea id="" cols="20" rows="3" placeholder="Like Item Name,..."></textarea>
                 </div>
 
                 <div class="form_add_expense-date">
@@ -109,6 +110,7 @@
             </fieldset>
         </form>
 
+
         <footer >
 
             <div class="row">
@@ -119,7 +121,7 @@
                 </div>
                 <div class="col-1-of-2">
                     <p class="footer__copyright">
-                        Built by <a href="MY_CV/test.html" class="footer--link" target ="_blank">Khaled Mostafa</a> .
+                        Built by <a href="MY_CV/test.php" class="footer--link" target ="_blank">Khaled Mostafa</a> .
                         Copyright &copy; by Khaled Mostafa. You are 100% allowed to use this webpage for both personal
                         and commercial use, but NOT to claim it as your own design. A credit to the original author, Khaled
                         Mostafa, is of course highly appreciated!

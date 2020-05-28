@@ -10,7 +10,7 @@
 
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
          
-        <link rel="stylesheet"  href= "stylesheets/css/sign_up.css"  media="screen and (min-width:300px)" > 
+        <link rel="stylesheet"  href= "stylesheets/css/style.css"  media="screen and (min-width:1200px)" > 
 
         <link rel="shortcut icon" type="image/png" href="stylesheets/images/favicon.png">
 
@@ -61,7 +61,7 @@
 
         </header>
 
-        <form action= "index.php" method="post">
+        <form  action= "index.php" method="post">
 
                 <fieldset class="form-sign_up">
                     <legend> 
@@ -70,71 +70,86 @@
                         </h2>   
                     </legend>
 
-                    <p>
-                        <label for="first_name">
+
+
+
+                    <div class="form-sign_up-first_name">
+                        <label for="first_name" >
                             First Name:
                         </label>
-                        <input id="first_name" type="text" class="form-sign_up-first_name"value="">
+                        <input id="first_name" type="text" value=""  placeholder="Enter Your First Name">
+                    </div>
+                    
 
 
-                        <label for="second_name">
+
+                    <div class="form-sign_up-second_name">
+                        <label for="second_name" >
                             Second Name:
                         </label>
-                        <input id = "second_name" type="text" class="form-sign_up-second_name"  value="">
+                        <input id = "second_name" type="text"  value=""  placeholder="Enter Your Second Name">
 
-
-                    </p>
-                    <br />
-
-                    <p>
-                        <span class="form-sign_up-email-span">
-                            Email:
-                            <input type="text" class="form-sign_up-email" name="email" value="">
-        
-                        </span>
-                    </p>
-                    <br />
-
-                    <p>
-                        <span class="form-sign_up-password-span">
-                            Password:
-                            <input type="password" class="form-sign_up-password" name="password" value="">
-        
-                        </span>
-                    </p>
-                    <br />
-                    
-                    <p>
-
-                        <span class="form-sign_up-confirm_password-span">
-                            Confirm Password:
-                            <input type="password" class="form-sign_up-password" name="password" value="">
-            
-                        </span>
-
-                    </p>
-                    <br />
-
-                    <input type="checkbox" class="form-sign_up-checkbox" id="navi-toggle">
-                    <label for="navi-toggle" class="form-sign_up-button">
-                        <span class="form-sign_up-icon">I'm not robot.</span>
-                    </label>
-                    <br />
-
-                    <input type="checkbox" class="form-sign_up-checkbox" id="navi-toggle">
-                    <label for="navi-toggle" class="form-sign_up-button">
-                        <span class="form-sign_up-icon">I agree with all terms of conditions.</span>
-                    </label>
-                    <br />
-
-                    
-                    <br />
-                    <div class="from-create_account">
-
-                        <input type="submit" class="btn" value="sign up"/>
-                            
                     </div>
-                    <br />
+
+
+
+
+
+                    <div class="form-sign_up-email">
+                        <label for="email" >
+                                Email:        
+                        </label>
+                        <input id="email" type="text" name="email" value=""  placeholder="Enter Your E_mail">
+                    </div>
+
+
+
+
+
+                    <div class="form-sign_up-password">
+                        <label for="password" >
+                            Password:
+                        </label>
+                        <input id="password" type="password"  name="password" value=""  placeholder="Enter Your Password">
+                    </div>
+
+                    
+
+                    <div class="form-sign_up-confirm_password">
+                        <label for="confirm_password" >
+                            Confirm Password:
+                        </label>
+                        <input id="confirm_password" type="password"  name="password" value="" placeholder="Confirm Your Password">
+                    </div>
+
+
+
+                    <div class="form-sign_up-not_robot">
+                        <label for="not_robot" >
+                            I'm not robot.
+                        </label>
+                        <input id="not_robot" type="checkbox">
+                    </div>
+
+
+
+
+
+                    <div class="form-sign_up-terms_of_conditions">
+                        <label for="terms_of_conditions" >
+                            <span>I agree with all terms of conditions.</span>
+                        </label>
+                        <input id="terms_of_conditions" type="checkbox">
+                    </div>
+
+
+                    
+
+                    <div class="form-sign_up-submit">
+                        <input type="submit" class="btn" value="sign up"/>
+                    </div>  
+    
+    
                 </fieldset>
             </form>
 
@@ -148,7 +163,7 @@
                 </div>
                 <div class="col-1-of-2">
                     <p class="footer__copyright">
-                        Built by <a href="MY_CV/test.html" class="footer--link" target ="_blank">Khaled Mostafa</a> .
+                        Built by <a href="MY_CV/test.php" class="footer--link" target ="_blank">Khaled Mostafa</a> .
                         Copyright &copy; by Khaled Mostafa. You are 100% allowed to use this webpage for both personal
                         and commercial use, but NOT to claim it as your own design. A credit to the original author, Khaled
                         Mostafa, is of course highly appreciated!

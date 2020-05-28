@@ -1,38 +1,43 @@
+/*universal selector*/
 *,
 *::after,
-*::before {
-    margin: 0;
-    padding: 0;
-    box-sizing: inherit;
+*::before{
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+
+
+  /*
+    color: #7ed56f;
+    color: #28b485;
+  */
 }
 
-html {
-    // This defines what 1rem is
-    font-size: 62.5%; //1 rem = 10px; 10px/16px = 62.5%
 
-    @include respond(tab-land) { // width < 1200?
-        font-size: 56.25%; //1 rem = 9px, 9/16 = 50%
-    }
+html{
+    /*this define 1rem*/
+    font-size: 10px;/*this percantage is to take ratio from the user font size*/
 
-    @include respond(tab-port) { // width < 900?
-        font-size: 50%; //1 rem = 8px, 8/16 = 50%
-    }
-    
-    @include respond(big-desktop) {
-        font-size: 75%; //1rem = 12, 12/16
-    }
+    background-image:url(../images/hero3.jpg);
+    background-size: cover;
+    background-position: top;/* what ever the width of the view port it will allways at the top of the view port */
+    background-repeat: no-repeat;
+
 }
 
-body {
+
+
+body{
+
     box-sizing: border-box;
-    padding: 3rem;
+  
+    font-family: Arial, Helvetica, sans-serif;
 
-    @include respond(tab-port) {
-        padding: 0;
-    }
 }
+ 
 
-::selection {
-    background-color: $color-primary;
-    color: $color-white;
+
+legend{
+    color: gold;
+    font-size: 2.5rem;
 }

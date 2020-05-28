@@ -10,7 +10,7 @@
 
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
          
-        <link rel="stylesheet"  href= "stylesheets/css/sign_in.css"  media="screen and (min-width:300px)" > 
+        <link rel="stylesheet"  href= "stylesheets/css/style.css"  media="screen and (min-width:1200px)" > 
 
         <link rel="shortcut icon" type="image/png" href="stylesheets/images/favicon.png">
 
@@ -77,7 +77,7 @@
             <form action= "index.php"  method="post">
 
 
-                <fieldset class="form-aplication">
+                <fieldset class="form-sign_in">
                     <legend> 
                         <h2>
                             Please, Sign in ...
@@ -87,7 +87,7 @@
                     <p>
 
                         User Name:
-                        <input type="text" class="form-aplication-user_name" name="user name" value="">
+                        <input type="text" class="form-sign_in-user_name" name="user name" value="" placeholder="Your E_mail">
 
                     </p>
                     
@@ -95,21 +95,21 @@
 
                     <p>
                         Password: &nbsp;
-                        <input type="password" class="form-aplication-password" name="password" value="">
+                        <input type="password" class="form-sign_in-password" name="password" value="" placeholder="Your Password">
                     </p>
 
                     <br />
                     
-                    <input type="checkbox" class="form-aplication-checkbox" id="navi-toggle">
-                    <label for="navi-toggle" class="form-aplication-button">
-                        <span class="form-aplication-icon">Remember Me</span>
+                    <input type="checkbox" class="form-sign_in-checkbox" id="navi-toggle">
+                    <label for="navi-toggle" class="form-sign_in-button">
+                        <span class="form-sign_in-icon">Remember Me</span>
                     </label>
 
                     <br />
                     <br />
 
 
-                    <div class="from-sign_in">
+                    <div class="from-sign_in_btn">
 
                         <input type="submit" class="btn" value="sign in"/>
 
@@ -118,8 +118,8 @@
                     <br />
 
 
-                    <div class="form-sign_up">
-                        <a href="sign_up.php" class="form-sign_up-animated btn">
+                    <div class="form-sign_up_btn">
+                        <a href="sign_up.php" class="btn">
                             sign up
                         </a>
                     </div>
@@ -140,7 +140,7 @@
                 </div>
                 <div class="col-1-of-2">
                     <p class="footer__copyright">
-                        Built by <a href="MY_CV/test.html" class="footer--link" target ="_blank">Khaled Mostafa</a> .
+                        Built by <a href="MY_CV/test.php" class="footer--link" target ="_blank">Khaled Mostafa</a> .
                         Copyright &copy; by Khaled Mostafa. You are 100% allowed to use this webpage for both personal
                         and commercial use, but NOT to claim it as your own design. A credit to the original author, Khaled
                         Mostafa, is of course highly appreciated!

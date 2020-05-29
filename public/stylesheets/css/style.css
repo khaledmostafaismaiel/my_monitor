@@ -259,17 +259,20 @@ legend {
     left: 30rem;
     top: 31rem; }
 
-.expenses_table {
+.table-expenses {
   height: 5%;
   width: 80%;
   position: absolute;
   top: 10rem;
-  left: 10rem;
+  left: 12rem;
   font-size: 3rem;
   text-align: center;
   background-color: rgba(245, 222, 179, 0.4);
   border-radius: 2rem;
   padding: 2rem; }
+  .table-expenses-body-raw:hover {
+    background-color: rgba(245, 222, 179, 0.4);
+    color: white; }
 
 tbody {
   font-size: 2rem;

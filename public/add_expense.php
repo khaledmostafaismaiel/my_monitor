@@ -68,7 +68,7 @@
             <fieldset class="form_add_expense">
                 <legend> 
                     <h2>
-                        Add Expense
+                        Add Expense ...
                     </h2>   
                 </legend>
 

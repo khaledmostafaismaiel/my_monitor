@@ -64,7 +64,7 @@
 
 
         <div>
-            <table class="expenses_table table table-striped table-hover table-responsive-sm">
+            <table class="table-expenses table table-striped table-hover table-responsive-sm">
                 
                 <thead>
                     <tr>
@@ -77,7 +77,31 @@
                 </thead>
 
                 <tbody>
-                    <tr>
+                    <tr class="table-expenses-body-raw">
+                        <td>5.00</td>
+                        <td>Drink</td>
+                        <td>pepsi</td>
+                        <td>28-May-2020</td>
+                        <td>
+                            <div class="row">
+                                <div class="btn-action">
+                                    <a href="" class="btn-sm btn-warning">
+                                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                                <div class="btn-action">
+                                    <form action="" method="POST">
+                                        <input type="checkbox" name="_method" value="DELETE">
+                                        <input type="checkbox" name="expenseId"value="3">
+                                        <button type="submit" class="btn-sm btn-danger delete-expense" title="Delete">
+                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="table-expenses-body-raw">
                         <td>5.00</td>
                         <td>Drink</td>
                         <td>pepsi</td>
@@ -102,45 +126,20 @@
                         </td>
                     </tr>
 
-                    <tr>
-                        <td>10.00</td>
-                        <td>Food</td>
-                        <td>chepsi</td>
+                    <tr class="table-expenses-body-raw">
+                        <td>5.00</td>
+                        <td>Drink</td>
+                        <td>pepsi</td>
                         <td>28-May-2020</td>
                         <td>
                             <div class="row">
                                 <div class="btn-action">
-                                    <a href="#" class="btn-sm btn-warning">
+                                    <a href="" class="btn-sm btn-warning">
                                         <i class="fa fa-pencil" aria-hidden="true"></i>
                                     </a>
                                 </div>
                                 <div class="btn-action">
-                                    <form action="#" method="POST">
-                                        <input type="checkbox" name="_method" value="DELETE">
-                                        <input type="checkbox" name="expenseId"value="3">
-                                        <button type="submit" class="btn-sm btn-danger delete-expense" title="Delete">
-                                        <i class="fa fa-trash" aria-hidden="true"></i>
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>10.00</td>
-                        <td>Food</td>
-                        <td>chepsi</td>
-                        <td>28-May-2020</td>
-                        <td>
-                            <div class="row">
-                                <div class="btn-action">
-                                    <a href="#" class="btn-sm btn-warning">
-                                        <i class="fa fa-pencil" aria-hidden="true"></i>
-                                    </a>
-                                </div>
-                                <div class="btn-action">
-                                    <form action="#" method="POST">
+                                    <form action="" method="POST">
                                         <input type="checkbox" name="_method" value="DELETE">
                                         <input type="checkbox" name="expenseId"value="3">
                                         <button type="submit" class="btn-sm btn-danger delete-expense" title="Delete">
@@ -153,21 +152,20 @@
                     </tr>
 
 
-
-                    <tr>
-                        <td>10.00</td>
-                        <td>Food</td>
-                        <td>chepsi</td>
+                    <tr class="table-expenses-body-raw">
+                        <td>5.00</td>
+                        <td>Drink</td>
+                        <td>pepsi</td>
                         <td>28-May-2020</td>
                         <td>
                             <div class="row">
                                 <div class="btn-action">
-                                    <a href="#" class="btn-sm btn-warning">
+                                    <a href="" class="btn-sm btn-warning">
                                         <i class="fa fa-pencil" aria-hidden="true"></i>
                                     </a>
                                 </div>
                                 <div class="btn-action">
-                                    <form action="#" method="POST">
+                                    <form action="" method="POST">
                                         <input type="checkbox" name="_method" value="DELETE">
                                         <input type="checkbox" name="expenseId"value="3">
                                         <button type="submit" class="btn-sm btn-danger delete-expense" title="Delete">
@@ -180,21 +178,20 @@
                     </tr>
 
 
-
-                    <tr>
-                        <td>10.00</td>
-                        <td>Food</td>
-                        <td>chepsi</td>
+                    <tr class="table-expenses-body-raw">
+                        <td>5.00</td>
+                        <td>Drink</td>
+                        <td>pepsi</td>
                         <td>28-May-2020</td>
                         <td>
                             <div class="row">
                                 <div class="btn-action">
-                                    <a href="#" class="btn-sm btn-warning">
+                                    <a href="" class="btn-sm btn-warning">
                                         <i class="fa fa-pencil" aria-hidden="true"></i>
                                     </a>
                                 </div>
                                 <div class="btn-action">
-                                    <form action="#" method="POST">
+                                    <form action="" method="POST">
                                         <input type="checkbox" name="_method" value="DELETE">
                                         <input type="checkbox" name="expenseId"value="3">
                                         <button type="submit" class="btn-sm btn-danger delete-expense" title="Delete">

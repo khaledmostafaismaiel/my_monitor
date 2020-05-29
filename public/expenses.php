@@ -1,251 +1,247 @@
-<!DOCTYPE html>
-
-<html>
-
-    <head>
-
-        <meta charset="utf-8">
-
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-         
-        <link rel="stylesheet"  href= "stylesheets/css/style.css"  media="screen and (min-width:1200px)" > 
-
-        <link rel="shortcut icon" type="image/png" href="stylesheets/images/favicon.png">
+<?php require_once("../includes/db_connection.php")?>
+<?php require_once("../includes/functions.php")?>
+<?php include("../includes/layout/header.php")?>
 
 
-        <title>My Monitor</title>
-
-        <!-- <script>alert("Welcome!");</script> -->
-    
-    </head>
 
 
-    <body>
 
-        <div class="bg-video">
-            <video class="bg-video__content" autoplay muted loop>
-                <source src="stylesheets/images/video.mp4" type="video/mp4">
-                <source src="stylesheets/images/video.webm" type="video/webm">
-                Your browser is not supported!
-            </video>
-        </div>
 
+
+
+<div>
+    <table class="table-expenses table table-striped table-hover table-responsive-sm">
         
-        <header>
-            <a href="index.php" class="">
-                <img src="stylesheets/images/favicon.png" class="header-image" alt="faveicon">
-            </a>
-            
-            <div class="navigation">
+        <thead>
+            <tr>
+                <th>Price</th>
+                <th>Category</th>
+                <th>Comment</th>
+                <th>Date</th>
+                <th>Options</th>
+            </tr>
+        </thead>
 
-                <input type="checkbox" class="navigation__checkbox" id="navi-toggle">
-                <label for="navi-toggle" class="navigation__button">
-                    <span class="navigation__icon">Menu</span>
-                </label>
-    
-    
-                <div class="navigation__background">&nbsp;
-                    
-                </div>
-    
-                <nav class="navigation__nav">
-                    <ul class="navigation__list">
-                        <li class="navigation__item"><a href="add_expense.php" class="navigation__link">Add Expense</a></li>
-                        <li class="navigation__item"><a href="expenses.php" class="navigation__link">Expenses</a></li>
-                        <li class="navigation__item"><a href="sign_in.php" class="navigation__link">Sign Out</a></li>
-                    </ul>
-                </nav>
-            </div>
-
-
-        </header>
-
-
-        <div>
-            <table class="table-expenses table table-striped table-hover table-responsive-sm">
-                
-                <thead>
-                    <tr>
-                        <th>Price</th>
-                        <th>Category</th>
-                        <th>Comment</th>
-                        <th>Date</th>
-                        <th>Options</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    <tr class="table-expenses-body-raw">
-                        <td>5.00</td>
-                        <td>Drink</td>
-                        <td>pepsi</td>
-                        <td>28-May-2020</td>
-                        <td>
-                            <div class="row">
-                                <div class="btn-action">
-                                    <a href="" class="btn-sm btn-warning">
-                                        <i class="fa fa-pencil" aria-hidden="true"></i>
-                                    </a>
-                                </div>
-                                <div class="btn-action">
-                                    <form action="" method="POST">
-                                        <input type="checkbox" name="_method" value="DELETE">
-                                        <input type="checkbox" name="expenseId"value="3">
-                                        <button type="submit" class="btn-sm btn-danger delete-expense" title="Delete">
-                                        <i class="fa fa-trash" aria-hidden="true"></i>
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr class="table-expenses-body-raw">
-                        <td>5.00</td>
-                        <td>Drink</td>
-                        <td>pepsi</td>
-                        <td>28-May-2020</td>
-                        <td>
-                            <div class="row">
-                                <div class="btn-action">
-                                    <a href="" class="btn-sm btn-warning">
-                                        <i class="fa fa-pencil" aria-hidden="true"></i>
-                                    </a>
-                                </div>
-                                <div class="btn-action">
-                                    <form action="" method="POST">
-                                        <input type="checkbox" name="_method" value="DELETE">
-                                        <input type="checkbox" name="expenseId"value="3">
-                                        <button type="submit" class="btn-sm btn-danger delete-expense" title="Delete">
-                                        <i class="fa fa-trash" aria-hidden="true"></i>
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-
-                    <tr class="table-expenses-body-raw">
-                        <td>5.00</td>
-                        <td>Drink</td>
-                        <td>pepsi</td>
-                        <td>28-May-2020</td>
-                        <td>
-                            <div class="row">
-                                <div class="btn-action">
-                                    <a href="" class="btn-sm btn-warning">
-                                        <i class="fa fa-pencil" aria-hidden="true"></i>
-                                    </a>
-                                </div>
-                                <div class="btn-action">
-                                    <form action="" method="POST">
-                                        <input type="checkbox" name="_method" value="DELETE">
-                                        <input type="checkbox" name="expenseId"value="3">
-                                        <button type="submit" class="btn-sm btn-danger delete-expense" title="Delete">
-                                        <i class="fa fa-trash" aria-hidden="true"></i>
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-
-
-                    <tr class="table-expenses-body-raw">
-                        <td>5.00</td>
-                        <td>Drink</td>
-                        <td>pepsi</td>
-                        <td>28-May-2020</td>
-                        <td>
-                            <div class="row">
-                                <div class="btn-action">
-                                    <a href="" class="btn-sm btn-warning">
-                                        <i class="fa fa-pencil" aria-hidden="true"></i>
-                                    </a>
-                                </div>
-                                <div class="btn-action">
-                                    <form action="" method="POST">
-                                        <input type="checkbox" name="_method" value="DELETE">
-                                        <input type="checkbox" name="expenseId"value="3">
-                                        <button type="submit" class="btn-sm btn-danger delete-expense" title="Delete">
-                                        <i class="fa fa-trash" aria-hidden="true"></i>
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-
-
-                    <tr class="table-expenses-body-raw">
-                        <td>5.00</td>
-                        <td>Drink</td>
-                        <td>pepsi</td>
-                        <td>28-May-2020</td>
-                        <td>
-                            <div class="row">
-                                <div class="btn-action">
-                                    <a href="" class="btn-sm btn-warning">
-                                        <i class="fa fa-pencil" aria-hidden="true"></i>
-                                    </a>
-                                </div>
-                                <div class="btn-action">
-                                    <form action="" method="POST">
-                                        <input type="checkbox" name="_method" value="DELETE">
-                                        <input type="checkbox" name="expenseId"value="3">
-                                        <button type="submit" class="btn-sm btn-danger delete-expense" title="Delete">
-                                        <i class="fa fa-trash" aria-hidden="true"></i>
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-
-
-                    
-                </tbody>
-            </table>
-        </div>
-
-
-
-        <div class="btn-list">
-            <a href="" class="btn-list-back btn">
-                Back
-            </a>
-
-            <span class="btn-list-span">7</span>
-            
-            <a href="" class="btn-list-next btn">
-                Next
-            </a>
-        </div>
-
-
-
-        <footer >
-
-            <div class="row">
-                <div class="col-1-of-2">
-                    <div class="footer__logo">
+        <tbody>
+            <tr class="table-expenses-body-raw">
+                <td>5.00</td>
+                <td>Drink</td>
+                <td>pepsi</td>
+                <td>28-May-2020</td>
+                <td>
+                    <div class="row">
+                        <div class="btn-action">
+                            <a href="" class="">
+                                <i class="" aria-hidden="true"></i>
+                            </a>
+                        </div>
                         
+                        <div class="btn-action">
+                            <form action="" method="POST">
+                                <input type="checkbox" name="_method" value="DELETE">
+                                <input type="checkbox" name="expenseId"value="3">
+                                <button type="submit" class="btn-sm btn-danger delete-expense" title="Delete">
+                                <i class="" aria-hidden="true"></i>
+                                </button>
+                            </form>
+                        </div>
                     </div>
-                </div>
-                <div class="col-1-of-2">
-                    <p class="footer__copyright">
-                        Built by <a href="MY_CV/test.php" class="footer--link" target ="_blank">Khaled Mostafa</a> .
-                        Copyright &copy; by Khaled Mostafa. You are 100% allowed to use this webpage for both personal
-                        and commercial use, but NOT to claim it as your own design. A credit to the original author, Khaled
-                        Mostafa, is of course highly appreciated!
-                    </p>
-                </div>
-            </div>
+                </td>
+            </tr>
+            <tr class="table-expenses-body-raw">
+                <td>5.00</td>
+                <td>Drink</td>
+                <td>pepsi</td>
+                <td>28-May-2020</td>
+                <td>
+                    <div class="row">
+                        <div class="btn-action">
+                            <a href="" class="btn-sm btn-warning">
+                                <i class="fa fa-pencil" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                        <div class="btn-action">
+                            <form action="" method="POST">
+                                <input type="checkbox" name="_method" value="DELETE">
+                                <input type="checkbox" name="expenseId"value="3">
+                                <button type="submit" class="btn-sm btn-danger delete-expense" title="Delete">
+                                <i class="fa fa-trash" aria-hidden="true"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </td>
+            </tr>
 
-        </footer>
+            <tr class="table-expenses-body-raw">
+                <td>5.00</td>
+                <td>Drink</td>
+                <td>pepsi</td>
+                <td>28-May-2020</td>
+                <td>
+                    <div class="row">
+                        <div class="btn-action">
+                            <a href="" class="btn-sm btn-warning">
+                                <i class="fa fa-pencil" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                        <div class="btn-action">
+                            <form action="" method="POST">
+                                <input type="checkbox" name="_method" value="DELETE">
+                                <input type="checkbox" name="expenseId"value="3">
+                                <button type="submit" class="btn-sm btn-danger delete-expense" title="Delete">
+                                <i class="fa fa-trash" aria-hidden="true"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </td>
+            </tr>
 
 
-    </body>
+            <tr class="table-expenses-body-raw">
+                <td>5.00</td>
+                <td>Drink</td>
+                <td>pepsi</td>
+                <td>28-May-2020</td>
+                <td>
+                    <div class="row">
+                        <div class="btn-action">
+                            <a href="" class="btn-sm btn-warning">
+                                <i class="fa fa-pencil" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                        <div class="btn-action">
+                            <form action="" method="POST">
+                                <input type="checkbox" name="_method" value="DELETE">
+                                <input type="checkbox" name="expenseId"value="3">
+                                <button type="submit" class="btn-sm btn-danger delete-expense" title="Delete">
+                                <i class="fa fa-trash" aria-hidden="true"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </td>
+            </tr>
 
-</html>
+
+            <tr class="table-expenses-body-raw">
+                <td>5.00</td>
+                <td>Drink</td>
+                <td>pepsi</td>
+                <td>28-May-2020</td>
+                <td>
+                    <div class="row">
+                        <div class="btn-action">
+                            <a href="" class="btn-sm btn-warning">
+                                <i class="fa fa-pencil" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                        <div class="btn-action">
+                            <form action="" method="POST">
+                                <input type="checkbox" name="_method" value="DELETE">
+                                <input type="checkbox" name="expenseId"value="3">
+                                <button type="submit" class="btn-sm btn-danger delete-expense" title="Delete">
+                                <i class="fa fa-trash" aria-hidden="true"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+
+
+            
+        </tbody>
+    </table>
+</div>
+
+
+
+<div class="btn-list">
+    <?php 
+                
+        if(isset($_GET["pagenumber"])){
+            $page_number = $_GET["pagenumber"] ;
+        }else{
+            $page_number = 1 ;
+        }
+    ?>
+
+    <?php 
+        $number_of_expenses = 13 ;
+        $number_of_expenses_per_page = 5 ;
+        if($number_of_expenses <= 5){
+            $number_of_pages = 1 ;
+        }else if(($number_of_expenses % $number_of_expenses_per_page) == 0){
+            $number_of_pages = $number_of_expenses / $number_of_expenses_per_page ;
+        }else{
+            $number_of_pages = $number_of_expenses / $number_of_expenses_per_page ;
+            $number_of_pages += 1 ;
+        }
+    ?>
+    
+    <?php
+        // if($_GET["pagenumber"] > $number_of_pages){
+
+        //     redirect to expenses.php ;
+        // }
+    ?>
+
+    <?php
+        echo "<a";
+
+        if($page_number > 1){
+            echo " href=\"" ;
+            echo " ?pagenumber=" ;
+            echo  $page_number-1  ;
+            echo "\"" ; 
+        }else{
+
+            echo " href=\"\"" ;
+        }
+
+        echo "class=\"btn-list-back btn\"" ;
+        echo ">";
+        echo "Back";
+        echo "</a> " ;
+    ?>
+
+     
+        
+    
+
+    <span class="btn-list-span"> <?php echo $page_number?> </span>
+    
+    <?php
+        echo "<a";
+
+        if($page_number < ($number_of_pages - 1 )){
+            echo " href=\"" ;
+            echo " ?pagenumber=" ;
+            echo  $page_number+1  ;
+            echo "\"" ; 
+        }else{
+
+            echo " href=\"\"" ;
+        }
+
+        echo "class=\"btn-list-next btn\"" ;
+        echo ">";
+        echo "Next";
+        echo "</a> " ;
+    ?>
+</div>
+
+
+<?php
+    //4. release the returned data
+    mysqli_free_result($result);            
+?>
+
+<?php include("../includes/layout/footer.php")?>
+
+<?php
+    //5. close database connection
+    mysqli_close($connection);
+?>

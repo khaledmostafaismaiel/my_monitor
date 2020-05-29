@@ -12,7 +12,7 @@
     <fieldset class="form_add_expense">
         <legend> 
             <h2>
-                Add Expense ...
+                Edit Expense ...
             </h2>   
         </legend>
 
@@ -22,8 +22,6 @@
             <input type="text" placeholder="Item Price ?">  
         </div>
 
-
-        
         <div class="form_add_expense-category">
             <label>Category:</label> 
 
@@ -58,6 +56,7 @@
 
 
 
+
 <?php
     //4. release the returned data
     mysqli_free_result($result);            
@@ -67,5 +66,5 @@
 
 <?php
     //5. close database connection
-    mysqli_close($connection);     
+    mysqli_close($connection);
 ?>

@@ -4,6 +4,8 @@
     
     font-weight: bold;
 
+    text-align: center;
+
     padding: 2rem;
 
     height: 43%;
@@ -25,12 +27,17 @@
         font-size: 4rem;
     
         position: relative;
-        left: 5.5rem;
+        left: -.5rem;
     
         animation: from_right_to_left;
         animation-duration: 5s;
         backface-visibility: hidden; /*to prevent shake of the chars when its animated*/
-    
+
+        
+        &-user_name{
+
+            color: white;
+        }
     
     }
     
@@ -47,10 +54,12 @@
         backface-visibility: hidden; /*to prevent shake of the chars when its animated*/
     
         position: relative;
-        left: 10rem;
+        left: 0rem;
+        top:1rem ;
     }
     
-    
+
+
     
     &-third_line{
         
@@ -63,7 +72,8 @@
         backface-visibility: hidden; /*to prevent shake of the chars when its animated*/
     
         position: relative;
-        left: 3rem;
+        left: 0rem;
+        top: 3rem;
     }
     
 
@@ -71,7 +81,7 @@
 
 .welcome_message{
 
-    color: silver;
+    color: black;
 
     text-align: center;
     

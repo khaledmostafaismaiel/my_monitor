@@ -7,38 +7,21 @@
 
 
 <div class="money_spent">
-    
-          
-
-
     <p class="money_spent-first_line">
         Hi,<span class = "money_spent-first_line-user_name">
-  
-
-        <?php
-            echo "khaled" ;
-        ?>
-
- 
-
+                <?php 
+                    echo Khaled 
+                ?>
             </span> you spent 
     </p>
 
-
     <p class="money_spent-second_line">
-
-        
         100 E£
-
     </p>
-
     
     <p class="money_spent-third_line">
-
         1-1-2020 &nbsp; TO &nbsp; 1-2-2020
-
-    </p>            
-    
+    </p>                
 </div>
 
 

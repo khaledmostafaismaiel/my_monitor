@@ -40,6 +40,7 @@
             </a>
             
 
+            <?php include("search_box.php")?>
             <?php include("navigation.php")?>
 
 

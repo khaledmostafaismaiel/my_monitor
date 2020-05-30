@@ -190,47 +190,40 @@
 
     <?php
         echo "<a";
-
         if($page_number > 1){
             echo " href=\"" ;
             echo " ?pagenumber=" ;
             echo  $page_number-1  ;
             echo "\"" ; 
         }else{
-
             echo " href=\"\"" ;
         }
-
         echo "class=\"btn-list-back btn\"" ;
         echo ">";
         echo "Back";
         echo "</a> " ;
     ?>
 
-     
-        
-    
-
-    <span class="btn-list-span"> <?php echo $page_number?> </span>
+    <span class="btn-list-span">
+        <?php echo $page_number?>
+    </span>
     
     <?php
         echo "<a";
-
         if($page_number < ($number_of_pages - 1 )){
             echo " href=\"" ;
             echo " ?pagenumber=" ;
             echo  $page_number+1  ;
             echo "\"" ; 
         }else{
-
             echo " href=\"\"" ;
         }
-
         echo "class=\"btn-list-next btn\"" ;
         echo ">";
         echo "Next";
         echo "</a> " ;
     ?>
+    
 </div>
 
 

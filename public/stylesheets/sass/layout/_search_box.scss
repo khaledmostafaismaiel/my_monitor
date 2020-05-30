@@ -1,0 +1,23 @@
+.search_box{
+
+    position: absolute;
+    top: .5rem;
+    left: 50rem;
+
+    text-align: center;
+
+    &-submit{
+        height: 3.5rem;
+        width: 25rem;
+    
+        padding: 1rem ;
+    
+        border-radius: 1rem;
+        font-size: 1.5rem;
+        background: rgba(245, 222, 179,.6);
+        text-align: center;
+
+    }
+
+
+}

@@ -30,61 +30,6 @@
     <body>
 
 
-        <!-- <form action="#" name="register" method="POST" >
-
-            <label>User name</label>
-            <input type="text" name="username" value="khaled" placeholder="enter your name">
-
-            <label>Password</label>
-            <input type="password" name="username" value="khaled" placeholder="enter your password">
-
-            <label>check box</label>
-            <input type="checkbox" name="checkbox">
-
-            <input type="submit" value="submit">
-
-            <input type="button" value="say hello"  value="say hello" onclick="">
-
-            <input type="reset" value="restor default">
-
-            <label>upload your cv</label>
-            <input type="file">
-
-            <label>image</label>
-            <input type="image" src="http://placehold.it//100/100" alt="imag">
-
-            <input type="hidden" value="edit/delete">
-
-            <input type="radio" name="browser" value="chrome">
-            <input type="radio" name="browser" value="mozzila">
-            <input type="radio" name="browser" value="edge">
-
-            <fieldset>
-
-                <legend>    
-                    this is legend
-                </legend>
-
-                <label>textarea</label>
-                <textarea name="" id="" cols="20" rows="3" readonly>readonly</textarea>
-
-                <label>textarea</label>
-                <textarea name="" id="" cols="20" rows="3" >this is our text area</textarea>
-
-            </fieldset>
-
-
-            <select name="" id=""  size="5" multiple >
-                <optgroup label="the first 3 names">
-                    <option value="1" disabled>khaled</option>
-                    <option value="2" selected>mostafa</option>
-                    <option value="3">ismaiel</option>
-                </optgroup>
-
-                <option value="4">ahmed</option>
-                <option value="5">mohamed</option>
-            </select>
-        </form> -->
 
 
             <!-- 
@@ -140,17 +85,13 @@
 
 
 
-
-
-
-
         <?php 
 
 
             //2. perform database query
             $query = "SELECT * " ;
-            $query .="FROM categories " ;
-            $query .="WHERE category_id = 1 " ;
+            $query .="FROM admins " ;
+            $query .="ORDER BY id ASC" ;
 
 
             $result= mysqli_query($connection , $query) ;
@@ -161,28 +102,18 @@
             }
         ?>
 
-        <ul>
-            <?php
-                //3. use returned data (if any)
-                while($category = mysqli_fectch_assoc($result)){
-                    //output data from each row
-            ?>
+        <?php
+        //3. use returned data (if any)
+            //output data from each row
+            echo $result["first_name"] ;
 
-            <li>
-                <?php 
-                    echo $category["category_name"]
-                ?>
-            </li>
+        ?>
 
-            <?php
-                }
-            ?>
-        </ul>
 
         <?php
-                //4. release the returned data
-                mysqli_free_result($result);
-                
+            //4. release the returned data
+            mysqli_free_result($result);
+            
         ?>
 
         
@@ -197,6 +128,7 @@
                     mysqli_close($connection);
                     
         ?>
+
     </body>
 
 </html>

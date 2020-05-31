@@ -102,13 +102,23 @@
             }
         ?>
 
-        <?php
-        //3. use returned data (if any)
-            //output data from each row
-            echo $result["first_name"] ;
+        <ul>
+            <?php
+                //3. use returned data (if any)
+                while($category = mysqli_fectch_assoc($result)){
+                    //output data from each row
+            ?>
 
-        ?>
+            <li>
+                <?php 
+                    echo $category["category_name"]
+                ?>
+            </li>
 
+            <?php
+                }
+            ?>
+        </ul>
 
         <?php
             //4. release the returned data

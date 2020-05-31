@@ -1,3 +1,4 @@
+<?php require_once("../includes/session.php")?>
 <?php require_once("../includes/db_connection.php")?>
 <?php require_once("../includes/functions.php")?>
 <?php include("../includes/layout/header.php")?>
@@ -9,8 +10,10 @@
 <div class="money_spent">
     <p class="money_spent-first_line">
         Hi,<span class = "money_spent-first_line-user_name">
+
                 <?php 
-                    echo Khaled 
+                    $admin_data = get_admin_data_by_id(1);
+                    echo $admin_data["first_name"];
                 ?>
             </span> you spent 
     </p>

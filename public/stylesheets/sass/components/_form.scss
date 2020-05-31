@@ -27,45 +27,55 @@
 
 
     &_add_expense{
+
+        
         color: black;
         background-color: rgba(245, 222, 179,.4);
         border-radius: 2rem;
 
-        height: 67%;
         width: 30%;
     
     
-        position: absolute;
-        top: 7rem;
+        position: relative;
+        top: 5rem;
         left: 42rem;
     
         margin: 2rem;
-        padding: 3rem 4rem;
+        padding: 2rem 4rem 1rem 4rem;
     
     
         font-size: 2rem;
-    
-    
-        &-price{
+
+        &-name{
             position: relative;
+            top: -2rem;
             left: 1rem;
         
             padding: 1rem;
         }
-        
-        &-category{
-        
     
+        &-price{
+            position: relative;
+            left: 1.6rem;
+            top: -2rem;
+        
+            padding: 1rem;
+        }
+        
+        &-category{    
             padding: 1rem;
         
             position: relative;
             left: -3rem;
+            top: -2rem;
+
         }
         
         &-category-menu{
             position: relative;
             left: 1rem;
-        
+            top: 0rem;
+
         
             width: 18rem;    
             text-align: center;
@@ -76,22 +86,33 @@
         
             position: relative;
             left: -2.5rem;
+            top: -2rem;
+
         }
         
         &-date{
             padding: 1rem;
         
             position: relative;
-            left: 1.7rem;
+            left: 1.9rem;
+            top: -2rem;
+
         }
     
+        &-cancel{
+            position: relative;
+            left: 8rem;
+            top: 6rem;
+            
+        }
+        
         &-submit{
             text-align: center;
             padding: 1rem;
         
             position: relative;
-            top: 2rem;
-        
+            left: -.5rem;
+            top: -6.5rem;        
         } 
     }
     

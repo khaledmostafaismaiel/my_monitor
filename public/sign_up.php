@@ -1,14 +1,56 @@
+<?php require_once("../includes/session.php")?>
 <?php require_once("../includes/db_connection.php")?>
 <?php require_once("../includes/functions.php")?>
 <?php include("../includes/layout/header.php")?>
 
 
+<?php
+    if(isset($_POST['submit_sign_up'])){
+        //prcess the form
+        //escape all strings to prevent sql injection with mysqli_prep
+        $first_name = mysqli_prep($_POST["first_name"]) ;
+        $second_name = mysqli_prep($_POST["second_name"]) ;
+        $email = mysqli_prep($_POST["email"]) ;
+        $password = mysqli_prep($_POST["password"]) ;
+        $confirm_password = mysqli_prep($_POST["confirm_password"]) ;
+        $not_robot = $_POST["not_robot"] ;
+        $terms_of_conditions = $_POST["terms_of_conditions"] ;
+
+
+        $query = "INSERT INTO admins (";
+        $query .= " first_name,second_name,user_name,hashed_password";
+        $query .= ") VALUES (" ;
+        $query .= " '{$first_name}','{$second_name}','{$email}','{$password}'";
+        // $query .= ",'{$created_at}','{$updated_at}'" ;
+        $query .= ")";
+
+        $result = mysqli_query($connection,$query);
+
+        if($result){
+            //success
+            // $message = "add success" ;
+            // redirect_to("index.php?currentpage=home");
+        }else{
+            //failed
+            // $message = "add didn't success" ;
+            // redirect_to("sign_up.php?currentpage=sign_up");
+        }
+
+
+
+    }else{
+        //this is probably $_GET request
+        //i will check if user is active or not
+
+    }
+
+
+?>
 
 
 
 
-
-<form  action= "index.php" method="post">
+<form  method="post">
 
 <fieldset class="form-sign_up">
     <legend> 
@@ -24,7 +66,7 @@
         <label for="first_name" >
             First Name:
         </label>
-        <input id="first_name" type="text" value=""  placeholder="Enter Your First Name">
+        <input name="first_name" type="text" value=""  placeholder="Enter Your First Name">
     </div>
     
 
@@ -34,7 +76,7 @@
         <label for="second_name" >
             Second Name:
         </label>
-        <input id = "second_name" type="text"  value=""  placeholder="Enter Your Second Name">
+        <input name = "second_name" type="text"  value=""  placeholder="Enter Your Second Name">
 
     </div>
 
@@ -46,7 +88,7 @@
         <label for="email" >
                 Email:        
         </label>
-        <input id="email" type="text" name="email" value=""  placeholder="Enter Your E_mail">
+        <input name="email" type="text"   placeholder="Enter Your E_mail">
     </div>
 
 
@@ -57,7 +99,7 @@
         <label for="password" >
             Password:
         </label>
-        <input id="password" type="password"  name="password" value=""  placeholder="Enter Your Password">
+        <input name="password"  type="password"   value=""  placeholder="Enter Your Password">
     </div>
 
     
@@ -66,7 +108,7 @@
         <label for="confirm_password" >
             Confirm Password:
         </label>
-        <input id="confirm_password" type="password"  name="password" value="" placeholder="Confirm Your Password">
+        <input name="confirm_password" type="password"   value="" placeholder="Confirm Your Password">
     </div>
 
 
@@ -75,7 +117,7 @@
         <label for="not_robot" >
             I'm not robot.
         </label>
-        <input id="not_robot" type="checkbox">
+        <input name="not_robot" type="checkbox">
     </div>
 
 
@@ -86,14 +128,14 @@
         <label for="terms_of_conditions" >
             <span>I agree with all terms of conditions.</span>
         </label>
-        <input id="terms_of_conditions" type="checkbox">
+        <input name="terms_of_conditions" type="checkbox">
     </div>
 
 
     
 
     <div class="form-sign_up-submit">
-        <input type="submit" class="btn" value="sign up"/>
+        <input name="submit_sign_up" type="submit" class="btn" value="sign up"/>
     </div>  
 
 

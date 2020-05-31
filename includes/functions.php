@@ -25,7 +25,7 @@
         //2. perform database query
         $query = "SELECT * ";
         $query .="FROM admins ";
-        $query .="ORDER BY id ASC";
+        $query .="ORDER BY id ASC ";
         // $query .="LIMIT 1";
 
         $result_set= mysqli_query($connection , $query);
@@ -70,7 +70,7 @@
         //2. perform database query
         $query = "SELECT * ";
         $query .="FROM expenses ";
-        $query .="ORDER BY id DESC";
+        $query .="ORDER BY id ASC ";
         // $query .="LIMIT 1";
 
         $result_set= mysqli_query($connection , $query);
@@ -116,7 +116,7 @@
         //2. perform database query
         $query = "SELECT * ";
         $query .="FROM categories ";
-        $query .="ORDER BY category_id ASC";
+        $query .="ORDER BY category_id ASC ";
         // $query .="LIMIT 1";
 
         $result_set= mysqli_query($connection , $query);
@@ -162,7 +162,7 @@
         //2. perform database query
         $query = "SELECT * ";
         $query .="FROM expenses ";
-        $query .="WHERE name={$safe_expense_name} ";
+        $query .="WHERE expense_name={$safe_expense_name} ";
         $query .="ORDER BY id DESC";
         // $query .="LIMIT 1";
 
@@ -197,11 +197,11 @@
 
     }
 
-    function mysqli_prep($query){
+    function mysqli_prep($string){
         //escape all strings to prevent sql injection
         global $connection ;    
 
-        return mysqli_real_escape_string($connection,$query);
+        return mysqli_real_escape_string($connection,$string);
     }
 
     // mysqli_num_rows($data_set)

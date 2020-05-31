@@ -15,16 +15,14 @@
         //prcess the form
         //escape all strings to prevent sql injection with mysqli_prep
         $name = mysqli_prep($_POST["expense_name"]) ;
-        $price = (double)$_POST["price"] ;
+        $price = $_POST["price"] ;
         $category = $_POST["category"] ;
         $comment = mysqli_prep($_POST["comment"]) ;
         $created_at = $_POST["created_at"] ;
 
-        $query = "INSERT INTO expenses (";
-        $query .= " expense_name,price,category,comment,created_at";
-        $query .= ") VALUES (" ;
-        $query .= " '{$name}',{$price},'{$category}','{$comment}','{$created_at}'" ;
-        $query .= ")";
+        $query = " INSERT INTO expenses ( ";
+        $query .= " expense_name , price , category , comment , created_at ) " ;  
+        $query .= " VALUES ( '{$name}' , {$price} , '{$category}' , {$comment} , '{$created_at}' )";
 
         $result = mysqli_query($connection,$query) ;
 
@@ -34,7 +32,7 @@
             redirect_to("index.php?currentpage=home");
         }else{
             //failed
-            $_SESSION["message"] = "add didn't success" ;
+            $_SESSION["message"] = "add DIDN'T success" ;
             redirect_to("add_expense.php?currentpage=addexpense");
         }
 
@@ -83,6 +81,14 @@
 
             <select name="category" id=""  size="4" class="form_add_expense-category-menu">
                 <?php
+                    // $category_set = get_all_categories();
+                    // while($category = mysqli_fetch_object($category_set)){
+                    //     $out_put  = "<option>";
+                    //     $out_put .= $category["category_name"] ;
+                    //     $out_put .= "</option>" ;                        
+                    //     echo $out_put ."khaled" ;
+                    // }
+
                     $id = 1 ;
                     while($category_data=get_category_data_by_id($id++)){
                         $out_put = "<option>";

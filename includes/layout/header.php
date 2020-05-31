@@ -36,19 +36,16 @@
         <header>
             <?php
                 if(isset($_GET["currentpage"])){
-                    $current_page_1 = $_GET["currentpage"] ;
+                    $current_page = $_GET["currentpage"] ;
                 }else{
-                    $current_page_1 = null ;
+                    $current_page = null ;
                 }
 
-                if(($current_page_1 != "signup") && ($current_page_1 != "signin")){
-                    include("logo.php") ;
-                    include("search_box.php") ;
-                    include("navigation.php") ;
-                }
-            ?>
+  
+                include("logo.php") ;
+                include("search_box.php") ;
+                include("navigation.php") ;
 
-            <?php
                 echo session_message();            
             ?>    
             

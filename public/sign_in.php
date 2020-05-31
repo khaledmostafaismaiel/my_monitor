@@ -8,28 +8,28 @@
     if(isset($_POST['submit_sign_in'])){
         //prcess the form
         //escape all strings to prevent sql injection with mysqli_prep
-
         $user_name = mysqli_prep($_POST["user_name"]) ;
         $password = mysqli_prep($_POST["password"]) ;
         $remember_me = $_POST["remember_me"] ;
 
-        if($user_name=="khaledmostafa297@gmail.com" AND $password="01143325016"){
-            $result = true ;
-        }else{
-            $result = false ;
-        }
-
+        // $admin_set = get_all_admins();
+        // while($admin = mysqli_fetch_object($admin_set)){
+        //     if( ($admin["user_name"] == $user_name) AND ($admin["hashed_password"] == $password) ){
+        //         $user_id = $admin["id"];
+        //         $result = true ;
+        //         break;
+        //     }else{
+        //         $user_id = null;
+        //         $result = false ;
+        //     }
+        // }
         if($result){
             //success
-            // $_SESSION["message"] = "add success" ;
-            // redirect_to("index.php?currentpage=home");
+            redirect_to("index.php?currentpage=home");
         }else{
             //failed
-            // $_SESSION["message"] = "add didn't success" ;
-            // redirect_to("sign_up.php?currentpage=sign_up");
+            // redirect_to("sign_up.php?currentpage=signup");
         }
-
-
 
     }else{
         //this is probably $_GET request

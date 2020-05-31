@@ -51,15 +51,28 @@
 
             <?php
                 $id=1;
-                while($expense_data=get_expense_data_by_id($id++)){           
+                while($expense_data=get_expense_data_by_id($id++)){ 
+                
+                // $expenses_set = get_all_expenses();
+                // while($expense = mysqli_fetch_object($expenses_set)){
+                        
             ?>
 
                     <tr class="table-expenses-body-raw">
-                        <td><?php echo $expense_data["name"] ?></td>
+<!-- 
+                        <td><?php echo $expense["expense_name"] ?></td>
+                        <td><?php echo $expense["price"] ?></td>
+                        <td><?php echo $expense["category"] ?></td>
+                        <td><?php echo $expense["comment"] ?></td>
+                        <td><?php echo $expense["created_at"] ?></td> -->
+
+
+                        <td><?php echo $expense_data["expense_name"] ?></td>
                         <td><?php echo $expense_data["price"] ?></td>
                         <td><?php echo $expense_data["category"] ?></td>
                         <td><?php echo $expense_data["comment"] ?></td>
                         <td><?php echo $expense_data["created_at"] ?></td>
+                        
                         <td>
                             <div class="row">
                                 <div class="btn-action">

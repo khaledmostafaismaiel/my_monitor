@@ -1,6 +1,7 @@
 <?php require_once("../includes/session.php")?>
 <?php require_once("../includes/db_connection.php")?>
 <?php require_once("../includes/functions.php")?>
+<?php require_once("../includes/validation_functions.php")?>
 <?php include("../includes/layout/header.php")?>
 
 
@@ -16,6 +17,19 @@
         $not_robot = $_POST["not_robot"] ;
         $terms_of_conditions = $_POST["terms_of_conditions"] ;
 
+        $required_fileds = array("first_name" ,"second_name" ,
+                        "email","password" ,"confirm_password"
+                        ,"not_robot","terms_of_conditions");
+        
+        validate_has_presence($required_fileds);
+
+        if(!empty($errors)){
+            $_SESSION["errors"] = $errors ;
+            redirect_to("sign_up.php?errors") ;
+        }
+
+
+
 
         $query = "INSERT INTO admins (";
         $query .= " first_name,second_name,user_name,hashed_password";
@@ -27,13 +41,12 @@
         $result = mysqli_query($connection,$query);
 
         if($result){
-            //success
-            // $message = "add success" ;
-            // redirect_to("index.php?currentpage=home");
+            // success
+            redirect_to("sign_in.php?currentpage=signin");
         }else{
-            //failed
-            // $message = "add didn't success" ;
-            // redirect_to("sign_up.php?currentpage=sign_up");
+            // failed
+            // $_SESSION["message"] = "Try Again";
+            // redirect_to("sign_up.php?currentpage=signup");
         }
 
 

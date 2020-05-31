@@ -454,3 +454,12 @@ header {
     font-size: 1.5rem;
     background: rgba(245, 222, 179, 0.6);
     text-align: center; }
+
+.not_available {
+  position: relative; }
+  .not_available-image {
+    height: 35rem;
+    width: 90rem;
+    position: absolute;
+    top: 15rem;
+    left: 20rem; }

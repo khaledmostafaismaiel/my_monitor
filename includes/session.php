@@ -15,7 +15,20 @@
             //clear message after filterating it with htmlentities and echoing it 
             $_SESSION["message"] = null ;
             
-        }else{
+        }
+        // elseif(isset($_SESSION["errors"])){
+
+        //     $out_put = "<div class=\"message-session\">" ;
+        //     $out_put .= "<span class = \"message-session-span\">" ;
+        //     $out_put .= htmlentities($_SESSION["errors"]) ; 
+        //     $out_put .= "</span>" ;
+        //     $out_put .= "</div>" ;
+
+        //     //clear message after filterating it with htmlentities and echoing it 
+        //     $_SESSION["message"] = null ;
+            
+        // }
+        else{
             $out_put = null ; 
         }
 

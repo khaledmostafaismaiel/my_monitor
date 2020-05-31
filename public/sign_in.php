@@ -1,6 +1,7 @@
 <?php require_once("../includes/session.php")?>
 <?php require_once("../includes/db_connection.php")?>
 <?php require_once("../includes/functions.php")?>
+<?php require_once("../includes/validation_functions.php")?>
 <?php include("../includes/layout/header.php")?>
 
 
@@ -12,17 +13,30 @@
         $password = mysqli_prep($_POST["password"]) ;
         $remember_me = $_POST["remember_me"] ;
 
-        // $admin_set = get_all_admins();
-        // while($admin = mysqli_fetch_object($admin_set)){
-        //     if( ($admin["user_name"] == $user_name) AND ($admin["hashed_password"] == $password) ){
-        //         $user_id = $admin["id"];
-        //         $result = true ;
-        //         break;
-        //     }else{
-        //         $user_id = null;
-        //         $result = false ;
-        //     }
-        // }
+
+        $required_fileds = array("user_name" ,"password");
+        validate_has_presence($required_fileds);
+        
+
+        if(!empty($errors)){
+            $_SESSION["errors"] = "Sign in failed" /* $errors */ ;
+            redirect_to("sign_in.php?signin") ;
+        }
+
+        
+        $admin_set = get_all_admins();
+        while($admin = mysqli_fetch_assoc($admin_set)){
+            
+            if( ($admin["user_name"] == $user_name) AND ($admin["hashed_password"] == $password) ){
+                $user_id = $admin["id"];
+                $result = true ;
+                break;
+            }else{
+                $user_id = null;
+                $result = false ;
+            }
+        }
+
         if($result){
             //success
             redirect_to("index.php?currentpage=home");

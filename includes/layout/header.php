@@ -42,9 +42,17 @@
                 }
 
   
-                include("logo.php") ;
-                include("search_box.php") ;
-                include("navigation.php") ;
+                if(($_SERVER["PHP_SELF"] == "/sign_up.php") || ($_SERVER["PHP_SELF"] == "/sign_in.php")){
+
+
+                }else{
+                    include("logo.php") ;
+                    include("search_box.php") ;
+                    include("navigation.php") ;
+                }
+
+                
+                //echo "<pre>" ;print_r($_SERVER["PHP_SELF"]);
 
                 echo session_message();            
             ?>    

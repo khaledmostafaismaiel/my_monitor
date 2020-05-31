@@ -54,23 +54,4 @@
         return in_array($value,$set);
     }
 
-
-    function form_errors($errors=array()){
-        /**/
-
-        $out_put = ""  ;
-        if(!empty($errors)){
-            $out_put .="<div class=\"error\">" ;
-            $out_put .="please fix the folloing errors" ;
-            $out_put .="<ul>" ;
-            foreach($errors as $key => $error){
-                $out_put .= "<li>{$error}</li>" ;
-            }
-            $out_put .="</ul>" ;
-            $out_put .="</div>" ;
-
-        }
-
-        return $out_put;
-    }
 ?>

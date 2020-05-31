@@ -4,25 +4,21 @@
 <?php include("../includes/layout/header.php")?>
 
 
-
-
-
-
-
 <?php
 
     if(isset($_POST['submit_add_expense'])){
         //prcess the form
         //escape all strings to prevent sql injection with mysqli_prep
         $name = mysqli_prep($_POST["expense_name"]) ;
-        $price = $_POST["price"] ;
+        $price = (float)$_POST["price"] ;
         $category = $_POST["category"] ;
         $comment = mysqli_prep($_POST["comment"]) ;
         $created_at = $_POST["created_at"] ;
 
         $query = " INSERT INTO expenses ( ";
         $query .= " expense_name , price , category , comment , created_at ) " ;  
-        $query .= " VALUES ( '{$name}' , {$price} , '{$category}' , {$comment} , '{$created_at}' )";
+        $query .= " VALUES ( '{$name}' , {$price} , '{$category}' , '{$comment}' , '{$created_at}' )";
+
 
         $result = mysqli_query($connection,$query) ;
 
@@ -89,10 +85,10 @@
                     //     echo $out_put ."khaled" ;
                     // }
 
-                    $id = 1 ;
-                    while($category_data=get_category_data_by_id($id++)){
+                    $category_set = get_all_categories();
+                    while($category=mysqli_fetch_assoc($category_set)){
                         $out_put = "<option>";
-                        $out_put.= $category_data["category_name"] ;
+                        $out_put.= $category["category_name"] ;
                         $out_put .= "</option>" ;                        
                         echo $out_put ;
                     }

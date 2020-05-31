@@ -299,6 +299,14 @@ legend {
     left: 30rem;
     top: 31rem; }
 
+.form-expenses-edit {
+  width: 2rem;
+  height: 2rem; }
+
+.form-expenses-delete {
+  width: 2rem;
+  height: 2rem; }
+
 .table-expenses {
   height: 5%;
   width: 80%;

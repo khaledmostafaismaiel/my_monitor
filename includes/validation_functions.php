@@ -14,7 +14,7 @@
         $email_field => 30 ,$password_field => 30 ,$confirm_password_field => 30
         ,$not_robot_field => 1,$terms_of_conditions_field => 1) );
 
-        check_password_similarity($password_field,$confirm_password_field);
+        check_password_and_confirm_similarity($password_field,$confirm_password_field);
 
         ckeck_for_user_existance($email_field);
 

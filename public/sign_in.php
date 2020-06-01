@@ -25,7 +25,9 @@
         $admin_set = get_all_admins();
         while($admin = mysqli_fetch_assoc($admin_set)){
             
-            if( ($admin["user_name"] == $user_name) AND ($admin["hashed_password"] == $password) ){
+            if( ($admin["user_name"] == $user_name) ){
+                
+                password_check($password , $admin["hashed_password"]) ;
                 $_SESSION["user_id"]=$admin["id"];
                 $result = true ;
                 break;

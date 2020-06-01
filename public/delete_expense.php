@@ -11,7 +11,7 @@
 
 <?php
 
-    if(isset($_POST['submit_add_expense'])){
+    if(isset($_POST['submit_delete_expense'])){
         //prcess the form
         //escape all strings to prevent sql injection with mysqli_prep
         $name = mysqli_prep($_POST["expense_name"]) ;
@@ -25,14 +25,13 @@
         $query = "DELETE FROM expenses WHERE id = {$id} LIMIT 1" ;
 
         $result = mysqli_query($connection,$query) ;
-
-        if($result && mysqli_affected_rows($connection) == 1){
+        if($result && mysqli_affected_rows($connection) >= 1){
             //success
             $_SESSION["message"] = "Delete success" ;
             redirect_to("index.php?");
         }else{
             //failed
-            $_SESSION["message"] = "Delete DIDN't success" ;
+            $_SESSION["message"] = "Delete Didn't success" ;
             redirect_to("delete_expense.php?expenseid={$id}");
         }
 
@@ -53,14 +52,14 @@
 
 
 
-<form method = "post">
+<form method = "post" form_delete_expense">
     <?php $expense_data = get_expense_data_by_id(get_expense_id_from_url()) ?>
 
 
-    <fieldset class="form_add_expense">
+    <fieldset class="form_delete_expense">
         <legend> 
             <h2>
-                Delete Expense ...
+                Delete ...
                 <!-- <?php if(!empty($message)){
                             echo $message ;
                         }
@@ -109,14 +108,14 @@
         </div>
 
 
-        <div class="form_add_expense-cancel">
+        <div class="form_delete_expense-cancel">
                 <a href="index.php?" class="btn">
                     cancel
                 </a>
         </div>
 
-        <div class="form_add_expense-submit">
-            <input type="submit" name="submit_add_expense" value="+ add" class="form-sign_in-animated btn">  
+        <div class="form_delete_expense-submit">
+            <input type="submit" name="submit_delete_expense" value="delete" class="form-sign_in-animated  btn">  
         </div>
         
 

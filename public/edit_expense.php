@@ -20,8 +20,9 @@
         $comment = mysqli_prep($_POST["comment"]) ;
         $created_at = $_POST["updated_at"] ;
 
-
-        $query = "UPDATE expenses SET ( " ;
+        $id=get_expense_id_from_url();
+        
+        $query = "UPDATE expenses SET " ;
         $query .= "expense_name ='{$name}', " ;
         $query .= "price = {$price}, " ;
         $query .= "category = '{$category}', " ;  
@@ -32,7 +33,7 @@
 
         $result = mysqli_query($connection,$query) ;
 
-        if($result && mysqli_affected_rows($connection) == 1){
+        if($result && mysqli_affected_rows($connection) >= 1){
             //success
             $_SESSION["message"] = "Edit success" ;
             redirect_to("index.php?");

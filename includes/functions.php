@@ -312,13 +312,13 @@
         $first_name = strtolower(mysqli_prep($_POST[$first_name_field])) ;
         $second_name = strtolower(mysqli_prep($_POST[$second_name_field])) ;
         $email = strtolower(mysqli_prep($_POST[$email_field])) ;
-        $password = mysqli_prep($_POST[$password_field]) ;
+        $hashed_password = password_encrypt($_POST[$password_field]) ;
 
         
         $query = "INSERT INTO admins (";
         $query .= " first_name,second_name,user_name,hashed_password";
         $query .= ") VALUES (" ;
-        $query .= " '{$first_name}','{$second_name}','{$email}','{$password}'";
+        $query .= " '{$first_name}','{$second_name}','{$email}','{$hashed_password}'";
         $query .= ")";
 
         $result = mysqli_query($connection,$query);
@@ -361,7 +361,7 @@
     }
 
 
-    function check_password_similarity($password_field,$confirm_password_field){
+    function check_password_and_confirm_similarity($password_field,$confirm_password_field){
         global $errors ;
 
         if($_POST[$password_field] !== $_POST[$confirm_password_field]){
@@ -370,6 +370,46 @@
     }
 
 
+    function password_check($password,$existing_hash){
+        //existing hash contains format and salt at start 
+        $hash = crypt($password,$existing_hash);
+
+        if($hash === $existing_hash){
+            return true ;
+        }else{
+            return false ;
+        }
+    }
+
+
+    function generate_salte($salt_length){
+
+        //not 100% unique.not 100% random but good enough for a salt
+        $unique_random_string = md5(uniqid(mt_rand(),true));
+
+        //valid characters for a salt are a[a-zA-Z0-9./]
+        $base_64_string = base64_encode($unique_random_string);
+
+        //but not '+' which is valid in base64 encoding 
+        $modified_base64_string = str_replace('+','.',$base_64_string);
+
+        //trancate string into the correct length
+        $salt = substr($modified_base64_string,0,$salt_length);
+
+        return $salte ;
+
+    }
+
+    function password_encrypt($password){
+
+        $hash_format = "$2y$10$" ; //tell php to use Blowfish with a cost of 10
+        $salt_length = 22 ; //Blowfish should be 22 or more
+        $salt = generate_salte($salt_length);
+        $format_and_salt= $hash_format.$salt ;
+        $hashed_password=crypt($password,$format_and_salt);
+
+        return $hashed_password ;
+    }
 
 
 

@@ -30,13 +30,15 @@
             // }
         }
 
-?>
-
-<?php 
+        
+    $expenses_set = get_all_expenses();
+    $number_of_expenses = mysqli_num_rows($expenses_set)  ;
+    $number_of_expenses_per_page = 5 ;
+    $number_of_pages= ceil((float)$number_of_expenses/(float)$number_of_expenses_per_page);
 
     $page_number = get_page_number() ;
-    if($page_number > $number_of_pages){
-        //redirect to expenses.php ;
+    if(($page_number > $number_of_pages) || ($page_number < 1)){
+        redirect_to("index.php");
     }
     
 ?>
@@ -62,16 +64,18 @@
 
 
             <?php
-            
-                $number_of_expenses_per_page = 6 ;
                 $iteration_number = 0 ;
-                $expenses_set = get_all_expenses();
-                while($expense=mysqli_fetch_assoc($expenses_set)){ 
+                while($expense=mysqli_fetch_assoc($expenses_set)){
+
+                    // if(isset($_SESSION["expenses_last_id"]) && ($expense["id"] <= $_SESSION["expenses_last_id"])){
+                    //     continue ;
+                    // }
 
                     if($iteration_number == $number_of_expenses_per_page){
                         break ;
                     }else{
                         ++$iteration_number ;
+                        $_SESSION["expenses_last_id"]=$expense["id"] ;
                     }
                         
             ?>
@@ -139,7 +143,7 @@
     
     <?php
         echo "<a";
-        if($page_number < ($number_of_pages - 1 )){
+        if($page_number < ($number_of_pages)){
             echo " href=\"" ;
             echo " ?pagenumber=" ;
             echo  $page_number+1  ;

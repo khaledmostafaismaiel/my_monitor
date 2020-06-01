@@ -29,11 +29,11 @@
         if($result){
             //success
             $_SESSION["message"] = "add success" ;
-            redirect_to("index.php?currentpage=home");
+            redirect_to("index.php?");
         }else{
             //failed
             $_SESSION["message"] = "add DIDN'T success" ;
-            redirect_to("add_expense.php?currentpage=addexpense");
+            redirect_to("add_expense.php?");
         }
 
     }else{

@@ -16,7 +16,7 @@
 
         $required_fileds = array("user_name" ,"password");
         validate_has_presence($required_fileds);
-        
+
 
         if(!empty($errors)){
             $_SESSION["errors"] = "Sign in failed" /* $errors */ ;
@@ -28,7 +28,7 @@
         while($admin = mysqli_fetch_assoc($admin_set)){
             
             if( ($admin["user_name"] == $user_name) AND ($admin["hashed_password"] == $password) ){
-                $user_id = $admin["id"];
+                $_SESSION["user_id"]= $admin["id"];
                 $result = true ;
                 break;
             }else{
@@ -39,10 +39,10 @@
 
         if($result){
             //success
-            redirect_to("index.php?currentpage=home");
+            redirect_to("index.php?");
         }else{
             //failed
-            // redirect_to("sign_up.php?currentpage=signup");
+             redirect_to("sign_in.php?");
         }
 
     }else{
@@ -115,7 +115,7 @@
 
 
             <div class="form-sign_up_btn">
-                <a href="sign_up.php?currentpage=signup" class="btn">
+                <a href="sign_up.php?" class="btn">
                     sign up
                 </a>
             </div>

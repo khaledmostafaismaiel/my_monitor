@@ -12,10 +12,7 @@
         Hi,<span class = "money_spent-first_line-user_name">
 
                 <?php 
-                    $user_id = 2 ;
-                    // global $user_id ;
-                    $id =$user_id ;
-                    $admin_data = get_admin_data_by_id($id);
+                    $admin_data = get_admin_data_by_id($_SESSION["user_id"]);
                     echo $admin_data["first_name"];
                 ?>
             </span> you spent 

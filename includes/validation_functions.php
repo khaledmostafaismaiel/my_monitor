@@ -54,4 +54,49 @@
         return in_array($value,$set);
     }
 
+
+    function ckeck_for_user_existance($field){
+
+        $email = $_POST[$field] ;
+        $admins_set=get_all_admins();
+        while($admin=mysqli_fetch_assoc($admins_set)){
+            if($admin[$field] == $email){
+                $errors[$field] = field_name_as_text($field) ." user is arready exist.";
+            return;
+            }
+        }
+        return;
+    }
+
+
+
+function check_before_sign_up($first_name,$second_name,
+    
+    $email,$password,$confirm_password,$not_robot,$terms_of_conditions){
+
+    validate_has_presence(array($first_name ,$second_name ,
+    $email,$password ,$confirm_password
+    ,$not_robot,$terms_of_conditions));
+
+    
+    validate_max_lengths( array($first_name=> 30 ,$second_name =>30,
+    $email => 30 ,$password => 30 ,$confirm_password => 30
+    ,$not_robot => 30,$terms_of_conditions => 30) );
+
+
+    ckeck_for_user_existance($email);
+
+    
+    if(!empty($errors)){
+        $_SESSION["errors"] = "Sign up failed" /* $errors */ ;
+        redirect_to("sign_up.php") ;
+    }
+
+    if($password !== $confirm_password){
+        $_SESSION["errors"] = "Sign up failed" /* $errors */ ;
+        redirect_to("sign_up.php") ;
+    }
+
+
+}
 ?>

@@ -25,11 +25,11 @@
         if($result){
             //success
             $_SESSION["message"] = "add success" ;
-            redirect_to("index.php?currentpage=home");
+            redirect_to("index.php?");
         }else{
             //failed
             $_SESSION["message"] = "add DIDN'T success" ;
-            redirect_to("add_expense.php?currentpage=addexpense");
+            redirect_to("add_expense.php?");
         }
 
     }else{
@@ -108,7 +108,7 @@
 
 
         <div class="form_add_expense-cancel">
-                <a href="index.php?currentpage=home" class="btn">
+                <a href="index.php?" class="btn">
                     cancel
                 </a>
         </div>

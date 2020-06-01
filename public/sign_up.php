@@ -17,27 +17,15 @@
         $not_robot = $_POST["not_robot"] ;
         $terms_of_conditions = $_POST["terms_of_conditions"] ;
 
-        $required_fileds = array("first_name" ,"second_name" ,
-                        "email","password" ,"confirm_password"
-                        ,"not_robot","terms_of_conditions");
+
                 
-        validate_has_presence($required_fileds);
-        
-        $required_lengthes = array("first_name" => 30 ,"second_name" =>30,
-        "email" => 30 ,"password" => 30 ,"confirm_password" => 30
-        ,"not_robot" => 30,"terms_of_conditions" => 30);
-        validate_max_lengths($required_lengthes);
+        check_before_sign_up("first_name","second_name",
+            "email","password","confirm_password","not_robot","terms_of_conditions");
 
-        if(!empty($errors)){
-            $_SESSION["errors"] = "Sign up failed" /* $errors */ ;
-            redirect_to("sign_up.php?signup") ;
-        }
 
-        if($password !== $confirm_password){
-            $_SESSION["errors"] = "Sign up failed" /* $errors */ ;
-            redirect_to("sign_up.php?signup") ;
 
-        }
+
+
 
 
         $query = "INSERT INTO admins (";
@@ -51,11 +39,11 @@
 
         if($result){
             // success
-            redirect_to("sign_in.php?currentpage=signin");
+            redirect_to("sign_in.php");
         }else{
             // failed
             // $_SESSION["message"] = "Try Again";
-            // redirect_to("sign_up.php?currentpage=signup");
+            // redirect_to("sign_up.php?");
         }
 
 

@@ -10,9 +10,8 @@
 <div class="money_spent">
     <p class="money_spent-first_line">
         Hi,<span class = "money_spent-first_line-user_name">
-
                 <?php 
-                    $admin_data = get_admin_data_by_id($_SESSION["user_id"]);
+                    $admin_data = get_admin_data_by_id(1);
                     echo $admin_data["first_name"];
                 ?>
             </span> you spent 

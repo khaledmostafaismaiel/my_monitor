@@ -21,25 +21,19 @@
         $created_at = $_POST["updated_at"] ;
 
 
-        $query = "UPDATE expenses SET ( " ;
-        $query .= "expense_name ='{$name}', " ;
-        $query .= "price = {$price}, " ;
-        $query .= "category = '{$category}', " ;  
-        $query .= "comment = {$comment}, " ;
-        $query .= "updated_at {$created_at} " ;
-        $query .= "WHERE id = {$id} " ;
-        $query .= "LIMIT 1" ;
+        $id=get_expense_id_from_url();
+        $query = "DELETE FROM expenses WHERE id = {$id} LIMIT 1" ;
 
         $result = mysqli_query($connection,$query) ;
 
         if($result && mysqli_affected_rows($connection) == 1){
             //success
-            $_SESSION["message"] = "Edit success" ;
+            $_SESSION["message"] = "Delete success" ;
             redirect_to("index.php?");
         }else{
             //failed
-            $message = "Edit DIDN'T success" ;
-            redirect_to("edit_expense.php?");
+            $_SESSION["message"] = "Delete DIDN't success" ;
+            redirect_to("delete_expense.php?expenseid={$id}");
         }
 
     }else{
@@ -61,10 +55,12 @@
 
 <form method = "post">
     <?php $expense_data = get_expense_data_by_id(get_expense_id_from_url()) ?>
+
+
     <fieldset class="form_add_expense">
         <legend> 
             <h2>
-                Edit Expense ...
+                Delete Expense ...
                 <!-- <?php if(!empty($message)){
                             echo $message ;
                         }

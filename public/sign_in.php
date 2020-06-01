@@ -9,14 +9,12 @@
     if(isset($_POST['submit_sign_in'])){
         //prcess the form
         //escape all strings to prevent sql injection with mysqli_prep
-        $user_name = mysqli_prep($_POST["user_name"]) ;
+        $user_name = strtolower(mysqli_prep($_POST["user_name"])) ;
         $password = mysqli_prep($_POST["password"]) ;
         $remember_me = $_POST["remember_me"] ;
 
-
         $required_fileds = array("user_name" ,"password");
         validate_has_presence($required_fileds);
-
 
         if(!empty($errors)){
             $_SESSION["errors"] = "Sign in failed" /* $errors */ ;
@@ -28,17 +26,18 @@
         while($admin = mysqli_fetch_assoc($admin_set)){
             
             if( ($admin["user_name"] == $user_name) AND ($admin["hashed_password"] == $password) ){
-                $_SESSION["user_id"]= $admin["id"];
+                $_SESSION["user_id"]=$admin["id"];
                 $result = true ;
                 break;
             }else{
-                $user_id = null;
+                $$_SESSION["user_id"] = null;
                 $result = false ;
             }
         }
 
         if($result){
             //success
+            $_SESSION["user_id"] = 
             redirect_to("index.php?");
         }else{
             //failed

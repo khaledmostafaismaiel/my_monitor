@@ -1,4 +1,7 @@
 <?php 
+    $errors = array();   
+
+
 
     function redirect_to($new_location){
 
@@ -192,23 +195,35 @@
         return $page_number ;
 
     }
+
+    function get_expense_id_from_url(){
+
+        if(isset($_GET["expenseid"])){
+            $expense_id = $_GET["expenseid"] ;
+        }else{
+            $expense_id = null;
+        }
+
+        return $expense_id ;
+
+    }
+
     
     function edit_by_expense_id($expense_id){
 
     }
 
+
+
     function mysqli_prep($string){
         //escape all strings to prevent sql injection
         global $connection ;    
-
         return mysqli_real_escape_string($connection,$string);
     }
 
     // mysqli_num_rows($data_set)
 
 
-    
-    
 
     function form_errors($errors=array()){
         /**/
@@ -229,6 +244,132 @@
         return $out_put;
     }
     
+
+
+
+    function field_name_as_text($field_name){
+
+        $field_name = str_replace("_","",$field_name);
+        $field_name = ucfirst($field_name);
+
+        return $field_name ;
+    }
+
+
+    function has_presence($value){
+        return isset($value) && $value != "" ;
+    }
+
+    function validate_has_presence($fields){
+        /**/
+        global $errors ;
+
+        foreach($fields as $field){
+            $value = trim($_POST[$field]) ;
+            if(!has_presence($value)){
+                $errors[$field] = field_name_as_text($field)." can't be blank";
+            }
+
+        }
+
+
+    }
+
+
+    function has_max_length($value,$max){
+        return strlen($value) <= $max ;
+    }
+
+    function validate_max_lengths($fields){
+        /**/
+        global $errors ;
+
+        foreach($fields as $field => $max){
+            $value = trim($_POST[$field]) ;
+            if(!has_max_length($value,$max)){
+                $errors[$field] = field_name_as_text($field)." is to long";
+            }
+
+        }
+
+    }
+
+    function has_inclusion_in(){
+        /**/
+
+        return in_array($value,$set);
+    }
+
+
+
+    function insert_admin_in_database($first_name_field,$second_name_field,  
+        $email_field,$password_field){
+
+        global $connection ;
+
+        //prcess the form
+        //escape all strings to prevent sql injection with mysqli_prep
+        $first_name = strtolower(mysqli_prep($_POST[$first_name_field])) ;
+        $second_name = strtolower(mysqli_prep($_POST[$second_name_field])) ;
+        $email = strtolower(mysqli_prep($_POST[$email_field])) ;
+        $password = mysqli_prep($_POST[$password_field]) ;
+
+        
+        $query = "INSERT INTO admins (";
+        $query .= " first_name,second_name,user_name,hashed_password";
+        $query .= ") VALUES (" ;
+        $query .= " '{$first_name}','{$second_name}','{$email}','{$password}'";
+        $query .= ")";
+
+        $result = mysqli_query($connection,$query);
+
+        if(!$result){
+            // failed
+            $_SESSION["message"] = "Try Again";
+            redirect_to("sign_up.php?");
+        }
+    }
+
+    function get_admin_id_by_user_name($email_field){
+        global $errors ;
+        $email = strtolower($_POST[$email_field]) ;
+     
+        $admins_set=get_all_admins();
+        while($admin=mysqli_fetch_assoc($admins_set)){
+            if($admin["user_name"] == $email){
+                
+            return $admin["id"];
+            }
+        }
+        return null;
+    }
+
+
+    function ckeck_for_user_existance($email_field){
+        global $errors ;
+
+        $email = strtolower($_POST[$email_field]) ;
+     
+        $admins_set=get_all_admins();
+        while($admin=mysqli_fetch_assoc($admins_set)){
+            if($admin["user_name"] == $email){
+                $errors[$email_field] = field_name_as_text($email_field) ." user is arready exist.";
+            return;
+            }
+        }
+        return;
+    }
+
+
+    function check_password_similarity($password_field,$confirm_password_field){
+        global $errors ;
+
+        if($_POST[$password_field] !== $_POST[$confirm_password_field]){
+            $errors[$password_field] = field_name_as_text($email_field) ."password and confirmation password didn't not match.";
+        }
+    }
+
+
 
 
 

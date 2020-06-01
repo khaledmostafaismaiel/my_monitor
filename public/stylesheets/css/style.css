@@ -186,6 +186,27 @@ legend {
       margin: 2rem;
       padding: 1rem 2rem 1rem 2.5rem;
       text-align: center; }
+  .btn-action {
+    position: relative;
+    text-align: center; }
+    .btn-action-edit {
+      position: absolute;
+      top: -1.7rem;
+      left: 2rem; }
+      .btn-action-edit-image {
+        height: 3rem;
+        width: 3rem; }
+      .btn-action-edit:hover {
+        background-color: rgba(245, 222, 179, 0.4); }
+    .btn-action-delete {
+      position: absolute;
+      top: -1.5rem;
+      left: 8rem; }
+      .btn-action-delete-image {
+        height: 3rem;
+        width: 3rem; }
+      .btn-action-delete:hover {
+        background-color: rgba(245, 222, 179, 0.4); }
   .btn:hover {
     transform: translateY(-3px);
     box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2); }
@@ -298,14 +319,6 @@ legend {
     position: absolute;
     left: 30rem;
     top: 31rem; }
-
-.form-expenses-edit {
-  width: 2rem;
-  height: 2rem; }
-
-.form-expenses-delete {
-  width: 2rem;
-  height: 2rem; }
 
 .table-expenses {
   height: 5%;

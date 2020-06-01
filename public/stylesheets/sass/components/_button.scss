@@ -32,7 +32,49 @@
         }
     }
 
+    &-action{
 
+        position: relative;
+        text-align: center;
+        &-edit{
+            position: absolute;
+            top: -1.7rem;
+            left: 2rem;
+
+
+            &-image{
+                height: 3rem;
+                width: 3rem;
+            }
+
+            &:hover{
+                background-color: rgba(245, 222, 179,.4);
+    
+            }
+
+        }
+
+        &-delete{
+            position:absolute;
+            top: -1.5rem;
+            left: 8rem;
+
+            &-image{
+                height: 3rem;
+                width: 3rem;
+            }
+
+            &:hover{
+                background-color: rgba(245, 222, 179,.4);
+    
+            }
+
+        }
+
+
+ 
+
+    }
     &:hover{
         transform: translateY(-3px);
         box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2);

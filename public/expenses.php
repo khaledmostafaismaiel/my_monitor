@@ -89,29 +89,17 @@
                         <td><?php echo $expense["created_at"] ?></td>
                         
                         <td>
-                            <div class="row">
-                                <div class="btn-action">
-                                    <a href="" class="">
-                                        <i class="" aria-hidden="true"></i>
+                            <div class="btn-action">
+                                    <a class= "btn-action-edit" href="edit_expense.php?expenseid=<?php echo $expense["id"] ?>"  value="edit">
+                                            <img src="images/edit.png" class="btn-action-edit-image" alt="edit"></a>
+                                    <a class= "btn-action-delete" href="delete_expense.php?expenseid=<?php echo $expense["id"] ?>"  value="delete">
+                                        <img src="images/delete.png" class="btn-action-delete-image" alt="delete"></a>
                                     </a>
-                                </div>
-                                
-                                <div class="btn-action">
-                                    <form class="form-expenses" name="submit" method="POST">
-                                        <input class="form-expenses-edit" type="radio" name="edit_delete" value="edit">
-                                        <input class="form-expenses-delete" type="radio" name="edit_delete" value="delete">
-                                        <button class="form_expenses-submit" name="edit_delete_submit" type="submit"  title="Delete">
-                                        <i class="" aria-hidden="true"></i>
-                                        </button>
-                                    </form>
-                                </div>
                             </div>
                         </td>
                     </tr>
 
-            <?php
-            
-            }?>
+            <?php }?>
             
         </tbody>
     </table>

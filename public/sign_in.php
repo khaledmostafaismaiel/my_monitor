@@ -6,6 +6,9 @@
 
 
 <?php
+
+    $user_name = "" ;
+    
     if(isset($_POST['submit_sign_in'])){
         //prcess the form
         //escape all strings to prevent sql injection with mysqli_prep
@@ -13,33 +16,9 @@
         $password = mysqli_prep($_POST["password"]) ;
         $remember_me = $_POST["remember_me"] ;
 
-        $required_fileds = array("user_name" ,"password");
-        validate_has_presence($required_fileds);
-
-        if(!empty($errors)){
-            $_SESSION["errors"] = "Sign in failed" /* $errors */ ;
-            redirect_to("sign_in.php?signin") ;
-        }
-
         
-        $admin_set = get_all_admins();
-        while($admin = mysqli_fetch_assoc($admin_set)){
-            
-            if( ($admin["user_name"] == $user_name) ){
-                
-                password_check($password , $admin["hashed_password"]) ;
-                $_SESSION["user_id"]=$admin["id"];
-                $result = true ;
-                break;
-            }else{
-                $$_SESSION["user_id"] = null;
-                $result = false ;
-            }
-        }
-
-        if($result){
+        if(check_before_sign_in("user_name","password","remember_me")){
             //success
-            $_SESSION["user_id"] = 
             redirect_to("index.php?");
         }else{
             //failed
@@ -49,11 +28,7 @@
     }else{
         //this is probably $_GET request
         //i will check if user is active or not
-        // if(1){
 
-        // }else{
-        //     redirect_to("sign_up.php");
-        // }
 
     }
 
@@ -84,7 +59,7 @@
             <p>
 
                 User Name:
-                <input type="text" class="form-sign_in-user_name" name="user_name" value="" placeholder="Your E_mail">
+                <input type="text" class="form-sign_in-user_name" name="user_name" value="<?php echo $user_name?>" placeholder="Your E_mail">
 
             </p>
             

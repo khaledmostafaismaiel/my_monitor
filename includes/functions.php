@@ -48,7 +48,33 @@
         //2. perform database query
         $query = "SELECT * ";
         $query .="FROM admins ";
-        $query .="WHERE id={$safe_admin_id} ";
+        $query .="WHERE id = {$safe_admin_id} ";
+        $query .="LIMIT 1";
+
+        $result_set= mysqli_query($connection , $query);
+
+        //test if there was a query error
+        confirm_query($result_set);
+
+        if($result=mysqli_fetch_assoc($result_set)){
+            return "amro" ;
+
+        }else{
+            return null ;
+        }
+    }
+
+
+    function get_admin_data_by_user_name($user_name_field){
+
+        global $connection ;
+
+        $safe_user_name_field = mysqli_real_escape_string($connection,$user_name_field);
+        
+        //2. perform database query
+        $query = "SELECT * ";
+        $query .="FROM admins ";
+        $query .="WHERE user_name = '{$safe_user_name_field}' ";
         $query .="LIMIT 1";
 
         $result_set= mysqli_query($connection , $query);
@@ -63,7 +89,6 @@
             return null ;
         }
     }
-
 
     function get_all_expenses(){
 
@@ -294,6 +319,25 @@
 
     }
 
+
+    function has_min_length($value,$max){
+        return strlen($value) >= $max ;
+    }
+
+    function validate_min_lengths($fields){
+        /**/
+        global $errors ;
+
+        foreach($fields as $field => $max){
+            $value = trim($_POST[$field]) ;
+            if(!has_min_length($value,$max)){
+                $errors[$field] = field_name_as_text($field)." is to short";
+            }
+
+        }
+
+    }
+
     function has_inclusion_in(){
         /**/
 
@@ -370,11 +414,11 @@
     }
 
 
-    function password_check($password,$existing_hash){
+    function password_check($existing_hashed_password , $password_field){
         //existing hash contains format and salt at start 
-        $hash = crypt($password,$existing_hash);
+        $hash = crypt($_POST[$password_field],$existing_hashed_password);
 
-        if($hash === $existing_hash){
+        if($hash === $existing_hashed_password){
             return true ;
         }else{
             return false ;
@@ -412,7 +456,29 @@
     }
 
 
+ 
 
 
+    function attempt_sign_in($user_name_field,$password_field){
+
+
+        // $admin = get_admin_data_by_user_name($user_name_field);
+            
+
+        $admin_set = get_all_admins();
+        while($admin = mysqli_fetch_assoc($admin_set)){
+            
+            if( ($admin["user_name"] == $_POST[$user_name_field]) ){
+                
+                password_check($admin["hashed_password"] , $password_field) ;
+                $_SESSION["user_id"]=$admin["id"];
+                $_SESSION["first_name"]=$admin["first_name"];
+                return  true ;
+            }
+                
+            return  false ;
+        }
+        
+    }
 
 ?>

@@ -11,8 +11,7 @@
     <p class="money_spent-first_line">
         Hi,<span class = "money_spent-first_line-user_name">
                 <?php 
-                    $admin_data = get_admin_data_by_id(1);
-                    echo $admin_data["first_name"];
+                    echo $_SESSION["first_name"];
                 ?>
             </span> you spent 
     </p>

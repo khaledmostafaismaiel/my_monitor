@@ -38,12 +38,9 @@
     }else{
         //this is probably $_GET request
         //i will check if user is active or not
-
-        // if(1){
-
-        // }else{
-        //     redirect_to("sign_up.php");
-        // }
+        if(!isset($_SESSION["user_id"])){
+            redirect_to("sign_in.php");
+        }
     }
 
 ?>

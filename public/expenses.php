@@ -16,9 +16,10 @@
 
     $page_number = get_page_number() ;
     if(($page_number > $number_of_pages) || ($page_number < 1)){
-        redirect_to("not_available.php");
+        if($number_of_pages != 0){ 
+            redirect_to("not_available.php");
+        }
     }
-    
 ?>
 
 
@@ -44,8 +45,15 @@
             <?php
                 
                 $iteration_number = 0 ;
-                while($expense=mysqli_fetch_assoc($expenses_set)){
+                $iteration_number_to_escape = 0 ;
 
+                if($expenses_set != null){ 
+                    while($expense=mysqli_fetch_assoc($expenses_set)){
+
+                    if($iteration_number_to_escape < ( ($page_number - 1) *$number_of_expenses_per_page)){
+                        ++$iteration_number_to_escape ;
+                        continue ;
+                    }
                     if($iteration_number == $number_of_expenses_per_page){
                         break ;
                     }else{
@@ -73,7 +81,10 @@
                         </td>
                     </tr>
 
-            <?php }?>
+                <?php 
+                    }
+                }
+                ?>
             
         </tbody>
     </table>

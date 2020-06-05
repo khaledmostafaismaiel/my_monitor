@@ -21,7 +21,7 @@
         if(update_expense_in_database($id,"expense_name","price","category","comment","created_at") && mysqli_affected_rows($connection) >= 1){
             //success
             $_SESSION["message"] = "Edit success" ;
-            redirect_to("index.php?");
+            redirect_to("expenses.php?pagenumber=1");
         }else{
             //failed
             $_SESSION["message"] = "Edit DIDN'T success" ;

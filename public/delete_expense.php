@@ -21,7 +21,7 @@
         if(delete_expense_from_database($id) && mysqli_affected_rows($connection) >= 1){
             //success
             $_SESSION["message"] = "Delete success" ;
-            redirect_to("index.php?");
+            redirect_to("expenses.php?pagenumber=1");
         }else{
             //failed
             $_SESSION["message"] = "Delete Didn't success" ;

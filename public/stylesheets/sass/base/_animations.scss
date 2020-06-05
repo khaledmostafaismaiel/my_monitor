@@ -83,3 +83,18 @@
 }
 
 
+@keyframes from_up_to_down{
+    0% {
+        transform: translateY(0rem);
+    }
+
+
+    50% {
+        transform: translateY(25rem);
+
+    }
+
+    100%{
+        transform: translateY(0rem);
+    }
+}

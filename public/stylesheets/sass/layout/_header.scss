@@ -27,6 +27,15 @@ header{
 
     z-index: 2;
 
+
+    &:hover{
+
+        // animation: from_up_to_down;
+        // animation-duration: 1s;
+        // backface-visibility: hidden; /*to prevent shake of the chars when its animated*/
+
+    }
+
 }
 }
 

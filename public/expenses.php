@@ -8,7 +8,6 @@
 
 
 <?php
-        
     $expenses_set = get_all_expenses();
     $number_of_expenses = mysqli_num_rows($expenses_set)  ;
     $number_of_expenses_per_page = 6 ;

@@ -22,7 +22,6 @@
         ckeck_for_user_existance($email_field);
 
 
-
         if(empty($errors)){
             //success
             insert_admin_in_database($first_name_field ,$second_name_field,$email_field,

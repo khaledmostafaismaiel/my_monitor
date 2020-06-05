@@ -1,32 +1,13 @@
 <?php require_once("../includes/session.php")?>
 <?php require_once("../includes/db_connection.php")?>
 <?php require_once("../includes/functions.php")?>
+<?php confirm_sign_in()?>
 <?php include("../includes/layout/header.php")?>
 
 
 
 
 <?php
-    if(isset($_POST['edit_delete_submit'])){
-            //prcess the form
-            //escape all strings to prevent sql injection with mysqli_prep
-            if($_POST["edit_delete"] === "edit"){
-                redirect_to("edit_expense.php") ;
-            }elseif($_POST["edit_delete"] === "delete"){
-
-                //perform deleteing method
-            }else{
-
-            }
-
-        }else{
-            //this is probably $_GET request
-            //i will check if user is active or not
-            if(!isset($_SESSION["user_id"])){
-                redirect_to("sign_in.php");
-            }
-        }
-
         
     $expenses_set = get_all_expenses();
     $number_of_expenses = mysqli_num_rows($expenses_set)  ;

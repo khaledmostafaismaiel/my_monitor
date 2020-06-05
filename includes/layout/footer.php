@@ -1,3 +1,9 @@
+<?php
+    //4. release the returned data
+    mysqli_free_result($result);     
+?>
+
+
 
         <footer >
 
@@ -23,3 +29,9 @@
 </body>
 
 </html>
+
+
+<?php
+    //5. close database connection
+    mysqli_close($connection);
+?>

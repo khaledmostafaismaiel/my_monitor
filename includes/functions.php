@@ -214,7 +214,7 @@
         if(isset($_GET["pagenumber"])){
             $page_number = $_GET["pagenumber"] ;
         }else{
-            $page_number = 1 ;
+            $page_number = null ;
         }
 
         return $page_number ;
@@ -365,9 +365,9 @@
         $query .= " '{$first_name}','{$second_name}','{$email}','{$hashed_password}'";
         $query .= ")";
 
-        $result = mysqli_query($connection,$query);
+        ;
 
-        if(!$result){
+        if(!$result = mysqli_query($connection,$query)){
             // failed
             $_SESSION["message"] = "Try Again";
             redirect_to("sign_up.php?");
@@ -416,9 +416,9 @@
 
     function password_check($existing_hashed_password , $password_field){
         //existing hash contains format and salt at start 
-        $hash = crypt($_POST[$password_field],$existing_hashed_password);
+        // $hash = crypt($_POST[$password_field],$existing_hashed_password);
 
-        if($hash === $existing_hashed_password){
+        if($_POST[$password_field] === $existing_hashed_password){
             return true ;
         }else{
             return false ;
@@ -470,15 +470,49 @@
             
             if( ($admin["user_name"] == $_POST[$user_name_field]) ){
                 
-                password_check($admin["hashed_password"] , $password_field) ;
-                $_SESSION["user_id"]=$admin["id"];
-                $_SESSION["first_name"]=$admin["first_name"];
-                return  true ;
+                if(password_check($admin["hashed_password"] , $password_field))
+                    $_SESSION["user_id"] = $admin["id"];
+                    $_SESSION["first_name"] = $admin["first_name"];
+                    return  true ;
             }
-                
-            return  false ;
         }
-        
+
+        return  false ;
+    }
+
+
+    function signed_in(){
+        return isset($_SESSION["user_id"]) ;
+    }
+
+    function confirm_sign_in(){
+
+        if(!signed_in()){
+            redirect_to("sign_in.php");
+        }
+    }
+
+
+    function insert_expense_in_database($name_field,$price_field,$category_field
+        ,$comment_field,$created_at_field){
+
+        global $connection ;
+
+        //prcess the form
+        //escape all strings to prevent sql injection with mysqli_prep
+        $name = mysqli_prep($_POST[$name_field]) ;
+        $price = (float)urlencode($_POST[$price_field]) ;
+        $category = mysqli_prep($_POST[$category_field]) ;
+        $comment = mysqli_prep($_POST[$comment_field]) ;
+        $created_at =mysqli_prep($_POST[$created_at_field]) ;
+
+
+
+        $query = " INSERT INTO expenses ( ";
+        $query .= " expense_name , price , category , comment , created_at ) " ;  
+        $query .= " VALUES ( '{$name}' , {$price} , '{$category}' , '{$comment}' , '{$created_at}' )";
+
+        return mysqli_query($connection,$query)  ;
     }
 
 ?>

@@ -41,16 +41,12 @@
                     $current_page = null ;
                 }
 
-  
-                if(($_SERVER["PHP_SELF"] == "/sign_up.php") || ($_SERVER["PHP_SELF"] == "/sign_in.php")){
-
-
-                }else{
-                    include("logo.php") ;
+                include("logo.php") ;
+                if(($_SERVER["PHP_SELF"] != "/sign_up.php") && ($_SERVER["PHP_SELF"] != "/sign_in.php")){
                     include("search_box.php") ;
                     include("navigation.php") ;
-                }
 
+                }
                 
                 //echo "<pre>" ;print_r($_SERVER["PHP_SELF"]);
 

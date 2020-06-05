@@ -35,10 +35,6 @@
             $out_put .= $_SESSION["user_id"]; 
             $out_put .= "</span>" ;
             $out_put .= "</div>" ;
-
-            //clear errors after echoing it 
-            $_SESSION["user_id"] = null ;
-
         }else{
             $out_put = null ; 
         }

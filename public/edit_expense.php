@@ -1,6 +1,7 @@
 <?php require_once("../includes/session.php")?>
 <?php require_once("../includes/db_connection.php")?>
 <?php require_once("../includes/functions.php")?>
+<?php confirm_sign_in()?>
 <?php include("../includes/layout/header.php")?>
 
 
@@ -46,9 +47,7 @@
     }else{
         //this is probably $_GET request
         //i will check if user is active or not
-        if(!isset($_SESSION["user_id"])){
-            redirect_to("sign_in.php");
-        }
+
     }
 
 ?>

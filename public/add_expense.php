@@ -1,28 +1,15 @@
 <?php require_once("../includes/session.php")?>
 <?php require_once("../includes/db_connection.php")?>
 <?php require_once("../includes/functions.php")?>
+<?php confirm_sign_in()?>
 <?php include("../includes/layout/header.php")?>
 
 
 <?php
 
     if(isset($_POST['submit_add_expense'])){
-        //prcess the form
-        //escape all strings to prevent sql injection with mysqli_prep
-        $name = mysqli_prep($_POST["expense_name"]) ;
-        $price = (float)$_POST["price"] ;
-        $category = $_POST["category"] ;
-        $comment = mysqli_prep($_POST["comment"]) ;
-        $created_at = $_POST["created_at"] ;
 
-        $query = " INSERT INTO expenses ( ";
-        $query .= " expense_name , price , category , comment , created_at ) " ;  
-        $query .= " VALUES ( '{$name}' , {$price} , '{$category}' , '{$comment}' , '{$created_at}' )";
-
-
-        $result = mysqli_query($connection,$query) ;
-
-        if($result){
+        if(insert_expense_in_database("expense_name","price","category","comment","created_at")){
             //success
             $_SESSION["message"] = "add success" ;
             redirect_to("index.php?");
@@ -35,9 +22,7 @@
     }else{
         //this is probably $_GET request
         //i will check if user is active or not
-        if(!isset($_SESSION["user_id"])){
-            redirect_to("sign_in.php");
-        }
+
     }
 
 ?>

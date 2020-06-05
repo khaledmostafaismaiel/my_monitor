@@ -11,7 +11,3 @@
     redirect_to("sign_in.php");
 
 ?>
-
-
-
-

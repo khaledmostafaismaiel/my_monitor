@@ -102,15 +102,4 @@
 </div>
 
 
-
-<?php
-    //4. release the returned data
-    mysqli_free_result($result);          
-?>
-
 <?php include("../includes/layout/footer.php")?>
-
-<?php
-    //5. close database connection
-    mysqli_close($connection);    
-?>

@@ -1,14 +1,3 @@
-<!-- <div class="search_box">
-
-    <form action= "search.php?"  method="post">    
-        <div class="">
-            <label for="gsearch"></label>
-            <input id="gsearch" type="search" class="search_box-submit"  placeholder="search">
-        </div>
-    </form>
-</div> -->
-
-
 <form action="search.php?pagenumber=1" method="post">
 
     <div class="search_box">

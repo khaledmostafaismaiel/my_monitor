@@ -6,7 +6,7 @@
     transform: translate(-50%,-50%);
     border-radius: 1rem;
     background: rgba(245, 222, 179,.6);
-    padding: 0rem;
+    padding: 0rem 1rem;
 
     &-text{
 
@@ -19,7 +19,9 @@
         font-size: 1.6rem;
         transition: .4s;
         line-height: 4rem;
-        width: 0rem;
+        // width: 0rem;
+        width: 24rem;
+
         text-align: center;
 
         
@@ -48,7 +50,7 @@
 
         transition: .4s;
 
-        // display: none;
+        display: none;
 
     }
     // &-submit{

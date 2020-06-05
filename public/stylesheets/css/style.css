@@ -550,7 +550,7 @@ header {
   transform: translate(-50%, -50%);
   border-radius: 1rem;
   background: rgba(245, 222, 179, 0.6);
-  padding: 0rem; }
+  padding: 0rem 1rem; }
   .search_box-text {
     border: none;
     background: none;
@@ -561,7 +561,7 @@ header {
     font-size: 1.6rem;
     transition: .4s;
     line-height: 4rem;
-    width: 0rem;
+    width: 24rem;
     text-align: center; }
   .search_box-img {
     position: relative;
@@ -578,7 +578,8 @@ header {
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: .4s; }
+    transition: .4s;
+    display: none; }
 
 .search_box:hover > .search_box-text {
   width: 24rem;

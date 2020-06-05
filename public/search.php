@@ -19,7 +19,7 @@
     }
 
 
-    $query = "SELECT * FROM expenses WHERE expense_name LIKE '%$search_string%' " ;
+    $query = "SELECT * FROM expenses WHERE expense_name = '{$search_string}' " ;
 
     $expenses_set = mysqli_query($connection,$query) ;
 
@@ -32,7 +32,7 @@
         redirect_to("index.php");
     }
 
-    
+
     $number_of_expenses_per_page = 6 ;
     $number_of_pages= ceil((float)$number_of_expenses/(float)$number_of_expenses_per_page);
 
@@ -120,7 +120,7 @@
         echo "<a";
         if($page_number > 1){
             echo " href=\"" ;
-            echo " ?pagenumber=" ;
+            echo " ?searchfor=$search_string&pagenumber=" ;
             echo  $page_number-1  ;
             echo "\"" ; 
         }else{
@@ -140,7 +140,7 @@
         echo "<a";
         if($page_number < ($number_of_pages)){
             echo " href=\"" ;
-            echo " ?pagenumber=" ;
+            echo " ?searchfor=$search_string&pagenumber=" ;
             echo  $page_number+1  ;
             echo "\"" ; 
         }else{

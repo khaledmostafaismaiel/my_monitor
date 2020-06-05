@@ -19,20 +19,10 @@
     }
 
 
-    $query = "SELECT * FROM expenses WHERE expense_name = '{$search_string}' ORDER BY id DESC " ;
-
-    $expenses_set = mysqli_query($connection,$query) ;
-
-    confirm_query($expenses_set);
-
-    $number_of_expenses = mysqli_num_rows($expenses_set)  ;
-
-    if(!($number_of_expenses > 0)){
-        $_SESSION["message"] = "No Matching" ;
-        redirect_to("index.php");
-    }
+    $expenses_set = search_by_expense_name($search_string) ;
 
 
+    $number_of_expenses = mysqli_num_rows($expenses_set) ;
     $number_of_expenses_per_page = 6 ;
     $number_of_pages= ceil((float)$number_of_expenses/(float)$number_of_expenses_per_page);
 

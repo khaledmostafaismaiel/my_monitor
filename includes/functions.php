@@ -190,7 +190,7 @@
         $safe_expense_name = mysqli_real_escape_string($connection,$expense_name);
 
 
-        $query = "SELECT * FROM expenses WHERE expense_name = '{$safe_expense_name}' " ;
+        $query = "SELECT * FROM expenses WHERE expense_name = '{$safe_expense_name}' ORDER BY id DESC" ;
 
         $result_set= mysqli_query($connection , $query);
     

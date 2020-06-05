@@ -99,7 +99,7 @@
         //2. perform database query
         $query = "SELECT * ";
         $query .="FROM expenses ";
-        $query .="ORDER BY id ASC ";
+        $query .="ORDER BY id DESC ";
         // $query .="LIMIT 1";
 
         $result_set= mysqli_query($connection , $query);
@@ -186,19 +186,24 @@
 
         global $connection ;
 
+
         $safe_expense_name = mysqli_real_escape_string($connection,$expense_name);
-        
-        //2. perform database query
-        $query = "SELECT * ";
-        $query .="FROM expenses ";
-        $query .="WHERE expense_name={$safe_expense_name} ";
-        $query .="ORDER BY id DESC";
-        // $query .="LIMIT 1";
+
+
+        $query = "SELECT * FROM expenses WHERE expense_name = '{$safe_expense_name}' " ;
 
         $result_set= mysqli_query($connection , $query);
-
-        //test if there was a query error
+    
         confirm_query($result_set);
+    
+        $number_of_expenses = mysqli_num_rows($result_set)  ;
+    
+        if(!($number_of_expenses > 0)){
+            $_SESSION["message"] = "No Matching" ;
+            redirect_to("index.php");
+        }
+
+        // $query .="ORDER BY id DESC";
         
         return $result_set;
     }

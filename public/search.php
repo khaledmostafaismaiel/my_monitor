@@ -19,7 +19,7 @@
     }
 
 
-    $query = "SELECT * FROM expenses WHERE expense_name = '{$search_string}' " ;
+    $query = "SELECT * FROM expenses WHERE expense_name = '{$search_string}' ORDER BY id DESC " ;
 
     $expenses_set = mysqli_query($connection,$query) ;
 

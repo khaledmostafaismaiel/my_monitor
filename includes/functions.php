@@ -70,11 +70,12 @@
         global $connection ;
 
         $safe_user_name_field = mysqli_real_escape_string($connection,$user_name_field);
-        
+        $user_name = $_POST[$safe_user_name_field];
+
         //2. perform database query
         $query = "SELECT * ";
         $query .="FROM admins ";
-        $query .="WHERE user_name = '{$safe_user_name_field}' ";
+        $query .="WHERE user_name = '{$user_name}' ";
         $query .="LIMIT 1";
 
         $result_set= mysqli_query($connection , $query);
@@ -250,27 +251,6 @@
 
 
 
-    function form_errors($errors=array()){
-        /**/
-
-        $out_put = ""  ;
-        if(!empty($errors)){
-            $out_put .="<div class=\"error\">" ;
-            $out_put .="please fix the folloing errors" ;
-            $out_put .="<ul>" ;
-            foreach($errors as $key => $error){
-                $out_put .= "<li>{$error}</li>" ;
-            }
-            $out_put .="</ul>" ;
-            $out_put .="</div>" ;
-
-        }
-
-        return $out_put;
-    }
-    
-
-
 
     function field_name_as_text($field_name){
 
@@ -336,12 +316,6 @@
 
         }
 
-    }
-
-    function has_inclusion_in(){
-        /**/
-
-        return in_array($value,$set);
     }
 
 
@@ -464,17 +438,13 @@
 
         // $admin = get_admin_data_by_user_name($user_name_field);
             
-
-        $admin_set = get_all_admins();
-        while($admin = mysqli_fetch_assoc($admin_set)){
-            
-            if( ($admin["user_name"] == $_POST[$user_name_field]) ){
+        if($admin = get_admin_data_by_user_name($user_name_field)){              
                 
                 if(password_check($admin["hashed_password"] , $password_field))
                     $_SESSION["user_id"] = $admin["id"];
                     $_SESSION["first_name"] = $admin["first_name"];
                     return  true ;
-            }
+            
         }
 
         return  false ;
@@ -514,5 +484,51 @@
 
         return mysqli_query($connection,$query)  ;
     }
+
+
+    function delete_expense_from_database($expense_id){
+
+        global $connection ;
+        
+        $query = "DELETE FROM expenses WHERE id = {$expense_id} LIMIT 1" ;
+
+    return mysqli_query($connection,$query)  ;
+}
+
+
+
+
+    function update_expense_in_database($id,$name_field,$price_field,$category_field
+    ,$comment_field,$created_at_field){
+
+        global $connection ;
+
+        //prcess the form
+        //escape all strings to prevent sql injection with mysqli_prep
+        //prcess the form
+        //escape all strings to prevent sql injection with mysqli_prep
+        $name = mysqli_prep($_POST[$name_field]) ;
+        $price = $_POST[$price_field] ;
+        $category = $_POST[$category_field] ;
+        $comment = mysqli_prep($_POST[$comment_field]) ;
+        $created_at = $_POST[$created_at_field] ;
+
+
+
+        $query = "UPDATE expenses SET " ;
+        $query .= "expense_name = '{$name}', " ;
+        $query .= "price = {$price}, " ;
+        $query .= "category = '{$category}', " ;  
+        $query .= "comment = '{$comment}', " ;
+        $query .= "created_at = '{$created_at}' " ;
+        // $query .= "updated_at = 'date' " ;
+        $query .= "WHERE id = {$id} " ;
+        $query .= "LIMIT 1" ;
+
+
+        return mysqli_query($connection,$query)  ;
+    }
+
+
 
 ?>

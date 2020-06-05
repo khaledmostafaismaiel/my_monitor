@@ -28,14 +28,15 @@
             $_SESSION["errors"] = null ;
             
         }
-        elseif(isset($_SESSION["user_id"])){
+        // elseif(isset($_SESSION["user_id"])){
 
-            $out_put = "<div class=\"message-session\">" ;
-            $out_put .= "<span class = \"message-session-span\">" ;
-            $out_put .= $_SESSION["user_id"]; 
-            $out_put .= "</span>" ;
-            $out_put .= "</div>" ;
-        }else{
+        //     $out_put = "<div class=\"message-session\">" ;
+        //     $out_put .= "<span class = \"message-session-span\">" ;
+        //     $out_put .= $_SESSION["user_id"]; 
+        //     $out_put .= "</span>" ;
+        //     $out_put .= "</div>" ;
+        // }
+        else{
             $out_put = null ; 
         }
 

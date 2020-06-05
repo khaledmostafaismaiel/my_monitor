@@ -13,20 +13,12 @@
 <?php
 
     if(isset($_POST['submit_delete_expense'])){
-        //prcess the form
-        //escape all strings to prevent sql injection with mysqli_prep
-        $name = mysqli_prep($_POST["expense_name"]) ;
-        $price = $_POST["price"] ;
-        $category = $_POST["category"] ;
-        $comment = mysqli_prep($_POST["comment"]) ;
-        $created_at = $_POST["updated_at"] ;
-
 
         $id=get_expense_id_from_url();
-        $query = "DELETE FROM expenses WHERE id = {$id} LIMIT 1" ;
-
-        $result = mysqli_query($connection,$query) ;
-        if($result && mysqli_affected_rows($connection) >= 1){
+        if(!get_expense_data_by_id($id)){
+            rediret_to("not_available.php");
+        }
+        if(delete_expense_from_database($id) && mysqli_affected_rows($connection) >= 1){
             //success
             $_SESSION["message"] = "Delete success" ;
             redirect_to("index.php?");
@@ -80,14 +72,14 @@
         <div class="form_add_expense-category">
             <label>Category:</label> 
 
-            <select name="category"  value="<?php echo $expense_data["category"]?>"  size="4" class="form_add_expense-category-menu">
+            <select name="category"  value="<?php echo $expense_data["category"]?>"  size="1" class="form_delete_expense-category-menu">
                 <?php
                     $category_set = get_all_categories();
                     while($category = mysqli_fetch_assoc($category_set)){
                         $out_put  = "<option>";
                         $out_put .= $category["category_name"] ;
                         $out_put .= "</option>" ;                        
-                        echo $out_put ."khaled" ;
+                        echo $out_put ;
                     }
                 ?>
             </select>
@@ -95,7 +87,7 @@
 
         <div class="form_add_expense-comment">
             <label>Comment:</label> 
-            <textarea id="" cols="20" name="comment" value="" rows="3" placeholder="Like,place..."><?php echo $expense_data["comment"]?></textarea>
+            <textarea id="" cols="20" name="comment" rows="3" placeholder="Like,place..."> <?php echo $expense_data["comment"]?> </textarea>
         </div>
 
         <div class="form_add_expense-date">

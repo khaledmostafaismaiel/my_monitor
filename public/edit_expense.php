@@ -12,70 +12,46 @@
 
 <?php
 
-    if(isset($_POST['submit_add_expense'])){
-        //prcess the form
-        //escape all strings to prevent sql injection with mysqli_prep
-        $name = mysqli_prep($_POST["expense_name"]) ;
-        $price = $_POST["price"] ;
-        $category = $_POST["category"] ;
-        $comment = mysqli_prep($_POST["comment"]) ;
-        $created_at = $_POST["updated_at"] ;
+    if(isset($_POST['submit_edit_expense'])){
 
         $id=get_expense_id_from_url();
-        
-        $query = "UPDATE expenses SET " ;
-        $query .= "expense_name ='{$name}', " ;
-        $query .= "price = {$price}, " ;
-        $query .= "category = '{$category}', " ;  
-        $query .= "comment = {$comment}, " ;
-        $query .= "updated_at {$created_at} " ;
-        $query .= "WHERE id = {$id} " ;
-        $query .= "LIMIT 1" ;
-
-        $result = mysqli_query($connection,$query) ;
-
-        if($result && mysqli_affected_rows($connection) >= 1){
+        if(!get_expense_data_by_id($id)){
+            rediret_to("not_available.php");
+        }
+        if(update_expense_in_database($id,"expense_name","price","category","comment","created_at") && mysqli_affected_rows($connection) >= 1){
             //success
             $_SESSION["message"] = "Edit success" ;
             redirect_to("index.php?");
         }else{
             //failed
-            $message = "Edit DIDN'T success" ;
-            redirect_to("edit_expense.php?");
+            $_SESSION["message"] = "Edit DIDN'T success" ;
+            redirect_to("edit_expense.php?expenseid={$id}");
         }
 
     }else{
         //this is probably $_GET request
         //i will check if user is active or not
-
     }
 
 ?>
 
-
-
-
-
 <form method = "post">
     <?php $expense_data = get_expense_data_by_id(get_expense_id_from_url()) ?>
-    <fieldset class="form_add_expense">
+    <fieldset class="form_edit_expense">
         <legend> 
             <h2>
                 Edit Expense ...
-                <!-- <?php if(!empty($message)){
-                            echo $message ;
-                        }
-                ?> -->
+
             </h2>   
         </legend>
 
-        <div class="form_add_expense-name">
+        <div class="form_edit_expense-name">
             <label>Name:</label> 
 
             <input type="text" name="expense_name" value="<?php echo $expense_data["expense_name"]?>" placeholder="Expense Name ?">  
         </div>
 
-        <div class="form_add_expense-price">
+        <div class="form_edit_expense-price">
             <label>Price:</label> 
 
             <input type="text" name="price" value="<?php echo $expense_data["price"]?>" placeholder="Expense Price ?">  
@@ -83,10 +59,10 @@
 
 
         
-        <div class="form_add_expense-category">
+        <div class="form_edit_expense-category">
             <label>Category:</label> 
 
-            <select name="category"  value="<?php echo $expense_data["category"]?>"  size="4" class="form_add_expense-category-menu">
+            <select name="category"  value="<?php echo $expense_data["category"]?>"  size="4" class="form_edit_expense-category-menu">
                 <?php
                     $category_set = get_all_categories();
                     while($category = mysqli_fetch_assoc($category_set)){
@@ -99,25 +75,25 @@
             </select>
         </div>
 
-        <div class="form_add_expense-comment">
+        <div class="form_edit_expense-comment">
             <label>Comment:</label> 
             <textarea id="" cols="20" name="comment" value="" rows="3" placeholder="Like,place..."><?php echo $expense_data["comment"]?></textarea>
         </div>
 
-        <div class="form_add_expense-date">
+        <div class="form_edit_expense-date">
             <label>Date:</label> 
             <input name="created_at" type="date" value="<?php echo $expense_data["created_at"]?>">  
         </div>
 
 
-        <div class="form_add_expense-cancel">
-                <a href="index.php?" class="btn">
+        <div class="form_edit_expense-cancel">
+                <a href="index.php" class="btn">
                     cancel
                 </a>
         </div>
 
-        <div class="form_add_expense-submit">
-            <input type="submit" name="submit_add_expense" value="+ add" class="form-sign_in-animated btn">  
+        <div class="form_edit_expense-submit">
+            <input type="submit" name="submit_edit_expense" value="edit" class="form-sign_in-animated btn">  
         </div>
         
 

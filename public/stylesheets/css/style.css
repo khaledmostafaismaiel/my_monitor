@@ -230,7 +230,7 @@ legend {
   border-radius: 2rem;
   width: 30%;
   position: relative;
-  top: 5rem;
+  top: 7rem;
   left: 42rem;
   margin: 2rem;
   padding: 2rem 4rem 8rem 4rem;
@@ -283,18 +283,71 @@ legend {
   border-radius: 2rem;
   width: 30%;
   position: relative;
-  top: 5rem;
+  top: 10rem;
   left: 42rem;
   margin: 2rem;
   padding: 2rem 4rem 8rem 4rem;
   font-size: 2rem; }
   .form_delete_expense-cancel {
     position: absolute;
-    top: 36rem;
+    top: 32rem;
     left: 2rem; }
   .form_delete_expense-submit {
     position: absolute;
+    top: 32rem;
+    left: 22rem; }
+
+.form_edit_expense {
+  color: black;
+  background-color: rgba(245, 222, 179, 0.4);
+  border-radius: 2rem;
+  width: 30%;
+  position: relative;
+  top: 7rem;
+  left: 42rem;
+  margin: 2rem;
+  padding: 2rem 4rem 8rem 4rem;
+  font-size: 2rem; }
+  .form_edit_expense-name {
+    position: relative;
+    top: -2rem;
+    left: 1rem;
+    padding: 1rem; }
+  .form_edit_expense-price {
+    position: relative;
+    left: 1.6rem;
+    top: -2rem;
+    padding: 1rem; }
+  .form_edit_expense-category {
+    padding: 1rem;
+    position: relative;
+    left: -3rem;
+    top: -2rem; }
+  .form_edit_expense-category-menu {
+    position: relative;
+    left: 1rem;
+    top: 0rem;
+    width: 18rem;
+    text-align: center; }
+  .form_edit_expense-comment {
+    padding: 1rem;
+    position: relative;
+    left: -2.5rem;
+    top: -2rem; }
+  .form_edit_expense-date {
+    padding: 1rem;
+    position: relative;
+    left: 1.9rem;
+    top: -2rem; }
+  .form_edit_expense-cancel {
+    position: absolute;
     top: 36rem;
+    left: 2rem; }
+  .form_edit_expense-submit {
+    text-align: center;
+    padding: 1rem;
+    position: absolute;
+    top: 35rem;
     left: 22rem; }
 
 .form-sign_up {

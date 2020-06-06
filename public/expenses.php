@@ -8,7 +8,7 @@
 
 
 <?php
-    $expenses_set = get_all_expenses();
+    $expenses_set = get_all_month_expenses();
     $number_of_expenses = mysqli_num_rows($expenses_set)  ;
     $number_of_expenses_per_page = 6 ;
     $number_of_pages= ceil((float)$number_of_expenses/(float)$number_of_expenses_per_page);
@@ -56,11 +56,7 @@
                     if($iteration_number == $number_of_expenses_per_page){
                         break ;
                     }else{
-                        if(($expense["created_at"]) < date("1-m-Y")){
-                            continue ;
-                        }else{
-                            ++$iteration_number ;
-                        }
+                        ++$iteration_number ;
                     }
                         
             ?>

@@ -110,6 +110,22 @@
         return $result_set;
     }
 
+
+    function get_all_month_expenses(){
+
+        global $connection ;
+        
+        $month = date('Y-m-00');
+
+        $query = "SELECT * FROM `expenses` WHERE `created_at` > '{$month}' ORDER BY id DESC";
+        $result_set = mysqli_query($connection, $query);
+    
+        //test if there was a query error
+        confirm_query($result_set);
+        
+        return $result_set;
+    }
+
     function get_expense_data_by_id($expense_id){
 
         global $connection ;

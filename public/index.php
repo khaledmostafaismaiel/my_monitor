@@ -22,7 +22,7 @@
     </p>
     
     <p class="money_spent-third_line">
-        <?php echo date("1-m-Y")?> TO <?php echo date("d-m-Y",strtotime("today")) ?>
+        <?php echo date("1-m-Y")?><span class = "money_spent-first_line-user_name"> TO </span><?php echo date("d-m-Y",strtotime("today")) ?>
     </p>                
 </div>
 

@@ -11,8 +11,8 @@
         $price = (float)urlencode($_POST[$price_field]) ;
         $category = mysqli_prep(strtolower(htmlentities($_POST[$category_field]))) ;
         $comment = mysqli_prep(strtolower(htmlentities($_POST[$comment_field]))) ;
-        $created_at =mysqli_prep(htmlentities($_POST[$created_at_field])) ;
-
+        $created_at =mysqli_prep(htmlentities($_POST[$created_at_field]));
+        // $created_at .= date("s:i:H") ;
 
         $query = " INSERT INTO expenses ( ";
         $query .= " expense_name , price , category , comment , created_at ) " ;  

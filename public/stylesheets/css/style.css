@@ -562,7 +562,8 @@ header {
     transition: .4s;
     line-height: 4rem;
     width: 24rem;
-    text-align: center; }
+    text-align: center;
+    border-radius: 1rem; }
   .search_box-img {
     position: relative;
     top: .8rem;

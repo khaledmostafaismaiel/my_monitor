@@ -126,6 +126,23 @@
         return $result_set;
     }
 
+
+
+    function get_all_month_prices(){
+
+        global $connection ;
+        
+        $month = date('Y-m-00');
+        $query = "SELECT SUM(`price`) AS 'total' FROM `expenses` WHERE `created_at` > '{$month}'";
+        $result_set = mysqli_query($connection, $query);
+        
+        //test if there was a query error
+        confirm_query($result_set);
+        
+        return $monthTotal = mysqli_fetch_object($result_set)->total;
+    }
+
+
     function get_expense_data_by_id($expense_id){
 
         global $connection ;
@@ -318,7 +335,7 @@
         $first_name = strtolower(mysqli_prep(htmlentities($_POST[$first_name_field]))) ;
         $second_name = strtolower(mysqli_prep(htmlentities($_POST[$second_name_field]))) ;
         $email = strtolower(mysqli_prep(htmlentities($_POST[$email_field]))) ;
-        $hashed_password = password_encrypt($_POST[$password_field]) ;
+        $hashed_password = password_hash($_POST[$password_field],PASSWORD_BCRYPT,['cost=>10']) ;
 
         
         $query = "INSERT INTO admins (";
@@ -377,10 +394,8 @@
 
 
     function password_check($existing_hashed_password , $password_field){
-        //existing hash contains format and salt at start 
-        // $hash = crypt($_POST[$password_field],$existing_hashed_password);
 
-        if(htmlentities($_POST[$password_field]) === $existing_hashed_password){
+        if(password_verify(htmlentities($_POST[$password_field]),$existing_hashed_password)){
             return true ;
         }else{
             return false ;
@@ -411,7 +426,7 @@
         $hash_format = "$2y$10$" ; //tell php to use Blowfish with a cost of 10
         $salt_length = 22 ; //Blowfish should be 22 or more
         $salt = generate_salte($salt_length);
-        $format_and_salt= $hash_format.$salt ;
+        $format_and_salt= $hash_format . $salt ;
         $hashed_password=crypt($password,$format_and_salt);
 
         return $hashed_password ;

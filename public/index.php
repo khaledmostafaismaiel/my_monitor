@@ -4,14 +4,6 @@
 <?php confirm_sign_in()?>
 <?php include("../includes/layout/header.php")?>
 
-<?php
-    global $connection ;
-    $month = date('Y-m-00');
-    $query = "SELECT SUM(`price`) AS 'total' FROM `expenses` WHERE `created_at` > '{$month}'";
-    $sumQuery = mysqli_query($connection, $query);
-    $monthTotal = mysqli_fetch_object($sumQuery)->total;
-?>
-
 
 <div class="money_spent">
     <p class="money_spent-first_line">
@@ -23,7 +15,7 @@
     </p>
 
     <p class="money_spent-second_line">
-        <?php echo $monthTotal?> E£
+        <?php echo get_all_month_prices()?> E£
     </p>
     
     <p class="money_spent-third_line">

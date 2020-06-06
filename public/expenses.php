@@ -56,7 +56,11 @@
                     if($iteration_number == $number_of_expenses_per_page){
                         break ;
                     }else{
-                        ++$iteration_number ;
+                        if(($expense["created_at"]) < date("1-m-Y")){
+                            continue ;
+                        }else{
+                            ++$iteration_number ;
+                        }
                     }
                         
             ?>

@@ -4,8 +4,13 @@
 <?php confirm_sign_in()?>
 <?php include("../includes/layout/header.php")?>
 
-
-
+<?php
+    global $connection ;
+    $month = date('00-m-Y');
+    $query = "SELECT SUM(`price`) AS 'total' FROM `expenses` WHERE `created_at` > '{$month}'";
+    $sumQuery = mysqli_query($connection, $query);
+    $monthTotal = mysqli_fetch_object($sumQuery)->total;
+?>
 
 
 <div class="money_spent">
@@ -18,11 +23,11 @@
     </p>
 
     <p class="money_spent-second_line">
-        100 E£
+        <?php echo $monthTotal?> E£
     </p>
     
     <p class="money_spent-third_line">
-        <?php echo date("1-m-Y")?><span class = "money_spent-first_line-user_name"> TO </span><?php echo date("d-m-Y",strtotime("today")) ?>
+        <?php echo date("1/n/Y")?><span class = "money_spent-first_line-user_name"> TO </span><?php echo date("j/n/Y",strtotime("today")) ?>
     </p>                
 </div>
 

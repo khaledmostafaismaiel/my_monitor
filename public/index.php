@@ -22,7 +22,7 @@
     </p>
     
     <p class="money_spent-third_line">
-        1-1-2020 &nbsp; TO &nbsp; 1-2-2020
+        <?php echo date("1-m-Y")?> TO <?php echo date("d-m-Y",strtotime("today")) ?>
     </p>                
 </div>
 

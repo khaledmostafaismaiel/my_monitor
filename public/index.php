@@ -6,7 +6,7 @@
 
 <?php
     global $connection ;
-    $month = date('00-m-Y');
+    $month = date('Y-m-00');
     $query = "SELECT SUM(`price`) AS 'total' FROM `expenses` WHERE `created_at` > '{$month}'";
     $sumQuery = mysqli_query($connection, $query);
     $monthTotal = mysqli_fetch_object($sumQuery)->total;

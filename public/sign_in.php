@@ -29,7 +29,6 @@
         //this is probably $_GET request
         //i will check if user is active or not
 
-
     }
 
 

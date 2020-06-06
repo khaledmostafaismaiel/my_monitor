@@ -15,8 +15,8 @@
         // $created_at .= date("s:i:H") ;
 
         $query = " INSERT INTO expenses ( ";
-        $query .= " expense_name , price , category , comment , created_at ) " ;  
-        $query .= " VALUES ( '{$name}' , {$price} , '{$category}' , '{$comment}' , '{$created_at}' )";
+        $query .= " expense_name , price , category , comment , created_at , user_id ) " ;  
+        $query .= " VALUES ( '{$name}' , {$price} , '{$category}' , '{$comment}' , '{$created_at}' , {$_SESSION['user_id']} )";
 
         return mysqli_query($connection,$query)  ;
     }
@@ -26,7 +26,7 @@
 
         global $connection ;
         
-        $query = "DELETE FROM expenses WHERE id = {$expense_id} LIMIT 1" ;
+        $query = "DELETE FROM expenses WHERE id = {$expense_id} AND user_id = {$_SESSION['user_id']} LIMIT 1" ;
 
         return mysqli_query($connection,$query)  ;
     }
@@ -57,6 +57,7 @@
         $query .= "created_at = '{$created_at}' " ;
         // $query .= "updated_at = 'date' " ;
         $query .= "WHERE id = {$id} " ;
+        $query .= " AND user_id = {$_SESSION['user_id']} " ;
         $query .= "LIMIT 1" ;
 
 
@@ -64,6 +65,41 @@
     }
 
 
+
+
+
+    function get_all_month_expenses(){
+
+        global $connection ;
+        
+        $month = date('Y-m-00');
+
+        $query = "SELECT * FROM `expenses` WHERE `created_at` > '{$month}' AND user_id = {$_SESSION['user_id']}  ORDER BY id DESC";
+        $result_set = mysqli_query($connection, $query);
+    
+        //test if there was a query error
+        confirm_query($result_set);
+        
+        return $result_set;
+    }
+
+
+
+    function get_all_month_prices(){
+
+        global $connection ;
+        
+        $month = date('Y-m-00');
+        $query = "SELECT SUM(`price`) AS 'total' FROM `expenses` WHERE `created_at` > '{$month}' AND user_id = {$_SESSION['user_id']} ";
+        $result_set = mysqli_query($connection, $query);
+        
+        //test if there was a query error
+        confirm_query($result_set);
+        
+        return $monthTotal = mysqli_fetch_object($result_set)->total;
+    }
+
+    
     function search_by_expense_name($expense_name){
 
         global $connection ;
@@ -72,7 +108,7 @@
         $safe_expense_name = mysqli_prep($expense_name);
 
 
-        $query = "SELECT * FROM expenses WHERE expense_name = '{$safe_expense_name}' ORDER BY id DESC" ;
+        $query = "SELECT * FROM expenses WHERE expense_name = '{$safe_expense_name}' AND user_id = {$_SESSION['user_id']}  ORDER BY id DESC" ;
 
         $result_set= mysqli_query($connection , $query);
     

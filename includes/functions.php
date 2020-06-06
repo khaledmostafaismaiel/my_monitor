@@ -98,7 +98,7 @@
         
         //2. perform database query
         $query = "SELECT * ";
-        $query .="FROM expenses ";
+        $query .="FROM expenses WHERE user_id = {$_SESSION['user_id']} ";
         $query .="ORDER BY id DESC ";
         // $query .="LIMIT 1";
 
@@ -111,37 +111,6 @@
     }
 
 
-    function get_all_month_expenses(){
-
-        global $connection ;
-        
-        $month = date('Y-m-00');
-
-        $query = "SELECT * FROM `expenses` WHERE `created_at` > '{$month}' ORDER BY id DESC";
-        $result_set = mysqli_query($connection, $query);
-    
-        //test if there was a query error
-        confirm_query($result_set);
-        
-        return $result_set;
-    }
-
-
-
-    function get_all_month_prices(){
-
-        global $connection ;
-        
-        $month = date('Y-m-00');
-        $query = "SELECT SUM(`price`) AS 'total' FROM `expenses` WHERE `created_at` > '{$month}'";
-        $result_set = mysqli_query($connection, $query);
-        
-        //test if there was a query error
-        confirm_query($result_set);
-        
-        return $monthTotal = mysqli_fetch_object($result_set)->total;
-    }
-
 
     function get_expense_data_by_id($expense_id){
 
@@ -152,7 +121,7 @@
         //2. perform database query
         $query = "SELECT * ";
         $query .="FROM expenses ";
-        $query .="WHERE id={$safe_expense_id} ";
+        $query .="WHERE id={$safe_expense_id} AND user_id = {$_SESSION['user_id']} ";
         $query .="LIMIT 1";
 
         $result_set= mysqli_query($connection , $query);

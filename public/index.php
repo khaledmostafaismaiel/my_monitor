@@ -1,6 +1,7 @@
 <?php require_once("../includes/session.php")?>
 <?php require_once("../includes/db_connection.php")?>
 <?php require_once("../includes/functions.php")?>
+<?php require_once("../includes/main_functions.php")?>
 <?php confirm_sign_in()?>
 <?php include("../includes/layout/header.php")?>
 

@@ -1,6 +1,7 @@
 <?php require_once("../includes/session.php")?>
 <?php require_once("../includes/db_connection.php")?>
 <?php require_once("../includes/functions.php")?>
+<?php require_once("../includes/main_functions.php")?>
 <?php confirm_sign_in()?>
 <?php include("../includes/layout/header.php")?>
 
@@ -9,7 +10,7 @@
 
     if(isset($_POST['submit_add_expense'])){
 
-        if(insert_expense_in_database("expense_name","price","category","comment","created_at")){
+        if(add_expense_in_database("expense_name","price","category","comment","created_at")){
             //success
             $_SESSION["message"] = "add success" ;
             redirect_to("index.php?");

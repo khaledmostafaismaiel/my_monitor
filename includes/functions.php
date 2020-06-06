@@ -43,7 +43,7 @@
 
         global $connection ;
 
-        $safe_admin_id = mysqli_real_escape_string($connection,$admin_id);
+        $safe_admin_id = mysqli_prep($admin_id);
         
         //2. perform database query
         $query = "SELECT * ";
@@ -69,8 +69,8 @@
 
         global $connection ;
 
-        $safe_user_name_field = mysqli_real_escape_string($connection,$user_name_field);
-        $user_name = $_POST[$safe_user_name_field];
+        $safe_user_name_field = mysqli_prep($user_name_field);
+        $user_name = htmlentities($_POST[$safe_user_name_field]);
 
         //2. perform database query
         $query = "SELECT * ";
@@ -114,7 +114,7 @@
 
         global $connection ;
 
-        $safe_expense_id = mysqli_real_escape_string($connection,$expense_id);
+        $safe_expense_id = mysqli_prep($expense_id);
         
         //2. perform database query
         $query = "SELECT * ";
@@ -182,34 +182,6 @@
     }
 
 
-    function search_by_expense_name($expense_name){
-
-        global $connection ;
-
-
-        $safe_expense_name = mysqli_real_escape_string($connection,$expense_name);
-
-
-        $query = "SELECT * FROM expenses WHERE expense_name = '{$safe_expense_name}' ORDER BY id DESC" ;
-
-        $result_set= mysqli_query($connection , $query);
-    
-        confirm_query($result_set);
-    
-        $number_of_expenses = mysqli_num_rows($result_set)  ;
-    
-        if(!($number_of_expenses > 0)){
-            $_SESSION["message"] = "No Matching" ;
-            redirect_to("index.php");
-        }
-
-        // $query .="ORDER BY id DESC";
-        
-        return $result_set;
-    }
-
-
-    
 
 
 
@@ -218,7 +190,7 @@
     function get_page_number(){
 
         if(isset($_GET["pagenumber"])){
-            $page_number = $_GET["pagenumber"] ;
+            $page_number = htmlentities($_GET["pagenumber"]) ;
         }else{
             $page_number = null ;
         }
@@ -230,17 +202,12 @@
     function get_expense_id_from_url(){
 
         if(isset($_GET["expenseid"])){
-            $expense_id = $_GET["expenseid"] ;
+            $expense_id = htmlentities($_GET["expenseid"]) ;
         }else{
             $expense_id = null;
         }
 
         return $expense_id ;
-
-    }
-
-    
-    function edit_by_expense_id($expense_id){
 
     }
 
@@ -275,7 +242,7 @@
         global $errors ;
 
         foreach($fields as $field){
-            $value = trim($_POST[$field]) ;
+            $value = trim(htmlentities($_POST[$field])) ;
             if(!has_presence($value)){
                 $errors[$field] = field_name_as_text($field)." can't be blank";
             }
@@ -295,7 +262,7 @@
         global $errors ;
 
         foreach($fields as $field => $max){
-            $value = trim($_POST[$field]) ;
+            $value = trim(htmlentities($_POST[$field])) ;
             if(!has_max_length($value,$max)){
                 $errors[$field] = field_name_as_text($field)." is to long";
             }
@@ -314,7 +281,7 @@
         global $errors ;
 
         foreach($fields as $field => $max){
-            $value = trim($_POST[$field]) ;
+            $value = trim(htmlentities($_POST[$field])) ;
             if(!has_min_length($value,$max)){
                 $errors[$field] = field_name_as_text($field)." is to short";
             }
@@ -332,9 +299,9 @@
 
         //prcess the form
         //escape all strings to prevent sql injection with mysqli_prep
-        $first_name = strtolower(mysqli_prep($_POST[$first_name_field])) ;
-        $second_name = strtolower(mysqli_prep($_POST[$second_name_field])) ;
-        $email = strtolower(mysqli_prep($_POST[$email_field])) ;
+        $first_name = strtolower(mysqli_prep(htmlentities($_POST[$first_name_field]))) ;
+        $second_name = strtolower(mysqli_prep(htmlentities($_POST[$second_name_field]))) ;
+        $email = strtolower(mysqli_prep(htmlentities($_POST[$email_field]))) ;
         $hashed_password = password_encrypt($_POST[$password_field]) ;
 
         
@@ -371,7 +338,7 @@
     function ckeck_for_user_existance($email_field){
         global $errors ;
 
-        $email = strtolower($_POST[$email_field]) ;
+        $email = strtolower(htmlentities($_POST[$email_field])) ;
      
         $admins_set=get_all_admins();
         while($admin=mysqli_fetch_assoc($admins_set)){
@@ -387,7 +354,7 @@
     function check_password_and_confirm_similarity($password_field,$confirm_password_field){
         global $errors ;
 
-        if($_POST[$password_field] !== $_POST[$confirm_password_field]){
+        if(htmlentities($_POST[$password_field]) !== htmlentities($_POST[$confirm_password_field])){
             $errors[$password_field] = field_name_as_text($email_field) ."password and confirmation password didn't not match.";
         }
     }
@@ -397,7 +364,7 @@
         //existing hash contains format and salt at start 
         // $hash = crypt($_POST[$password_field],$existing_hashed_password);
 
-        if($_POST[$password_field] === $existing_hashed_password){
+        if(htmlentities($_POST[$password_field]) === $existing_hashed_password){
             return true ;
         }else{
             return false ;
@@ -440,8 +407,6 @@
 
     function attempt_sign_in($user_name_field,$password_field){
 
-
-        // $admin = get_admin_data_by_user_name($user_name_field);
             
         if($admin = get_admin_data_by_user_name($user_name_field)){              
                 
@@ -466,74 +431,4 @@
             redirect_to("sign_in.php");
         }
     }
-
-
-    function insert_expense_in_database($name_field,$price_field,$category_field
-        ,$comment_field,$created_at_field){
-
-        global $connection ;
-
-        //prcess the form
-        //escape all strings to prevent sql injection with mysqli_prep
-        $name = mysqli_prep($_POST[$name_field]) ;
-        $price = (float)urlencode($_POST[$price_field]) ;
-        $category = mysqli_prep($_POST[$category_field]) ;
-        $comment = mysqli_prep($_POST[$comment_field]) ;
-        $created_at =mysqli_prep($_POST[$created_at_field]) ;
-
-
-
-        $query = " INSERT INTO expenses ( ";
-        $query .= " expense_name , price , category , comment , created_at ) " ;  
-        $query .= " VALUES ( '{$name}' , {$price} , '{$category}' , '{$comment}' , '{$created_at}' )";
-
-        return mysqli_query($connection,$query)  ;
-    }
-
-
-    function delete_expense_from_database($expense_id){
-
-        global $connection ;
-        
-        $query = "DELETE FROM expenses WHERE id = {$expense_id} LIMIT 1" ;
-
-    return mysqli_query($connection,$query)  ;
-}
-
-
-
-
-    function update_expense_in_database($id,$name_field,$price_field,$category_field
-    ,$comment_field,$created_at_field){
-
-        global $connection ;
-
-        //prcess the form
-        //escape all strings to prevent sql injection with mysqli_prep
-        //prcess the form
-        //escape all strings to prevent sql injection with mysqli_prep
-        $name = mysqli_prep($_POST[$name_field]) ;
-        $price = $_POST[$price_field] ;
-        $category = $_POST[$category_field] ;
-        $comment = mysqli_prep($_POST[$comment_field]) ;
-        $created_at = $_POST[$created_at_field] ;
-
-
-
-        $query = "UPDATE expenses SET " ;
-        $query .= "expense_name = '{$name}', " ;
-        $query .= "price = {$price}, " ;
-        $query .= "category = '{$category}', " ;  
-        $query .= "comment = '{$comment}', " ;
-        $query .= "created_at = '{$created_at}' " ;
-        // $query .= "updated_at = 'date' " ;
-        $query .= "WHERE id = {$id} " ;
-        $query .= "LIMIT 1" ;
-
-
-        return mysqli_query($connection,$query)  ;
-    }
-
-
-
 ?>

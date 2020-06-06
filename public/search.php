@@ -1,6 +1,7 @@
 <?php require_once("../includes/session.php")?>
 <?php require_once("../includes/db_connection.php")?>
 <?php require_once("../includes/functions.php")?>
+<?php require_once("../includes/main_functions.php")?>
 <?php confirm_sign_in()?>
 <?php include("../includes/layout/header.php")?>
 
@@ -12,10 +13,10 @@
     if(isset($_POST['submit_search'])){
         //prcess the form
         //escape all strings to prevent sql injection with mysqli_prep
-        $search_string = mysqli_prep($_POST["search"]);
+        $search_string = mysqli_prep(strtolower($_POST["search"]));
 
     }else{
-        $search_string = mysqli_prep($_GET["searchfor"]);
+        $search_string = mysqli_prep(strtolower($_GET["searchfor"]));
     }
 
 

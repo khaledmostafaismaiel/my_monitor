@@ -66,8 +66,6 @@
 
 
 
-
-
     function get_all_month_expenses(){
 
         global $connection ;
@@ -158,7 +156,6 @@
         }
 
     }
-
 
 
     function check_before_sign_in($user_name_field,$password_field,$remember_me_field){

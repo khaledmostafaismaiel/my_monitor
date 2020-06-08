@@ -431,4 +431,19 @@
             redirect_to("sign_in.php");
         }
     }
+
+
+    function __autoload($class_name){
+
+        $class_name = strtolower($class_name);
+
+        $path = "../includes/{$class_name}.php";
+        if(file_exists($path)){
+            require_once($path);
+        }else{
+            die("the file {$class_name}.php couldn't be found. ") ;
+        }
+    }
+
+
 ?>

@@ -1,19 +1,21 @@
 <?php require_once("../includes/initialize.php")?>
-<?php
-    global $database;
-    
-    $expenses_set = Expense::get_all_month_expenses();
-    // $expenses = Expense::forMonth('June')->all();
-    $number_of_expenses = $database->num_rows($expenses_set)  ;
-    $number_of_expenses_per_page = 6 ;
-    $number_of_pages= ceil((float)$number_of_expenses/(float)$number_of_expenses_per_page);
 
-    $page_number = get_page_number() ;
-    if(($page_number > $number_of_pages) || ($page_number < 1)){
-        if($number_of_pages != 0){ 
-            redirect_to("not_available.php");
-        }
-    }
+
+
+
+
+<?php
+    // $expenses_set = get_all_month_expenses();
+    // $number_of_expenses = $database->num_rows($expenses_set)  ;
+    // $number_of_expenses_per_page = 6 ;
+    // $number_of_pages= ceil((float)$number_of_expenses/(float)$number_of_expenses_per_page);
+
+    // $page_number = get_page_number() ;
+    // if(($page_number > $number_of_pages) || ($page_number < 1)){
+    //     if($number_of_pages != 0){ 
+    //         redirect_to("not_available.php");
+    //     }
+    // }
 ?>
 
 
@@ -24,10 +26,11 @@
         <thead>
             <tr>
                 <th>Name</th>
-                <th>Price</th>
-                <th>Category</th>
-                <th>Comment</th>
-                <th>Date</th>
+                <th>Image</th>
+                <th>Filename</th>
+                <th>Caption</th>
+                <th>Size</th>
+                <th>Type</th>
                 <th>Options</th>
             </tr>
         </thead>
@@ -37,7 +40,7 @@
 
 
             <?php
-                
+                /*
                 $iteration_number = 0 ;
                 $iteration_number_to_escape = 0 ;
 
@@ -53,16 +56,16 @@
                     }else{
                         ++$iteration_number ;
                     }
-                        
+                        */
             ?>
 
                     <tr class="table-expenses-body-raw">
 
-                        <td><?php echo $expense["expense_name"] ?></td>
-                        <td><?php echo $expense["price"] ?></td>
-                        <td><?php echo $expense["category"] ?></td>
-                        <td><?php echo $expense["comment"] ?></td>
-                        <td><?php echo $expense["created_at"] ?></td>
+                        <td><?php /*echo $expense["expense_name"]*/ ?></td>
+                        <td><?php /*echo $expense["price"]*/ ?></td>
+                        <td><?php /*echo $expense["category"]*/ ?></td>
+                        <td><?php /*echo $expense["comment"]*/ ?></td>
+                        <td><?php /*echo $expense["created_at"]*/ ?></td>
                         
                         <td>
                             <div class="btn-action">
@@ -76,8 +79,8 @@
                     </tr>
 
                 <?php 
-                    }
-                }
+                /*    }
+                }*/
                 ?>
             
         </tbody>
@@ -125,5 +128,5 @@
     ?>
 
 </div>
-<?php mysqli_free_result($expenses_set); ?>
+
 <?php include("layouts/footer.php")?>

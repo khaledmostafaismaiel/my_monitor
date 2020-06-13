@@ -1,8 +1,5 @@
-<?php require_once("../includes/session.php")?>
-<?php require_once("../includes/db_connection.php")?>
-<?php require_once("../includes/functions.php")?>
-<?php require_once("../includes/main_functions.php")?>
-<?php include("../includes/layout/header.php")?>
+<?php require_once("../includes/initialize.php")?>
+
 
 
 <?php
@@ -11,13 +8,13 @@
     
     if(isset($_POST['submit_sign_in'])){
         //prcess the form
-        //escape all strings to prevent sql injection with mysqli_prep
-        $user_name = strtolower(mysqli_prep($_POST["user_name"])) ;
-        $password = mysqli_prep($_POST["password"]) ;
+        //escape all strings to prevent sql injection with escaped_value
+        $user_name = strtolower($database->escaped_value($_POST["user_name"])) ;
+        $password = $database->escaped_value($_POST["password"]) ;
         $remember_me = $_POST["remember_me"] ;
 
         
-        if(check_before_sign_in("user_name","password","remember_me")){
+        if(user::check_before_sign_in("user_name","password","remember_me")){
             //success
             redirect_to("index.php?");
         }else{
@@ -101,4 +98,4 @@
 </div>
 
 
-<?php include("../includes/layout/footer.php")?>
+<?php include("layouts/footer.php")?>

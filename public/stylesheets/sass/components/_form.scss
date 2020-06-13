@@ -325,6 +325,56 @@
 
 
     }
+
+
+
+    &-change_back_ground{
+
+        color: black;
+        background-color: rgba(245, 222, 179,.4);
+        border-radius: 2rem;
+
+        height: 35rem;
+        width: 40rem;
+    
+        
+        font-size: 2rem;
+    
+        position: relative;
+        top: 13rem;
+        left: 45rem;
+
+
+        &-choose_file{
+
+            position: absolute;
+            top: 7rem;
+            left: 9.5rem;
+        }
+        &-caption{
+
+            position: absolute;
+            top: 12rem;
+            left: 2rem;
+        }
+
+
+
+        &-submit_btn{
+
+            position: absolute;
+            top: 20rem;
+            left: 12rem;
+        }
+
+        &-cancel_btn{
+
+            position: absolute;
+            top: 27rem;
+            left: 12rem;
+        }
+
+    }
     
 
 

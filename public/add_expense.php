@@ -1,16 +1,12 @@
-<?php require_once("../includes/session.php")?>
-<?php require_once("../includes/db_connection.php")?>
-<?php require_once("../includes/functions.php")?>
-<?php require_once("../includes/main_functions.php")?>
-<?php confirm_sign_in()?>
-<?php include("../includes/layout/header.php")?>
+<?php require_once("../includes/initialize.php")?>
+
 
 
 <?php
 
     if(isset($_POST['submit_add_expense'])){
 
-        if(add_expense_in_database("expense_name","price","category","comment","created_at")){
+        if(Expense::add_expense_in_database("expense_name","price","category","comment","created_at")){
             //success
             $_SESSION["message"] = "add success" ;
             redirect_to("index.php?");
@@ -60,21 +56,16 @@
 
             <select name="category" id=""  size="4" class="form_add_expense-category-menu">
                 <?php
-                    // $category_set = get_all_categories();
-                    // while($category = mysqli_fetch_object($category_set)){
-                    //     $out_put  = "<option>";
-                    //     $out_put .= $category["category_name"] ;
-                    //     $out_put .= "</option>" ;                        
-                    //     echo $out_put ."khaled" ;
-                    // }
 
-                    $category_set = get_all_categories();
+                    $category_set = Category::get_all_categories();
                     while($category=mysqli_fetch_assoc($category_set)){
                         $out_put = "<option>";
                         $out_put.= $category["category_name"] ;
                         $out_put .= "</option>" ;                        
                         echo $out_put ;
                     }
+                        //4. release the returned data
+                    mysqli_free_result($category_set); 
                 ?>
             </select>
         </div>
@@ -106,4 +97,5 @@
 
 
 
-<?php include("../includes/layout/footer.php")?>
+<?php include("layouts/footer.php")?>
+<?php /*include_layout_template("footer.php")*/?>

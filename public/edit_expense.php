@@ -1,9 +1,4 @@
-<?php require_once("../includes/session.php")?>
-<?php require_once("../includes/db_connection.php")?>
-<?php require_once("../includes/functions.php")?>
-<?php require_once("../includes/main_functions.php")?>
-<?php confirm_sign_in()?>
-<?php include("../includes/layout/header.php")?>
+<?php require_once("../includes/initialize.php")?>
 
 
 
@@ -12,14 +7,15 @@
 
 
 <?php
-
+    
     if(isset($_POST['submit_edit_expense'])){
+        global $database;
 
-        $id=get_expense_id_from_url();
-        if(!get_expense_data_by_id($id)){
+        $id=Expense::get_expense_id_from_url();
+        if(!Expense::get_expense_data_by_id($id)){
             rediret_to("not_available.php");
         }
-        if(update_expense_in_database($id,"expense_name","price","category","comment","created_at") && mysqli_affected_rows($connection) >= 1){
+        if(Expense::update_expense_in_database($id,"expense_name","price","category","comment","created_at") && $database->affected_rows($database->connection) >= 1){
             //success
             $_SESSION["message"] = "Edit success" ;
             redirect_to("expenses.php?pagenumber=1");
@@ -37,7 +33,7 @@
 ?>
 
 <form method = "post">
-    <?php $expense_data = get_expense_data_by_id(get_expense_id_from_url()) ?>
+    <?php $expense_data = Expense::get_expense_data_by_id(Expense::get_expense_id_from_url()) ?>
     <fieldset class="form_edit_expense">
         <legend> 
             <h2>
@@ -63,15 +59,16 @@
         <div class="form_edit_expense-category">
             <label>Category:</label> 
 
-            <select name="category"  value="<?php echo $expense_data["category"]?>"  size="4" class="form_edit_expense-category-menu">
+            <select name="category"  size="4" class="form_edit_expense-category-menu">
                 <?php
-                    $category_set = get_all_categories();
+                    $category_set = Category::get_all_categories();
                     while($category = mysqli_fetch_assoc($category_set)){
                         $out_put  = "<option>";
                         $out_put .= $category["category_name"] ;
                         $out_put .= "</option>" ;                        
-                        echo $out_put ."khaled" ;
+                        echo $out_put ;
                     }
+                    mysqli_free_result($category_set); 
                 ?>
             </select>
         </div>
@@ -99,7 +96,8 @@
         
 
     </fieldset>
+    <?php mysqli_free_result($expense_data); ?>
 </form>
 
 
-<?php include("../includes/layout/footer.php")?>
+<?php include("layouts/footer.php")?>

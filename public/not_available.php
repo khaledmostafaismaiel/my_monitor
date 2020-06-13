@@ -1,9 +1,4 @@
-<?php require_once("../includes/session.php")?>
-<?php require_once("../includes/db_connection.php")?>
-<?php require_once("../includes/functions.php")?>
-<?php confirm_sign_in()?>
-<?php include("../includes/layout/header.php")?>
-
+<?php require_once("../includes/initialize.php")?>
 
 
 
@@ -14,5 +9,5 @@
 </div>
 
 
-<?php include("../includes/layout/footer.php")?>
+<?php include("layouts/footer.php")?>
 

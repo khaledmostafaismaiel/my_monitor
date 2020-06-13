@@ -1,29 +1,24 @@
-<?php require_once("../includes/session.php")?>
-<?php require_once("../includes/db_connection.php")?>
-<?php require_once("../includes/functions.php")?>
-<?php require_once("../includes/main_functions.php")?>
-<?php confirm_sign_in()?>
-<?php include("../includes/layout/header.php")?>
-
+<?php require_once("../includes/initialize.php")?>
 
 
 
 <?php
+    global $database ;
 
     if(isset($_POST['submit_search'])){
         //prcess the form
-        //escape all strings to prevent sql injection with mysqli_prep
-        $search_string = mysqli_prep(strtolower($_POST["search"]));
+        //escape all strings to prevent sql injection with escaped_value
+        $search_string = $database->escaped_value(strtolower($_POST["search"]));
 
     }else{
-        $search_string = mysqli_prep(strtolower($_GET["searchfor"]));
+        $search_string = $database->escaped_value(strtolower($_GET["searchfor"]));
     }
 
 
-    $expenses_set = search_by_expense_name($search_string) ;
+    $expenses_set = Expense::search_by_expense_name($search_string) ;
 
 
-    $number_of_expenses = mysqli_num_rows($expenses_set) ;
+    $number_of_expenses = $database->num_rows($expenses_set) ;
     $number_of_expenses_per_page = 6 ;
     $number_of_pages= ceil((float)$number_of_expenses/(float)$number_of_expenses_per_page);
 
@@ -145,4 +140,5 @@
 
 </div>
 
-<?php include("../includes/layout/footer.php")?>
+<?php mysqli_free_result($expenses_set); ?>
+<?php include("layouts/footer.php")?>

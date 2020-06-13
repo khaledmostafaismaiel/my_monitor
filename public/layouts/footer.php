@@ -1,10 +1,3 @@
-<?php
-    //4. release the returned data
-    mysqli_free_result($result);     
-?>
-
-
-
         <footer >
 
 <div class="row">
@@ -33,5 +26,5 @@
 
 <?php
     //5. close database connection
-    mysqli_close($connection);
+    mysqli_close($database->connection);
 ?>

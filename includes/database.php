@@ -4,7 +4,7 @@
 
     class MySqlDatabase{
 
-        private $connection ;
+        public $connection ;
         public $last_query ;
         private $magic_quotes_active ;
         private $real_escape_string_exists ;
@@ -27,11 +27,11 @@
             }else{
   
                 //2. select database to use
-                $database_select = mysqli_select_db(DB_NAME,$this->connection);
-                if($database_select){
-                    die("Database selection failed: ".mysqli_connect_error()
-                    ."(" .mysqli_connect_errno() .")" ) ;
-                }
+                // $database_select = mysqli_select_db(DB_NAME,$this->connection);
+                // if(!$database_select){
+                //     die("Database selection failed: ".mysqli_connect_error()
+                //     ."(" .mysqli_connect_errno() .")" ) ;
+                // }
 
             }
         }
@@ -49,12 +49,12 @@
 
 
 
-        private function confirm_query($result){
+        public function confirm_query($result){
 
             if(!$result){
 
-                $out_put = ("Database confirm query failed: ".mysql_connect_error()
-                    ."(" .mysql_connect_errno() .")" ) ;
+                $out_put = ("Database confirm query failed: ".mysqli_connect_error()
+                    ."(" .mysqli_connect_errno() .")" ) ;
             
                 $out_put .= "LAST SQL QUERY: ".$this->last_query ;
 
@@ -70,7 +70,7 @@
                 // PHP >= V 4.3.0
                 if($this->magic_quotes_active){
                     $value = stripslashes($value);
-                    $value = mysql_real_escape_string($value);
+                    $value = mysqli_real_escape_string($value);
                 }
             }else{
                 if(!$this->magic_quotes_active){
@@ -99,7 +99,7 @@
         }
 
         public function num_rows($result_set){
-            return mysql_num_rows($result_set) ;
+            return mysqli_num_rows($result_set) ;
         }
 
         public function insert_id($result_set){
@@ -108,17 +108,12 @@
         }
 
         public function affected_rows($result_set){
-            return mysql_affected_rows($this->connection) ;
+            return mysqli_affected_rows($this->connection) ;
         }
 
     }
 
 
-    $database_object = new MySqlDatabase() ;
+    $database = new MySqlDatabase() ;
 
-    $db =& $database_object ;
-
-
-
-
-?>
+    $db =& $database ;

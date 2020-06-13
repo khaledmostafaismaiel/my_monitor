@@ -1,9 +1,5 @@
-<?php require_once("../includes/session.php")?>
-<?php require_once("../includes/db_connection.php")?>
-<?php require_once("../includes/functions.php")?>
-<?php require_once("../includes/main_functions.php")?>
-<?php confirm_sign_in()?>
-<?php include("../includes/layout/header.php")?>
+<?php require_once("../includes/initialize.php")?>
+
 
 
 <div class="money_spent">
@@ -16,7 +12,7 @@
     </p>
 
     <p class="money_spent-second_line">
-        <?php echo get_all_month_prices()?> E£
+        <?php echo Expense::get_all_month_prices()?> E£
     </p>
     
     <p class="money_spent-third_line">
@@ -27,4 +23,4 @@
 
 
 
-<?php include("../includes/layout/footer.php")?>
+<?php include("layouts/footer.php")?>

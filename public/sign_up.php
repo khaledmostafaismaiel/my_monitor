@@ -1,13 +1,9 @@
-<?php require_once("../includes/session.php")?>
-<?php require_once("../includes/db_connection.php")?>
-<?php require_once("../includes/functions.php")?>
-<?php require_once("../includes/main_functions.php")?>
-<?php include("../includes/layout/header.php")?>
+<?php require_once("../includes/initialize.php")?>
 
 
 <?php
     if(isset($_POST['submit_sign_up'])){
-        check_before_sign_up("first_name","second_name",
+        user::check_before_sign_up("first_name","second_name",
             "email","password","confirm_password","not_robot","terms_of_conditions");
         redirect_to("sign_in.php");
     }else{
@@ -96,4 +92,4 @@
 </form>
 
 
-<?php include("../includes/layout/footer.php")?>
+<?php include("layouts/footer.php")?>

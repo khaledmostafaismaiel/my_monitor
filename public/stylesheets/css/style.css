@@ -13,12 +13,7 @@
 html {
   /*this define 1rem*/
   font-size: 10px;
-  /*this percantage is to take ratio from the user font size*/
-  background-image: url(/images/hero3.jpg);
-  background-size: cover;
-  background-position: top;
-  /* what ever the width of the view port it will allways at the top of the view port */
-  background-repeat: no-repeat; }
+  /*this percantage is to take ratio from the user font size*/ }
 
 body {
   box-sizing: border-box;
@@ -89,8 +84,8 @@ legend {
   background-color: rgba(245, 222, 179, 0.4);
   border-radius: 2rem;
   position: absolute;
-  top: 15rem;
-  left: 38rem; }
+  top: 25%;
+  left: 28%; }
   .money_spent-first_line {
     color: black;
     font-size: 4rem;
@@ -163,7 +158,7 @@ legend {
   height: 100%;
   width: 100%;
   z-index: -1;
-  opacity: .7;
+  opacity: 1;
   overflow: hidden; }
 
 .bg-video__content {
@@ -401,6 +396,33 @@ legend {
     left: 30rem;
     top: 31rem; }
 
+.form-change_back_ground {
+  color: black;
+  background-color: rgba(245, 222, 179, 0.4);
+  border-radius: 2rem;
+  height: 35rem;
+  width: 40rem;
+  font-size: 2rem;
+  position: relative;
+  top: 13rem;
+  left: 45rem; }
+  .form-change_back_ground-choose_file {
+    position: absolute;
+    top: 7rem;
+    left: 9.5rem; }
+  .form-change_back_ground-caption {
+    position: absolute;
+    top: 12rem;
+    left: 2rem; }
+  .form-change_back_ground-submit_btn {
+    position: absolute;
+    top: 20rem;
+    left: 12rem; }
+  .form-change_back_ground-cancel_btn {
+    position: absolute;
+    top: 27rem;
+    left: 12rem; }
+
 .table-expenses {
   height: 5%;
   width: 80%;
@@ -523,7 +545,7 @@ header {
   font-size: 3rem;
   font-weight: 300;
   padding: 1rem 2rem;
-  color: white;
+  color: black;
   text-decoration: none;
   text-transform: uppercase;
   background-image: linear-gradient(125deg, transparent 0%, transparent 50%, white 50%);
@@ -537,13 +559,15 @@ header {
   transform: translateX(2rem); }
 
 .navigation__checkbox:checked ~ .navigation__background {
-  transform: scale(80); }
+  transform: scale(60); }
 
 .navigation__checkbox:checked ~ .navigation__nav {
   opacity: 1;
   width: 100%; }
 
 .search_box {
+  height: 80%;
+  width: 30%;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -552,6 +576,8 @@ header {
   background: rgba(245, 222, 179, 0.6);
   padding: 0rem 1rem; }
   .search_box-text {
+    height: 80%;
+    width: 70%;
     border: none;
     background: none;
     outline: none;
@@ -561,13 +587,15 @@ header {
     font-size: 1.6rem;
     transition: .4s;
     line-height: 4rem;
-    width: 24rem;
     text-align: center;
-    border-radius: 1rem; }
-  .search_box-img {
+    border-radius: 1rem;
     position: relative;
-    top: .8rem;
-    left: 0rem;
+    top: .3rem;
+    left: 10%; }
+  .search_box-img {
+    position: absolute;
+    top: .5rem;
+    left: 87%;
     height: 2.5rem;
     width: 2.5rem; }
   .search_box-btn {
@@ -583,7 +611,7 @@ header {
     display: none; }
 
 .search_box:hover > .search_box-text {
-  width: 24rem;
+  width: 70%;
   padding: 0 .6rem; }
 
 .search_box:hover > .search_box-btn {

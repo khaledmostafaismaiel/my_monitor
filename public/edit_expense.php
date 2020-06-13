@@ -1,11 +1,5 @@
 <?php require_once("../includes/initialize.php")?>
 
-
-
-
-
-
-
 <?php
     
     if(isset($_POST['submit_edit_expense'])){
@@ -15,7 +9,7 @@
         if(!Expense::get_expense_data_by_id($id)){
             rediret_to("not_available.php");
         }
-        if(Expense::update_expense_in_database($id,"expense_name","price","category","comment","created_at") && $database->affected_rows($database->connection) >= 1){
+        if(Expense::update_expense_in_database($id,"expense_name","price","category","comment","created_at")){
             //success
             $_SESSION["message"] = "Edit success" ;
             redirect_to("expenses.php?pagenumber=1");
@@ -54,8 +48,6 @@
             <input type="text" name="price" value="<?php echo $expense_data["price"]?>" placeholder="Expense Price ?">  
         </div>
 
-
-        
         <div class="form_edit_expense-category">
             <label>Category:</label> 
 
@@ -63,12 +55,16 @@
                 <?php
                     $category_set = Category::get_all_categories();
                     while($category = mysqli_fetch_assoc($category_set)){
-                        $out_put  = "<option>";
-                        $out_put .= $category["category_name"] ;
+                        $out_put  = "<option ";
+                            if(ucfirst($category["category_name"]) == ucfirst($expense_data["category"])){
+                                $out_put .= "selected" ;
+                            }
+                        $out_put .= ">" ;
+                        $out_put .= ucfirst($category["category_name"]) ;
                         $out_put .= "</option>" ;                        
                         echo $out_put ;
                     }
-                    mysqli_free_result($category_set); 
+                    $database->free_result($category_set); 
                 ?>
             </select>
         </div>
@@ -96,8 +92,7 @@
         
 
     </fieldset>
-    <?php mysqli_free_result($expense_data); ?>
+    <?php $database->free_result($expense_data) ?>
 </form>
-
 
 <?php include("layouts/footer.php")?>

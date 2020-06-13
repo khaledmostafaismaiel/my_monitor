@@ -23,12 +23,28 @@
 
         &-page_number{
 
-            // background-color: rgba(245, 222, 179,.4);
             font-size: 3rem;
             margin: 2rem;
             padding: 1rem 2rem 1rem 2.5rem;
 
             text-align: center;
+
+            &-selected{
+                color: white;
+                background-color: rgba(245, 222, 179,.4);
+                padding: .5rem;
+                font-weight: bold;
+                font-size: 3.5rem;
+
+
+            }
+
+            &-link{
+                color: gold;
+                padding: .5rem;
+
+            }
+
         }
     }
 

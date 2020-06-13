@@ -96,7 +96,7 @@ legend {
     backface-visibility: hidden;
     /*to prevent shake of the chars when its animated*/ }
     .money_spent-first_line-user_name {
-      color: white; }
+      color: red; }
   .money_spent-second_line {
     color: gold;
     font-size: 10rem;
@@ -189,6 +189,15 @@ legend {
       margin: 2rem;
       padding: 1rem 2rem 1rem 2.5rem;
       text-align: center; }
+      .btn-list-page_number-selected {
+        color: white;
+        background-color: rgba(245, 222, 179, 0.4);
+        padding: .5rem;
+        font-weight: bold;
+        font-size: 3.5rem; }
+      .btn-list-page_number-link {
+        color: gold;
+        padding: .5rem; }
   .btn-action {
     position: relative;
     text-align: center; }
@@ -278,26 +287,6 @@ legend {
     padding: 1rem;
     position: absolute;
     top: 35rem;
-    left: 22rem; }
-
-.form_delete_expense {
-  color: black;
-  background-color: rgba(245, 222, 179, 0.4);
-  border-radius: 2rem;
-  width: 30%;
-  position: relative;
-  top: 10rem;
-  left: 42rem;
-  margin: 2rem;
-  padding: 2rem 4rem 8rem 4rem;
-  font-size: 2rem; }
-  .form_delete_expense-cancel {
-    position: absolute;
-    top: 32rem;
-    left: 2rem; }
-  .form_delete_expense-submit {
-    position: absolute;
-    top: 32rem;
     left: 22rem; }
 
 .form_edit_expense {

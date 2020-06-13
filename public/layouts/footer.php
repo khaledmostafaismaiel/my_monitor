@@ -22,9 +22,7 @@
 </body>
 
 </html>
-
-
 <?php
     //5. close database connection
-    mysqli_close($database->connection);
+    $database->close_connection();
 ?>

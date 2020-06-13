@@ -203,6 +203,15 @@
         
         }
 
+
+        public static function count_all($result_Set){
+            new $database ;
+
+            $sql = "SELECT COUNT(*) FROM ".self::$table_name;
+            $result_Set = $database->query($sql);
+            $row = $database->fetch_array($result_Set);
+            return array_shift($row);
+        }
         /*;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;*/
         public static function get_admin_data_by_user_name($user_name_field){
 

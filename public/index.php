@@ -5,7 +5,7 @@
 <div class="money_spent">
     <p class="money_spent-first_line">
         Hi,<span class = "money_spent-first_line-user_name">
-                <?php 
+                <?php
                     echo $_SESSION["first_name"];
                 ?>
             </span> you spent 

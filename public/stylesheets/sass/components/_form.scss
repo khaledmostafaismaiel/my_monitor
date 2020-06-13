@@ -115,44 +115,6 @@
         } 
     }
     
-  
-    &_delete_expense{
-
-        color: black;
-        background-color: rgba(245, 222, 179,.4);
-        border-radius: 2rem;
-
-        width: 30%;
-    
-        position: relative;
-        top: 10rem;
-        left: 42rem;
-    
-        margin: 2rem;
-        padding: 2rem 4rem 8rem 4rem;
-    
-    
-        font-size: 2rem;
-
-        &-cancel{
-
-            position: absolute;
-            top: 32rem;
-            left: 2rem;
-
-
-        }
-        &-submit{
-            position: absolute;
-            top: 32rem;
-            left: 22rem;
-
-        }
-
-    
-    }
-
-
     &_edit_expense{
 
         

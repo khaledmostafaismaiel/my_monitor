@@ -1,6 +1,7 @@
 <?php 
 
     require_once("database.php");
+    require_once("pagination.php");
 
 
 class Expense{ 
@@ -187,17 +188,13 @@ class Expense{
         $result_set= mysqli_query($database->connection  , $query);
     
         $database->confirm_query($result_set);
-    
-        $number_of_expenses = $database->num_rows($result_set)  ;
-    
-        if(!($number_of_expenses > 0)){
-            $_SESSION["message"] = "No Matching" ;
-            redirect_to("index.php");
-        }
 
         // $query .="ORDER BY id DESC";
         
         return $result_set;
     }
+
+
+
 
 }

@@ -2,7 +2,7 @@
 
     require_once("config.php") ;
 
-    class MySqlDatabase{
+    class MySqliDatabase{
 
         public $connection ;
         public $last_query ;
@@ -13,7 +13,7 @@
 
             $this->open_connection();
             $this->magic_quotes_active = get_magic_quotes_gpc();
-            $this->real_escape_string_exists = function_exists("mysql_real_escape_string") ;
+            $this->real_escape_string_exists = function_exists("mysqli_real_escape_string") ;
 
         }
 
@@ -35,13 +35,16 @@
 
             }
         }
-
+        public function free_result($result){
+            //4. free database result
+            mysqli_free_result($result) ;
+        }
 
         public function close_connection(){
             //5. close database connection
 
             if(isset($this->connection)){
-                mysql_close($this->connection);
+                mysqli_close($this->connection);
                 unset($this->connection);
             }
         }
@@ -83,9 +86,9 @@
 
 
         public function query($sql_query){
-            $this->$last_query =$sql_query;
+            // $this->$last_query =$sql_query;
 
-            $result_set = mysql_query($sql_query , $this->connection);
+            $result_set = mysqli_query( $this->connection , $sql_query);
 
             $this->confirm_query($result_set);
             
@@ -94,26 +97,28 @@
         }
 
 
-        public function fech_array($result_set){
-            return mysql_fetch_array($result_set) ;
-        }
-
         public function num_rows($result_set){
             return mysqli_num_rows($result_set) ;
-        }
-
-        public function insert_id($result_set){
-            // get the last id inserted over the current database connection
-            return mysql_insert_id($this->connection) ;
         }
 
         public function affected_rows($result_set){
             return mysqli_affected_rows($this->connection) ;
         }
 
+
+        public function fetch_array($result_set){
+            return mysql_fetch_array($result_set) ;
+        }
+
+
+        public function insert_id($result_set){
+            // get the last id inserted over the current database connection
+            return mysql_insert_id($this->connection) ;
+        }
+
     }
 
 
-    $database = new MySqlDatabase() ;
+    $database = new MySqliDatabase() ;
 
     $db =& $database ;

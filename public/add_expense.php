@@ -60,12 +60,12 @@
                     $category_set = Category::get_all_categories();
                     while($category=mysqli_fetch_assoc($category_set)){
                         $out_put = "<option>";
-                        $out_put.= $category["category_name"] ;
+                        $out_put.= ucfirst($category["category_name"]) ;
                         $out_put .= "</option>" ;                        
                         echo $out_put ;
                     }
                         //4. release the returned data
-                    mysqli_free_result($category_set); 
+                    $database->free_result($category_set); 
                 ?>
             </select>
         </div>

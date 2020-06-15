@@ -93,12 +93,18 @@
     }
 
 
+    function include_layout_template($template){
+
+        include(LAYOUTS_PATH.DS.$template);
+    }
+
+
     
     function __autoload($class_name){
 
         $class_name = strtolower($class_name);
 
-        $path = "../includes/{$class_name}.php";
+        $path = LIB_PATH .DS."{$class_name}.php";
         if(file_exists($path)){
             require_once($path);
         }else{
@@ -106,10 +112,7 @@
         }
     }
 
-    function include_layout_template($template){
 
-        include(LIB_PATH.DS.'layout'.DS.$template);
-    }
 
     function log_action($action ,$message=""){
 
@@ -129,4 +132,3 @@
         }
 
     }
-

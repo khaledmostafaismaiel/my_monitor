@@ -6,7 +6,7 @@
 
         if(Expense::add_expense_in_database("expense_name","price","category","comment","created_at")){
             //success
-            Log::write_in_log("{$_SESSION['user_id']} add expense \n");
+            Log::write_in_log("{$_SESSION['user_id']} add expense ".date("d-m-Y")." ".date("h:i:sa")."\n");
 
             $_SESSION["message"] = "add success" ;
             redirect_to("index.php?");
@@ -89,7 +89,5 @@
     </fieldset>
 </form>
 
-
-
-<?php include("layouts/footer.php")?>
-<?php /*include_layout_template("footer.php")*/?>
+<?php include(LAYOUTS_PATH.DS."footer.php")?>
+<?php /*include_layout_template("footer")*/?>

@@ -385,7 +385,7 @@ legend {
     left: 30rem;
     top: 31rem; }
 
-.form-change_back_ground {
+.form-add_back_ground {
   color: black;
   background-color: rgba(245, 222, 179, 0.4);
   border-radius: 2rem;
@@ -395,19 +395,19 @@ legend {
   position: relative;
   top: 13rem;
   left: 45rem; }
-  .form-change_back_ground-choose_file {
+  .form-add_back_ground-choose_file {
     position: absolute;
     top: 7rem;
     left: 9.5rem; }
-  .form-change_back_ground-caption {
+  .form-add_back_ground-caption {
     position: absolute;
     top: 12rem;
     left: 2rem; }
-  .form-change_back_ground-submit_btn {
+  .form-add_back_ground-add_btn {
     position: absolute;
     top: 20rem;
-    left: 12rem; }
-  .form-change_back_ground-cancel_btn {
+    left: 12.5rem; }
+  .form-add_back_ground-cancel_btn {
     position: absolute;
     top: 27rem;
     left: 12rem; }

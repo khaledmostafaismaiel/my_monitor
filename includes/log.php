@@ -5,10 +5,23 @@
 class Log{
 
     private $log_file = SITE_ROOT.DS.'..'.DS.'logs'.DS.'log_file.txt';
+    private $log_dir = 'logs';
 
 
     public static function write_in_log($message){
         $object = new self ;
+
+        if($object->check_for_dir_existance()){
+            if(! $object->check_for_file_existance('logs')){
+                $handel=fopen($object->log_file,'w');
+                fclose($handel);
+            }
+        }else{
+            mkdir("logs",0777);
+
+            $object->create_log_file();
+        }
+
 
         if($handel=fopen($object->log_file,'a')){
             fwrite($handel,$message);
@@ -19,47 +32,44 @@ class Log{
         }
     }
 
-    private function check_for_dir_existance($dir){
-        $object = new self ;
+    private function check_for_dir_existance(){
 
-        
         chdir ('..') ;
 
-        if(is_dir($dir)){
-            $object->check_for_file_existance();
-            closedir($handel_dir);
+        if(is_dir($this->log_dir)){
+            return true ;
         }else{
-            mkdir("logs",0777);
 
-            $handel=fopen($object->log_file,'w');
-            fclose($handel);
-        }
-    
+            return false ;
+        }    
     }
 
 
-    private function check_for_file_existance($dir){
+    private function check_for_file_existance(){
         $object = new self ;
 
-        $handel_dir = opendir($dir);
+        $handel_dir = opendir($this->log_dir);
             
         if($handel=fopen($object->log_file,'r')){
             fclose($handel);
             return true ;
         }else{
             fclose($handel);
-            $handel=fopen($object->log_file,'w');
-            fclose($handel);
-
             return false ;
         }
-
-        closedir($handel_dir);
-            
-    
-        }
-    
+        closedir($handel_dir);   
     }
+
+
+    private function create_log_file(){
+        $object = new self ;
+
+        $handel=fopen($object->log_file,'w');
+        fclose($handel);  
+    }
+
+    
+}
 
 
 // if($_GET["clear"] == true){

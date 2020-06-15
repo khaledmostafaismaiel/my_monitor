@@ -30,7 +30,7 @@
         redirect_to("not_available.php");
     }
 
-    Log::write_in_log("{$_SESSION['user_id']} search for expense \n");
+    Log::write_in_log("{$_SESSION['user_id']} search for expense ".date("d-m-Y")." ".date("h:i:sa")."\n");
 
     $pagination = new Pagination($page_number,$number_of_expenses_per_page,$number_of_expenses);
 
@@ -150,4 +150,5 @@
 </div>
 
 <?php $database->free_result($expenses_set); ?>
-<?php include("layouts/footer.php")?>
+<?php include(LAYOUTS_PATH.DS."footer.php")?>
+<?php /* include_layout_template("footer.php")*/ ?>

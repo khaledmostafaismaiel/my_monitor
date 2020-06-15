@@ -11,7 +11,7 @@
         }
         if(Expense::update_expense_in_database($id,"expense_name","price","category","comment","created_at")){
             //success
-            Log::write_in_log("{$_SESSION['user_id']} edit expense \n");
+            Log::write_in_log("{$_SESSION['user_id']} edit expense ".date("d-m-Y")." ".date("h:i:sa")."\n");
 
             $_SESSION["message"] = "Edit success" ;
             redirect_to("expenses.php?pagenumber=1");
@@ -99,4 +99,5 @@
     <?php $database->free_result($expense_data) ?>
 </form>
 
-<?php include("layouts/footer.php")?>
+<?php include(LAYOUTS_PATH.DS."footer.php")?>
+<?php /* include_layout_template("footer.php")*/ ?>

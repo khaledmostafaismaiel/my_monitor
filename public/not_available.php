@@ -4,5 +4,5 @@
     <img src="/images/not_available.jpg" class="not_available-image" alt="not_available">
 </div>
 
-<?php include("layouts/footer.php")?>
-
+<?php include(LAYOUTS_PATH.DS."footer.php")?>
+<?php /* include_layout_template("footer.php")*/ ?>

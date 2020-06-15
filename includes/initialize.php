@@ -24,6 +24,6 @@
 
     require_once(LIB_PATH . "/category.php");
     require_once(LIB_PATH . "/expense.php");
+    require_once(LIB_PATH . "/background.php");
 
-    include(LAYOUTS_PATH."/header.php");
-
+    include_layout_template("header.php");

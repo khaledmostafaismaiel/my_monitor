@@ -1,31 +1,29 @@
 <?php require_once("../includes/initialize.php")?>
 
 
-
-
-
 <?php
-    // $expenses_set = get_all_month_expenses();
-    // $number_of_expenses = $database->num_rows($expenses_set)  ;
-    // $number_of_expenses_per_page = 6 ;
-    // $number_of_pages= ceil((float)$number_of_expenses/(float)$number_of_expenses_per_page);
+    global $database;
 
-    // $page_number = get_page_number() ;
-    // if(($page_number > $number_of_pages) || ($page_number < 1)){
-    //     if($number_of_pages != 0){ 
-    //         redirect_to("not_available.php");
-    //     }
-    // }
+    $background_set = Background::find_all();
+    $number_of_backgrounds = 13/*$database->num_rows($background_set)*/  ;
+    $number_of_backgrounds_per_page = 6 ;
+    $number_of_pages= ceil((float)$number_of_backgrounds/(float)$number_of_backgrounds_per_page);
+
+    $page_number = get_page_number() ;
+    if(($page_number > $number_of_pages) || ($page_number < 1)){
+        if($number_of_pages != 0){ 
+            redirect_to("not_available.php");
+        }
+    }
+
+    $pagination = new Pagination($page_number,$number_of_backgrounds_per_page,$number_of_backgrounds);
 ?>
-
-
 
 <div>
     <table class="table-expenses table table-striped table-hover table-responsive-sm">
         
         <thead>
             <tr>
-                <th>Name</th>
                 <th>Image</th>
                 <th>Filename</th>
                 <th>Caption</th>
@@ -40,38 +38,38 @@
 
 
             <?php
-                /*
+                
                 $iteration_number = 0 ;
                 $iteration_number_to_escape = 0 ;
 
-                if($expenses_set != null){ 
-                    while($expense=mysqli_fetch_assoc($expenses_set)){
+                if($background_set != null){ 
+                    foreach( $background_set as $background ):
 
-                    if($iteration_number_to_escape < ( ($page_number - 1) *$number_of_expenses_per_page)){
+                    if($iteration_number_to_escape < ( ($page_number - 1) *$number_of_backgrounds_per_page)){
                         ++$iteration_number_to_escape ;
                         continue ;
                     }
-                    if($iteration_number == $number_of_expenses_per_page){
+                    if($iteration_number == $number_of_backgrounds_per_page){
                         break ;
                     }else{
                         ++$iteration_number ;
                     }
-                        */
+                        
             ?>
 
                     <tr class="table-expenses-body-raw">
 
-                        <td><?php /*echo $expense["expense_name"]*/ ?></td>
-                        <td><?php /*echo $expense["price"]*/ ?></td>
-                        <td><?php /*echo $expense["category"]*/ ?></td>
-                        <td><?php /*echo $expense["comment"]*/ ?></td>
-                        <td><?php /*echo $expense["created_at"]*/ ?></td>
+                        <td><img src="<?php echo $background->get_uploads_path()?>" width="100" alt="<?php echo$background->file_name?>"></td>
+                        <td><?php echo $background->file_name?></td>
+                        <td><?php echo $background->caption?></td>
+                        <td><?php echo $background->get_size_text()?></td>
+                        <td><?php echo $background->id?></td>
                         
                         <td>
                             <div class="btn-action">
-                                    <a class= "btn-action-edit" href="edit_expense.php?expenseid=<?php echo $expense["id"] ?>"  value="edit">
-                                            <img src="images/edit.png" class="btn-action-edit-image" alt="edit"></a>
-                                    <a class= "btn-action-delete" href="delete_expense.php?expenseid=<?php echo $expense["id"] ?>"  value="delete">
+                                    <a class= "btn-action-edit" href="set_background.php?id=<?php echo $background->id?>"  value="set">
+                                            <img src="images/set.png" class="btn-action-edit-image" alt="set"></a>
+                                    <a class= "btn-action-delete" href="delete_background.php?id=<?php echo $background->id?>"  value="delete" onclick="return confirm('Are you sure?');">
                                         <img src="images/delete.png" class="btn-action-delete-image" alt="delete"></a>
                                     </a>
                             </div>
@@ -79,8 +77,8 @@
                     </tr>
 
                 <?php 
-                /*    }
-                }*/
+                    endforeach ;
+                }
                 ?>
             
         </tbody>
@@ -88,18 +86,17 @@
 </div>
 
 
-
 <div class="btn-list">
 
     <?php
         echo "<a";
-        if($page_number > 1){
+        if($pagination->has_prev_page()){
             echo " href=\"" ;
             echo " ?pagenumber=" ;
-            echo  $page_number-1  ;
+            echo  "{$pagination->prev_page()}"  ;
             echo "\"" ; 
         }else{
-            echo " href=\"\"" ;
+            echo " href=\"?pagenumber={$pagination->current_page()}\"" ;
         }
         echo "class=\"btn-list-back btn\"" ;
         echo ">";
@@ -108,18 +105,27 @@
     ?>
 
     <span class="btn-list-page_number">
-        <?php echo $page_number?>
+        <?php 
+            for($i=1;$i <= $pagination->total_pages();$i++){ 
+                if($i == $pagination->current_page()){
+                    echo "<span class=\"btn-list-page_number-selected\">{$i}</span>" ;
+                }else{
+                    echo "<a href=\"?pagenumber={$i}\"  class=\"btn-list-page_number-link\">{$i}</a>" ;
+                }
+            }
+        ?>
     </span>
+    
     
     <?php
         echo "<a";
-        if($page_number < ($number_of_pages)){
+        if($pagination->has_next_page()){
             echo " href=\"" ;
             echo " ?pagenumber=" ;
-            echo  $page_number+1  ;
+            echo  "{$pagination->next_page()}"  ;
             echo "\"" ; 
         }else{
-            echo " href=\"\"" ;
+            echo " href=\"?pagenumber={$pagination->current_page()}\"" ;
         }
         echo "class=\"btn-list-next btn\"" ;
         echo ">";
@@ -129,4 +135,5 @@
 
 </div>
 
-<?php include("layouts/footer.php")?>
+<?php include(LAYOUTS_PATH.DS."footer.php")?>
+<?php /* include_layout_template("footer.php")*/ ?>

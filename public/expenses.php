@@ -25,8 +25,6 @@
     
     $expenses_set  = $database->query($sql);
 
-    $iteration_number = 0 ;
-
 ?>
 
 
@@ -52,15 +50,7 @@
             <?php
                 if($expenses_set != null){ 
                     while($expense=mysqli_fetch_assoc($expenses_set)){
-
-                    if($iteration_number == $number_of_expenses_per_page){
-                        break ;
-                    }else{
-                        ++$iteration_number ;
-                    }
-
             ?>
-
                     <tr class="table-expenses-body-raw">
 
                         <td><?php echo $expense["expense_name"] ?></td>
@@ -140,4 +130,5 @@
 
 </div>
 <?php $database->free_result($expenses_set); ?>
-<?php include("layouts/footer.php")?>
+<?php include(LAYOUTS_PATH.DS."footer.php")?>
+<?php /* include_layout_template("footer.php")?>

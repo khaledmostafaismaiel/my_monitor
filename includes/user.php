@@ -209,7 +209,7 @@
                 if(user::insert_admin_in_database($first_name_field ,$second_name_field,$email_field,
                     $password_field )){ 
 
-                    Log::write_in_log("{$_SESSION['user_id']} has signed in \n");
+                    Log::write_in_log("{$_SESSION['user_id']} signed up ".date("d-m-Y")." ".date("h:i:sa")."\n");
                 }else{
                     $_SESSION["message"] = "Try Again";
                     redirect_to("sign_up.php?");
@@ -315,7 +315,7 @@
                         $_SESSION["user_id"] = $admin["id"];
                         $_SESSION["first_name"] = $admin["first_name"];
                         
-                        Log::write_in_log("{$_SESSION['user_id']} signed in \n");
+                        Log::write_in_log("{$_SESSION['user_id']} signed in ".date("d-m-Y")." ".date("h:i:sa")."\n");
 
                         return  true ;
                     }

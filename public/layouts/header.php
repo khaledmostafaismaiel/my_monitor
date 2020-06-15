@@ -32,7 +32,7 @@
                     if($admin_data["backgroud_image"] != null){
                         $image_name = $admin_data["backgroud_image"];
                         $src="../images/".$image_name;
-                        $out_put = "<img  src=$src  class=\"bg-video__content\"alt=\"background image\">" ;
+                        $out_put = "<img  src=$src  class=\"bg-video__content\"alt=\"$image_name\">" ;
                     }else{
 
                         $out_put = "<video class=\"bg-video__content\" autoplay muted loop>"; 
@@ -61,11 +61,10 @@
                 }else{
                     $current_page = null ;
                 }
-
-                include("logo.php") ;
+                include_layout_template("logo.php");
                 if(($_SERVER["PHP_SELF"] != "/sign_up.php") && ($_SERVER["PHP_SELF"] != "/sign_in.php") && ($_SERVER["PHP_SELF"] != "/sign_in.php") ){
-                    include("search_box.php") ;
-                    include("navigation.php") ;
+                    include_layout_template("search_box.php");                    
+                    include_layout_template("navigation.php");
 
                 }
                 

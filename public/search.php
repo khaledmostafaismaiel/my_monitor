@@ -14,17 +14,13 @@
         $search_string = $database->escaped_value(strtolower($_GET["searchfor"]));
     }
 
-
     $expenses_set = Expense::search_by_expense_name($search_string) ;
-
 
     $number_of_expenses = $database->num_rows($expenses_set) ;
     $number_of_expenses_per_page = 6 ;
     $number_of_pages= ceil((float)$number_of_expenses/(float)$number_of_expenses_per_page);
 
     $page_number = get_page_number() ;
-    
-        
     
     if(($number_of_expenses == 0)){
         $_SESSION["message"] = "No Matching" ;
@@ -34,8 +30,11 @@
         redirect_to("not_available.php");
     }
 
+    Log::write_in_log("{$_SESSION['user_id']} search for expense \n");
 
     $pagination = new Pagination($page_number,$number_of_expenses_per_page,$number_of_expenses);
+
+    $iteration_number = 0 ;
 
 ?>
 
@@ -60,16 +59,9 @@
 
             <?php
                 
-                $iteration_number = 0 ;
-                $iteration_number_to_escape = 0 ;
-
                 if($expenses_set != null){ 
                     while($expense=mysqli_fetch_assoc($expenses_set)){
 
-                    if($iteration_number_to_escape < ( ($page_number - 1) *$number_of_expenses_per_page)){
-                        ++$iteration_number_to_escape ;
-                        continue ;
-                    }
                     if($iteration_number == $number_of_expenses_per_page){
                         break ;
                     }else{

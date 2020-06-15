@@ -4,7 +4,7 @@
     require_once("pagination.php");
 
 
-class Expense{ 
+class Expense extends Database_object{ 
 
     protected static $table_name = "expenses";
     protected static $db_fields = array("id","user_id","expense_name","price",
@@ -88,17 +88,21 @@ class Expense{
         //prcess the form
         //escape all strings to prevent sql injection with escaped_value
         $name = $database->escaped_value(strtolower(htmlentities($_POST[$name_field]))) ;
-        $price = (float)urlencode($_POST[$price_field]) ;
+        $price = urlencode($_POST[$price_field]) ;
         $category = $database->escaped_value(strtolower(htmlentities($_POST[$category_field]))) ;
         $comment = $database->escaped_value(strtolower(htmlentities($_POST[$comment_field]))) ;
         $created_at =$database->escaped_value(htmlentities($_POST[$created_at_field]));
         // $created_at .= date("s:i:H") ;
 
+        if(!is_numeric($price)){
+            return false ;
+        }else{ 
         $query = " INSERT INTO ".self::$table_name." ( ";
         $query .= " expense_name , price , category , comment , created_at , user_id ) " ;  
         $query .= " VALUES ( '{$name}' , {$price} , '{$category}' , '{$comment}' , '{$created_at}' , {$_SESSION['user_id']} )";
-
+        
         return mysqli_query($database->connection ,$query)  ;
+        }
     }
 
 
@@ -122,13 +126,15 @@ class Expense{
         //prcess the form
         //escape all strings to prevent sql injection with escaped_value
         $name = $database->escaped_value($_POST[$name_field]) ;
-        $price = $_POST[$price_field] ;
+        $price = urlencode($_POST[$price_field]) ;
         $category = $_POST[$category_field] ;
         $comment = $database->escaped_value($_POST[$comment_field]) ;
-        $created_at = $_POST[$created_at_field] ;
+        $created_at = $database->escaped_value($_POST[$created_at_field]) ;
 
 
-
+        if(!is_numeric($price)){
+            return false ;
+        }else{ 
         $query = "UPDATE ".self::$table_name." SET " ;
         $query .= "expense_name = '{$name}', " ;
         $query .= "price = {$price}, " ;
@@ -140,8 +146,8 @@ class Expense{
         $query .= " AND user_id = {$_SESSION['user_id']} " ;
         $query .= "LIMIT 1" ;
 
-
         return mysqli_query($database->connection ,$query)  ;
+        }
     }
 
 

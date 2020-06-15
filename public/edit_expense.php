@@ -11,6 +11,8 @@
         }
         if(Expense::update_expense_in_database($id,"expense_name","price","category","comment","created_at")){
             //success
+            Log::write_in_log("{$_SESSION['user_id']} edit expense \n");
+
             $_SESSION["message"] = "Edit success" ;
             redirect_to("expenses.php?pagenumber=1");
         }else{
@@ -24,10 +26,13 @@
         //i will check if user is active or not
     }
 
+    $expense_data = Expense::get_expense_data_by_id(Expense::get_expense_id_from_url());
+    $category_set = Category::get_all_categories();
 ?>
 
+
 <form method = "post">
-    <?php $expense_data = Expense::get_expense_data_by_id(Expense::get_expense_id_from_url()) ?>
+
     <fieldset class="form_edit_expense">
         <legend> 
             <h2>
@@ -53,7 +58,6 @@
 
             <select name="category"  size="4" class="form_edit_expense-category-menu">
                 <?php
-                    $category_set = Category::get_all_categories();
                     while($category = mysqli_fetch_assoc($category_set)){
                         $out_put  = "<option ";
                             if(ucfirst($category["category_name"]) == ucfirst($expense_data["category"])){

@@ -1,9 +1,6 @@
 <?php require_once("../includes/initialize.php")?>
 
-
-
 <?php
-
     $user_name = "" ;
     
     if(isset($_POST['submit_sign_in'])){
@@ -27,18 +24,11 @@
         //i will check if user is active or not
 
     }
-
-
-
 ?>
-
-
-
 
 <h1 class="message-welcome">
     Welcome to My Monitor
 </h1>
-
 
 <div class="form">
     
@@ -96,6 +86,5 @@
     </form>
 
 </div>
-
 
 <?php include("layouts/footer.php")?>

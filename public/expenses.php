@@ -16,13 +16,16 @@
 
     $pagination = new Pagination($page_number,$number_of_expenses_per_page,$number_of_expenses);
 
+    $month = date('Y-m-00');
+
     $sql = "SELECT * FROM expenses " ;
-    $sql .= "WHERE user_id = ".$_SESSION["user_id"] ;
-    $sql .= " ORDER BY id DESC ";
+    $sql .= " WHERE `created_at` > '{$month}' AND user_id = {$_SESSION['user_id']}  ORDER BY id DESC";
     $sql .= " LIMIT ".$pagination->per_page ;
     $sql .= " OFFSET ".$pagination->offset() ;
     
     $expenses_set  = $database->query($sql);
+
+    $iteration_number = 0 ;
 
 ?>
 
@@ -47,8 +50,6 @@
 
 
             <?php
-                
-                $iteration_number = 0 ;
                 if($expenses_set != null){ 
                     while($expense=mysqli_fetch_assoc($expenses_set)){
 
@@ -57,7 +58,7 @@
                     }else{
                         ++$iteration_number ;
                     }
-                        
+
             ?>
 
                     <tr class="table-expenses-body-raw">

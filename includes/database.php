@@ -107,7 +107,7 @@
 
 
         public function fetch_array($result_set){
-            return mysql_fetch_array($result_set) ;
+            return mysqli_fetch_array($result_set) ;
         }
 
 

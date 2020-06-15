@@ -12,10 +12,11 @@
     require_once(LIB_PATH . "/functions.php") ;
     require_once(LIB_PATH . "/database.php") ;
     require_once(LIB_PATH . "/database_object.php") ;
-    require_once(LIB_PATH . "/pagination.php") ;
+    require_once(LIB_PATH . "/log.php") ;
 
     //load database related
     require_once(LIB_PATH . "/user.php") ;
+    require_once(LIB_PATH . "/pagination.php") ;
     
     if(($_SERVER["PHP_SELF"] != "/sign_up.php") && ($_SERVER["PHP_SELF"] != "/sign_in.php") && ($_SERVER["PHP_SELF"] != "/sign_out.php")){
         user::confirm_sign_in();

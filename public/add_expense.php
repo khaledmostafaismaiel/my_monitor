@@ -1,13 +1,13 @@
 <?php require_once("../includes/initialize.php")?>
 
-
-
 <?php
 
     if(isset($_POST['submit_add_expense'])){
 
         if(Expense::add_expense_in_database("expense_name","price","category","comment","created_at")){
             //success
+            Log::write_in_log("{$_SESSION['user_id']} add expense \n");
+
             $_SESSION["message"] = "add success" ;
             redirect_to("index.php?");
         }else{
@@ -23,9 +23,6 @@
     }
 
 ?>
-
-
-
 
 
 <form method = "post">
@@ -48,15 +45,12 @@
 
             <input type="text" name="price" placeholder="Expense Price ?">  
         </div>
-
-
         
         <div class="form_add_expense-category">
             <label>Category:</label> 
 
             <select name="category" id=""  size="4" class="form_add_expense-category-menu">
                 <?php
-
                     $category_set = Category::get_all_categories();
                     while($category=mysqli_fetch_assoc($category_set)){
                         $out_put = "<option>";

@@ -14,7 +14,9 @@
 		$photo->caption = $_POST['caption'];
 		$photo->attach_file($_FILES['file_upload']);
 		if($photo->save()) {
-			// Success
+            // Success
+            Log::write_in_log("{$_SESSION['user_id']} add background \n");
+
             $_SESSION["message"] = "uploaded success.";
 		} else {
 			// Failure

@@ -156,7 +156,7 @@
 
     echo getcwd(); //get current working dir
 
-    // mkdir("new_folder",0777);//0777 is the php default //0222 is the umask which will subtract from 0777
+    mkdir("new_folder",0777);//0777 is the php default //0222 is the umask which will subtract from 0777
 
     mkdir("new_folder/new_sub_folder/new_sub_to_the_sub_folder",0777,true);
 
@@ -169,7 +169,7 @@
 
 
 
-    $$dir = ".";
+    $dir = ".";
     if(is_dir($dir)){
         if($handel_dir = opendir($dir)){
             while($file_name = readdir($handel_dir)){

@@ -60,7 +60,6 @@
         // $user->password = "1234056789" ;
         // $user->update() ;
 
-        $user =  user::find_by_id(3);
-        $user->delete();
+
 
 ?>

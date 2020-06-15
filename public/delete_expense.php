@@ -10,6 +10,8 @@
     }
     if(Expense::delete_expense_from_database($id) && $database->affected_rows($database->connection ) >= 1){
         //success
+        Log::write_in_log("{$_SESSION['user_id']} delete expense \n");
+
         $_SESSION["message"] = "Delete success" ;
     }else{
         //failed

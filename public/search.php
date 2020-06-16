@@ -1,8 +1,6 @@
-<?php require_once("../includes/initialize.php")?>
-
-
-
-<?php
+<?php 
+    require_once("../includes/initialize.php");
+    
     global $database ;
 
     if(isset($_POST['submit_search'])){

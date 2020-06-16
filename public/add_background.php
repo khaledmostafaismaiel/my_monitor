@@ -1,7 +1,6 @@
-<?php require_once("../includes/initialize.php")?>
+<?php 
+    require_once("../includes/initialize.php") ;
 
-
-<?php
 	$max_file_size = 1048576;   // expressed in bytes
 	                            //     10240 =  10 KB
 	                            //    102400 = 100 KB

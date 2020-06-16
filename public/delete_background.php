@@ -9,13 +9,7 @@
     if($photo && $photo->destroy() && $database->affected_rows() >= 1) {
         Log::write_in_log("{$_SESSION['user_id']} delete background ".date("d-m-Y")." ".date("h:i:sa")."\n");
         $_SESSION["message"] = "Delete success" ;
-        redirect_to("backgrounds.php?pagenumber=1");
     } else {
         $_SESSION["message"] = "Delete Didn't success" ;
-        redirect_to("index.php");
     }
-
-
-if(isset($database)){ 
-    $database->close_connection(); 
-}
+    redirect_to("backgrounds.php?pagenumber=1");

@@ -1,6 +1,5 @@
-<?php require_once("../includes/initialize.php")?>
-
-<?php
+<?php 
+    require_once("../includes/initialize.php");
 
     if(isset($_POST['submit_add_expense'])){
 
@@ -21,7 +20,7 @@
         //i will check if user is active or not
 
     }
-
+    $category_set = Category::find_all();
 ?>
 
 
@@ -51,14 +50,13 @@
 
             <select name="category" id=""  size="4" class="form_add_expense-category-menu">
                 <?php
-                    $category_set = Category::get_all_categories();
-                    while($category=mysqli_fetch_assoc($category_set)){
-                        $out_put = "<option>";
-                        $out_put.= ucfirst($category["category_name"]) ;
+                    foreach($category_set as $category){
+                        $out_put  = "<option>";
+                        $out_put .= ucfirst($category->category_name) ;
                         $out_put .= "</option>" ;                        
                         echo $out_put ;
                     }
-                        //4. release the returned data
+                    //4. release the returned data
                     $database->free_result($category_set); 
                 ?>
             </select>

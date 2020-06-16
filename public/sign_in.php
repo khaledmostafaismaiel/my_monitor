@@ -1,6 +1,6 @@
-<?php require_once("../includes/initialize.php")?>
+<?php 
+    require_once("../includes/initialize.php");
 
-<?php
     $user_name = "" ;
     
     if(isset($_POST['submit_sign_in'])){
@@ -88,4 +88,4 @@
 </div>
 
 <?php include(LAYOUTS_PATH.DS."footer.php")?>
-<?php /* include_layout_template("footer.php") ?>
+<?php /* include_layout_template("footer.php") */?>

@@ -28,10 +28,10 @@
         <div class="bg-video">
             <?php
                 if(($_SERVER["PHP_SELF"] != "/sign_up.php") && ($_SERVER["PHP_SELF"] != "/sign_in.php") && ($_SERVER["PHP_SELF"] != "/sign_in.php")){
-                    $admin_data = user::get_admin_data_by_id($_SESSION["user_id"]);
-                    if($admin_data["backgroud_image"] != null){
-                        $image_name = $admin_data["backgroud_image"];
-                        $src="../images/".$image_name;
+                    if( $_SESSION["background_image"] != null){
+                        $image_name = $_SESSION["background_image"];
+                        $src="../uploads/".$image_name;
+                        //$src= LIB_PATH.DS.'uploads'.DS.$image_name;
                         $out_put = "<img  src=$src  class=\"bg-video__content\"alt=\"$image_name\">" ;
                     }else{
 
@@ -56,11 +56,7 @@
 
         <header>
             <?php
-                if(isset($_GET["currentpage"])){
-                    $current_page = $_GET["currentpage"] ;
-                }else{
-                    $current_page = null ;
-                }
+
                 include_layout_template("logo.php");
                 if(($_SERVER["PHP_SELF"] != "/sign_up.php") && ($_SERVER["PHP_SELF"] != "/sign_in.php") && ($_SERVER["PHP_SELF"] != "/sign_in.php") ){
                     include_layout_template("search_box.php");                    

@@ -1,7 +1,6 @@
-<?php require_once("../includes/initialize.php")?>
+<?php 
+    require_once("../includes/initialize.php");
 
-
-<?php
     if(isset($_POST['submit_sign_up'])){
         user::check_before_sign_up("first_name","second_name",
             "email","password","confirm_password","not_robot","terms_of_conditions");

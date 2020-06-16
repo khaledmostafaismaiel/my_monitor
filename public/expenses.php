@@ -1,9 +1,15 @@
-<?php require_once("../includes/initialize.php")?>
-<?php
+<?php 
+    require_once("../includes/initialize.php");
+    
     global $database;
 
+    $month = date('Y-m-00');
+    $sql = "SELECT * FROM expenses " ;
+    $sql .= " WHERE `created_at` > '{$month}' AND user_id = {$_SESSION['user_id']}  ORDER BY id DESC";
+    $expenses_set  = Expense::find_by_sql($sql);
+
     // $expenses = Expense::forMonth('June')->all();
-    $number_of_expenses = $database->num_rows(Expense::get_all_month_expenses())  ;
+    $number_of_expenses = $database->num_rows(Expense::get_all_month_expenses()/*$expenses_set*/)  ;
     $number_of_expenses_per_page = 6 ;
     $number_of_pages= ceil((float)$number_of_expenses/(float)$number_of_expenses_per_page);
 
@@ -16,14 +22,13 @@
 
     $pagination = new Pagination($page_number,$number_of_expenses_per_page,$number_of_expenses);
 
-    $month = date('Y-m-00');
 
     $sql = "SELECT * FROM expenses " ;
     $sql .= " WHERE `created_at` > '{$month}' AND user_id = {$_SESSION['user_id']}  ORDER BY id DESC";
     $sql .= " LIMIT ".$pagination->per_page ;
     $sql .= " OFFSET ".$pagination->offset() ;
     
-    $expenses_set  = $database->query($sql);
+    $expenses_set  = Expense::find_by_sql($sql);
 
 ?>
 
@@ -49,31 +54,32 @@
 
             <?php
                 if($expenses_set != null){ 
-                    while($expense=mysqli_fetch_assoc($expenses_set)){
+                    foreach($expenses_set as $expense){
             ?>
                     <tr class="table-expenses-body-raw">
 
-                        <td><?php echo $expense["expense_name"] ?></td>
-                        <td><?php echo $expense["price"] ?></td>
-                        <td><?php echo ucfirst($expense["category"]) ?></td>
-                        <td><?php echo $expense["comment"] ?></td>
-                        <td><?php echo $expense["created_at"] ?></td>
+                        <td><?php echo $expense->expense_name ?></td>
+                        <td><?php echo $expense->price ?></td>
+                        <td><?php echo ucfirst($expense->category) ?></td>
+                        <td><?php echo $expense->comment ?></td>
+                        <td><?php echo $expense->created_at ?></td>
                         
                         <td>
                             <div class="btn-action">
-                                    <a class= "btn-action-edit" href="edit_expense.php?expenseid=<?php echo $expense["id"] ?>"  value="edit">
+                                    <a class= "btn-action-edit" href="edit_expense.php?expenseid=<?php echo $expense->id ?>"  value="edit">
                                             <img src="images/edit.png" class="btn-action-edit-image" alt="edit"></a>
-                                    <a class= "btn-action-delete" href="delete_expense.php?expenseid=<?php echo $expense["id"] ?>"  value="delete" onclick="return confirm('Are you sure?');">
+                                    <a class= "btn-action-delete" href="delete_expense.php?expenseid=<?php echo $expense->id ?>"  value="delete" onclick="return confirm('Are you sure?');">
                                         <img src="images/delete.png" class="btn-action-delete-image" alt="delete"></a>
                                     </a>
                             </div>
                         </td>
                     </tr>
 
-                <?php 
+            <?php 
                     }
                 }
-                ?>
+                $database->free_result($expenses_set);
+            ?>
             
         </tbody>
     </table>
@@ -129,6 +135,5 @@
     ?>
 
 </div>
-<?php $database->free_result($expenses_set); ?>
 <?php include(LAYOUTS_PATH.DS."footer.php")?>
-<?php /* include_layout_template("footer.php")?>
+<?php /* include_layout_template("footer.php")*/?>

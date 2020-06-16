@@ -111,24 +111,3 @@
             die("the file {$class_name}.php couldn't be found. ") ;
         }
     }
-
-
-
-    function log_action($action ,$message=""){
-
-        $log_file = SITE_ROOT.DS.'logs'.DS.'log.txt' ;
-        $new = file_exists($log_file) ? false : true ;
-
-        if($handel = fopen($log_file , 'a')){
-            $time_stamp = strtotime("%Y-%m-%d %H:&M:%S" ,time()) ;
-            $conntent = "{$time_stamp} | {$action} : {$message}\n" ;
-            fwrite($handel,$conntent);
-            fclose($handel);
-            if($new){
-                chmod($log_file,0755);
-            }
-        }else{
-            echo "couldn't open log file to write" ;
-        }
-
-    }

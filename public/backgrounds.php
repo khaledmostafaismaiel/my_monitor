@@ -1,7 +1,6 @@
-<?php require_once("../includes/initialize.php")?>
-
-
-<?php
+<?php 
+    require_once("../includes/initialize.php");
+    
     global $database;
 
     $background_set = Background::find_all();

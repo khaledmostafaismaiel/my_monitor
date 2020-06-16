@@ -92,7 +92,7 @@
         }
 
         public function num_rows($result_set){
-            return mysqli_num_rows($result_set) ;
+            return $result_set->num_rows ;
         }
 
         public function affected_rows(){

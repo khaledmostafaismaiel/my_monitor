@@ -1,6 +1,5 @@
-<?php require_once("../includes/initialize.php")?>
-
-<?php
+<?php 
+    require_once("../includes/initialize.php") ;
     
     if(isset($_POST['submit_edit_expense'])){
         global $database;

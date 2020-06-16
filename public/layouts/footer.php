@@ -24,5 +24,6 @@
 </html>
 <?php
     //5. close database connection
-    $database->close_connection();
-?>
+    if(isset($database)){ 
+        $database->close_connection(); 
+    }

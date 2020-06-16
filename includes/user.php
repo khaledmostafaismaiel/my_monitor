@@ -6,14 +6,15 @@
     class User extends Database_object{
 
         protected static $table_name = "admins" ;
-        protected static $db_fields = array('id',
-            'first_name','second_name','user_name','password') ;
+        protected static $db_fields = array(
+            'id','first_name','second_name','user_name','hashed_password','background_image') ;
 
         public $id ;
         public $first_name ;
         public $second_name ;
         public $user_name ;
-        public $password ;
+        public $hashed_password ;
+        public $background_image ;
 
 
         //very unique methods for this class
@@ -27,54 +28,129 @@
             }
         }
 
+        public static function check_before_sign_up($first_name_field,$second_name_field,  
+            $user_name_filed,$password_field,$confirm_password_field,$not_robot_field,$terms_of_conditions_field){
 
 
-        public static function authenticate($user_name="",$password=""){
             global $database ;
-            $user_name = $database->escaped_value($user_name);
-            $password = $database->escaped_value($password);
+            global $errors ;
+            $object = new self ;
 
-            $sql  = "SELECT * FROM admins WHERE " ;
-            $sql .= " user_name = {$user_name} AND ";
-            $sql .= "password = {$password} ";
-            $sql .= "LIMIT 1";
 
-            $result_array = self::find_by_sql($sql);
-        
-            return !empty($result_array)? array_shift($result_array) : false;
+            $first_name_field = $database->escaped_value($first_name_field);
+            $second_name_field = $database->escaped_value($second_name_field);
+            $user_name_filed = $database->escaped_value($user_name_filed);
+            $password_field = $database->escaped_value($password_field);
+            $confirm_password_field = $database->escaped_value($confirm_password_field);
 
+
+            validate_has_presence(array($first_name_field ,$second_name_field ,
+                $user_name_filed,$password_field ,$confirm_password_field
+                ,$not_robot_field,$terms_of_conditions_field));
+
+            validate_max_lengths( array($first_name_field=> 15 ,$second_name_field =>15,
+                $user_name_filed => 30 ,$password_field => 30 ,$confirm_password_field => 30
+                ,$not_robot_field => 1,$terms_of_conditions_field => 1) );
+
+            validate_min_lengths( array($password_field => 8 ,$confirm_password_field => 8) );
+
+            $object->check_password_and_confirm_similarity($password_field,$confirm_password_field);
+
+            if(self::get_by_user_name($_POST[$user_name_filed])){
+                $errors[$user_name_filed] = field_name_as_text($user_name_filed)." is alredy exist";
+            }
+
+            if(empty($errors)){
+                //success
+                if(self::insert_in_database($first_name_field ,$second_name_field,$user_name_filed,
+                    $password_field )){ 
+                        //Success
+                        $_SESSION["message"] = "Success";
+                        /* i need to send email here for admin */
+                        redirect_to("sign_in.php?");
+                }
+            }
+            //fail
+            $_SESSION["message"] = "Try Again";
+            redirect_to("sign_up.php") ;
+            
         }
 
-
-        /*;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;*/
-        public static function get_admin_data_by_user_name($user_name_field){
-
-            global $database;
+        private function check_password_and_confirm_similarity($password_field,$confirm_password_field){
+            global $errors ;
     
-            $safe_user_name_field = $database->escaped_value($user_name_field);
-            $user_name = htmlentities($_POST[$safe_user_name_field]);
-    
-            //2. perform database query
-            $query = "SELECT * ";
-            $query .="FROM ".self::$table_name;
-            $query .=" WHERE user_name = '{$user_name}' ";
-            $query .="LIMIT 1";
-    
-            $result_set= mysqli_query($database->connection , $query);
-    
-            //test if there was a query error
-            $database->confirm_query($result_set);
-    
-            if($result=mysqli_fetch_assoc($result_set)){
-                return $result ;
-    
-            }else{
-                return null ;
+            if(htmlentities($_POST[$password_field]) !== htmlentities($_POST[$confirm_password_field])){
+                $errors[$password_field] = field_name_as_text($password_field) ."password and confirmation password didn't not match.";
             }
         }
 
+        public static function get_by_user_name($user_name){
+            global $errors ;
+            global $database ;
+        
+            $sql = "SELECT * ";
+            $sql .="FROM ".self::$table_name;
+            $sql .=" WHERE user_name = '{$user_name}' ";
+            $sql .="LIMIT 1";
 
-        public static function insert_admin_in_database($first_name_field,$second_name_field,  
+            return self::find_by_sql($sql) ;
+        }
+
+
+        public static function find_by_sql($sql = ""){
+
+            global $database ;
+            $result_set = $database->query($sql);
+    
+            $object_array = array() ;
+            while($row = $database->fetch_array($result_set)){
+    
+                $object_array[] = self::instantiate($row) ;
+            }
+
+            return $object_array ;
+        }
+    
+    
+        private static function instantiate($row){
+            $object = new self ;
+            //very long approch spatially if the record have lots of attributs 
+            // $object->id = $row["id"];
+            // $object->first_name = $row["first_name"];
+            // $object->second_name = $row["second_named"];
+            // $object->user_name = $row["user_name"];
+            // $object->password = $row["password"];
+    
+            //very short approch
+            foreach($row as $attribute=>$value){
+                if($object->has_attribute($attribute)){
+                    $object->$attribute = $value ;
+                }
+
+
+            }
+            return $object ;
+        } 
+
+        private function has_attribute($attribute){
+
+            $object_vars = $this->attrributes();
+    
+            return array_key_exists($attribute , $object_vars) ;
+        }
+    
+    
+        protected function attrributes(){
+            $attributes =array();
+            foreach(self::$db_fields as $field){
+                if(property_exists($this,$field)){
+                    $attributes[$field] = $this->$field ; 
+                }
+            }
+            return $attributes  ;
+        }
+
+        public static function insert_in_database($first_name_field,$second_name_field,  
             $email_field,$password_field){
 
             global $database;
@@ -93,133 +169,12 @@
             $query .= " '{$first_name}','{$second_name}','{$email}','{$hashed_password}'";
             $query .= ")";
 
-            ;
 
             if($result = mysqli_query($database->connection,$query)){
-                // failed
                 return true ;
             }
-
+            // failed
             return false ;
-        }
-
-        public static function get_admin_id_by_user_name($email_field){
-            global $errors ;
-            $email = strtolower($_POST[$email_field]) ;
-        
-            $admins_set=get_all_admins();
-            while($admin=mysqli_fetch_assoc($admins_set)){
-                if($admin["user_name"] == $email){
-                    
-                return $admin["id"];
-                }
-            }
-            return null;
-        }
-
-        public function get_all_admins(){
-
-            global $database;
-
-            
-            //2. perform database query
-            $query = "SELECT * ";
-            $query .="FROM " .self::$table_name;
-            $query .=" ORDER BY id ASC ";
-
-            $result_set= mysqli_query($database->connection , $query);
-
-            //test if there was a query error
-            $database->confirm_query($result_set);
-            
-            return $result_set;
-        }
-
-        public static function ckeck_for_user_existance($email_field){
-            global $errors ;
-
-            $email = strtolower(htmlentities($_POST[$email_field])) ;
-        
-            $admins_set= self::get_all_admins();
-            while($admin=mysqli_fetch_assoc($admins_set)){
-                if($admin["user_name"] == $email){
-                    $errors[$email_field] = field_name_as_text($email_field) ." user is arready exist.";
-                return;
-                }
-            }
-            return;
-        }
-
-
-
-
-
-        public function get_admin_data_by_id($admin_id){
-
-            global $database;
-
-            $safe_admin_id = $database->escaped_value($admin_id);
-            
-            //2. perform database query
-            $query = "SELECT * ";
-            $query .="FROM admins ";
-            $query .="WHERE id = {$safe_admin_id} ";
-            $query .="LIMIT 1";
-
-            $result_set= mysqli_query($database->connection , $query);
-
-            //test if there was a query error
-            $database->confirm_query($result_set);
-
-            if($result=mysqli_fetch_assoc($result_set)){
-                return $result ;
-
-            }else{
-                return null ;
-            }
-        }
-
-
-
-
-        public static function check_before_sign_up($first_name_field,$second_name_field,  
-            $email_field,$password_field,$confirm_password_field,$not_robot_field,$terms_of_conditions_field){
-
-            global $errors ;
-            $object = new self ;
-
-            validate_has_presence(array($first_name_field ,$second_name_field ,
-            $email_field,$password_field ,$confirm_password_field
-            ,$not_robot_field,$terms_of_conditions_field));
-
-            validate_max_lengths( array($first_name_field=> 30 ,$second_name_field =>30,
-            $email_field => 30 ,$password_field => 30 ,$confirm_password_field => 30
-            ,$not_robot_field => 1,$terms_of_conditions_field => 1) );
-
-            validate_min_lengths( array($password_field => 8 ,$confirm_password_field => 8) );
-
-
-            $object->check_password_and_confirm_similarity($password_field,$confirm_password_field);
-
-            user::ckeck_for_user_existance($email_field);
-
-
-            if(empty($errors)){
-                //success
-                if(user::insert_admin_in_database($first_name_field ,$second_name_field,$email_field,
-                    $password_field )){ 
-
-                    Log::write_in_log("{$_SESSION['user_id']} signed up ".date("d-m-Y")." ".date("h:i:sa")."\n");
-                }else{
-                    $_SESSION["message"] = "Try Again";
-                    redirect_to("sign_up.php?");
-                }
-            }else{
-                //fail
-                $_SESSION["message"] = "Try Again";
-                redirect_to("sign_up.php") ;
-            }
-
         }
 
 
@@ -227,14 +182,30 @@
 
             $object = new self;
 
-            if(! $object->attempt_sign_in($user_name_field,$password_field)){
+            if(! $object->authenticate($user_name_field,$password_field)){
                 //fail
                 redirect_to("sign_in.php?");
             }
+
+            Log::write_in_log("{$_SESSION['user_id']} signed in ".date("d-m-Y")." ".date("h:i:sa")."\n");
             return true ;
         }
-    
-        
+
+
+        public static function authenticate($user_name_field="",$password_field=""){
+            $object = new self ;
+
+            foreach(self::get_by_user_name($_POST[$user_name_field]) as $admin){              
+                if(password_verify($_POST[$password_field] , $admin->hashed_password )){ 
+                    $_SESSION["user_id"] = $admin->id;
+                    $_SESSION["first_name"] = $admin->first_name;
+                    $_SESSION["background_image"] = $admin->background_image;
+                    return  true ;
+                }
+            }
+            return  false ;
+        }
+               
         private function signed_in(){
             return isset($_SESSION["user_id"]) ;
         }
@@ -246,30 +217,16 @@
                 redirect_to("sign_in.php");
             }
         }
-    
-    
-    
-    
-    
 
-        private function check_password_and_confirm_similarity($password_field,$confirm_password_field){
-            global $errors ;
-    
-            if(htmlentities($_POST[$password_field]) !== htmlentities($_POST[$confirm_password_field])){
-                $errors[$password_field] = field_name_as_text($email_field) ."password and confirmation password didn't not match.";
-            }
-        }
+
+        
+
+
+        /*;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;*/
     
     
-        private function password_check($existing_hashed_password , $password_field){
     
-            if(password_verify(htmlentities($_POST[$password_field]),$existing_hashed_password)){
-                return true ;
-            }else{
-                return false ;
-            }
-        }
-    
+        
     
         private function generate_salte($salt_length){
     
@@ -300,39 +257,6 @@
     
             return $hashed_password ;
         }
-    
-    
-     
-    
-    
-        private function attempt_sign_in($user_name_field,$password_field){
-    
-            $object = new self ;
-                
-            if($admin = user::get_admin_data_by_user_name($user_name_field)){              
-                    
-                    if($object->password_check($admin["hashed_password"] , $password_field)){ 
-                        $_SESSION["user_id"] = $admin["id"];
-                        $_SESSION["first_name"] = $admin["first_name"];
-                        
-                        Log::write_in_log("{$_SESSION['user_id']} signed in ".date("d-m-Y")." ".date("h:i:sa")."\n");
-
-                        return  true ;
-                    }
-            }    
-            return  false ;
-        }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     
     }

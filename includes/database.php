@@ -92,7 +92,8 @@
         }
 
         public function num_rows($result_set){
-            return $result_set->num_rows ;
+            // return $result_set->num_rows ;
+            return count($result_set);
         }
 
         public function affected_rows(){

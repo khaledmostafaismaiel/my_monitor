@@ -4,7 +4,7 @@
     if(isset($_POST['submit_edit_expense'])){
         global $database;
 
-        $id=Expense::get_expense_id_from_url();
+        $id=Helper::get_from_url("expenseid");
         if(!Expense::get_expense_data_by_id($id)){
             rediret_to("not_available.php");
         }
@@ -25,7 +25,7 @@
         //i will check if user is active or not
     }
 
-    $expense_data = Expense::get_expense_data_by_id(Expense::get_expense_id_from_url());
+    $expense_data = Expense::get_expense_data_by_id(Helper::get_from_url("expenseid"));
     $category_set = Category::get_all_categories();
 ?>
 

@@ -43,20 +43,20 @@
             $confirm_password_field = $database->escaped_value($confirm_password_field);
 
 
-            validate_has_presence(array($first_name_field ,$second_name_field ,
+            Helper::validate_has_presence(array($first_name_field ,$second_name_field ,
                 $user_name_filed,$password_field ,$confirm_password_field
                 ,$not_robot_field,$terms_of_conditions_field));
 
-            validate_max_lengths( array($first_name_field=> 15 ,$second_name_field =>15,
+            Helper::validate_max_lengths( array($first_name_field=> 15 ,$second_name_field =>15,
                 $user_name_filed => 30 ,$password_field => 30 ,$confirm_password_field => 30
                 ,$not_robot_field => 1,$terms_of_conditions_field => 1) );
 
-            validate_min_lengths( array($password_field => 8 ,$confirm_password_field => 8) );
+            Helper::validate_min_lengths( array($password_field => 8 ,$confirm_password_field => 8) );
 
             $object->check_password_and_confirm_similarity($password_field,$confirm_password_field);
 
             if(self::get_by_user_name($_POST[$user_name_filed])){
-                $errors[$user_name_filed] = field_name_as_text($user_name_filed)." is alredy exist";
+                $errors[$user_name_filed] = Helper::field_name_as_text($user_name_filed)." is alredy exist";
             }
 
             if(empty($errors)){
@@ -79,7 +79,7 @@
             global $errors ;
     
             if(htmlentities($_POST[$password_field]) !== htmlentities($_POST[$confirm_password_field])){
-                $errors[$password_field] = field_name_as_text($password_field) ."password and confirmation password didn't not match.";
+                $errors[$password_field] = Helper::field_name_as_text($password_field) ."password and confirmation password didn't not match.";
             }
         }
 
@@ -361,17 +361,7 @@
 
     $user = new User() ;
 
-    //لو عندك ميثود نوعها كذه بتنادى عليها فى نفس الكلاس  بالطريقه دى
-    ////////////////public  $object = new self ;
-    ////////////////private  $object = new self ;
-    /////////////////protected   $this->
-    ///////////////static self::
 
-    //لو عندك فاريبل نوعه كذه بتنادى عليه فى نفس الكلاس  بالطريقه دى
-    ////////////////public  $this-> ;
-    ////////////////private  $this-> ;
-    ////////////////protected  $this-> ;
-    ////////////////static self::  ;
 
     /*
         if(){

@@ -66,18 +66,6 @@ class Expense extends Database_object{
     }
 
 
-    public static function get_expense_id_from_url(){
-
-        if(isset($_GET["expenseid"])){
-            $expense_id = htmlentities($_GET["expenseid"]) ;
-        }else{
-            $expense_id = null;
-        }
-
-        return $expense_id ;
-
-    }
-
 
 
     public static function add_expense_in_database($name_field,$price_field,$category_field
@@ -191,11 +179,7 @@ class Expense extends Database_object{
 
         $query = "SELECT * FROM ".self::$table_name." WHERE expense_name = '{$safe_expense_name}' AND user_id = {$_SESSION['user_id']}  ORDER BY id DESC" ;
 
-        $result_set= mysqli_query($database->connection  , $query);
-    
-        $database->confirm_query($result_set);
-
-        // $query .="ORDER BY id DESC";
+        $result_set= self::find_by_sql($query);
         
         return $result_set;
     }

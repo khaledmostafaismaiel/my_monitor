@@ -12,7 +12,7 @@
     </p>
 
     <p class="money_spent-second_line">
-        <?php echo Expense::get_all_month_prices()?> E£
+        <?php echo Expense::get_all_month_prices()? :0 ?> E£
     </p>
     
     <p class="money_spent-third_line">

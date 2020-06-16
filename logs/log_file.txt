@@ -148,3 +148,35 @@
 1 signed in 16-06-2020 11:22:51pm
 1 signed in 16-06-2020 11:24:39pm
 1 search for expense 16-06-2020 11:24:44pm
+1 signed in 16-06-2020 11:28:04pm
+1 search for expense 16-06-2020 11:28:08pm
+1 signed in 16-06-2020 11:37:38pm
+1 search for expense 16-06-2020 11:48:01pm
+1 search for expense 16-06-2020 11:48:12pm
+1 search for expense 17-06-2020 12:03:16am
+1 search for expense 17-06-2020 12:03:24am
+1 search for expense 17-06-2020 12:31:26am
+1 search for expense 17-06-2020 12:32:11am
+1 search for expense 17-06-2020 12:32:16am
+1 search for expense 17-06-2020 12:32:19am
+1 search for expense 17-06-2020 12:32:22am
+1 search for expense 17-06-2020 12:32:25am
+1 search for expense 17-06-2020 12:32:28am
+1 search for expense 17-06-2020 12:32:29am
+1 search for expense 17-06-2020 12:32:33am
+1 search for expense 17-06-2020 12:32:36am
+1 search for expense 17-06-2020 12:32:47am
+1 search for expense 17-06-2020 12:36:49am
+1 search for expense 17-06-2020 12:37:02am
+2 signed in 17-06-2020 12:40:08am
+2 delete expense 17-06-2020 12:40:15am
+2 delete expense 17-06-2020 12:40:17am
+1 signed in 17-06-2020 12:40:39am
+1 delete expense 17-06-2020 12:43:54am
+1 edit expense 17-06-2020 12:44:10am
+1 delete background 17-06-2020 12:44:39am
+1 delete background 17-06-2020 12:44:51am
+1 delete background 17-06-2020 12:44:56am
+1 signed in 17-06-2020 02:41:48am
+2 signed in 17-06-2020 02:42:33am
+1 signed in 17-06-2020 02:43:01am

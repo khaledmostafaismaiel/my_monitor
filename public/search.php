@@ -12,14 +12,14 @@
         $search_string = $database->escaped_value(strtolower($_GET["searchfor"]));
     }
 
+
     $expenses_set = Expense::search_by_expense_name($search_string) ;
 
     $number_of_expenses = $database->num_rows($expenses_set) ;
     $number_of_expenses_per_page = 6 ;
     $number_of_pages= ceil((float)$number_of_expenses/(float)$number_of_expenses_per_page);
 
-    $page_number = Helper::get_from_url("pagenumber") ;
-    
+    $page_number = Helper::get_from_url("pagenumber");
     if(($number_of_expenses == 0)){
         $_SESSION["message"] = "No Matching" ;
         Helper::redirect_to("index.php");
@@ -31,9 +31,6 @@
     Log::write_in_log("{$_SESSION['user_id']} search for expense ".date("d-m-Y")." ".date("h:i:sa")."\n");
 
     $pagination = new Pagination($page_number,$number_of_expenses_per_page,$number_of_expenses);
-
-    $iteration_number = 0 ;
-
 ?>
 
 
@@ -58,29 +55,23 @@
             <?php
                 
                 if($expenses_set != null){ 
-                    while($expense=mysqli_fetch_assoc($expenses_set)){
-
-                    if($iteration_number == $number_of_expenses_per_page){
-                        break ;
-                    }else{
-                        ++$iteration_number ;
-                    }
+                    foreach($expenses_set as $expense){
                         
             ?>
 
                     <tr class="table-expenses-body-raw">
 
-                        <td><?php echo $expense["expense_name"] ?></td>
-                        <td><?php echo $expense["price"] ?></td>
-                        <td><?php echo ucfirst($expense["category"]) ?></td>
-                        <td><?php echo $expense["comment"] ?></td>
-                        <td><?php echo $expense["created_at"] ?></td>
+                        <td><?php echo $expense->expense_name ?></td>
+                        <td><?php echo $expense->price ?></td>
+                        <td><?php echo ucfirst($expense->category) ?></td>
+                        <td><?php echo $expense->comment ?></td>
+                        <td><?php echo $expense->created_at ?></td>
                         
                         <td>
                             <div class="btn-action">
-                                    <a class= "btn-action-edit" href="edit_expense.php?expenseid=<?php echo $expense["id"] ?>"  value="edit">
+                                    <a class= "btn-action-edit" href="edit_expense.php?expenseid=<?php echo $expense->id ?>"  value="edit">
                                             <img src="images/edit.png" class="btn-action-edit-image" alt="edit"></a>
-                                            <a class= "btn-action-delete" href="delete_expense.php?expenseid=<?php echo $expense["id"] ?>"  value="delete" onclick="return confirm('Are you sure?');">
+                                            <a class= "btn-action-delete" href="delete_expense.php?expenseid=<?php echo $expense->id ?>"  value="delete" onclick="return confirm('Are you sure?');">
                                         <img src="images/delete.png" class="btn-action-delete-image" alt="delete"></a>
                                     </a>
                             </div>

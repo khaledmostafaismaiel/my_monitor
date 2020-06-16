@@ -1,6 +1,8 @@
 <?php 
 
 
+$errors = array();   
+
 
 class Helper{
 
@@ -23,19 +25,7 @@ class Helper{
 		return $value ;
     }
     
-
-    
-
-
-}
-    $errors = array();   
-
-
-
-
-
-
-    function field_name_as_text($field_name){
+    public static function field_name_as_text($field_name){
 
         $field_name = str_replace("_","",$field_name);
         $field_name = ucfirst($field_name);
@@ -43,19 +33,20 @@ class Helper{
         return $field_name ;
     }
 
-
+    
     function has_presence($value){
         return isset($value) && $value != "" ;
     }
 
     function validate_has_presence($fields){
-        /**/
+        $object = new self ;
+        
         global $errors ;
 
         foreach($fields as $field){
             $value = trim(htmlentities($_POST[$field])) ;
-            if(!has_presence($value)){
-                $errors[$field] = field_name_as_text($field)." can't be blank";
+            if(! $object->has_presence($value)){
+                $errors[$field] = Helper::field_name_as_text($field)." can't be blank";
             }
 
         }
@@ -63,19 +54,19 @@ class Helper{
 
     }
 
-
-    function has_max_length($value,$max){
+    private function has_max_length($value,$max){
         return strlen($value) <= $max ;
     }
 
-    function validate_max_lengths($fields){
-        /**/
+    public static function validate_max_lengths($fields){
+        $object = new self ;
+        
         global $errors ;
 
         foreach($fields as $field => $max){
             $value = trim(htmlentities($_POST[$field])) ;
-            if(!has_max_length($value,$max)){
-                $errors[$field] = field_name_as_text($field)." is to long";
+            if(! $object->has_max_length($value,$max)){
+                $errors[$field] = Helper::field_name_as_text($field)." is to long";
             }
 
         }
@@ -83,25 +74,42 @@ class Helper{
     }
 
     
-
-    function has_min_length($value,$max){
+    private function has_min_length($value,$max){
         return strlen($value) >= $max ;
     }
 
-    function validate_min_lengths($fields){
-        /**/
+    public static function validate_min_lengths($fields){
+        $object = new self ;
         global $errors ;
 
         foreach($fields as $field => $max){
             $value = trim(htmlentities($_POST[$field])) ;
-            if(!has_min_length($value,$max)){
-                $errors[$field] = field_name_as_text($field)." is to short";
+            if(! $object->has_min_length($value,$max)){
+                $errors[$field] = Helper::field_name_as_text($field)." is to short";
             }
 
         }
 
     }
 
+
+
+
+
+
+}
+
+    //لو عندك ميثود نوعها كذه بتنادى عليها فى نفس الكلاس  بالطريقه دى
+    ////////////////public  $object = new self ;
+    ////////////////private  $object = new self ;
+    /////////////////protected   $this->
+    ///////////////static self::
+
+    //لو عندك فاريبل نوعه كذه بتنادى عليه فى نفس الكلاس  بالطريقه دى
+    ////////////////public  $this-> ;
+    ////////////////private  $this-> ;
+    ////////////////protected  $this-> ;
+    ////////////////static self::  ;
 
     function include_layout_template($template){
 

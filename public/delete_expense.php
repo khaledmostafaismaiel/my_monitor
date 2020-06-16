@@ -4,7 +4,7 @@
 
     global $database;
 
-    $id=Expense::get_expense_id_from_url();
+    $id=Helper::get_from_url("expenseid");
     if(!Expense::get_expense_data_by_id($id)){
         rediret_to("not_available.php");
     }

@@ -4,7 +4,7 @@
     global $database;
 
     $background_set = Background::find_all();
-    $number_of_backgrounds = 6/*$database->num_rows($background_set)*/  ;
+    $number_of_backgrounds = $database->num_rows($background_set)  ;
     $number_of_backgrounds_per_page = 3 ;
     $number_of_pages= ceil((float)$number_of_backgrounds/(float)$number_of_backgrounds_per_page);
 

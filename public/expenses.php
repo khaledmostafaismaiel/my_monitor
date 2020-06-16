@@ -8,8 +8,9 @@
     $sql .= " WHERE `created_at` > '{$month}' AND user_id = {$_SESSION['user_id']}  ORDER BY id DESC";
     $expenses_set  = Expense::find_by_sql($sql);
 
+
     // $expenses = Expense::forMonth('June')->all();
-    $number_of_expenses = $database->num_rows(Expense::get_all_month_expenses()/*$expenses_set*/)  ;
+    $number_of_expenses = $database->num_rows($expenses_set)  ;
     $number_of_expenses_per_page = 6 ;
     $number_of_pages= ceil((float)$number_of_expenses/(float)$number_of_expenses_per_page);
 

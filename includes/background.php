@@ -172,16 +172,7 @@ class Background extends Database_object {
         return self::find_by_sql("SELECT * FROM ".self::$table_name." WHERE user_id = {$_SESSION['user_id']} ORDER BY id DESC");
 	}
 		
-	public static function get_from_url($string){
 
-		if(isset($_GET[$string])){
-			$value = htmlentities($_GET[$string]) ;
-		}else{
-			$value = null;
-		}
-
-		return $value ;
-	}
 
 	public static function find_by_id($id=0){
 		global $database ;

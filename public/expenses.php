@@ -1,6 +1,6 @@
 <?php 
     require_once("../includes/initialize.php");
-    
+
     global $database;
 
     $month = date('Y-m-00');
@@ -13,10 +13,10 @@
     $number_of_expenses_per_page = 6 ;
     $number_of_pages= ceil((float)$number_of_expenses/(float)$number_of_expenses_per_page);
 
-    $page_number = get_page_number() ;
+    $page_number = Helper::get_from_url("pagenumber") ;
     if(($page_number > $number_of_pages) || ($page_number < 1)){
         if($number_of_pages != 0){ 
-            redirect_to("not_available.php");
+            Helper::redirect_to("not_available.php");
         }
     }
 

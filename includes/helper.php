@@ -1,28 +1,38 @@
 <?php 
 
 
-    $errors = array();   
+
+class Helper{
 
 
 
-    function redirect_to($new_location){
+    public static function redirect_to($new_location){
 
         header("Location: ".$new_location);
         exit;
     }
 
+    public static function get_from_url($string){
 
-    function get_page_number(){
+		if(isset($_GET[$string])){
+			$value = htmlentities($_GET[$string]) ;
+		}else{
+			$value = null;
+		}
 
-        if(isset($_GET["pagenumber"])){
-            $page_number = htmlentities($_GET["pagenumber"]) ;
-        }else{
-            $page_number = null ;
-        }
-
-        return $page_number ;
-
+		return $value ;
     }
+    
+
+    
+
+
+}
+    $errors = array();   
+
+
+
+
 
 
     function field_name_as_text($field_name){

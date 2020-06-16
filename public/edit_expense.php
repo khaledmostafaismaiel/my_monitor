@@ -13,11 +13,11 @@
             Log::write_in_log("{$_SESSION['user_id']} edit expense ".date("d-m-Y")." ".date("h:i:sa")."\n");
 
             $_SESSION["message"] = "Edit success" ;
-            redirect_to("expenses.php?pagenumber=1");
+            Helper::redirect_to("expenses.php?pagenumber=1");
         }else{
             //failed
             $_SESSION["message"] = "Edit DIDN'T success" ;
-            redirect_to("edit_expense.php?expenseid={$id}");
+            Helper::redirect_to("edit_expense.php?expenseid={$id}");
         }
 
     }else{

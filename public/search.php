@@ -18,14 +18,14 @@
     $number_of_expenses_per_page = 6 ;
     $number_of_pages= ceil((float)$number_of_expenses/(float)$number_of_expenses_per_page);
 
-    $page_number = get_page_number() ;
+    $page_number = Helper::get_from_url("pagenumber") ;
     
     if(($number_of_expenses == 0)){
         $_SESSION["message"] = "No Matching" ;
-        redirect_to("index.php");
+        Helper::redirect_to("index.php");
     }
     elseif(($page_number > $number_of_pages) || ($page_number < 1)){
-        redirect_to("not_available.php");
+        Helper::redirect_to("not_available.php");
     }
 
     Log::write_in_log("{$_SESSION['user_id']} search for expense ".date("d-m-Y")." ".date("h:i:sa")."\n");

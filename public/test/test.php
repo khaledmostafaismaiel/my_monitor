@@ -36,7 +36,7 @@
     // //include session.php then type this to redirect you if you are not logggin
     // if(!$session->is_logged_in()){
 
-    //     redirect_to("sign_in.php") ;
+    //     Helper::redirect_to("sign_in.php") ;
 
     // }else{
 

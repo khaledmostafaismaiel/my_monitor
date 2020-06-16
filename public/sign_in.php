@@ -13,10 +13,10 @@
         
         if(user::check_before_sign_in("user_name","password","remember_me")){
             //success
-            redirect_to("index.php?");
+            Helper::redirect_to("index.php?");
         }else{
             //failed
-             redirect_to("sign_in.php?");
+             Helper::redirect_to("sign_in.php?");
         }
 
     }else{

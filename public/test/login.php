@@ -10,7 +10,7 @@
     if($found_user){
         $session = login($found_user);
         log_action('login' ,"{$found_user->user_name} logged in");
-        redirect_to("index.php");
+        Helper::redirect_to("index.php");
     }else{
         $message = "user name or password are incorrect" ;
     }

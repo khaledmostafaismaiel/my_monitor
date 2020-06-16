@@ -17,12 +17,12 @@
                 Log::write_in_log("{$_SESSION['user_id']} add background ".date("d-m-Y")." ".date("h:i:sa")."\n");
 
                 $_SESSION["message"] = "uploaded success.";
-                redirect_to("index.php?");
+                Helper::redirect_to("index.php?");
             }
         }
         // Failure
         $_SESSION["message"] = "uploaded didn't success.";
-        redirect_to("add_background.php?");
+        Helper::redirect_to("add_background.php?");
 	}
 	
 ?>

@@ -8,11 +8,11 @@
             Log::write_in_log("{$_SESSION['user_id']} add expense ".date("d-m-Y")." ".date("h:i:sa")."\n");
 
             $_SESSION["message"] = "add success" ;
-            redirect_to("index.php?");
+            Helper::redirect_to("index.php?");
         }else{
             //failed
             $_SESSION["message"] = "add DIDN'T success" ;
-            redirect_to("add_expense.php?");
+            Helper::redirect_to("add_expense.php?");
         }
 
     }else{

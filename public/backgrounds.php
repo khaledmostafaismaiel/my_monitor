@@ -4,14 +4,14 @@
     global $database;
 
     $background_set = Background::find_all();
-    $number_of_backgrounds = 13/*$database->num_rows($background_set)*/  ;
-    $number_of_backgrounds_per_page = 6 ;
+    $number_of_backgrounds = 6/*$database->num_rows($background_set)*/  ;
+    $number_of_backgrounds_per_page = 3 ;
     $number_of_pages= ceil((float)$number_of_backgrounds/(float)$number_of_backgrounds_per_page);
 
-    $page_number = get_page_number() ;
+    $page_number = Helper::get_from_url("pagenumber") ;
     if(($page_number > $number_of_pages) || ($page_number < 1)){
         if($number_of_pages != 0){ 
-            redirect_to("not_available.php");
+            Helper::redirect_to("not_available.php");
         }
     }
 
@@ -58,11 +58,11 @@
 
                     <tr class="table-expenses-body-raw">
 
-                        <td><img src="<?php echo $background->get_uploads_path()?>" width="100" alt="<?php echo$background->file_name?>"></td>
+                        <td><img src="<?php echo "../uploads/".$background->file_name /*$background->get_uploads_path()*/?>" width="100" alt="<?php echo$background->file_name?>"></td>
                         <td><?php echo $background->file_name?></td>
                         <td><?php echo $background->caption?></td>
                         <td><?php echo $background->get_size_text()?></td>
-                        <td><?php echo $background->id?></td>
+                        <td><?php echo $background->type?></td>
                         
                         <td>
                             <div class="btn-action">

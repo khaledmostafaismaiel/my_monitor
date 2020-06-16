@@ -2,7 +2,7 @@
     
     global $database;
 
-    $background=Background::find_by_id(Background::get_from_url('id'));
+    $background=Background::find_by_id(Helper::get_from_url('id'));
 
     $query = "UPDATE admins SET " ;
     $query .= " background_image = '{$background->file_name}' " ;
@@ -16,4 +16,4 @@
         $_SESSION["message"] = "didn't set" ;
 
     }
-    redirect_to("backgrounds.php?pagenumber=1");   
+    Helper::redirect_to("backgrounds.php?pagenumber=1");   

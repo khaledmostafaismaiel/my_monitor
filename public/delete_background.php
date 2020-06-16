@@ -12,4 +12,4 @@
     } else {
         $_SESSION["message"] = "Delete Didn't success" ;
     }
-    redirect_to("backgrounds.php?pagenumber=1");
+    Helper::redirect_to("backgrounds.php?pagenumber=1");

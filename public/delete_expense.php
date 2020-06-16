@@ -22,4 +22,4 @@
         $database->close_connection(); 
     }
 
-    redirect_to("expenses.php?pagenumber=1");
+    Helper::redirect_to("expenses.php?pagenumber=1");

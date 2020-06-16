@@ -1,7 +1,6 @@
 <?php
 
     require_once("database.php");
-    require_once("functions.php");
 
     class User extends Database_object{
 
@@ -67,12 +66,12 @@
                         //Success
                         $_SESSION["message"] = "Success";
                         /* i need to send email here for admin */
-                        redirect_to("sign_in.php?");
+                        Helper::redirect_to("sign_in.php?");
                 }
             }
             //fail
             $_SESSION["message"] = "Try Again";
-            redirect_to("sign_up.php") ;
+            Helper::redirect_to("sign_up.php") ;
             
         }
 
@@ -184,7 +183,7 @@
 
             if(! $object->authenticate($user_name_field,$password_field)){
                 //fail
-                redirect_to("sign_in.php?");
+                Helper::redirect_to("sign_in.php?");
             }
 
             Log::write_in_log("{$_SESSION['user_id']} signed in ".date("d-m-Y")." ".date("h:i:sa")."\n");
@@ -214,12 +213,107 @@
             $object = new self ;
 
             if(!$object->signed_in()){
-                redirect_to("sign_in.php");
+                Helper::redirect_to("sign_in.php");
             }
         }
 
 
+        public function save(){
+
+            return isset($this->id) ? $this->update() : $this->create() ;
+        }
+
+        public function update(){
+            global $database ;
+
+            //Don't forget your sql syntax and good habits
+            //- UPDATE table SET Key = 'value' WHERE condition
+            //- single-quotes around all values
+            //- escape all values to prevent sql injection
+    
+            $attributes = $this->sanitized_attributes();
+            $attribute_pairs = array();
+            foreach($attributes as $key => $value){
+                $attribute_pairs[] = "{$key} = {$value}" ;
+                
+            }
+
+
+            $sql  ="UPDATE " .self::$table_name ." SET " ;
+            $sql .=join(", ",$attribute_pairs);
+            $sql .=" WHERE id=" .$database->escaped_value($this->id) ;
+            $sql .=" LIMIT 1" ;
+
+
+            $database->query($sql) ;
+            if($database->affected_rows() == 1){
+                return true ;
+            }else{
+                return false ;
+            }
+        }
+        protected function sanitized_attributes(){
+            global $database ;
+            $clean_attributes = array();
+            foreach($this->attrributes() as $key=>$value){
+                $clean_attributes[$key] = $database->escaped_value($value);
+            }
+            return $clean_attributes ;
+        }
+        public function create(){
+            global $database ;
+            //Don't forget your sql syntax and good habits
+            //- INSERT INTO table (Key,Key) VALUES (value,value)
+            //- single-quotes around all values
+            //- escape all values to prevent sql injection
+    
+            $attributes = $this->sanitized_attributes();
+    
+            $sql  ="INSERT INTO ".self::$table_name ." (";
+            $sql .=join(",",array_keys($attributes)) ;
+            $sql .=") VALUES ('" ;
+            $sql .=join("','",array_values($attributes)) ;
+            $sql .= "')";
+    
+            if($database->query($sql)){
+                //$this->id = $database->insert_id();
+                return true ;
+            }else{
+                return false ;
+            }
+        }
         
+        public function delete(){
+            global $database ;
+            //Don't forget your sql syntax and good habits
+            //- DELETE FROM table WHERE condition LIMIT 1
+            //- single-quotes around all values
+            //- escape all values to prevent sql injection
+            //- user LIMIT 1
+    
+            $sql = "DELETE FROM ".self::$table_name ;
+            $sql .= " WHERE id =".$database->escaped_value($this->id) ;
+            $sql .= " AND user_id = {$_SESSION['user_id']}"  ;
+            $sql .= " LIMIT 1" ;
+        
+            $database->query($sql) ;
+            if($database->affected_rows() == 1){
+                return true ;
+            }else{
+                return false ;
+            }
+        
+        }
+
+        public static function find_by_id($id=0){
+            global $database ;
+    
+            $result_array = self::find_by_sql("SELECT * FROM ".self::$table_name ." WHERE id={$database->escaped_value($id)} LIMIT 1");
+        
+            return !empty($result_array)? array_shift($result_array) : false;
+        }
+    
+
 
 
         /*;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;*/
@@ -257,9 +351,15 @@
     
             return $hashed_password ;
         }
+
+
+
     
     
     }
+
+
+    $user = new User() ;
 
     //لو عندك ميثود نوعها كذه بتنادى عليها فى نفس الكلاس  بالطريقه دى
     ////////////////public  $object = new self ;

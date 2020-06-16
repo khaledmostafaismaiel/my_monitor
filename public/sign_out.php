@@ -3,4 +3,4 @@
     $_SESSION["user_id"] = null ;
     $_SESSION["first_name"] = null ;
 
-    redirect_to("sign_in.php");
+    Helper::redirect_to("sign_in.php");

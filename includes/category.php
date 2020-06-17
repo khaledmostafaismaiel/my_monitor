@@ -13,22 +13,6 @@
         public $category_name ;
 
 
-        public static function get_all_categories(){
-            global $database;
-    
-            //2. perform database query
-            $query = "SELECT * ";
-            $query .="FROM ".self::$table_name;
-            $query .=" ORDER BY category_id ASC ";
-            // $query .="LIMIT 1";
-    
-            $result_set= mysqli_query($database->connection , $query);
-    
-            //test if there was a query error
-            $database->confirm_query($result_set);
-            
-            return $result_set;
-        }
     
 
 

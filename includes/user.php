@@ -60,13 +60,16 @@
             }
 
             if(empty($errors)){
-                //success
-                if(self::insert_in_database($first_name_field ,$second_name_field,$user_name_filed,
-                    $password_field )){ 
-                        //Success
-                        $_SESSION["message"] = "Success";
-                        /* i need to send email here for admin */
-                        Helper::redirect_to("sign_in.php?");
+                $object->first_name = strtolower($database->escaped_value(htmlentities($_POST[$first_name_field]))) ;
+                $object->second_name = strtolower($database->escaped_value(htmlentities($_POST[$second_name_field]))) ;
+                $object->user_name = strtolower($database->escaped_value(htmlentities($_POST[$user_name_filed]))) ;
+                $object->hashed_password = password_hash($_POST[$password_field],PASSWORD_BCRYPT,['cost=>10']) ;
+                
+                if($object->save()){
+                    //Success
+                    $_SESSION["message"] = "Success";
+                    /* i need to send email here for admin */
+                    Helper::redirect_to("sign_in.php?");
                 }
             }
             //fail
@@ -149,32 +152,6 @@
             return $attributes  ;
         }
 
-        public static function insert_in_database($first_name_field,$second_name_field,  
-            $email_field,$password_field){
-
-            global $database;
-
-            //prcess the form
-            //escape all strings to prevent sql injection with mysqli_prep
-            $first_name = strtolower($database->escaped_value(htmlentities($_POST[$first_name_field]))) ;
-            $second_name = strtolower($database->escaped_value(htmlentities($_POST[$second_name_field]))) ;
-            $email = strtolower($database->escaped_value(htmlentities($_POST[$email_field]))) ;
-            $hashed_password = password_hash($_POST[$password_field],PASSWORD_BCRYPT,['cost=>10']) ;
-
-            
-            $query = "INSERT INTO ".self::$table_name ." (";
-            $query .= " first_name,second_name,user_name,hashed_password";
-            $query .= ") VALUES (" ;
-            $query .= " '{$first_name}','{$second_name}','{$email}','{$hashed_password}'";
-            $query .= ")";
-
-
-            if($result = mysqli_query($database->connection,$query)){
-                return true ;
-            }
-            // failed
-            return false ;
-        }
 
 
         public static function check_before_sign_in($user_name_field,$password_field,$remember_me_field){
@@ -268,13 +245,15 @@
             //- escape all values to prevent sql injection
     
             $attributes = $this->sanitized_attributes();
-    
+
+            array_shift($attributes);
+
             $sql  ="INSERT INTO ".self::$table_name ." (";
             $sql .=join(",",array_keys($attributes)) ;
             $sql .=") VALUES ('" ;
             $sql .=join("','",array_values($attributes)) ;
             $sql .= "')";
-    
+
             if($database->query($sql)){
                 //$this->id = $database->insert_id();
                 return true ;
@@ -315,12 +294,9 @@
     
 
 
-
         /*;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;*/
     
     
-    
-        
     
         private function generate_salte($salt_length){
     

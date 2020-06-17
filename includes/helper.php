@@ -41,17 +41,15 @@ class Helper{
     function validate_has_presence($fields){
         $object = new self ;
         
-        global $errors ;
-
         foreach($fields as $field){
             $value = trim(htmlentities($_POST[$field])) ;
             if(! $object->has_presence($value)){
-                $errors[$field] = Helper::field_name_as_text($field)." can't be blank";
+                return false ;
             }
 
         }
 
-
+        return true ;
     }
 
     private function has_max_length($value,$max){

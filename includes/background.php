@@ -114,11 +114,15 @@ class Background extends Database_object {
 
 		$attributes = $this->sanitized_attributes();
 
+		array_shift($attributes);
+
+
 		$sql  ="INSERT INTO ".self::$table_name ." (";
 		$sql .=join(",",array_keys($attributes)) ;
 		$sql .=") VALUES ('" ;
-		$sql .=join("','",array_values(array_pad($attributes,-self::$num_db_fields,0))) ;
+		$sql .=join("','",array_values($attributes)) ;
 		$sql .= "')";
+
 
 		if($database->query($sql)){
 			//$this->id = $database->insert_id();

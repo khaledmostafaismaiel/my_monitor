@@ -3,7 +3,20 @@
 
     if(isset($_POST['submit_add_expense'])){
 
-        if(Expense::add_expense_in_database("expense_name","price","category","comment","created_at")){
+        $expense = new Expense();
+
+        $expense->user_id = $_SESSION['user_id'];
+        $expense->expense_name = $_POST['expense_name'];
+        $expense->price = $_POST['price'];
+        $expense->category = $_POST['category'];
+        $expense->comment = $_POST['comment'];
+        if($_POST['created_at'] == ''){
+            $expense->created_at = date("Y-m-d H:i:s") ;
+
+        }else{
+            $expense->created_at = $_POST['created_at'] ;
+        }
+        if($expense->check_before_save() && $expense->save()){
             //success
             Log::write_in_log("{$_SESSION['user_id']} add expense ".date("d-m-Y")." ".date("h:i:sa")."\n");
 

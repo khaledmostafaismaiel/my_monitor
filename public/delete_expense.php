@@ -5,10 +5,14 @@
     global $database;
 
     $id=Helper::get_from_url("expenseid");
-    if(!Expense::get_expense_data_by_id($id)){
-        rediret_to("not_available.php");
+
+    $expense = new Expense();
+
+    if(! $expense = $expense::find_by_id($id)){
+        Helper::redirect_to("not_available.php");
     }
-    if(Expense::delete_expense_from_database($id) && $database->affected_rows($database->connection ) >= 1){
+
+    if($expense->delete() && $database->affected_rows($database->connection ) >= 1){
         //success
         Log::write_in_log("{$_SESSION['user_id']} delete expense ".date("d-m-Y")." ".date("h:i:sa")."\n");
 

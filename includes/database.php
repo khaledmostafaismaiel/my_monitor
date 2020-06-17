@@ -36,7 +36,8 @@
         }
         public function free_result($result){
             //4. free database result
-            mysqli_free_result($result) ;
+            // mysqli_free_result($result) ;
+            $result->free_result ;
         }
 
         public function close_connection(){
@@ -77,9 +78,9 @@
             return $result_set ;
         }
 
-        public function confirm_query($result){
+        public function confirm_query($result_set){
 
-            if(!$result){
+            if(!$result_set){
 
                 $out_put = ("Database confirm query failed: ".mysqli_connect_error()
                     ."(" .mysqli_connect_errno() .")" ) ;

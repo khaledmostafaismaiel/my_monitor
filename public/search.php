@@ -12,8 +12,9 @@
         $search_string = $database->escaped_value(strtolower($_GET["searchfor"]));
     }
 
+    $sql = "SELECT * FROM expenses WHERE expense_name = '{$search_string}' AND user_id = {$_SESSION['user_id']}  ORDER BY id DESC" ;
 
-    $expenses_set = Expense::search_by_expense_name($search_string) ;
+    $expenses_set  = Expense::find_by_sql($sql);
 
     $number_of_expenses = $database->num_rows($expenses_set) ;
     $number_of_expenses_per_page = 6 ;
@@ -31,6 +32,13 @@
     Log::write_in_log("{$_SESSION['user_id']} search for expense ".date("d-m-Y")." ".date("h:i:sa")."\n");
 
     $pagination = new Pagination($page_number,$number_of_expenses_per_page,$number_of_expenses);
+
+    $sql = "SELECT * FROM expenses WHERE expense_name = '{$search_string}' AND user_id = {$_SESSION['user_id']}  ORDER BY id DESC " ;
+    $sql .= " LIMIT ".$pagination->per_page ;
+    $sql .= " OFFSET ".$pagination->offset() ;
+    
+    $expenses_set  = Expense::find_by_sql($sql);
+
 ?>
 
 

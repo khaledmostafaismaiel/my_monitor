@@ -5,10 +5,23 @@
         global $database;
 
         $id=Helper::get_from_url("expenseid");
-        if(!Expense::get_expense_data_by_id($id)){
-            rediret_to("not_available.php");
+        $expense = new Expense() ;
+        if(! $expense = $expense::find_by_id($id)){
+            Helper::redirect_to("not_available.php");
         }
-        if(Expense::update_expense_in_database($id,"expense_name","price","category","comment","created_at")){
+        $expense->expense_name = $_POST['expense_name'] ;
+        $expense->price = $_POST['price'] ;
+        $expense->category = $_POST['category'] ;
+        $expense->comment = $_POST['comment'] ;
+        if($_POST['created_at'] == ''){
+            $expense->created_at = date("Y-m-d H:i:s") ;
+
+        }else{
+            $expense->created_at = $_POST['created_at'] ;
+        }
+        
+
+        if($expense->save()){
             //success
             Log::write_in_log("{$_SESSION['user_id']} edit expense ".date("d-m-Y")." ".date("h:i:sa")."\n");
 
@@ -25,8 +38,10 @@
         //i will check if user is active or not
     }
 
-    $expense_data = Expense::get_expense_data_by_id(Helper::get_from_url("expenseid"));
-    $category_set = Category::get_all_categories();
+    if(! $expense_data = Expense::find_by_id(Helper::get_from_url("expenseid"))){
+        Helper::redirect_to("not_available.php");
+    }
+    $category_set = Category::find_all();
 ?>
 
 
@@ -43,13 +58,13 @@
         <div class="form_edit_expense-name">
             <label>Name:</label> 
 
-            <input type="text" name="expense_name" value="<?php echo $expense_data["expense_name"]?>" placeholder="Expense Name ?">  
+            <input type="text" name="expense_name" value="<?php echo $expense_data->expense_name?>" placeholder="Expense Name ?">  
         </div>
 
         <div class="form_edit_expense-price">
             <label>Price:</label> 
 
-            <input type="text" name="price" value="<?php echo $expense_data["price"]?>" placeholder="Expense Price ?">  
+            <input type="text" name="price" value="<?php echo $expense_data->price?>" placeholder="Expense Price ?">  
         </div>
 
         <div class="form_edit_expense-category">
@@ -57,13 +72,13 @@
 
             <select name="category"  size="4" class="form_edit_expense-category-menu">
                 <?php
-                    while($category = mysqli_fetch_assoc($category_set)){
+                    foreach($category_set as $category){
                         $out_put  = "<option ";
-                            if(ucfirst($category["category_name"]) == ucfirst($expense_data["category"])){
+                            if(ucfirst($category->category_name) == ucfirst($expense_data->category)){
                                 $out_put .= "selected" ;
                             }
                         $out_put .= ">" ;
-                        $out_put .= ucfirst($category["category_name"]) ;
+                        $out_put .= ucfirst($category->category_name) ;
                         $out_put .= "</option>" ;                        
                         echo $out_put ;
                     }
@@ -74,17 +89,17 @@
 
         <div class="form_edit_expense-comment">
             <label>Comment:</label> 
-            <textarea id="" cols="20" name="comment" value="" rows="3" placeholder="Like,place..."><?php echo $expense_data["comment"]?></textarea>
+            <textarea id="" cols="20" name="comment" value="" rows="3" placeholder="Like,place..."><?php echo $expense_data->comment?></textarea>
         </div>
 
         <div class="form_edit_expense-date">
             <label>Date:</label> 
-            <input name="created_at" type="date" value="<?php echo $expense_data["created_at"]?>">  
+            <input name="created_at" type="date" value="<?php echo $expense_data->created_at?>">  
         </div>
 
 
         <div class="form_edit_expense-cancel">
-                <a href="index.php" class="btn">
+                <a href="expenses.php?pagenumber=1" class="btn">
                     cancel
                 </a>
         </div>

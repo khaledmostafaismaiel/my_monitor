@@ -2,13 +2,14 @@
 
     require_once("database.php");
     require_once("pagination.php");
+    require_once("helper.php");
 
 
 class Expense extends Database_object{ 
 
     protected static $table_name = "expenses";
     protected static $db_fields = array("id","user_id","expense_name","price",
-        "category","comment","created_at","updated_at");
+        "category","comment","created_at");
 
     public $id ;
     public $user_id ;
@@ -17,7 +18,6 @@ class Expense extends Database_object{
     public $category ;
     public $comment ;
     public $created_at ;
-    public $updated_at ;
 
 
     public static function get_all_expenses(){
@@ -129,7 +129,6 @@ class Expense extends Database_object{
         $query .= "category = '{$category}', " ;  
         $query .= "comment = '{$comment}', " ;
         $query .= "created_at = '{$created_at}' " ;
-        // $query .= "updated_at = 'date' " ;
         $query .= "WHERE id = {$id} " ;
         $query .= " AND user_id = {$_SESSION['user_id']} " ;
         $query .= "LIMIT 1" ;
@@ -179,9 +178,8 @@ class Expense extends Database_object{
 
         $query = "SELECT * FROM ".self::$table_name." WHERE expense_name = '{$safe_expense_name}' AND user_id = {$_SESSION['user_id']}  ORDER BY id DESC" ;
 
-        $result_set= self::find_by_sql($query);
         
-        return $result_set;
+        return self::find_by_sql($query);
     }
 
 
@@ -304,7 +302,12 @@ class Expense extends Database_object{
 			return false ;
 		}
 	
-	}
+    }
+    
+    public function save(){
+
+        return isset($this->id) ? $this->update() : $this->create() ;
+    }
 
 	public function update(){
 		global $database ;
@@ -313,23 +316,51 @@ class Expense extends Database_object{
 		//- single-quotes around all values
 		//- escape all values to prevent sql injection
 
-		$attrributes = $this->sanitized_attributes();
+
+		$attributes = $this->sanitized_attributes();
 		$attribute_pairs = array();
 		foreach($attributes as $key => $value){
-			$attribute_pairs[] = "{$key} = {$value}" ;
+			$attribute_pairs[] = "{$key} = '{$value}'" ;
 		}
-		$sql  ="UPDATE " .self::$table_name ." SET " ;
+		$sql  ="UPDATE ".self::$table_name." SET " ;
 		$sql .=join(", ",$attribute_pairs);
-		$sql .=" WHERE id=" .$database->escaped_value($this->id) ;
+		$sql .=" WHERE id=".$database->escaped_value($this->id) ;
 
-		$database->query($sql) ;
+        $database->query($sql) ;
+
+        
 		if($database->affected_rows() == 1){
 			return true ;
 		}else{
 			return false ;
 		}
 	}
+    public function create(){
+        global $database ;
+        //Don't forget your sql syntax and good habits
+        //- INSERT INTO table (Key,Key) VALUES (value,value)
+        //- single-quotes around all values
+        //- escape all values to prevent sql injection
 
+        $attributes = $this->sanitized_attributes();
+
+        array_shift($attributes);
+
+
+        $sql  ="INSERT INTO ".self::$table_name ." (";
+        $sql .=join(",",array_keys($attributes)) ;
+        $sql .=") VALUES ('" ;
+        $sql .=join("','",array_values($attributes)) ;
+        $sql .= "')";
+
+
+        if($database->query($sql)){
+            //$this->id = $database->insert_id();
+            return true ;
+        }else{
+            return false ;
+        }
+    }
 
 	protected function sanitized_attributes(){
 		global $database ;
@@ -353,5 +384,9 @@ class Expense extends Database_object{
 	}
 
 
+    public function check_before_save(){
+
+        return  (($this->expense_name != null)  && ($this->price != null))? true : false ; 
+    }
 
 }

@@ -16,7 +16,7 @@
         <link rel="shortcut icon" type="image/png" href="images/favicon.png">
 
 
-        <title>My Monitor</title>
+        <title>My Monitor<?php echo str_replace(".php","",$_SERVER['SCRIPT_NAME']) ?></title>
 
         <!-- <script>alert("Welcome!");</script> -->
     

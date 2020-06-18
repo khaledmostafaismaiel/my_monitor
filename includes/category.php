@@ -52,11 +52,11 @@
             // $object->password = $user_data["password"];
 
             //very short approch
-            foreach($user_data as $attribute=>$value){
+            foreach($user_data as $attribute=>$value):
                 if($object->has_attribute($attribute)){
                     $object->$attribute = $value ;
                 }
-            }
+            endforeach;
             return $object ;
         } 
 
@@ -70,11 +70,11 @@
 
         protected function attrributes(){
             $attributes =array();
-            foreach(self::$db_fields as $field){
+            foreach(self::$db_fields as $field):
                 if(property_exists($this,$field)){
                     $attributes[$field] = $this->$field ; 
                 }
-            }
+            endforeach;
             return $attributes  ;
         }
 

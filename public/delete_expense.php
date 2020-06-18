@@ -12,7 +12,7 @@
         Helper::redirect_to("not_available.php");
     }
 
-    if($expense->delete() && $database->affected_rows($database->connection ) >= 1){
+    if($expense->delete() && $database->affected_rows($database->get_connection() ) >= 1){
         //success
         Log::write_in_log("{$_SESSION['user_id']} delete expense ".date("d-m-Y")." ".date("h:i:sa")."\n");
 

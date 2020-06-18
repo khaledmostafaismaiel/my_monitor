@@ -27,7 +27,7 @@ class Expense extends Database_object{
         $month = date('Y-m-00');
 
         $query = "SELECT * FROM ".self::$table_name." WHERE `created_at` > '{$month}' AND user_id = {$_SESSION['user_id']}  ORDER BY id DESC";
-        $result_set = mysqli_query($database->connection , $query);
+        $result_set = mysqli_query($database->get_connection() , $query);
     
         //test if there was a query error
         $database->confirm_query($result_set);
@@ -43,7 +43,7 @@ class Expense extends Database_object{
 
         $month = date('Y-m-00');
         $query = "SELECT SUM(`price`) AS 'total' FROM ".self::$table_name." WHERE `created_at` > '{$month}' AND user_id = {$_SESSION['user_id']} ";
-        $result_set = mysqli_query($database->connection , $query);
+        $result_set = mysqli_query($database->get_connection() , $query);
         
         //test if there was a query error
         $database->confirm_query($result_set);
@@ -108,11 +108,11 @@ class Expense extends Database_object{
 		// $object->password = $user_data["password"];
 
 		//very short approch
-		foreach($user_data as $attribute=>$value){
+		foreach($user_data as $attribute=>$value):
 			if($object->has_attribute($attribute)){
 				$object->$attribute = $value ;
 			}
-		}
+		endforeach;
 		return $object ;
 	} 
 
@@ -127,11 +127,11 @@ class Expense extends Database_object{
 
 	protected function attrributes(){
 		$attributes =array();
-		foreach(self::$db_fields as $field){
+		foreach(self::$db_fields as $field):
 			if(property_exists($this,$field)){
 				$attributes[$field] = $this->$field ; 
 			}
-		}
+		endforeach;
 		return $attributes  ;
 	}
 
@@ -172,9 +172,9 @@ class Expense extends Database_object{
 
 		$attributes = $this->sanitized_attributes();
 		$attribute_pairs = array();
-		foreach($attributes as $key => $value){
+		foreach($attributes as $key => $value):
 			$attribute_pairs[] = "{$key} = '{$value}'" ;
-		}
+		endforeach;
 		$sql  ="UPDATE ".self::$table_name." SET " ;
 		$sql .=join(", ",$attribute_pairs);
 		$sql .=" WHERE id=".$database->escaped_value($this->id) ;
@@ -208,7 +208,7 @@ class Expense extends Database_object{
 
 
         if($database->query($sql)){
-            //$this->id = $database->insert_id();
+            //$this->id = $database->inserted_id();
             return true ;
         }else{
             return false ;
@@ -218,9 +218,9 @@ class Expense extends Database_object{
 	protected function sanitized_attributes(){
 		global $database ;
 		$clean_attributes = array();
-		foreach($this->attrributes() as $key=>$value){
+		foreach($this->attrributes() as $key=>$value):
 			$clean_attributes[$key] = $database->escaped_value($value);
-		}
+		endforeach;
 		return $clean_attributes ;
 	}
 
@@ -238,8 +238,47 @@ class Expense extends Database_object{
 
 
     public function check_before_save(){
+		global $database ;
 
-        return  (($this->expense_name != null)  && ($this->price != null))? true : false ; 
+		if($this->expense_name != null){
+			$this->expense_name = strtolower($database->escaped_value($this->expense_name));
+
+		}else{
+			return false ;
+		}
+
+		if($this->price != null){
+			$this->price = (float)$database->escaped_value($this->price);
+
+		}else{
+			return false ;
+
+		}
+
+		if($this->category != null){
+			$this->category = $database->escaped_value($this->category);
+
+		}else{
+			return false ;
+
+		}
+
+		if($this->comment != null){
+			$this->comment = strtolower($database->escaped_value($this->comment));
+	
+		}else{
+
+		}
+		
+        if($this->created_at != null){
+            $this->created_at = escaped_value($this->created_at) ;
+
+        }else{
+            $this->created_at = date("Y-m-d H:i:s") ;
+
+		}
+
+        return  true  ; 
     }
 
 }

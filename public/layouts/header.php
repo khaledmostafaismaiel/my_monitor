@@ -27,7 +27,7 @@
 
         <div class="bg-video">
             <?php
-                if(($_SERVER["PHP_SELF"] != "/sign_up.php") && ($_SERVER["PHP_SELF"] != "/sign_in.php") && ($_SERVER["PHP_SELF"] != "/sign_in.php")){
+                if(($_SERVER["PHP_SELF"] != "/sign_up.php") && ($_SERVER["PHP_SELF"] != "/sign_in.php")){
                     if( $_SESSION["background_image"] != null){
                         $image_name = $_SESSION["background_image"];
                         $src="../uploads/".$image_name;

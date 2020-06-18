@@ -41,13 +41,13 @@ class Helper{
     function validate_has_presence($fields){
         $object = new self ;
         
-        foreach($fields as $field){
+        foreach($fields as $field):
             $value = trim(htmlentities($_POST[$field])) ;
             if(! $object->has_presence($value)){
                 return false ;
             }
 
-        }
+        endforeach;
 
         return true ;
     }
@@ -61,13 +61,13 @@ class Helper{
         
         global $errors ;
 
-        foreach($fields as $field => $max){
+        foreach($fields as $field => $max):
             $value = trim(htmlentities($_POST[$field])) ;
             if(! $object->has_max_length($value,$max)){
                 $errors[$field] = Helper::field_name_as_text($field)." is to long";
             }
 
-        }
+        endforeach;
 
     }
 
@@ -80,13 +80,13 @@ class Helper{
         $object = new self ;
         global $errors ;
 
-        foreach($fields as $field => $max){
+        foreach($fields as $field => $max):
             $value = trim(htmlentities($_POST[$field])) ;
             if(! $object->has_min_length($value,$max)){
                 $errors[$field] = Helper::field_name_as_text($field)." is to short";
             }
 
-        }
+        endforeach;
 
     }
 

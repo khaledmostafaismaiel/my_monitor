@@ -12,7 +12,7 @@
         $photo->caption = $_POST['caption'];
         $photo->user_id = $_SESSION['user_id'];
 		if($photo->attach_file($_FILES['file_upload'])){
-            if($photo->save()) {
+            if($photo->check_before_save() && $photo->save()) {
                 // Success
                 Log::write_in_log("{$_SESSION['user_id']} add background ".date("d-m-Y")." ".date("h:i:sa")."\n");
 

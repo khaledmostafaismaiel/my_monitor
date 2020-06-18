@@ -126,7 +126,7 @@ class Background extends Database_object {
 
 
 		if($database->query($sql)){
-			//$this->id = $database->insert_id();
+			//$this->id = $database->inserted_id();
 			return true ;
 		}else{
 			return false ;
@@ -214,11 +214,11 @@ class Background extends Database_object {
 		// $object->password = $user_data["password"];
 
 		//very short approch
-		foreach($user_data as $attribute=>$value){
+		foreach($user_data as $attribute=>$value):
 			if($object->has_attribute($attribute)){
 				$object->$attribute = $value ;
 			}
-		}
+		endforeach;
 		return $object ;
 	} 
 
@@ -233,11 +233,11 @@ class Background extends Database_object {
 
 	protected function attrributes(){
 		$attributes =array();
-		foreach(self::$db_fields as $field){
+		foreach(self::$db_fields as $field):
 			if(property_exists($this,$field)){
 				$attributes[$field] = $this->$field ; 
 			}
-		}
+		endforeach;
 		return $attributes  ;
 	}
 
@@ -272,9 +272,9 @@ class Background extends Database_object {
 
 		$attrributes = $this->sanitized_attributes();
 		$attribute_pairs = array();
-		foreach($attributes as $key => $value){
+		foreach($attributes as $key => $value):
 			$attribute_pairs[] = "{$key} = {$value}" ;
-		}
+		endforeach;
 		$sql  ="UPDATE " .self::$table_name ." SET " ;
 		$sql .=join(", ",$attribute_pairs);
 		$sql .=" WHERE id=" .$database->escaped_value($this->id) ;
@@ -291,9 +291,9 @@ class Background extends Database_object {
 	protected function sanitized_attributes(){
 		global $database ;
 		$clean_attributes = array();
-		foreach($this->attrributes() as $key=>$value){
+		foreach($this->attrributes() as $key=>$value):
 			$clean_attributes[$key] = $database->escaped_value($value);
-		}
+		endforeach;
 		return $clean_attributes ;
 	}
 
@@ -310,7 +310,17 @@ class Background extends Database_object {
 	}
 
 	
+    public function check_before_save(){
+		global $database ;
 
+		if($this->caption != null){
+			$this->caption = $database->escaped_value($this->caption);
+	        return  true  ; 
+
+		}else{
+
+		}
+    }
 	
 
 

@@ -63,7 +63,7 @@
             <?php
                 
                 if($expenses_set != null){ 
-                    foreach($expenses_set as $expense){
+                    foreach($expenses_set as $expense):
                         
             ?>
 
@@ -87,7 +87,7 @@
                     </tr>
 
                 <?php 
-                    }
+                    endforeach;
                 }
                 ?>
             

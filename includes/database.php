@@ -4,7 +4,7 @@
 
     class MySqliDatabase{
 
-        public $connection ;
+        private $connection ;
         public $last_query ;
         private $magic_quotes_active ;
         private $real_escape_string_exists ;
@@ -49,6 +49,9 @@
             }
         }
 
+        public function get_connection(){
+            return $this->connection ;
+        }
 
         public function escaped_value($value){
             
@@ -105,8 +108,9 @@
             return mysqli_fetch_array($result_set) ;
         }
 
-        public function insert_id($result_set){
+        public function inserted_id($result_set){
             // get the last id inserted over the current database connection
+            //$this->connection->insert_id
             return mysqli_insert_id($this->connection) ;
         }
 

@@ -55,7 +55,7 @@
 
             <?php
                 if($expenses_set != null){ 
-                    foreach($expenses_set as $expense){
+                    foreach($expenses_set as $expense):
             ?>
                     <tr class="table-expenses-body-raw">
 
@@ -77,7 +77,7 @@
                     </tr>
 
             <?php 
-                    }
+                    endforeach;
                 }
                 $database->free_result($expenses_set);
             ?>

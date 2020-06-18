@@ -124,13 +124,13 @@
             // $object->password = $row["password"];
     
             //very short approch
-            foreach($row as $attribute=>$value){
+            foreach($row as $attribute=>$value):
                 if($object->has_attribute($attribute)){
                     $object->$attribute = $value ;
                 }
 
 
-            }
+            endforeach;
             return $object ;
         } 
 
@@ -144,11 +144,11 @@
     
         protected function attrributes(){
             $attributes =array();
-            foreach(self::$db_fields as $field){
+            foreach(self::$db_fields as $field):
                 if(property_exists($this,$field)){
                     $attributes[$field] = $this->$field ; 
                 }
-            }
+            endforeach;
             return $attributes  ;
         }
 
@@ -183,14 +183,14 @@
         public static function authenticate($user_name_field="",$password_field=""){
             $object = new self ;
 
-            foreach(self::get_by_user_name($_POST[$user_name_field]) as $admin){              
+            foreach(self::get_by_user_name($_POST[$user_name_field]) as $admin):          
                 if(password_verify($_POST[$password_field] , $admin->hashed_password )){ 
                     $_SESSION["user_id"] = $admin->id;
                     $_SESSION["first_name"] = $admin->first_name;
                     $_SESSION["background_image"] = $admin->background_image;
                     return  true ;
                 }
-            }
+            endforeach;
             return  false ;
         }
                
@@ -222,10 +222,10 @@
     
             $attributes = $this->sanitized_attributes();
             $attribute_pairs = array();
-            foreach($attributes as $key => $value){
+            foreach($attributes as $key => $value):
                 $attribute_pairs[] = "{$key} = {$value}" ;
                 
-            }
+            endforeach;
 
 
             $sql  ="UPDATE " .self::$table_name ." SET " ;
@@ -244,9 +244,9 @@
         protected function sanitized_attributes(){
             global $database ;
             $clean_attributes = array();
-            foreach($this->attrributes() as $key=>$value){
+            foreach($this->attrributes() as $key=>$value):
                 $clean_attributes[$key] = $database->escaped_value($value);
-            }
+            endforeach;
             return $clean_attributes ;
         }
         public function create(){
@@ -267,7 +267,7 @@
             $sql .= "')";
 
             if($database->query($sql)){
-                //$this->id = $database->insert_id();
+                //$this->id = $database->inserted_id();
                 return true ;
             }else{
                 return false ;

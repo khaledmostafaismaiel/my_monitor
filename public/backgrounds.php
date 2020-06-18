@@ -53,7 +53,7 @@
 
                     <tr class="table-backgrounds-body-raw">
 
-                        <td class="table-backgrounds-td"><img src="<?php echo "../uploads/".$background->file_name /*$background->get_uploads_path()*/?>" width="80" alt="<?php echo$background->file_name?>"></td>
+                        <td class="table-backgrounds-td"><img src="<?php echo "../uploads/".$background->file_name /*$background->get_uploads_path()*/?>/jpg;base64" width="80" alt="<?php echo$background->file_name?>"></td>
                         <td class="table-backgrounds-td"><?php echo $background->file_name?></td>
                         <td class="table-backgrounds-td"><?php echo $background->caption?></td>
                         <td class="table-backgrounds-td"><?php echo $background->get_size_text()?></td>

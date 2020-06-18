@@ -9,7 +9,7 @@
     $query .= " WHERE id = {$_SESSION['user_id']} " ;
     $query .= " LIMIT 1 " ;
 
-    if($result = mysqli_query($database->connection ,$query)){
+    if($result = mysqli_query($database->get_connection() ,$query)){
         $_SESSION["background_image"] = $background->file_name ;
         $_SESSION["message"] = "background set" ;
     }else{

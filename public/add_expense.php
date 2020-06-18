@@ -10,12 +10,8 @@
         $expense->price = $_POST['price'];
         $expense->category = $_POST['category'];
         $expense->comment = $_POST['comment'];
-        if($_POST['created_at'] == ''){
-            $expense->created_at = date("Y-m-d H:i:s") ;
-
-        }else{
-            $expense->created_at = $_POST['created_at'] ;
-        }
+        $expense->created_at = $_POST['created_at'] ;
+        
         if($expense->check_before_save() && $expense->save()){
             //success
             Log::write_in_log("{$_SESSION['user_id']} add expense ".date("d-m-Y")." ".date("h:i:sa")."\n");
@@ -63,12 +59,12 @@
 
             <select name="category" id=""  size="4" class="form_add_expense-category-menu">
                 <?php
-                    foreach($category_set as $category){
+                    foreach($category_set as $category):
                         $out_put  = "<option>";
                         $out_put .= ucfirst($category->category_name) ;
                         $out_put .= "</option>" ;                        
                         echo $out_put ;
-                    }
+                    endforeach;
                     //4. release the returned data
                     $database->free_result($category_set); 
                 ?>

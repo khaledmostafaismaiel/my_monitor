@@ -72,7 +72,7 @@
 
             <select name="category"  size="4" class="form_edit_expense-category-menu">
                 <?php
-                    foreach($category_set as $category){
+                    foreach($category_set as $category):
                         $out_put  = "<option ";
                             if(ucfirst($category->category_name) == ucfirst($expense_data->category)){
                                 $out_put .= "selected" ;
@@ -81,7 +81,7 @@
                         $out_put .= ucfirst($category->category_name) ;
                         $out_put .= "</option>" ;                        
                         echo $out_put ;
-                    }
+                    endforeach;
                     $database->free_result($category_set); 
                 ?>
             </select>

@@ -185,11 +185,11 @@
     $$dir = ".";
     if(is_dir($dir)){
         $dir_array = scandir($dir);
-        foreach($dir_array as $file){
+        foreach($dir_array as $file):
             if(stripos($file,'.') > 0){
                 echo $file ."<br />";
             }
-        }
+        endforeach;
     }else{
         echo "couldn't open dir";
 

@@ -363,3 +363,37 @@
 1 search for expense 18-06-2020 03:35:38pm
 1 search for expense 18-06-2020 03:36:12pm
 1 search for expense 18-06-2020 03:37:38pm
+1 search for expense 18-06-2020 04:13:27pm
+1 signed in 18-06-2020 05:43:49pm
+1 search for expense 18-06-2020 05:43:53pm
+1 signed in 18-06-2020 05:52:17pm
+1 search for expense 18-06-2020 05:52:19pm
+1 search for expense 18-06-2020 05:52:22pm
+1 search for expense 18-06-2020 05:52:24pm
+1 edit expense 18-06-2020 05:52:48pm
+1 delete expense 18-06-2020 05:53:01pm
+1 delete background 18-06-2020 05:53:20pm
+1 add background 18-06-2020 05:53:42pm
+1 signed in 18-06-2020 07:21:06pm
+1 signed in 18-06-2020 07:21:09pm
+1 signed in 18-06-2020 07:21:13pm
+1 signed in 18-06-2020 07:22:14pm
+1 signed in 18-06-2020 08:51:39pm
+1 add background 18-06-2020 09:04:09pm
+1 delete background 18-06-2020 09:05:03pm
+1 signed in 18-06-2020 09:48:39pm
+1 signed in 19-06-2020 12:53:22am
+1 add expense 19-06-2020 12:53:36am
+1 add expense 19-06-2020 01:09:52am
+1 add background 19-06-2020 01:14:07am
+1 delete background 19-06-2020 01:31:44am
+1 add expense 19-06-2020 01:32:38am
+1 search for expense 19-06-2020 01:32:58am
+1 search for expense 19-06-2020 01:47:13am
+1 add expense 19-06-2020 01:50:41am
+1 search for expense 19-06-2020 01:50:47am
+1 search for expense 19-06-2020 01:54:45am
+1 search for expense 19-06-2020 01:54:48am
+1 search for expense 19-06-2020 01:57:45am
+1 add expense 19-06-2020 01:58:17am
+1 delete expense 19-06-2020 01:58:50am

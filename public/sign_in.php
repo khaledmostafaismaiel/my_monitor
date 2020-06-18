@@ -10,6 +10,10 @@
         $password = $database->escaped_value($_POST["password"]) ;
         $remember_me = $_POST["remember_me"] ;
 
+        // $user->user_name = strtolower($database->escaped_value($_POST["user_name"])) ;
+        // $user->hashed_password = $database->escaped_value($_POST["password"]) ;
+        // $remember_me = $_POST["remember_me"] ;
+        // $user->test();
         
         if(user::check_before_sign_in("user_name","password","remember_me")){
             //success
@@ -87,5 +91,4 @@
 
 </div>
 
-<?php include(LAYOUTS_PATH.DS."footer.php")?>
-<?php /* include_layout_template("footer.php") */?>
+<?php include_layout_template("footer.php")?>

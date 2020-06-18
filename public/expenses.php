@@ -36,7 +36,7 @@
 
 
 <div>
-    <table class="table-expenses table table-striped table-hover table-responsive-sm">
+    <table class="table-expenses table table-hover">
         
         <thead>
             <tr>
@@ -49,7 +49,7 @@
             </tr>
         </thead>
 
-        <tbody>
+        <tbody class="table-expenses-body">
 
 
 
@@ -59,13 +59,13 @@
             ?>
                     <tr class="table-expenses-body-raw">
 
-                        <td><?php echo $expense->expense_name ?></td>
-                        <td><?php echo $expense->price ?></td>
-                        <td><?php echo ucfirst($expense->category) ?></td>
-                        <td><?php echo $expense->comment ?></td>
-                        <td><?php echo $expense->created_at ?></td>
+                        <td class="table-expenses-td"><?php echo $expense->expense_name ?></td>
+                        <td class="table-expenses-td"><?php echo $expense->price ?></td>
+                        <td class="table-expenses-td"><?php echo ucfirst($expense->category) ?></td>
+                        <td class="table-expenses-td"><?php echo $expense->comment ?></td>
+                        <td class="table-expenses-td"><?php echo $expense->created_at ?></td>
                         
-                        <td>
+                        <td class="table-expenses-td">
                             <div class="btn-action">
                                     <a class= "btn-action-edit" href="edit_expense.php?expenseid=<?php echo $expense->id ?>"  value="edit">
                                             <img src="images/edit.png" class="btn-action-edit-image" alt="edit"></a>
@@ -87,7 +87,7 @@
 </div>
 
 
-
+<!-- Pagination -->
 <div class="btn-list">
 
     <?php
@@ -136,5 +136,4 @@
     ?>
 
 </div>
-<?php include(LAYOUTS_PATH.DS."footer.php")?>
-<?php /* include_layout_template("footer.php")*/?>
+<?php include_layout_template("footer.php")?>

@@ -1,49 +1,99 @@
-.table-expenses{
+.table{
 
-    height: 5%;
-    width: 80%;
-    
-    position: absolute;
-    top: 10rem;
-    left: 12rem;
+
 
     font-size: 3rem;
-
+        
     text-align: center;
 
     background-color: rgba(245, 222, 179,.4);
 
     border-radius: 2rem;
 
-    
     padding: 2rem;
 
 
+    &-expenses{
+        height: 5%;
+        width: 80%;
+        
+    
+        position: relative;
+        top: 8rem;
+        left: 12rem;
+    
+        &-body{
+            font-size: 2rem;
 
-    &-body-raw:hover{
+            background-color: rgba(245, 222, 179,.4);
+        
+            text-align: center;
+        
+            border-radius: 2rem;
 
-        background-color: black;
-        color: white;
+
+            &-raw:hover{
+    
+                background-color: black;
+                color: white;
+            }
+
+        }
+    
+    
+        &-td{
+            border-radius: .5rem;
+            padding: 1rem;        
+
+        }
+    
+    
+    }
+    
+    
+
+    &-backgrounds{
+
+        height: 5%;
+        width: 80%;
+        
+    
+        position: relative;
+        top: 8rem;
+        left: 12rem;
+        &-body{
+
+            font-size: 2rem;
+
+            background-color: rgba(245, 222, 179,.4);
+        
+            text-align: center;
+        
+            border-radius: 2rem;
+
+            &-raw:hover{
+                background-color: black;
+                color: white;
+            }
+
+        }
+    
+    
+        &-td{
+
+
+            border-radius: .5rem;
+            padding: 1rem; 
+        }
+    
+    
     }
 
 
-}
 
-
-tbody{
-
-    font-size: 2rem;
-
-    background-color: rgba(245, 222, 179,.4);
-
-    text-align: center;
-
-    border-radius: 2rem;
 
 
 }
 
-td{
-    border-radius: .5rem;
-    padding: 1rem;
-} 
+
+

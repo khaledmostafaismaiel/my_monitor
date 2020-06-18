@@ -167,7 +167,19 @@
             return true ;
         }
 
+        public  function test(){
 
+            if($this->user_name == "khaledmostafa297@gmail.com"){              
+                if($this->hashed_password == "01143325016" ){ 
+                    var_dump("both");
+                    die;
+                }
+                var_dump("user_name");
+                die;
+            }
+            var_dump("non");
+            die;
+        }
         public static function authenticate($user_name_field="",$password_field=""){
             $object = new self ;
 

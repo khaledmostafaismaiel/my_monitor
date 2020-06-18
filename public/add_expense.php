@@ -100,5 +100,4 @@
     </fieldset>
 </form>
 
-<?php include(LAYOUTS_PATH.DS."footer.php")?>
-<?php /*include_layout_template("footer")*/?>
+<?php include_layout_template("footer.php")?>

@@ -16,8 +16,9 @@ class Background extends Database_object {
 	public $caption;
 	
 	private $temp_path;
-    protected$upload_dir =LIB_PATH.DS."uploads";
-    public $errors=array();
+    //protected$upload_dir =LIB_PATH.DS."uploads";
+    protected$upload_dir =SITE_ROOT.DS."uploads";
+	public $errors=array();
   
     protected $upload_errors = array(
 		// http://www.php.net/manual/en/features.file-upload.errors.php

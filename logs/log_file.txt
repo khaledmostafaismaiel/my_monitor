@@ -400,3 +400,13 @@
 1 search for expense 19-06-2020 02:01:20am
 1 search for expense 19-06-2020 02:12:16am
 1 search for expense 19-06-2020 02:12:44am
+1 signed in 19-06-2020 12:35:35pm
+1 search for expense 19-06-2020 12:39:39pm
+1 signed in 19-06-2020 12:40:19pm
+1 search for expense 19-06-2020 12:42:36pm
+1 signed in 19-06-2020 01:13:30pm
+1 search for expense 19-06-2020 01:13:58pm
+1 search for expense 19-06-2020 01:14:07pm
+1 search for expense 19-06-2020 01:14:14pm
+1 signed in 19-06-2020 02:48:31pm
+1 search for expense 19-06-2020 02:51:02pm

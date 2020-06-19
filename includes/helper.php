@@ -90,13 +90,24 @@ class Helper{
 
     }
 
+    public static function get_script_name(){
+
+        $script_name = str_replace(".php","",$_SERVER['SCRIPT_NAME']) ;
+        $script_name = str_replace("/","",$script_name) ;
+        $script_name = str_replace("_"," ",$script_name) ;
+
+        if($script_name == "index"){
+            $script_name = "home" ;
+        }
+
+        return $script_name ;
+    }
 
 
 
 
 
 }
-
     //لو عندك ميثود نوعها كذه بتنادى عليها فى نفس الكلاس  بالطريقه دى
     ////////////////public  $object = new self ;
     ////////////////private  $object = new self ;

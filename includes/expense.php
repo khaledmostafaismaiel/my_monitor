@@ -17,7 +17,7 @@ class Expense extends Database_object{
     public $price ;
     public $category ;
     public $comment ;
-    public $created_at ;
+	public $created_at ;
 
 
  
@@ -282,3 +282,13 @@ class Expense extends Database_object{
     }
 
 }
+/*
+
+	htmlentities()
+	urlencode()  //
+	escape_spitial_char()
+
+
+
+
+*/

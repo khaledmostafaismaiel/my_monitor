@@ -2,5 +2,12 @@
 
     $_SESSION["user_id"] = null ;
     $_SESSION["first_name"] = null ;
+    $_SESSION["background_image"] = null ;
 
     Helper::redirect_to("sign_in.php");
+
+
+
+    /*
+        session_destroy();
+    */

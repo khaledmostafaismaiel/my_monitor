@@ -94,7 +94,7 @@
 
         <div class="form_edit_expense-date">
             <label>Date:</label> 
-            <input name="created_at" type="date" value="<?php echo $expense_data->created_at?>">  
+            <input name="created_at" type="date" value="<?= date( 'Y-m-d', strtotime( $expense_data->created_at ) ) ?>">  
         </div>
 
 

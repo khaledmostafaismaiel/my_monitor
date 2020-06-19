@@ -419,3 +419,32 @@
 1 signed in 19-06-2020 05:19:20pm
 1 signed in 19-06-2020 05:19:51pm
 1 signed in 19-06-2020 05:50:41pm
+1 signed in 19-06-2020 08:50:30pm
+3 signed in 19-06-2020 08:55:06pm
+4 signed in 19-06-2020 08:57:41pm
+1 signed in 19-06-2020 09:08:52pm
+4 signed in 19-06-2020 09:11:32pm
+4 add expense 19-06-2020 09:13:44pm
+4 add expense 19-06-2020 09:15:01pm
+4 add expense 19-06-2020 09:23:26pm
+4 add expense 19-06-2020 09:23:44pm
+4 add expense 19-06-2020 09:23:59pm
+4 add expense 19-06-2020 09:24:28pm
+4 add expense 19-06-2020 09:24:49pm
+4 delete expense 19-06-2020 09:25:17pm
+4 edit expense 19-06-2020 09:25:27pm
+4 edit expense 19-06-2020 09:25:44pm
+4 search for expense 19-06-2020 09:34:55pm
+4 add background 19-06-2020 09:35:56pm
+4 delete background 19-06-2020 09:37:01pm
+4 add background 19-06-2020 09:39:20pm
+4 add background 19-06-2020 09:43:44pm
+4 add background 19-06-2020 09:46:10pm
+4 add expense 19-06-2020 09:55:35pm
+4 signed in 19-06-2020 10:24:13pm
+4 signed in 19-06-2020 10:34:01pm
+4 search for expense 19-06-2020 10:49:48pm
+4 search for expense 19-06-2020 10:50:02pm
+4 search for expense 19-06-2020 10:50:03pm
+4 search for expense 19-06-2020 10:50:04pm
+4 search for expense 19-06-2020 10:50:22pm

@@ -20,6 +20,7 @@
         public function open_connection(){
             //1. create database connection
             $this->connection = mysqli_connect(DB_HOST,DB_USER,DB_PASS,DB_NAME);
+            //$this->connection = new mysqli();
 
             if(!$this->connection){
                 die("Database connection failed: ".mysqli_connect_error()
@@ -34,6 +35,7 @@
                 }
             }
         }
+        
         public function free_result($result){
             //4. free database result
             // mysqli_free_result($result) ;
@@ -59,7 +61,7 @@
                 // PHP >= V 4.3.0
                 if($this->magic_quotes_active){
                     $value = stripslashes($value);
-                    $value = mysqli_real_escape_string($value);
+                    $value = mysqli_real_escape_string($value);//to prevent sql injection
                 }
             }else{
                 if(!$this->magic_quotes_active){

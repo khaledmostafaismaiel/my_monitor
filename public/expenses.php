@@ -63,7 +63,7 @@
                         <td class="table-expenses-td"><?php echo $expense->price ?></td>
                         <td class="table-expenses-td"><?php echo ucfirst($expense->category) ?></td>
                         <td class="table-expenses-td"><?php echo $expense->comment ?></td>
-                        <td class="table-expenses-td"><?php echo $expense->created_at ?></td>
+                        <td class="table-expenses-td"><?= date( 'D d-M-Y', strtotime( $expense->created_at ) ) ?></td>
                         
                         <td class="table-expenses-td">
                             <div class="btn-action">
@@ -85,7 +85,6 @@
         </tbody>
     </table>
 </div>
-
 
 <!-- Pagination -->
 <div class="btn-list">

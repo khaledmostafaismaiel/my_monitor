@@ -116,7 +116,6 @@ class Background extends Database_object {
 
 		array_shift($attributes);
 
-
 		$sql  ="INSERT INTO ".self::$table_name ." (";
 		$sql .=join(",",array_keys($attributes)) ;
 		$sql .=") VALUES ('" ;

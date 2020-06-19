@@ -7,7 +7,6 @@ class Background extends Database_object {
 	
 	protected static $table_name="backgrounds";
 	protected static $db_fields=array('id','user_id','file_name', 'type' , 'size', 'caption');
-	protected static $num_db_fields = /*sizeof(self::$db_fields)*/6 ;
 	public $id;
 	public $user_id;
 	public $file_name;

@@ -6,17 +6,15 @@
     if(isset($_POST['submit_sign_in'])){
         //prcess the form
         //escape all strings to prevent sql injection with escaped_value
-        $user_name = strtolower($database->escaped_value($_POST["user_name"])) ;
-        $password = $database->escaped_value($_POST["password"]) ;
-        $remember_me = $_POST["remember_me"] ;
+        $user = new User();
 
-        // $user->user_name = strtolower($database->escaped_value($_POST["user_name"])) ;
-        // $user->hashed_password = $database->escaped_value($_POST["password"]) ;
-        // $remember_me = $_POST["remember_me"] ;
-        // $user->test();
+        $user->user_name = $_POST["user_name"] ;
+        $user->password = $_POST["password"];
+        $user->remember_me = $_POST["remember_me"] ;
         
-        if(user::check_before_sign_in("user_name","password","remember_me")){
+        if($user->check_before_sign_in()){
             //success
+            Log::write_in_log("{$_SESSION['user_id']} signed in ".date("d-m-Y")." ".date("h:i:sa")."\n");
             Helper::redirect_to("index.php?");
         }else{
             //failed
@@ -91,4 +89,4 @@
 
 </div>
 
-<?php include_layout_template("footer.php")?>
+<?php Helper::include_layout_template("footer.php")?>

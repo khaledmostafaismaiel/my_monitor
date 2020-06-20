@@ -38,12 +38,14 @@ class Helper{
         return isset($value) && $value != "" ;
     }
 
-    function validate_has_presence($fields){
+    function validate_has_presence($strings){
         $object = new self ;
-        
-        foreach($fields as $field):
-            $value = trim(htmlentities($_POST[$field])) ;
+        global $errors ;
+
+        foreach($strings as $string):
+            $value = trim($string) ;
             if(! $object->has_presence($value)){
+                $errors[$string] = Helper::field_name_as_text($string)." isn't exist";
                 return false ;
             }
 
@@ -56,15 +58,15 @@ class Helper{
         return strlen($value) <= $max ;
     }
 
-    public static function validate_max_lengths($fields){
+    public static function validate_max_lengths($strings){
         $object = new self ;
         
         global $errors ;
 
-        foreach($fields as $field => $max):
-            $value = trim(htmlentities($_POST[$field])) ;
+        foreach($strings as $string => $max):
+            $value = trim(htmlentities($string)) ;
             if(! $object->has_max_length($value,$max)){
-                $errors[$field] = Helper::field_name_as_text($field)." is to long";
+                $errors[$string] = Helper::field_name_as_text($string)." is to long";
             }
 
         endforeach;
@@ -76,14 +78,14 @@ class Helper{
         return strlen($value) >= $max ;
     }
 
-    public static function validate_min_lengths($fields){
+    public static function validate_min_lengths($strings){
         $object = new self ;
         global $errors ;
 
-        foreach($fields as $field => $max):
-            $value = trim(htmlentities($_POST[$field])) ;
+        foreach($strings as $string => $max):
+            $value = trim(htmlentities($string)) ;
             if(! $object->has_min_length($value,$max)){
-                $errors[$field] = Helper::field_name_as_text($field)." is to short";
+                $errors[$string] = Helper::field_name_as_text($string)." is to short";
             }
 
         endforeach;
@@ -105,6 +107,10 @@ class Helper{
 
 
 
+    public static function include_layout_template($template){
+
+        include(LAYOUTS_PATH.DS.$template);
+    }
 
 
 }
@@ -120,10 +126,7 @@ class Helper{
     ////////////////protected  $this-> ;
     ////////////////static self::  ;
 
-    function include_layout_template($template){
 
-        include(LAYOUTS_PATH.DS.$template);
-    }
 
 
     

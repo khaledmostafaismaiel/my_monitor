@@ -57,10 +57,10 @@
         <header>
             <?php
 
-                include_layout_template("logo.php");
+                Helper::include_layout_template("logo.php");
                 if(($_SERVER["PHP_SELF"] != "/sign_up.php") && ($_SERVER["PHP_SELF"] != "/sign_in.php") && ($_SERVER["PHP_SELF"] != "/sign_in.php") ){
-                    include_layout_template("search_box.php");                    
-                    include_layout_template("navigation.php");
+                    Helper::include_layout_template("search_box.php");                    
+                    Helper::include_layout_template("navigation.php");
 
                 }
                 

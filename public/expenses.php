@@ -23,7 +23,6 @@
 
     $pagination = new Pagination($page_number,$number_of_expenses_per_page,$number_of_expenses);
 
-
     $sql = "SELECT * FROM expenses " ;
     $sql .= " WHERE `created_at` > '{$month}' AND user_id = {$_SESSION['user_id']}  ORDER BY id DESC";
     $sql .= " LIMIT ".$pagination->per_page ;
@@ -135,4 +134,4 @@
     ?>
 
 </div>
-<?php include_layout_template("footer.php")?>
+<?php Helper::include_layout_template("footer.php")?>

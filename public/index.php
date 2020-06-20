@@ -23,4 +23,4 @@
 
 
 
-<?php include_layout_template("footer.php")?>
+<?php Helper::include_layout_template("footer.php")?>

@@ -2,9 +2,32 @@
     require_once("../includes/initialize.php");
 
     if(isset($_POST['submit_sign_up'])){
-        user::check_before_sign_up("first_name","second_name",
-            "email","password","confirm_password","not_robot","terms_of_conditions");
-        Helper::redirect_to("sign_in.php");
+        $user = new User();
+
+        $user->first_name = $_POST['first_name'] ;
+        $user->second_name = $_POST['second_name'] ;
+        $user->user_name = $_POST['email'] ;
+        $user->password = $_POST['password'] ;
+        $user->confirm_password = $_POST['confirm_password'] ;
+        $user->not_robot = $_POST['not_robot'] ;
+        $user->terms_of_conditions = $_POST['terms_of_conditions'] ;
+
+
+        if($user->check_before_sign_up() && $user->save() ){
+            
+            //Success
+            $_SESSION["message"] = "Success";
+
+            $message = $user->full_name() ;
+            try_to_send_mail($message);
+            
+            Helper::redirect_to("sign_in.php?");
+        }else{
+            //fail
+            $_SESSION["message"] = "Try Again";
+            Helper::redirect_to("sign_up.php") ;
+        }
+
     }else{
         //this is probably $_GET request
         //i will check if user is active or not
@@ -91,4 +114,4 @@
 </form>
 
 
-<?php include_layout_template("footer.php")?>
+<?php Helper::include_layout_template("footer.php")?>

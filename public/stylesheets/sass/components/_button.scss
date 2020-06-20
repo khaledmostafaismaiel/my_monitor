@@ -18,9 +18,14 @@
         margin: 0rem 0rem  5rem 5rem;
 
         position: absolute;
-        left: 37rem;
+        left: 7rem;
         bottom: 4rem;
 
+        &-back {
+
+
+
+        }
         &-page_number{
 
             font-size: 3rem;
@@ -31,19 +36,45 @@
 
             &-selected{
                 color: white;
-                background-color: rgba(245, 222, 179,.4);
+                background-color: red;
                 padding: .5rem;
                 font-weight: bold;
                 font-size: 3.5rem;
+                &-min{
+                    background-color: darkgreen;
+                    padding: .5rem 1.5rem;
 
+                }
+                &-max{
+                    background-color: darkgreen;
+                    padding: .5rem 1rem;
+
+                }
 
             }
 
             &-link{
-                color: gold;
+                color: black;
                 padding: .5rem;
+                background-color: darkgreen;
 
+                &-min{
+                    background-color: darkgreen;
+                    padding: .5rem 1.5rem;
+
+                }
+                &-max{
+                    background-color: darkgreen;
+                    padding: .5rem 1.5rem;
+
+                }
             }
+
+        }
+
+        &-next {
+            position: absolute;
+            right: -10rem;
 
         }
     }
@@ -65,7 +96,7 @@
 
             &:hover{
                 background-color: rgba(245, 222, 179,.4);
-    
+
             }
 
         }
@@ -82,13 +113,13 @@
 
             &:hover{
                 background-color: rgba(245, 222, 179,.4);
-    
+
             }
 
         }
 
 
- 
+
 
     }
     &:hover{

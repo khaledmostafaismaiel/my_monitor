@@ -182,7 +182,7 @@ legend {
   .btn-list {
     margin: 0rem 0rem  5rem 5rem;
     position: absolute;
-    left: 37rem;
+    left: 7rem;
     bottom: 4rem; }
     .btn-list-page_number {
       font-size: 3rem;
@@ -191,13 +191,29 @@ legend {
       text-align: center; }
       .btn-list-page_number-selected {
         color: white;
-        background-color: rgba(245, 222, 179, 0.4);
+        background-color: red;
         padding: .5rem;
         font-weight: bold;
         font-size: 3.5rem; }
+        .btn-list-page_number-selected-min {
+          background-color: darkgreen;
+          padding: .5rem 1.5rem; }
+        .btn-list-page_number-selected-max {
+          background-color: darkgreen;
+          padding: .5rem 1rem; }
       .btn-list-page_number-link {
-        color: gold;
-        padding: .5rem; }
+        color: black;
+        padding: .5rem;
+        background-color: darkgreen; }
+        .btn-list-page_number-link-min {
+          background-color: darkgreen;
+          padding: .5rem 1.5rem; }
+        .btn-list-page_number-link-max {
+          background-color: darkgreen;
+          padding: .5rem 1.5rem; }
+    .btn-list-next {
+      position: absolute;
+      right: -10rem; }
   .btn-action {
     position: relative;
     text-align: center; }

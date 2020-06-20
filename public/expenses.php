@@ -105,25 +105,34 @@
     ?>
 
     <span class="btn-list-page_number">
-        <?php 
-            for($i=1;$i <= $pagination->total_pages();$i++){ 
+        <?php
+            if($pagination->min_limit != 1){
+                echo "<span class=\"btn-list-page_number-selected-min\">1</span>" ;
+                echo "<span class=\"btn-list-page_number-link-min\">...</span>" ;
+            }
+            for($i=$pagination->min_limit ;$i <= $pagination->max_limit;$i++){
                 if($i == $pagination->current_page()){
                     echo "<span class=\"btn-list-page_number-selected\">{$i}</span>" ;
                 }else{
                     echo "<a href=\"?pagenumber={$i}\"  class=\"btn-list-page_number-link\">{$i}</a>" ;
                 }
             }
+            if($pagination->max_limit != $pagination->total_pages()){
+                echo "<span class=\"btn-list-page_number-link-max\">...</span>" ;
+                echo "<span class=\"btn-list-page_number-selected-max\">{$pagination->total_pages()}</span>" ;
+            }
+
         ?>
     </span>
-    
-    
+
+
     <?php
         echo "<a";
         if($pagination->has_next_page()){
             echo " href=\"" ;
             echo " ?pagenumber=" ;
             echo  "{$pagination->next_page()}"  ;
-            echo "\"" ; 
+            echo "\"" ;
         }else{
             echo " href=\"?pagenumber={$pagination->current_page()}\"" ;
         }

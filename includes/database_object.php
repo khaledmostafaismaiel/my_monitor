@@ -15,7 +15,7 @@
     	public static function find_by_id($id=0){
             global $database ;
     
-            $result_array = self::find_by_sql("SELECT * FROM ".static::$table_name ." WHERE id={$database->escaped_value($id)} AND user_id = {$_SESSION['user_id']} LIMIT 1");
+            $result_array = self::find_by_sql("SELECT * FROM ".static::$table_name ." WHERE id={$database->sql_sanitize($id)} AND user_id = {$_SESSION['user_id']} LIMIT 1");
         
             return !empty($result_array)? array_shift($result_array) : false;
         }
@@ -95,7 +95,7 @@
 
             $sql  ="UPDATE " .static::$table_name ." SET " ;
             $sql .=join(", ",$attribute_pairs);
-            $sql .=" WHERE id=" .$database->escaped_value($this->id) ;
+            $sql .=" WHERE id=" .$database->sql_sanitize($this->id) ;
             $sql .=" LIMIT 1" ;
 
 
@@ -111,7 +111,7 @@
             global $database ;
             $clean_attributes = array();
             foreach($this->attrributes() as $key=>$value):
-                $clean_attributes[$key] = $database->escaped_value($value);
+                $clean_attributes[$key] = $database->sql_sanitize($value);
             endforeach;
             return $clean_attributes ;
         }
@@ -152,7 +152,7 @@
             //- user LIMIT 1
     
             $sql = "DELETE FROM ".static::$table_name ;
-            $sql .= " WHERE id =".$database->escaped_value($this->id) ;
+            $sql .= " WHERE id =".$database->sql_sanitize($this->id) ;
             $sql .= " AND user_id = {$_SESSION['user_id']}"  ;
             $sql .= " LIMIT 1" ;
         

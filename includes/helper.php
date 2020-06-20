@@ -4,6 +4,7 @@
 $errors = array();   
 
 
+
 class Helper{
 
 
@@ -15,9 +16,9 @@ class Helper{
     }
 
     public static function get_from_url($string){
-
+        global $database;
 		if(isset($_GET[$string])){
-			$value = htmlentities($_GET[$string]) ;
+			$value = $database->html_sanitize($database->sql_sanitize($_GET[$string])) ;
 		}else{
 			$value = null;
 		}

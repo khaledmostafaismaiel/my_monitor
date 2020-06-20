@@ -5,7 +5,7 @@
     
     if(isset($_POST['submit_sign_in'])){
         //prcess the form
-        //escape all strings to prevent sql injection with escaped_value
+        //escape all strings to prevent sql injection with sql_sanitize
         $user = new User();
 
         $user->user_name = $_POST["user_name"] ;

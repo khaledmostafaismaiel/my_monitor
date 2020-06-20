@@ -53,17 +53,17 @@
 
                     <tr class="table-backgrounds-body-raw">
 
-                        <td class="table-backgrounds-td"><img src="<?php echo "../uploads/".$background->file_name /*$background->get_uploads_path()*/?>/jpg;base64" width="80" alt="<?php echo$background->file_name?>"></td>
-                        <td class="table-backgrounds-td"><?php echo $background->file_name?></td>
-                        <td class="table-backgrounds-td"><?php echo $background->caption?></td>
-                        <td class="table-backgrounds-td"><?php echo $background->get_size_text()?></td>
-                        <td class="table-backgrounds-td"><?php echo $background->type?></td>
+                        <td class="table-backgrounds-td"><img src="<?php echo "../uploads/".$database->html_sanitize($background->file_name) /*$background->get_uploads_path()*/?>/jpg;base64" width="80" alt="<?php echo $database->html_sanitize($background->file_name)?>"></td>
+                        <td class="table-backgrounds-td"><?php echo $database->html_sanitize($background->file_name)?></td>
+                        <td class="table-backgrounds-td"><?php echo $database->html_sanitize($background->caption)?></td>
+                        <td class="table-backgrounds-td"><?php echo $database->html_sanitize($background->get_size_text())?></td>
+                        <td class="table-backgrounds-td"><?php echo $database->html_sanitize($background->type)?></td>
                         
                         <td class="table-backgrounds-td">
                             <div class="btn-action">
-                                    <a class= "btn-action-edit" href="set_background.php?id=<?php echo $background->id?>"  value="set">
+                                    <a class= "btn-action-edit" href="set_background.php?id=<?php echo $database->encode_url($background->id)?>"  value="set">
                                             <img src="images/set.png" class="btn-action-edit-image" alt="set"></a>
-                                    <a class= "btn-action-delete" href="delete_background.php?id=<?php echo $background->id?>"  value="delete" onclick="return confirm('Are you sure?');">
+                                    <a class= "btn-action-delete" href="delete_background.php?id=<?php echo $database->encode_url($background->id)?>"  value="delete" onclick="return confirm('Are you sure?');">
                                         <img src="images/delete.png" class="btn-action-delete-image" alt="delete"></a>
                                     </a>
                             </div>

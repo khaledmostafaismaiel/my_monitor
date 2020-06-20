@@ -6,17 +6,17 @@
     <p class="money_spent-first_line">
         Hi,<span class = "money_spent-first_line-user_name">
                 <?php
-                    echo $_SESSION["first_name"];
+                    echo $database->html_sanitize($_SESSION["first_name"]);
                 ?>
             </span> you spent 
     </p>
 
     <p class="money_spent-second_line">
-        <?php echo Expense::get_all_month_prices()? :0 ?> E£
+        <?php echo $database->html_sanitize(Expense::get_all_month_prices()? :0) ?> E£
     </p>
     
     <p class="money_spent-third_line">
-        <?php echo date("1/n/Y")?><span class = "money_spent-first_line-user_name"> TO </span><?php echo date("j/n/Y",strtotime("today")) ?>
+        <?php echo $database->html_sanitize(date("1/n/Y"))?><span class = "money_spent-first_line-user_name"> TO </span><?php echo $database->html_sanitize(date("j/n/Y",strtotime("today"))) ?>
     </p>                
 </div>
 

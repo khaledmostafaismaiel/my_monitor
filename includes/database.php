@@ -55,7 +55,7 @@
             return $this->connection ;
         }
 
-        public function escaped_value($value){
+        public function sql_sanitize($value){
             
             if($this->real_escape_string_exists){
                 // PHP >= V 4.3.0
@@ -72,6 +72,20 @@
             return $value ;
         }
 
+        public function html_sanitize($string){
+                        
+            return $string = htmlentities($string) ;
+        }
+
+        public function encode_url($string){
+                        
+            return $string = urlencode($string) ;
+        }
+
+        public function decode_url($string){
+                        
+            return $string = urldecode($string) ;
+        }
 
         public function query($sql_query){
             //$this->$last_query =$sql_query;

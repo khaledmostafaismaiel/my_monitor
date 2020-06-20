@@ -77,14 +77,14 @@ class Expense extends Database_object{
 		global $database ;
 
 		if($this->expense_name != null){
-			$this->expense_name = strtolower($database->escaped_value($this->expense_name));
+			$this->expense_name = strtolower($database->sql_sanitize($this->expense_name));
 
 		}else{
 			return false ;
 		}
 
 		if($this->price != null){
-			$this->price = (float)$database->escaped_value($this->price);
+			$this->price = (float)$database->sql_sanitize($this->price);
 
 		}else{
 			return false ;
@@ -92,7 +92,7 @@ class Expense extends Database_object{
 		}
 
 		if($this->category != null){
-			$this->category = $database->escaped_value($this->category);
+			$this->category = $database->sql_sanitize($this->category);
 
 		}else{
 			return false ;
@@ -100,14 +100,14 @@ class Expense extends Database_object{
 		}
 
 		if($this->comment != null){
-			$this->comment = strtolower($database->escaped_value($this->comment));
+			$this->comment = strtolower($database->sql_sanitize($this->comment));
 	
 		}else{
 
 		}
 		
         if($this->created_at != null){
-            $this->created_at = escaped_value($this->created_at) ;
+            $this->created_at = sql_sanitize($this->created_at) ;
 
         }else{
             $this->created_at = date("Y-m-d H:i:s") ;

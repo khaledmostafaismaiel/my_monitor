@@ -37,7 +37,7 @@
         public static function find_by_id($id=0){
             global $database ;
     
-            $result_array = self::find_by_sql("SELECT * FROM ".self::$table_name ." WHERE id={$database->escaped_value($id)} LIMIT 1");
+            $result_array = self::find_by_sql("SELECT * FROM ".self::$table_name ." WHERE id={$database->sql_sanitize($id)} LIMIT 1");
         
             return !empty($result_array)? array_shift($result_array) : false;
         }
@@ -48,13 +48,13 @@
             global $database ;
             global $errors ;
 
-            $this->first_name = strtolower($database->escaped_value($this->first_name));
-            $this->second_name = strtolower($database->escaped_value($this->second_name));
-            $this->user_name = strtolower($database->escaped_value($this->user_name));
-            $this->password = $database->escaped_value($this->password);
-            $this->confirm_password = $database->escaped_value($this->confirm_password);
-            $this->not_robot = $database->escaped_value($this->not_robot);
-            $this->terms_of_conditions = $database->escaped_value($this->terms_of_conditions);
+            $this->first_name = strtolower($database->sql_sanitize($this->first_name));
+            $this->second_name = strtolower($database->sql_sanitize($this->second_name));
+            $this->user_name = strtolower($database->sql_sanitize($this->user_name));
+            $this->password = $database->sql_sanitize($this->password);
+            $this->confirm_password = $database->sql_sanitize($this->confirm_password);
+            $this->not_robot = $database->sql_sanitize($this->not_robot);
+            $this->terms_of_conditions = $database->sql_sanitize($this->terms_of_conditions);
 
 
             Helper::validate_has_presence(array($this->first_name ,$this->second_name ,
@@ -111,8 +111,8 @@
 
             $object = new self;
 
-            $this->user_name = strtolower($database->escaped_value($this->user_name));
-            $this->password = $database->escaped_value($this->password);
+            $this->user_name = strtolower($database->sql_sanitize($this->user_name));
+            $this->password = $database->sql_sanitize($this->password);
 
             $this->hashed_password = password_hash($this->password,PASSWORD_BCRYPT,['cost=>10']) ;
 

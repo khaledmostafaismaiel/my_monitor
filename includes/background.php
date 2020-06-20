@@ -33,6 +33,8 @@ class Background extends Database_object {
 
 	// Pass in $_FILE(['uploaded_file']) as an argument
     public function attach_file($file) {
+		global $database ;
+
 		// Perform error checking on the form parameters
 		if(!$file || empty($file) || !is_array($file)) {
 		  // error: nothing uploaded or wrong argument usage
@@ -46,10 +48,10 @@ class Background extends Database_object {
 
 		} else {
 			// Set object attributes to the form parameters.
-		  $this->temp_path  = $file['tmp_name'];
-		  $this->file_name   = basename($file['name']);
-		  $this->type       = $file['type'];
-		  $this->size       = $file['size'];
+		  $this->temp_path  = $database->sql_sanitize($file['tmp_name']);
+		  $this->file_name   = strtolower($database->sql_sanitize(basename($file['name'])));
+		  $this->type       = strtolower($database->sql_sanitize($file['type']));
+		  $this->size       = $database->sql_sanitize($file['size']);
 			// Don't worry about saving anything to the database yet.
 			return true;
 		}
@@ -150,7 +152,7 @@ class Background extends Database_object {
 		global $database ;
 
 		if($this->caption != null){
-			$this->caption = $database->escaped_value($this->caption);
+			$this->caption = $database->sql_sanitize($this->caption);
 	        return  true  ; 
 
 		}else{

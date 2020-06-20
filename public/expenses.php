@@ -58,17 +58,17 @@
             ?>
                     <tr class="table-expenses-body-raw">
 
-                        <td class="table-expenses-td"><?php echo $expense->expense_name ?></td>
-                        <td class="table-expenses-td"><?php echo $expense->price ?></td>
-                        <td class="table-expenses-td"><?php echo ucfirst($expense->category) ?></td>
-                        <td class="table-expenses-td"><?php echo $expense->comment ?></td>
-                        <td class="table-expenses-td"><?= date( 'D d-M-Y', strtotime( $expense->created_at ) ) ?></td>
+                        <td class="table-expenses-td"><?php echo $database->html_sanitize($expense->expense_name) ?></td>
+                        <td class="table-expenses-td"><?php echo $database->html_sanitize($expense->price)?></td>
+                        <td class="table-expenses-td"><?php echo ucfirst($database->html_sanitize($expense->category)) ?></td>
+                        <td class="table-expenses-td"><?php echo $database->html_sanitize($expense->comment) ?></td>
+                        <td class="table-expenses-td"><?= $database->html_sanitize(date( 'D d-M-Y', strtotime( $expense->created_at ) )) ?></td>
                         
                         <td class="table-expenses-td">
                             <div class="btn-action">
-                                    <a class= "btn-action-edit" href="edit_expense.php?expenseid=<?php echo $expense->id ?>"  value="edit">
+                                    <a class= "btn-action-edit" href="edit_expense.php?expenseid=<?php echo $database->encode_url($expense->id) ?>"  value="edit">
                                             <img src="images/edit.png" class="btn-action-edit-image" alt="edit"></a>
-                                    <a class= "btn-action-delete" href="delete_expense.php?expenseid=<?php echo $expense->id ?>"  value="delete" onclick="return confirm('Are you sure?');">
+                                    <a class= "btn-action-delete" href="delete_expense.php?expenseid=<?php echo $database->encode_url($expense->id) ?>"  value="delete" onclick="return confirm('Are you sure?');">
                                         <img src="images/delete.png" class="btn-action-delete-image" alt="delete"></a>
                                     </a>
                             </div>

@@ -58,13 +58,13 @@
         <div class="form_edit_expense-name">
             <label>Name:</label> 
 
-            <input type="text" name="expense_name" value="<?php echo $expense_data->expense_name?>" placeholder="Expense Name ?">  
+            <input type="text" name="expense_name" value="<?php echo $database->html_sanitize($expense_data->expense_name)?>" placeholder="Expense Name ?">  
         </div>
 
         <div class="form_edit_expense-price">
             <label>Price:</label> 
 
-            <input type="text" name="price" value="<?php echo $expense_data->price?>" placeholder="Expense Price ?">  
+            <input type="text" name="price" value="<?php echo $database->html_sanitize($expense_data->price)?>" placeholder="Expense Price ?">  
         </div>
 
         <div class="form_edit_expense-category">
@@ -78,7 +78,7 @@
                                 $out_put .= "selected" ;
                             }
                         $out_put .= ">" ;
-                        $out_put .= ucfirst($category->category_name) ;
+                        $out_put .= $database->html_sanitize(ucfirst($category->category_name)) ;
                         $out_put .= "</option>" ;                        
                         echo $out_put ;
                     endforeach;
@@ -89,12 +89,12 @@
 
         <div class="form_edit_expense-comment">
             <label>Comment:</label> 
-            <textarea id="" cols="20" name="comment" value="" rows="3" placeholder="Like,place..."><?php echo $expense_data->comment?></textarea>
+            <textarea id="" cols="20" name="comment" value="" rows="3" placeholder="Like,place..."><?php echo $database->html_sanitize($expense_data->comment)?></textarea>
         </div>
 
         <div class="form_edit_expense-date">
             <label>Date:</label> 
-            <input name="created_at" type="date" value="<?= date( 'Y-m-d', strtotime( $expense_data->created_at ) ) ?>">  
+            <input name="created_at" type="date" value="<?= date( 'Y-m-d', strtotime( $database->html_sanitize($expense_data->created_at) ) ) ?>">  
         </div>
 
 

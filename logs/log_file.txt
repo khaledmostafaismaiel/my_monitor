@@ -508,3 +508,17 @@
 1 signed in 20-06-2020 05:43:20pm
 1 signed in 20-06-2020 05:54:53pm
 1 signed in 20-06-2020 06:00:28pm
+1 edit expense 20-06-2020 06:57:32pm
+1 delete expense 20-06-2020 06:57:40pm
+1 search for expense 20-06-2020 07:01:22pm
+1 search for expense 20-06-2020 07:01:27pm
+1 search for expense 20-06-2020 07:01:30pm
+1 search for expense 20-06-2020 07:01:30pm
+1 search for expense 20-06-2020 07:01:49pm
+1 search for expense 20-06-2020 07:01:49pm
+1 search for expense 20-06-2020 07:01:54pm
+1 search for expense 20-06-2020 07:01:56pm
+1 search for expense 20-06-2020 07:01:57pm
+1 search for expense 20-06-2020 07:02:31pm
+1 search for expense 20-06-2020 07:02:35pm
+1 signed in 20-06-2020 07:11:25pm

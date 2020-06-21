@@ -50,13 +50,13 @@
         }
 
         private function limits(){
-            if($this->current_page() <= 3){
+            if($this->current_page() <= $this->number_of_numbers_per_side ){
                 $this->min_limit = 1 ;
             }else{
                 $this->min_limit = $this->current_page() - $this->number_of_numbers_per_side ;
             }
 
-            if(( $this->total_pages() - 2 ) < $this->current_page()){
+            if(( $this->total_pages() - $this->number_of_numbers_per_side ) < $this->current_page()){
                 $this->max_limit = $this->total_pages();
             }else{
                 $this->max_limit = $this->current_page() + $this->number_of_numbers_per_side;

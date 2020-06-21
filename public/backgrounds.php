@@ -102,7 +102,9 @@
         <?php
         if($pagination->min_limit != 1){
             echo "<span class=\"btn-list-page_number-selected-min\">1</span>" ;
-            echo "<span class=\"btn-list-page_number-link-min\">...</span>" ;
+            if($pagination->current_page() != 3){
+                echo "<span class=\"btn-list-page_number-link-min\">...</span>" ;
+            }
         }
         for($i=$pagination->min_limit ;$i <= $pagination->max_limit;$i++){
             if($i == $pagination->current_page()){
@@ -112,7 +114,9 @@
             }
         }
         if($pagination->max_limit != $pagination->total_pages()){
-            echo "<span class=\"btn-list-page_number-link-max\">...</span>" ;
+            if( ($pagination->current_page()+2)  != ($pagination->total_pages()) ){
+                echo "<span class=\"btn-list-page_number-link-max\">...</span>" ;
+            }
             echo "<span class=\"btn-list-page_number-selected-max\">{$pagination->total_pages()}</span>" ;
         }
 

@@ -55,6 +55,10 @@
         </div>
 
         <header>
+            @include('layouts/logo')
+            @include('layouts/search_box')
+            @include('layouts/navigation')
+
             <?php
 //
 //                Helper::include_layout_template("logo.php");
@@ -68,5 +72,4 @@
 //
 //                echo session::session_message();
             ?>
-
         </header>

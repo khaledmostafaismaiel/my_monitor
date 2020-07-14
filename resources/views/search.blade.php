@@ -66,7 +66,10 @@
 //                if($expenses_set != null){
 //                    foreach($expenses_set as $expense):
 //
+
             ?>
+
+
 
                     <tr class="table-expenses-body-raw">
 
@@ -91,6 +94,8 @@
 //                    endforeach;
 //                }
                 ?>
+
+
 
         </tbody>
     </table>

@@ -14,12 +14,12 @@ class CreateExpensesTable extends Migration
     public function up()
     {
         Schema::create('expenses', function (Blueprint $table) {
-            $table->id();
-            $table->integer('user_id');
+            $table->id()->autoIncrement()->unsigned();
+            $table->unsignedInteger('user_id')->nullable();
             $table->string('expense_name');
             $table->float('price');
             $table->string('category');
-            $table->text('comment');
+            $table->text('comment')->nullable();
             $table->timestamps();
         });
     }

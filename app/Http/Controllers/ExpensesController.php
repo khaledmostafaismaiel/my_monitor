@@ -8,7 +8,7 @@ use App\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 
-
+use App\User ;
 
 class ExpensesController extends Controller
 {
@@ -19,8 +19,8 @@ class ExpensesController extends Controller
      */
     public function index()
     {
-        $expenses = Expense::all() ;
-
+//        $expenses = Expense::all() ;
+        $expenses = User::first()->expenses ;
         return view('expenses' ,compact('expenses'));
     }
 
@@ -31,7 +31,9 @@ class ExpensesController extends Controller
      */
     public function create()
     {
-        return view('add_expense');
+        $category_set = Category::all();
+
+        return view('add_expense',compact('category_set'));
     }
 
     /**
@@ -42,7 +44,43 @@ class ExpensesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $valid = request()->validate(
+            [
+           'expense_name'=> ['required'] ,
+            'price'=> ['required' ] ,
+            'category'=> ['required' ] ,
+//            'password'=> ['required' , 'confirmed'] ,
+
+           ]
+        );
+        Expense::create(request([
+            'user_id'=> '1' ,
+            'expense_name'=> request('expense_name') ,
+            'price'=> request('price') ,
+            'category'=> request('category') ,
+            'comment'=> request('comment') ,
+            'created_at'=> request('created_at')
+        ]));
+
+//        Expense::create([
+//           'user_id'=> '1' ,
+//           'expense_name'=> request('expense_name') ,
+//            'price'=> request('price') ,
+//            'category'=> request('category') ,
+//            'comment'=> request('comment') ,
+//            'created_at'=> request('created_at')
+//        ]);
+//        Expense::create(request([
+//            'user_id',
+//            'expense_name' ,
+//            'price' ,
+//            'category' ,
+//            'comment' ,
+//            'created_at'
+//        ]));
+        //Expense::create(request()->all())
+        return redirect('/expenses/create');
     }
 
     /**
@@ -62,9 +100,10 @@ class ExpensesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(/*$id*/ Expense $expense)
     {
-        $expense = Expense::findOrfail($id);
+
+//        $expense = Expense::findOrfail($id);
         $category_set = Category::all();
         return view('edit_expense',compact('expense','category_set'));
     }
@@ -87,7 +126,7 @@ class ExpensesController extends Controller
         $expense->created_at = request('created_at')  ;
         $expense->updated_at = date("Y-m-d h:i:s");
 
-        $expense->save();
+        $expense->update();
 
         return redirect('/expenses');
     }
@@ -102,11 +141,17 @@ class ExpensesController extends Controller
     {
     }
 
-    public function delete($id)
+    public function delete(/*$id*/Expense $expense)
     {
-        Expense::findOrfail($id)->delete();
-
+        $expense->delete();
+//        Expense::findOrfail($id)->delete();
         return redirect('/expenses');
     }
 
+    public function search()
+    {
+        $search_for = request('search') ;
+        return redirect('/expenses');
+
+    }
 }

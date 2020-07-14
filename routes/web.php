@@ -33,6 +33,8 @@ Route::get('/delete_background', function () {
 
 Route::resource('/expenses', 'ExpensesController');
 Route::get('/expenses/{expense_id}/delete', 'ExpensesController@delete' ) ;
+Route::POST('/expenses/search/search', 'ExpensesController@search' ) ;
+
 
 //Route::resource('/backgrounds', 'BackgroundsController');
 
@@ -42,10 +44,6 @@ Route::get('/index', function () {
 
 Route::get('/not_available', function () {
     return view('not_available');
-});
-
-Route::get('/search', function () {
-    return view('search');
 });
 
 Route::get('/set_background', function () {
@@ -76,13 +74,13 @@ Route::post('/sign_up/create', 'UsersController@store');
     DELETE /projects/1 (destroy)
 
 
-    Route::get('/projects', 'UsersController@index');
-    Route::get('/projects/create', 'UsersController@create');
-    Route::get('/projects/{project_id}', 'UsersController@show');
-    Route::post('/projects', 'UsersController@store');
-    Route::get('/projects/{project_id}/edit', 'UsersController@edit');
-    Route::patch('/projects/{project_id}', 'UsersController@update');
-    Route::delete('/projects/{project_id}', 'UsersController@destroy');
+    Route::get('/projects', 'UsersController@index');//GET/expenses
+    Route::get('/projects/create', 'UsersController@create');//GET/add_expense
+    Route::get('/projects/{project_id}', 'UsersController@show');//GET/specific expense
+    Route::post('/projects', 'UsersController@store');//POST/add_expense form
+    Route::get('/projects/{project_id}/edit', 'UsersController@edit');//GET/edit_expense
+    Route::patch('/projects/{project_id}', 'UsersController@update');//PATCH/edit_expense form
+    Route::delete('/projects/{project_id}', 'UsersController@destroy');//DELETE/specific expense form
                     ==
     Route::resource('projects','UsersController')
 */

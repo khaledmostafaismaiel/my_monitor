@@ -53,7 +53,7 @@
             <label for="first_name" >
                 First Name:
             </label>
-            <input name="first_name" type="text" value=""  placeholder="Enter Your First Name">
+            <input name="first_name" type="text" value=""  placeholder="Enter Your First Name" required>
         </div>
 
 
@@ -61,7 +61,7 @@
             <label for="second_name" >
                 Second Name:
             </label>
-            <input name = "second_name" type="text"  value=""  placeholder="Enter Your Second Name">
+            <input name = "second_name" type="text"  value=""  placeholder="Enter Your Second Name" required>
 
         </div>
 
@@ -70,7 +70,7 @@
             <label for="email" >
                     Email:
             </label>
-            <input name="email" type="text" value=""   placeholder="Enter Your E_mail">
+            <input name="email" type="text" value=""   placeholder="Enter Your E_mail" required>
         </div>
 
 
@@ -78,7 +78,7 @@
             <label for="password" >
                 Password:
             </label>
-            <input name="password"  type="password"   value=""  placeholder="Enter Your Password">
+            <input name="password"  type="password"   value=""  placeholder="Enter Your Password" required>
         </div>
 
 
@@ -86,7 +86,7 @@
             <label for="confirm_password" >
                 Confirm Password:
             </label>
-            <input name="confirm_password" type="password"   value="" placeholder="Confirm Your Password">
+            <input name="password_confirmation" type="password"   value="" placeholder="Confirm Your Password" required>
         </div>
 
 
@@ -94,7 +94,7 @@
             <label for="not_robot" >
                 I'm not robot.
             </label>
-            <input name="not_robot" value="1" type="checkbox">
+            <input name="not_robot" value="1" type="checkbox" required>
         </div>
 
 
@@ -102,7 +102,7 @@
             <label for="terms_of_conditions" >
                 <span>I agree with all terms of conditions.</span>
             </label>
-            <input name="terms_of_conditions" value= "1"  type="checkbox">
+            <input name="terms_of_conditions" value= "1"  type="checkbox" required>
         </div>
 
 

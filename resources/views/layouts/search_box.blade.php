@@ -1,5 +1,5 @@
-<form action="search.php?pagenumber=1" method="post">
-
+<form action="/expenses/search/search" method="post">
+    {{csrf_field()}}
     <div class="search_box">
         <input class="search_box-text" type="text" name="search" placeholder="search">
         <img src="images/search.png"  class="search_box-img"></i>

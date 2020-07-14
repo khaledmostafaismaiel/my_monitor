@@ -15,7 +15,7 @@ class CreateBackgroundsTable extends Migration
     {
         Schema::create('backgrounds', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id');
+            $table->unsignedInteger('user_id');
             $table->string('file_name');
             $table->string('type');
             $table->float('size');

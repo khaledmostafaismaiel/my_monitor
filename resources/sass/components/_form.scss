@@ -1,0 +1,346 @@
+.form{
+
+
+
+
+    &-sign_in{
+
+        color: black;
+        background-color: rgba(245, 222, 179,.4);
+        border-radius: 2rem;
+
+        height: 55%;
+        width: 30%;
+    
+        padding: 2rem;
+        
+    
+        position: absolute;
+        top: 15rem;
+        left: 45rem;
+    
+        font-size: 2rem;
+        
+        text-align: center;
+    }
+
+
+
+    &_add_expense{
+
+        
+        color: black;
+        background-color: rgba(245, 222, 179,.4);
+        border-radius: 2rem;
+
+        width: 30%;
+    
+        position: relative;
+        top: 7rem;
+        left: 42rem;
+    
+        margin: 2rem;
+        padding: 2rem 4rem 8rem 4rem;
+    
+    
+        font-size: 2rem;
+
+        &-name{
+            position: relative;
+            top: -2rem;
+            left: 1rem;
+        
+            padding: 1rem;
+        }
+    
+        &-price{
+            position: relative;
+            left: 1.6rem;
+            top: -2rem;
+        
+            padding: 1rem;
+        }
+        
+        &-category{    
+            padding: 1rem;
+        
+            position: relative;
+            left: -3rem;
+            top: -2rem;
+
+        }
+        
+        &-category-menu{
+            position: relative;
+            left: 1rem;
+            top: 0rem;
+
+        
+            width: 18rem;    
+            text-align: center;
+        }
+        
+        &-comment{
+            padding: 1rem;
+        
+            position: relative;
+            left: -2.5rem;
+            top: -2rem;
+
+        }
+        
+        &-date{
+            padding: 1rem;
+        
+            position: relative;
+            left: 1.9rem;
+            top: -2rem;
+
+        }
+    
+        &-cancel{
+            position: absolute;
+            top: 36rem;
+            left: 2rem;
+            
+        }
+        
+        &-submit{
+            text-align: center;
+            padding: 1rem;
+        
+            position: absolute;
+            top: 35rem;
+            left: 22rem;       
+        } 
+    }
+    
+    &_edit_expense{
+
+        
+        color: black;
+        background-color: rgba(245, 222, 179,.4);
+        border-radius: 2rem;
+
+        width: 30%;
+    
+        position: relative;
+        top: 7rem;
+        left: 42rem;
+    
+        margin: 2rem;
+        padding: 2rem 4rem 8rem 4rem;
+    
+    
+        font-size: 2rem;
+
+        &-name{
+            position: relative;
+            top: -2rem;
+            left: 1rem;
+        
+            padding: 1rem;
+        }
+    
+        &-price{
+            position: relative;
+            left: 1.6rem;
+            top: -2rem;
+        
+            padding: 1rem;
+        }
+        
+        &-category{    
+            padding: 1rem;
+        
+            position: relative;
+            left: -3rem;
+            top: -2rem;
+
+        }
+        
+        &-category-menu{
+            position: relative;
+            left: 1rem;
+            top: 0rem;
+
+        
+            width: 18rem;    
+            text-align: center;
+        }
+        
+        &-comment{
+            padding: 1rem;
+        
+            position: relative;
+            left: -2.5rem;
+            top: -2rem;
+
+        }
+        
+        &-date{
+            padding: 1rem;
+        
+            position: relative;
+            left: 1.9rem;
+            top: -2rem;
+
+        }
+    
+        &-cancel{
+            position: absolute;
+            top: 36rem;
+            left: 2rem;
+            
+        }
+        
+        &-submit{
+            text-align: center;
+            padding: 1rem;
+        
+            position: absolute;
+            top: 35rem;
+            left: 22rem;       
+        } 
+    }
+    
+
+    &-sign_up{
+        color: black;
+        background-color: rgba(245, 222, 179,.4);
+        border-radius: 2rem;
+
+        height: 40rem;
+        width: 80rem;
+    
+        
+        font-size: 2rem;
+    
+        position: relative;
+        top: 10rem;
+        left: 25rem;
+
+        
+
+
+        &-first_name{
+
+            position: absolute;
+            left: 9.5rem;
+            top: 7rem;
+        }
+
+        &-second_name{
+    
+            position: absolute;
+            left: 44rem;
+            top: 7rem;
+
+        }
+        
+        &-email{
+        
+            position: absolute;
+            left: 14.3rem;
+            top: 11rem;
+
+        }
+        
+        &-password{
+
+            position: absolute;
+            left: 10.5rem;
+            top: 15rem;
+        }
+        
+        &-confirm_password{
+        
+            position: absolute;
+            left: 3rem;
+            top: 19rem;
+        
+        }
+
+        &-not_robot{
+            position: absolute;
+            left: 30rem;
+            top: 23rem;
+
+        }
+
+        &-terms_of_conditions{
+
+            
+            position: absolute;
+            left: 20rem;
+            top: 27rem;
+        }
+
+        &-submit{
+
+            position: absolute;
+            left: 30rem;
+            top: 31rem;
+            
+        }
+
+
+
+    }
+
+
+
+    &-add_back_ground{
+
+        color: black;
+        background-color: rgba(245, 222, 179,.4);
+        border-radius: 2rem;
+
+        height: 35rem;
+        width: 40rem;
+    
+        
+        font-size: 2rem;
+    
+        position: relative;
+        top: 13rem;
+        left: 45rem;
+
+
+        &-choose_file{
+
+            position: absolute;
+            top: 7rem;
+            left: 9.5rem;
+        }
+        &-caption{
+
+            position: absolute;
+            top: 12rem;
+            left: 2rem;
+        }
+
+
+
+        &-add_btn{
+
+            position: absolute;
+            top: 20rem;
+            left: 12.5rem;
+        }
+
+        &-cancel_btn{
+
+            position: absolute;
+            top: 27rem;
+            left: 12rem;
+        }
+
+    }
+    
+
+
+
+
+ 
+}

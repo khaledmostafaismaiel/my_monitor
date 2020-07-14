@@ -17,3 +17,7 @@ use Illuminate\Support\Facades\Artisan;
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->describe('Display an inspiring quote');
+
+Artisan::command('khaled', function () {
+    $this->comment('you had run "php artisan khaled" ');
+})->describe('Display an inspiring quote');

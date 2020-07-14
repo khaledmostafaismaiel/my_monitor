@@ -1,0 +1,13 @@
+.not_available{
+
+    position: relative;
+    &-image{
+
+        height: 35rem;
+        width: 90rem;
+
+        position: absolute;
+        top: 15rem;
+        left: 20rem;
+    }
+}

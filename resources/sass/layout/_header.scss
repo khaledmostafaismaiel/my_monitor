@@ -1,0 +1,42 @@
+header{
+
+    height: 7%;
+    width: 95%;
+
+    margin: 1rem 2rem ;
+    padding: 1rem 2rem ;
+
+    border-radius: 1rem;
+
+    background: rgba(245, 222, 179,.6);
+
+    text-align: left;
+
+    position: absolute;
+    top: 1.3rem;
+    left: 1rem;
+
+    .header-image{
+
+    width: 5rem;
+    height: 5rem;
+
+    position: absolute;
+    top: 0rem;
+    left: 2rem;
+
+    z-index: 2;
+
+
+    &:hover{
+
+        // animation: from_up_to_down;
+        // animation-duration: 1s;
+        // backface-visibility: hidden; /*to prevent shake of the chars when its animated*/
+
+    }
+
+}
+}
+
+

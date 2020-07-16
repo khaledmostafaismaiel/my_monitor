@@ -29,7 +29,8 @@
 ?>
     @extends('layouts.master_layout')
     @section('content')
-    <form action="" enctype="multipart/form-data" method="POST">
+    <form action="/backgrounds" enctype="multipart/form-data" method="POST">
+        {{csrf_field()}}
         <fieldset class="form-add_back_ground">
             <legend>
                 <h2>

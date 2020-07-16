@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User ;
 
 class BackgroundsController extends Controller
 {
@@ -13,7 +14,9 @@ class BackgroundsController extends Controller
      */
     public function index()
     {
-        //
+
+        $backgrounds = User::first()->backgrounds ;
+        return view('backgrounds' ,compact('backgrounds'));
     }
 
     /**
@@ -23,7 +26,7 @@ class BackgroundsController extends Controller
      */
     public function create()
     {
-        //
+        return view('add_background');
     }
 
     /**
@@ -34,7 +37,7 @@ class BackgroundsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd("hello in store method");
     }
 
     /**
@@ -45,7 +48,7 @@ class BackgroundsController extends Controller
      */
     public function show($id)
     {
-        //
+
     }
 
     /**
@@ -79,6 +82,16 @@ class BackgroundsController extends Controller
      */
     public function destroy($id)
     {
-        //
     }
+
+    public function delete($id)
+    {
+        return view('delete_background');
+    }
+
+    public function set($id)
+    {
+        return view('set_background');
+    }
+
 }

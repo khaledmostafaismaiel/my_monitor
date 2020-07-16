@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\UserSignedup;
 use Illuminate\Http\Request;
+use App\User ;
+use Illuminate\Support\Facades\Mail;
 
 class UsersController extends Controller
 {
@@ -34,7 +37,38 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-        return request()->all();
+        $valid = request()->validate(
+            [
+                'first_name'=> ['required' , 'min:2'] ,
+                'second_name'=> ['required' , 'min:2' ] ,
+                'user_name'=> ['required' , 'min:3' ] ,
+                'password'=> ['required' , 'confirmed' , 'min:8'] ,
+                'not_robot'=> ['required' ] ,
+                'terms_of_conditions'=> ['required' ] ,
+
+            ]
+        );
+//        return request()->all();
+        $user = new User() ;
+        $user->create([
+                'first_name'=> request('first_name') ,
+                'second_name'=> request('second_name'),
+                'user_name'=> request('user_name') ,
+                'hashed_password'=> request('password'),
+                'created_at'=> date("Y-m-d H:m:s")
+
+        ]);
+
+        $user->first_name = request('first_name') ;
+        $user->second_name = request('second_name') ;
+        $user->user_name = request('user_name') ;
+        $user->hashed_password = request('password') ;
+
+        Mail::to('khaledmostafa297@gmail.com')->send(
+
+            new UserSignedup($user)
+        );
+        return redirect('sign_in');
     }
 
     /**
@@ -80,6 +114,11 @@ class UsersController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function process_sign_in()
+    {
+        var_dump(request()->all());
     }
 }
 

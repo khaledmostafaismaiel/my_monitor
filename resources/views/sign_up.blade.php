@@ -39,7 +39,7 @@
 
 @extends('layouts.master_layout')
 @section('content')
-<form  method="post" action="/sign_up/create">
+<form  method="post" action="/users">
     {{ csrf_field() }}
     <fieldset class="form-sign_up">
         <legend>
@@ -70,7 +70,7 @@
             <label for="email" >
                     Email:
             </label>
-            <input name="email" type="text" value=""   placeholder="Enter Your E_mail" required>
+            <input name="user_name" type="text" value=""   placeholder="Enter Your E_mail" required>
         </div>
 
 

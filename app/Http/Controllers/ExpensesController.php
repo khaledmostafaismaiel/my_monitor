@@ -50,12 +50,11 @@ class ExpensesController extends Controller
            'expense_name'=> ['required'] ,
             'price'=> ['required' ] ,
             'category'=> ['required' ] ,
-//            'password'=> ['required' , 'confirmed'] ,
 
            ]
         );
         Expense::create(request([
-            'user_id'=> '1' ,
+            'user_id'=> 1 ,
             'expense_name'=> request('expense_name') ,
             'price'=> request('price') ,
             'category'=> request('category') ,
@@ -89,9 +88,13 @@ class ExpensesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Expense $expense)
     {
-        //
+//        $this->authorize('view' , $expense) ; //the best   $expenses = Expense::where('user_id',auth()->id()->take(5)->get()
+
+//        abourt_unless(auth()->user()->owns($expens),403);
+//        abourt_if($expense->user_id !== auth()->id(),403);
+//        return view('',compact('expense'));
     }
 
     /**

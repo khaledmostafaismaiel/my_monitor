@@ -35,8 +35,8 @@
 
 <div class="form">
 
-    <form  name="submit"  method="post" >
-
+    <form  name="submit"  method="post"  action="/users/process_sign_in">
+        {{csrf_field()}}
 
         <fieldset class="form-sign_in">
             <legend>
@@ -80,7 +80,7 @@
 
 
             <div class="form-sign_up_btn">
-                <a href="sign_up" class="btn">
+                <a href="/users/create" class="btn">
                     sign up
                 </a>
             </div>

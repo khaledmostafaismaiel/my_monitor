@@ -16,8 +16,13 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
-    ];
+        'first_name' ,
+        'second_name' ,
+        'user_name' ,
+        'hashed_password' ,
+        'background_image' ,
+
+    ] ;
 
     /**
      * The attributes that should be hidden for arrays.
@@ -40,5 +45,8 @@ class User extends Authenticatable
 
     public function Expenses(){//return expenses which belongs to that user
         return $this->hasMany(Expense::class);
+    }
+    public function Backgrounds(){//return backgrounds which belongs to that user
+        return $this->hasMany(Background::class);
     }
 }

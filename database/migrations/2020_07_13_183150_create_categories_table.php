@@ -19,6 +19,7 @@ class CreateCategoriesTable extends Migration
             $table->string('category_name');
             $table->timestamps();
         });
+
     }
 
     /**

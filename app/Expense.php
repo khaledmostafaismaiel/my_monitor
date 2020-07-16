@@ -19,6 +19,6 @@ class Expense extends Model
 //    protected $guarded = [] ;
 
     public function user(){//return expenses which belongs to that user
-        return $this->belongsTo(Expense::class);
+        return $this->belongsTo(User::class);
     }
 }

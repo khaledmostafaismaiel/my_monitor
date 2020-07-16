@@ -10,7 +10,7 @@
 
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-        <link rel="stylesheet" href= "css/style.css" media="screen and (min-width:600px)" >
+        <link rel="stylesheet" href= "asset('../../css/style.css')?>" media="screen and (min-width:600px)" >
 
 
         <link rel="shortcut icon" type="image/png" href="../../images/favicon.png">

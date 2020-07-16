@@ -12,57 +12,46 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', 'UsersController@index');
-
-Route::get('/add_background', function () {
-    return view('add_background');
-});
-
-Route::get('/backgrounds', function () {
-    return view('backgrounds');
-});
-
-Route::get('/delete_background', function () {
-    return view('delete_background');
-});
-
-
-
-
-
-Route::resource('/expenses', 'ExpensesController');
+Route::resource('/expenses', 'ExpensesController')/*->middleware('can:update,expense')*/;
 Route::get('/expenses/{expense_id}/delete', 'ExpensesController@delete' ) ;
 Route::POST('/expenses/search/search', 'ExpensesController@search' ) ;
 
 
-//Route::resource('/backgrounds', 'BackgroundsController');
+Route::resource('/backgrounds', 'BackgroundsController');
+Route::get('/backgrounds/{background_id}/delete', 'BackgroundsController@delete' ) ;
+Route::get('/expenses/{background_id}/set', 'BackgroundsController@set' ) ;
 
-Route::get('/index', function () {
+
+Route::resource('/users', 'UsersController');
+Route::post('/users/process_sign_in', 'UsersController@process_sign_in');
+
+Route::get('/', function () {
     return view('index');
-});
-
-Route::get('/not_available', function () {
-    return view('not_available');
-});
-
-Route::get('/set_background', function () {
-    return view('set_background');
-});
+})->middleware('auth');
 
 Route::get('/sign_in', function () {
     return view('sign_in');
 });
-
-Route::get('/sign_out', function () {
-    return view('sign_out');
+Route::get('/sign_in', function () {
+    return view('sign_in');
 });
 
 
 
 
-Route::get('/sign_up', 'UsersController@create');
-Route::post('/sign_up/create', 'UsersController@store');
+
+
+
+
+
+Route::get('/sign_out', function () {
+    return view('sign_out');
+});
+Route::get('/not_available', function () {
+    return view('not_available');
+});
+
+
 
 /*
     GET /projects (index)
@@ -84,3 +73,7 @@ Route::post('/sign_up/create', 'UsersController@store');
                     ==
     Route::resource('projects','UsersController')
 */
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

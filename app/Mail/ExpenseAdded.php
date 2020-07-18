@@ -8,19 +8,19 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class UserSignedup extends Mailable
+class ExpenseAdded extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public  $user ;
+    public  $expense ;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($user)
+    public function __construct($expense)
     {
-        $this->user = $user ;
+        $this->expense = $expense ;
     }
 
     /**
@@ -30,6 +30,6 @@ class UserSignedup extends Mailable
      */
     public function build()
     {
-        return $this->markdown('mail.user_signedup');
+        return $this->markdown('mail.expense_added');
     }
 }

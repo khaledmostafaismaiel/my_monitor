@@ -34,7 +34,6 @@
 </h1>
 
 <div class="form">
-
     <form  name="submit"  method="post"  action="/users/process_sign_in">
         {{csrf_field()}}
 
@@ -89,5 +88,4 @@
     </form>
 
 </div>
-
 @endsection

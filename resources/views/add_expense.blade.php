@@ -87,7 +87,7 @@
 
 
             <div class="form_add_expense-cancel">
-                    <a href="/index" class="btn">
+                    <a href="/" class="btn">
                         cancel
                     </a>
             </div>

@@ -51,23 +51,15 @@ class UsersController extends Controller
 //        return request()->all();
         $user = new User() ;
         $user->create([
-                'first_name'=> request('first_name') ,
-                'second_name'=> request('second_name'),
-                'user_name'=> request('user_name') ,
+//                'user_id'=> ,
+                'first_name'=> strtolower(trim(request('first_name'))) ,
+                'second_name'=> strtolower(trim(request('second_name'))),
+                'user_name'=> strtolower(trim(request('user_name'))) ,
                 'hashed_password'=> request('password'),
                 'created_at'=> date("Y-m-d H:m:s")
 
         ]);
 
-        $user->first_name = request('first_name') ;
-        $user->second_name = request('second_name') ;
-        $user->user_name = request('user_name') ;
-        $user->hashed_password = request('password') ;
-
-        Mail::to('khaledmostafa297@gmail.com')->send(
-
-            new UserSignedup($user)
-        );
         return redirect('sign_in');
     }
 
@@ -118,7 +110,14 @@ class UsersController extends Controller
 
     public function process_sign_in()
     {
-        var_dump(request()->all());
+        $user = User::all()->where('user_name',\request('user_name'));
+        if(1){
+            session(['first_name'=>'khaled']);
+            session()->flash('message','Expense added successfully');
+        }else{
+
+        }
+        return view('index');
     }
 }
 

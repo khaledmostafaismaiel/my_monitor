@@ -47,19 +47,19 @@
 
                     <tr class="table-backgrounds-body-raw">
 
-                        <td class="table-backgrounds-td"><img src="<?php /*echo "../uploads/".{{ $background->file_name }}*/?>/jpg;base64" width="80" alt="{{ $background->file_name }}"></td>
+                        <td class="table-backgrounds-td"><img src="/storage/uploads/{{$background->temp_name}}" jpg;base64 width="80" alt="{{ $background->file_name }}"></td>
                         <td class="table-backgrounds-td">{{ $background->file_name }}</td>
                         <td class="table-backgrounds-td">{{ $background->caption }}</td>
-                        <td class="table-backgrounds-td">{{ $background->size }}</td>
+                        <td class="table-backgrounds-td">{{ $background->get_size_text() }}</td>
                         <td class="table-backgrounds-td">{{ $background->type }}</td>
 
                         <td class="table-backgrounds-td">
                             <div class="btn-action">
                                     <a class= "btn-action-edit" href="/expenses/{{ $background->id }}/set"  value="set">
-                                            <img src="images/set.png" class="btn-action-edit-image" alt="set"></a>
+                                            <img src="/images/set.png" class="btn-action-edit-image" alt="set"></a>
                                     <a class= "btn-action-delete" href="/backgrounds/{{ $background->id }}/delete"  value="delete" onclick="return confirm('Are you sure?');">
-                                        <img src="images/delete.png" class="btn-action-delete-image" alt="delete"></a>
-                                    </a>
+                                        <img src="/images/delete.png" class="btn-action-delete-image" alt="delete"></a>
+
                             </div>
                         </td>
                     </tr>

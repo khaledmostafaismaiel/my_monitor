@@ -49,7 +49,7 @@
             </p>
 
             <div class="form-add_back_ground-cancel_btn">
-                <a href="index.php?" class="btn">
+                <a href="/" class="btn">
                     cancel
                 </a>
             </div>

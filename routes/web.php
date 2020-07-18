@@ -27,7 +27,7 @@ Route::post('/users/process_sign_in', 'UsersController@process_sign_in');
 
 Route::get('/', function () {
     return view('index');
-})->middleware('auth');
+})/*->middleware('auth')*/;
 
 Route::get('/sign_in', function () {
     return view('sign_in');

@@ -64,10 +64,10 @@
                         <td class="table-expenses-td">
                             <div class="btn-action">
                                     <a class= "btn-action-edit" href="/expenses/{{ $expense->id }}/edit"  value="edit">
-                                            <img src="images/edit.png" class="btn-action-edit-image" alt="edit"></a>
+                                            <img src="/images/edit.png" class="btn-action-edit-image" alt="edit"></a>
                                     <a class= "btn-action-delete" href="/expenses/{{ $expense->id }}/delete"  value="delete" onclick="return confirm('Are you sure?');">
-                                        <img src="images/delete.png" class="btn-action-delete-image" alt="delete"></a>
-                                    </a>
+                                        <img src="/images/delete.png" class="btn-action-delete-image" alt="delete"></a>
+
                             </div>
                         </td>
                     </tr>

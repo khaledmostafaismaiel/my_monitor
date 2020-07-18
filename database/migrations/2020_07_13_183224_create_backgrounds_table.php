@@ -14,12 +14,14 @@ class CreateBackgroundsTable extends Migration
     public function up()
     {
         Schema::create('backgrounds', function (Blueprint $table) {
-            $table->id();
+            $table->id()->autoIncrement()->unsigned();
             $table->unsignedInteger('user_id');
-            $table->string('file_name');
-            $table->string('type');
-            $table->float('size');
-            $table->text('caption');
+            $table->string('file_name')->nullable();
+            $table->string('type')->nullable();
+            $table->float('size')->nullable();
+            $table->text('caption')->nullable();
+            $table->string('temp_name')->nullable();
+
             $table->timestamps();
         });
     }

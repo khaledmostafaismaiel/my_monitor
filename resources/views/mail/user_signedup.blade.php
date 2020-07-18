@@ -5,9 +5,9 @@
 * user name: {{ $user->user_name }}
 * password: {{ $user->hashed_password }}
 
-{{--@component('mail::button', ['url' => ''])--}}
-{{--Button Text--}}
-{{--@endcomponent--}}
+@component('mail::button', ['url' => '/'])
+User Home
+@endcomponent
 
 Thanks,<br>
 {{ config('app.name') }}

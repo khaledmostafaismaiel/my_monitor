@@ -16,7 +16,7 @@
             <li class="navigation__item-2"><a href="/expenses" class="navigation__link">Expenses</a></li>
             <li class="navigation__item-3"><a href="/backgrounds/create" class="navigation__link">+ Add Background</a></li>
             <li class="navigation__item-4"><a href="/backgrounds" class="navigation__link">Backgrounds</a></li>
-            <li class="navigation__item-5"><a href="/sign_out" class="navigation__link">Sign Out</a></li>
+            <li class="navigation__item-5"><a href="/sign_in" class="navigation__link">Sign Out</a></li>
         </ul>
     </nav>
 

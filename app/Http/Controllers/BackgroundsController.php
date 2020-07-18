@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Background;
 use Illuminate\Http\Request;
 use App\User ;
+use Illuminate\Support\Facades\Storage;
 
 class BackgroundsController extends Controller
 {
@@ -37,7 +39,39 @@ class BackgroundsController extends Controller
      */
     public function store(Request $request)
     {
-        dd("hello in store method");
+        \request()->validate([
+            'file_upload'=>'required' ,
+            'caption'=>'max:255' ,
+            ]
+        );
+
+        if($request->hasFile('file_upload')){
+
+            $backgrounde = new Background ;
+
+            $file_name_with_extention = $request->file('file_upload')->getClientOriginalName() ;
+            $file_name = pathinfo($file_name_with_extention,PATHINFO_FILENAME);
+            $extention = $request->file('file_upload')->getClientOriginalExtension();
+            $temp_name = $file_name.'_'.time().".".$extention ;
+            $path = $request->file('file_upload')->storeAs('public/uploads',$temp_name);
+            $size = $request->file('file_upload')->getSize();
+
+            $backgrounde->create([
+                'user_id'=> 1,
+                'file_name'=> $file_name ,
+                'type'=> $extention,
+                'size'=> $size ,
+                'caption'=> $request->caption,
+                'temp_name'=> $temp_name,
+                'created_at'=> date("Y-m-d H:m:s") ,
+
+            ]);
+            session()->flash('message','Background added successfully');
+            return redirect('/backgrounds');
+        }else{
+            session()->flash('message','Background didn\'t added successfully');
+            return redirect('/backgrounds/create');
+        }
     }
 
     /**
@@ -82,16 +116,49 @@ class BackgroundsController extends Controller
      */
     public function destroy($id)
     {
+        dd("destroy");
     }
 
     public function delete($id)
     {
-        return view('delete_background');
+
+        $background = Background::findOrfail($id) ;
+        // First remove the database entry
+        if($background->delete()) {
+            // then remove the file
+            // Note that even though the database entry is gone, this object
+            // is still around (which lets us use $this->image_path()).
+//            $target_path = "public/storage/uploads/".$background->temp_name;
+            if(1/*unlink($target_path)*/){
+                session()->flash('message','Background deleted successfully');
+            }else{
+                session()->flash('message',"Background didn't delete successfully");
+            }
+        } else {
+            // database delete failed
+            session()->flash('message',"Background didn't delete successfully");
+
+        }
+
+        return redirect('/backgrounds');
     }
 
     public function set($id)
     {
-        return view('set_background');
+
+        $temp_name = Background::findorfail($id)->temp_name;
+        $user = User::first() ;
+        $user->background_image = $temp_name ;
+        if($user->update()){
+            session()->flash('message',"Background updated successfully");
+
+        }else{
+            session()->flash('message',"Background didn't update successfully");
+
+        }
+
+        return redirect('/backgrounds');
     }
+
 
 }

@@ -1,73 +1,91 @@
-@extends('layouts.app')
-
+<?php
+//    require_once("../includes/initialize.php");
+//
+//    $user_name = "" ;
+//
+//    if(isset($_POST['submit_sign_in'])){
+//        //prcess the form
+//        //escape all strings to prevent sql injection with sql_sanitize
+//        $user = new User();
+//
+//        $user->user_name = $_POST["user_name"] ;
+//        $user->password = $_POST["password"];
+//        $user->remember_me = $_POST["remember_me"] ;
+//
+//        if($user->check_before_sign_in()){
+//            //success
+//            Log::write_in_log("{$_SESSION['user_id']} signed in ".date("d-m-Y")." ".date("h:i:sa")."\n");
+//            Helper::redirect_to("index.php?");
+//        }else{
+//            //failed
+//             Helper::redirect_to("sign_in.php?");
+//        }
+//
+//    }else{
+//        //this is probably $_GET request
+//        //i will check if user is active or not
+//
+//    }
+?>
+@extends('layouts.master_layout')
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Login') }}</div>
+    <h1 class="message-welcome">
+        Welcome to My Monitor
+    </h1>
 
-                <div class="card-body">
-                    <form method="POST" action="{{ route('login') }}">
-                        @csrf
+    <div class="form">
+        <form  name="submit"  method="post"  action="/users/process_sign_in">
+            {{csrf_field()}}
 
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
+            <fieldset class="form-sign_in">
+                <legend>
+                    <h2>
+                        Please, Sign in ...
+                    </h2>
+                </legend>
 
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                <p>
 
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
+                    User Name:
+                    <input type="text" class="form-sign_in-user_name" name="user_name" value="<?php /*echo $user_name*/?>" placeholder="Your E_mail">
 
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
+                </p>
 
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+                <br />
 
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
+                <p>
+                    Password: &nbsp;
+                    <input type="password" class="form-sign_in-password" name="password" value="" placeholder="Your Password">
+                </p>
 
-                        <div class="form-group row">
-                            <div class="col-md-6 offset-md-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                <br />
 
-                                    <label class="form-check-label" for="remember">
-                                        {{ __('Remember Me') }}
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
+                <input name="remember_me" type="checkbox" class="form-sign_in-checkbox" id="navi-toggle">
+                <label for="navi-toggle" class="form-sign_in-button">
+                    <span class="form-sign_in-icon">Remember Me</span>
+                </label>
 
-                        <div class="form-group row mb-0">
-                            <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Login') }}
-                                </button>
+                <br />
+                <br />
 
-                                @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
-                                        {{ __('Forgot Your Password?') }}
-                                    </a>
-                                @endif
-                            </div>
-                        </div>
-                    </form>
+
+                <div class="from-sign_in_btn">
+
+                    <input name="submit_sign_in" type="submit" class="btn" value="sign in"/>
+
                 </div>
-            </div>
-        </div>
+
+                <br />
+
+
+                <div class="form-sign_up_btn">
+                    <a href="/users/create" class="btn">
+                        sign up
+                    </a>
+                </div>
+
+            </fieldset>
+        </form>
+
     </div>
-</div>
 @endsection

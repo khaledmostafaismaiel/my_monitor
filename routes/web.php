@@ -12,41 +12,27 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::resource('/expenses', 'ExpensesController')/*->middleware('can:update,expense')*/;
-Route::get('/expenses/{expense_id}/delete', 'ExpensesController@delete' ) ;
-Route::POST('/expenses/search/search', 'ExpensesController@search' ) ;
+Route::resource('expenses', 'ExpensesController')->middleware('auth')/*->middleware('can:update,expense')*/;
+Route::get('/expenses/{expense_id}/delete', 'ExpensesController@delete' )->middleware('auth') ;
+Route::post('/expenses/search/search', 'ExpensesController@search' )->middleware('auth') ;
 
 
-Route::resource('/backgrounds', 'BackgroundsController');
-Route::get('/backgrounds/{background_id}/delete', 'BackgroundsController@delete' ) ;
-Route::get('/expenses/{background_id}/set', 'BackgroundsController@set' ) ;
+Route::resource('/backgrounds', 'BackgroundsController')->middleware('auth');
+Route::get('/backgrounds/{background_id}/delete', 'BackgroundsController@delete' )->middleware('auth') ;
+Route::get('/expenses/{background_id}/set', 'BackgroundsController@set' )->middleware('auth') ;
 
 
 Route::resource('/users', 'UsersController');
 Route::post('/users/process_sign_in', 'UsersController@process_sign_in');
+Route::get('/users/process_sign_out', 'UsersController@process_sign_out');
+
 
 Route::get('/', function () {
     return view('index');
-})/*->middleware('auth')*/;
-
-Route::get('/sign_in', function () {
-    return view('sign_in');
-});
-Route::get('/sign_in', function () {
-    return view('sign_in');
-});
+})->middleware('auth');
 
 
 
-
-
-
-
-
-
-Route::get('/sign_out', function () {
-    return view('sign_out');
-});
 Route::get('/not_available', function () {
     return view('not_available');
 });

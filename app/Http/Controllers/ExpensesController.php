@@ -22,7 +22,7 @@ class ExpensesController extends Controller
     public function index()
     {
 //        $expenses = auth()->user()->expenses ;
-        $expenses = User::first()->expenses ;
+        $expenses = auth()->user()->expenses()->paginate(5) ;
         return view('expenses' ,compact('expenses'));
     }
 
@@ -49,18 +49,16 @@ class ExpensesController extends Controller
     {
         $attributes =  $this->validateExpense();
 
-
-
         if(Expense::create([
-            'user_id'=> 1 ,
-            'expense_name'=> strtolower(trim(request('expense_name'))) ,
-            'price'=> trim(request('price')) ,
-            'category'=> ucfirst(trim(request('category'))) ,
-            'comment'=> strtolower(trim(request('comment'))) ,
-            'created_at'=> request('created_at')
+            'user_id'=> auth()->id() ,
+            'expense_name'=> sql_sanitize(strtolower(trim(request('expense_name')))) ,
+            'price'=> sql_sanitize(trim(request('price'))),
+            'category'=> sql_sanitize(ucfirst(trim(request('category')))) ,
+            'comment'=> sql_sanitize(strtolower(trim(request('comment')))) ,
+            'created_at'=> sql_sanitize(request('created_at'))
         ])){
             session()->flash('message','Expense added successfully');
-            return redirect('/expenses');
+            return redirect('/expenses?page_number=1');
 
         }else{
             session()->flash('message','Expense didn\'t added successfully');
@@ -128,16 +126,16 @@ class ExpensesController extends Controller
         $attributes =  $this->validateExpense();
 
         $expense = Expense::findOrfail($id);
-        $expense->expense_name = strtolower(trim(request('expense_name'))) ;
-        $expense->price = trim(request('price')) ;
-        $expense->category = ucfirst(trim(request('category'))) ;
-        $expense->comment = strtolower(trim(request('comment')))  ;
-        $expense->created_at = request('created_at')  ;
+        $expense->expense_name = sql_sanitize(strtolower(trim(request('expense_name')))) ;
+        $expense->price = sql_sanitize(trim(request('price'))) ;
+        $expense->category = sql_sanitize(ucfirst(trim(request('category')))) ;
+        $expense->comment = sql_sanitize(strtolower(trim(request('comment'))))  ;
+        $expense->created_at = sql_sanitize(request('created_at'))  ;
         $expense->updated_at = date("Y-m-d h:i:s");
 
         if($expense->update()){
             session()->flash('message','Expense updated successfully');
-            return redirect('/expenses');
+            return redirect('/expenses?page_number=1');
 
         }else{
             session()->flash('message','Expense didn\'t updated successfully');
@@ -162,13 +160,15 @@ class ExpensesController extends Controller
         }else{
             session()->flash('message',"Expense didn't delete successfully");
         }
-        return redirect('/expenses');
+        return redirect('/expenses?page_number=1');
     }
 
     public function search()
     {
-        $search_for = request('search') ;
-        return redirect('/expenses');
+        $search_for = sql_sanitize(strtolower(request('search'))) ;
+        $expenses = auth()->user()->expenses()->where('expense_name',$search_for)->paginate(5) ;
+
+        return view('/expenses',compact('expenses'));
 
     }
 

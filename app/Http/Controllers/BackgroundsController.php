@@ -17,7 +17,7 @@ class BackgroundsController extends Controller
     public function index()
     {
 
-        $backgrounds = User::first()->backgrounds ;
+        $backgrounds = auth()->user()->backgrounds()->paginate(5) ;
         return view('backgrounds' ,compact('backgrounds'));
     }
 
@@ -57,11 +57,11 @@ class BackgroundsController extends Controller
             $size = $request->file('file_upload')->getSize();
 
             $backgrounde->create([
-                'user_id'=> 1,
+                'user_id'=> auth()->id(),
                 'file_name'=> $file_name ,
                 'type'=> $extention,
                 'size'=> $size ,
-                'caption'=> $request->caption,
+                'caption'=> sql_sanitize($request->caption),
                 'temp_name'=> $temp_name,
                 'created_at'=> date("Y-m-d H:m:s") ,
 
@@ -128,8 +128,8 @@ class BackgroundsController extends Controller
             // then remove the file
             // Note that even though the database entry is gone, this object
             // is still around (which lets us use $this->image_path()).
-//            $target_path = "public/storage/uploads/".$background->temp_name;
-            if(1/*unlink($target_path)*/){
+
+            if(unlink(public_path('storage/uploads/'.$background->temp_name))){
                 session()->flash('message','Background deleted successfully');
             }else{
                 session()->flash('message',"Background didn't delete successfully");
@@ -147,18 +147,15 @@ class BackgroundsController extends Controller
     {
 
         $temp_name = Background::findorfail($id)->temp_name;
-        $user = User::first() ;
+        $user = auth()->user() ;
         $user->background_image = $temp_name ;
         if($user->update()){
             session()->flash('message',"Background updated successfully");
-
         }else{
             session()->flash('message',"Background didn't update successfully");
-
         }
 
         return redirect('/backgrounds');
     }
-
 
 }

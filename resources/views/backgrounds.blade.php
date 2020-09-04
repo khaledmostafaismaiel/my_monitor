@@ -1,33 +1,10 @@
-<?php
-//    require_once("../includes/initialize.php");
-//
-//    global $database;
-//
-//    $background_set = Background::find_all();
-//    $number_of_backgrounds = $database->num_rows($background_set)  ;
-//    $number_of_backgrounds_per_page = 3 ;
-//    $number_of_pages= ceil((float)$number_of_backgrounds/(float)$number_of_backgrounds_per_page);
-//
-//    $page_number = Helper::get_from_url("pagenumber") ;
-//    if(($page_number > $number_of_pages) || ($page_number < 1)){
-//        if($number_of_pages != 0){
-//            Helper::redirect_to("not_available.php");
-//        }
-//    }
-//
-//    $pagination = new Pagination($page_number,$number_of_backgrounds_per_page,$number_of_backgrounds);
-//
-//    $sql = "SELECT * FROM backgrounds " ;
-//    $sql .= " WHERE user_id = {$_SESSION['user_id']}  ORDER BY id DESC";
-//    $sql .= " LIMIT ".$pagination->per_page ;
-//    $sql .= " OFFSET ".$pagination->offset() ;
-//
-//    $background_set  = Background::find_by_sql($sql);
-
-?>
 @extends('layouts.master_layout')
 @section('content')
-<div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+    <div>
     <table class="table-backgrounds table table-hover">
 
         <thead>
@@ -72,6 +49,8 @@
 
     <!-- Pagination -->
     <div class="btn-list">
+
+    {{$backgrounds->links()}}
 
         <?php
 //        echo "<a";

@@ -5,5 +5,4 @@
         <img src="/images/search.png"  class="search_box-img">
         <input  class="search_box-btn"   type="submit" name="submit_search"  >
     </div>
-
 </form>

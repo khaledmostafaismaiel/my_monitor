@@ -15,10 +15,10 @@ class CreateExpensesTable extends Migration
     {
         Schema::create('expenses', function (Blueprint $table) {
             $table->id()->autoIncrement()->unsigned();
-            $table->unsignedInteger('user_id')->nullable();
-            $table->string('expense_name')->nullable();
-            $table->float('price')->nullable();
-            $table->string('category')->nullable();
+            $table->unsignedInteger('user_id');
+            $table->string('expense_name');
+            $table->float('price');
+            $table->string('category');
             $table->text('comment')->nullable();
             $table->timestamps();
         });

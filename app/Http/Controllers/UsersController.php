@@ -39,7 +39,7 @@ class UsersController extends Controller
     {
         $valid = request()->validate(
             [
-                'first_name'=> ['required' , 'min:2'] ,
+                'first_name'=> 'required|min:2',
                 'second_name'=> ['required' , 'min:2' ] ,
                 'user_name'=> ['required' , 'min:3' ] ,
                 'password'=> ['required' , 'confirmed' , 'min:8'] ,
@@ -52,10 +52,10 @@ class UsersController extends Controller
         $user = new User() ;
         $user->create([
 //                'user_id'=> ,
-                'first_name'=> strtolower(trim(request('first_name'))) ,
-                'second_name'=> strtolower(trim(request('second_name'))),
-                'user_name'=> strtolower(trim(request('user_name'))) ,
-                'hashed_password'=> request('password'),
+                'first_name'=> sql_sanitize(strtolower(trim(request('first_name')))) ,
+                'second_name'=> sql_sanitize(strtolower(trim(request('second_name')))),
+                'user_name'=> sql_sanitize(strtolower(trim(request('user_name')))) ,
+                'hashed_password'=> sql_sanitize(bcrypt(request('password'))),
                 'created_at'=> date("Y-m-d H:m:s")
 
         ]);
@@ -71,7 +71,10 @@ class UsersController extends Controller
      */
     public function show($id)
     {
-        //
+        auth()->logout();
+        dump("you came from users/show not from users/process_sign_out");
+        return view('auth/login');
+
     }
 
     /**
@@ -94,7 +97,7 @@ class UsersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
     }
 
     /**
@@ -110,14 +113,21 @@ class UsersController extends Controller
 
     public function process_sign_in()
     {
-        $user = User::all()->where('user_name',\request('user_name'));
-        if(1){
-            session(['first_name'=>'khaled']);
-            session()->flash('message','Expense added successfully');
+        if(\Auth::attempt(['user_name' => \request('user_name'), 'password' => \request('password')])){
+            session()->flash('message','Welcome');
+            return redirect('/');
         }else{
-
+            session()->flash('message','Sorry Try Again');
+            return redirect('/users/create');
         }
-        return view('index');
+    }
+    public function process_sign_out()
+    {
+
+        auth()->logout();
+        dd("sdao");
+
+        return redirect('/sign_in');
     }
 }
 

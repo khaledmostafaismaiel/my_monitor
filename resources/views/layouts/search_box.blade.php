@@ -1,4 +1,4 @@
-<form action="/expenses/search/search" method="post">
+<form action="/expenses" method="get">
     {{csrf_field()}}
     <div class="search_box">
         <input class="search_box-text" type="text" name="search" placeholder="search">

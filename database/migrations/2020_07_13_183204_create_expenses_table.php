@@ -16,10 +16,11 @@ class CreateExpensesTable extends Migration
         Schema::create('expenses', function (Blueprint $table) {
             $table->id()->autoIncrement()->unsigned();
             $table->unsignedInteger('user_id');
-            $table->string('expense_name');
+            $table->string('name');
             $table->float('price');
-            $table->string('category');
+            $table->unsignedInteger('category_id');
             $table->text('comment')->nullable();
+            $table->date('date');
             $table->timestamps();
         });
     }

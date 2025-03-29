@@ -1,38 +1,3 @@
-<?php
-//    require_once("../includes/initialize.php");
-//
-//    global $database;
-//
-//    $month = date('Y-m-00');
-//    $sql = "SELECT * FROM expenses " ;
-//    $sql .= " WHERE `created_at` > '{$month}' AND user_id = {$_SESSION['user_id']}  ORDER BY id DESC";
-//    $expenses_set  = Expense::find_by_sql($sql);
-//
-//
-//    // $expenses = Expense::forMonth('June')->all();
-//    $number_of_expenses = $database->num_rows($expenses_set)  ;
-//    $number_of_expenses_per_page = 6 ;
-//    $number_of_pages= ceil((float)$number_of_expenses/(float)$number_of_expenses_per_page);
-//
-//    $page_number = Helper::get_from_url("pagenumber") ;
-//    if(($page_number > $number_of_pages) || ($page_number < 1)){
-//        if($number_of_pages != 0){
-//            Helper::redirect_to("not_available.php");
-//        }
-//    }
-//
-//    $pagination = new Pagination($page_number,$number_of_expenses_per_page,$number_of_expenses);
-//
-//    $sql = "SELECT * FROM expenses " ;
-//    $sql .= " WHERE `created_at` > '{$month}' AND user_id = {$_SESSION['user_id']}  ORDER BY id DESC";
-//    $sql .= " LIMIT ".$pagination->per_page ;
-//    $sql .= " OFFSET ".$pagination->offset() ;
-//
-//    $expenses_set  = Expense::find_by_sql($sql);
-
-?>
-
-
 @extends('layouts.master_layout')
 @section('content')
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
@@ -45,33 +10,22 @@
         <thead>
             <tr>
                 <th>Name</th>
-                <th>Price</th>
-                <th>Category</th>
-                <th>Comment</th>
-                <th>Date</th>
-                <th>Name</th>
-                <th>Options</th>
             </tr>
         </thead>
 
         <tbody class="table-expenses-body">
 
-            @foreach($expenses as $expense)
+            @foreach($categories as $category)
 
             <tr class="table-expenses-body-raw">
 
-                        <td class="table-expenses-td">{{ $expense->name }}</td>
-                        <td class="table-expenses-td">{{ $expense->price }}</td>
-                        <td class="table-expenses-td">{{ $expense->category->name }}</td>
-                        <td class="table-expenses-td">{{  $expense->comment }}</td>
-                        <td class="table-expenses-td">{{ date( 'D d-M-Y', strtotime( $expense->date ) ) }}</td>
-                        <td class="table-expenses-td">{{ $expense->user->first_name }}</td>
+                        <td class="table-expenses-td">{{ $category->name }}</td>
 
                         <td class="table-expenses-td">
                             <div class="btn-action">
-                                    <a class= "btn-action-edit" href="/expenses/{{ $expense->id }}/edit"  value="edit">
+                                    <a class= "btn-action-edit" href="/categories/{{ $category->id }}/edit"  value="edit">
                                             <img src="/images/edit.png" class="btn-action-edit-image" alt="edit"></a>
-                                    <a class= "btn-action-delete" href="/expenses/{{ $expense->id }}/delete"  value="delete" onclick="return confirm('Are you sure?');">
+                                    <a class= "btn-action-delete" href="/categories/{{ $category->id }}/delete"  value="delete" onclick="return confirm('Are you sure?');">
                                         <img src="/images/delete.png" class="btn-action-delete-image" alt="delete"></a>
 
                             </div>
@@ -87,7 +41,7 @@
 <!-- Pagination -->
 <div class="btn-list">
 
-    {{$expenses->links()}}
+    {{$categories->links()}}
 
     {{--    <a--}}
 {{--        @if($pagination->has_prev_page())--}}

@@ -1,37 +1,3 @@
-<?php
-//    require_once("../includes/initialize.php");
-//
-//    if(isset($_POST['submit_add_expense'])){
-//
-//        $expense = new Expense();
-//
-//        $expense->user_id = $_SESSION['user_id'];
-//        $expense->expense_name = $_POST['expense_name'];
-//        $expense->price = $_POST['price'];
-//        $expense->category = $_POST['category'];
-//        $expense->comment = $_POST['comment'];
-//        $expense->created_at = $_POST['created_at'] ;
-//
-//        if($expense->check_before_save() && $expense->save()){
-//            //success
-//            Log::write_in_log("{$_SESSION['user_id']} add expense ".date("d-m-Y")." ".date("h:i:sa")."\n");
-//
-//            $_SESSION["message"] = "add success" ;
-//            Helper::redirect_to("index.php?");
-//        }else{
-//            //failed
-//            $_SESSION["message"] = "add DIDN'T success" ;
-//            Helper::redirect_to("add_expense.php?");
-//        }
-//
-//    }else{
-//        //this is probably $_GET request
-//        //i will check if user is active or not
-//
-//    }
-//    $category_set = Category::find_all();
-?>
-
 @extends('layouts.master_layout')
 @section('content')
     <form method = "POST" action="/expenses">
@@ -48,7 +14,7 @@
             <div class="form_add_expense-name">
                 <label>Name:</label>
 
-                <input type="text" name="expense_name" value="{{ old('expense_name') }}" placeholder="Expense Name ?"  >
+                <input type="text" name="expense_name" value="{{ old('name') }}" placeholder="Expense Name ?"  >
             </div>
 
             <div class="form_add_expense-price">
@@ -62,12 +28,12 @@
 
                 <select name="category" id=""  size="4" class="form_add_expense-category-menu"  >
 
-                        @foreach($category_set as $category)
-                            <option
-                                @if($category->category_name == old('category'))
+                        @foreach($categories as $category)
+                            <option value="{{$category->id}}"
+                                @if($category->id == old('category_id'))
                                     selected
                                 @endif >
-                                {{ucfirst($category->category_name)}}
+                                {{ucfirst($category->name)}}
                             </option>
 
                         @endforeach;

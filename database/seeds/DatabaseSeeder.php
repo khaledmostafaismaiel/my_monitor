@@ -4,7 +4,8 @@ use Illuminate\Database\Seeder;
 
 use Faker\Factory as Faker ;
 use Illuminate\Support\Facades\DB ;
-
+use App\User;
+use App\Category;
 
 class DatabaseSeeder extends Seeder
 {
@@ -17,27 +18,100 @@ class DatabaseSeeder extends Seeder
     {
         // $this->call(UserSeeder::class);
 
-        $faker = Faker::create();
-        foreach (range(1,100) as $index){
-            DB::table('Expenses')->insert([
-                'user_id'=>1 ,
-                'expense_name'=>$faker->name ,
-                'price'=>$faker->numberBetween(1,100) ,
-                'category'=>$faker->title ,
-                'comment'=>$faker->text ,
-                'created_at'=>$faker->year ,
-            ]);
-        }
+        User::create(
+            [
+                'first_name'=> "Khaled" ,
+                'last_name'=> "Mostafa",
+                'email'=> "khaledmostafa297@gmail.com" ,
+                'password'=> bcrypt("12345678"),
+            ]
+        );
+        
+        User::create(
+            [
+                'first_name'=> "Doaa" ,
+                'last_name'=> "Ahmed",
+                'email'=> "doaagaber@gmail.com" ,
+                'password'=> bcrypt("12345678"),
+            ]
+        );
 
-        foreach (range(1,100) as $index){
-            DB::table('Users')->insert([
-                'first_name'=>1 ,
-                'second_name'=>$faker->name ,
-                'user_name'=>$faker->email ,
-                'hashed_password'=>bcrypt('secret') ,
-//                'background_image'=>$faker->text ,
-                'created_at'=>$faker->year ,
-            ]);
-        }
+        Category::create(
+            [
+                'name'=> "فواتير" ,
+            ]
+        );
+
+        Category::create(
+            [
+                'name'=> "فاكهه" ,
+            ]
+        );
+
+        Category::create(
+            [
+                'name'=> "خالد",
+            ]
+        );
+
+        Category::create(
+            [
+                'name'=> "دعاء" ,
+            ]
+        );
+
+        Category::create(
+            [
+                'name'=> "لحوم" ,
+            ]
+        );
+
+        Category::create(
+            [
+                'name'=> "طيور" ,
+            ]
+        );
+
+        Category::create(
+            [
+                'name'=> "اسماك" ,
+            ]
+        );
+
+        Category::create(
+            [
+                'name'=> "دعاء" ,
+            ]
+        );
+
+        Category::create(
+            [
+                'name'=> "البان" ,
+            ]
+        );
+
+        Category::create(
+            [
+                'name'=> "بقاله" ,
+            ]
+        );
+
+        Category::create(
+            [
+                'name'=> "مستلزمات المنزل" ,
+            ]
+        );
+
+        Category::create(
+            [
+                'name'=> "خضار" ,
+            ]
+        );
+
+        Category::create(
+            [
+                'name'=> "ليلى" ,
+            ]
+        );
     }
 }

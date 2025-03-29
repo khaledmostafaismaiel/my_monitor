@@ -15,31 +15,21 @@
         <link rel="shortcut icon" type="image/png" href="/images/favicon.png">
 
 
-        <title>My Monitor | <?php /*echo Helper::get_script_name() */?></title>
+        <title>{{env("APP_NAME")}}</title>
 
-        <!-- <script>alert("Welcome!");</script> -->
 
     </head>
 
     <body>
         <div class="bg-video">
-
-        @if(($_SERVER["PHP_SELF"] != "/index.php/users/create") && ($_SERVER["PHP_SELF"] != "/index.php/login") && ($_SERVER["PHP_SELF"] != "/index.php/users/process_sign_out") )
-                @if(auth()->user()->background_image != null)
-                    @include('layouts.background_image')
-                @else
-                    @include('layouts.background_video')
-                @endif
-            @else
-                @include('layouts.background_video')
-            @endif
+            @include('layouts.background_video')
         </div>
 
         <header>
             @include('layouts/logo')
-                @if(($_SERVER["PHP_SELF"] != "/index.php/users/create") && ($_SERVER["PHP_SELF"] != "/index.php/login") && ($_SERVER["PHP_SELF"] != "/index.php/users/process_sign_out") )
-                    @include('layouts/search_box')
-                    @include('layouts/navigation')
-                @endif
+            @if(auth()->user())
+                @include('layouts/search_box')
+                @include('layouts/navigation')
+            @endif
             @include('layouts/session_messages')
         </header>

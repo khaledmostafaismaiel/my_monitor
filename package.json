@@ -2,7 +2,6 @@
     "name": "my_monitor",
     "version": "1.0.0",
     "description": "smart money monitor",
-
     "private": true,
     "scripts": {
         "dev": "npm run development",
@@ -13,7 +12,6 @@
         "prod": "npm run production",
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
         "compile:sass": "node-sass resources/sass/main.scss public/css/style.css"
-
     },
     "devDependencies": {
         "axios": "^0.19",
@@ -22,6 +20,7 @@
         "lodash": "^4.17.13",
         "resolve-url-loader": "^3.1.0",
         "sass": "^1.15.2",
-        "sass-loader": "^8.0.0"
+        "sass-loader": "^8.0.0",
+        "vue-template-compiler": "^2.7.16"
     }
 }

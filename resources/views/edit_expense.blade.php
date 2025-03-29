@@ -61,7 +61,7 @@
         <div class="form_edit_expense-name">
             <label>Name:</label>
 
-            <input type="text" name="expense_name" value="{{ $expense->expense_name }}" placeholder="Expense Name ?">
+            <input type="text" name="expense_name" value="{{ $expense->name }}" placeholder="Expense Name ?">
         </div>
 
         <div class="form_edit_expense-price">
@@ -76,11 +76,11 @@
             <select name="category"  size="4" class="form_edit_expense-category-menu">
                     @foreach($category_set as $category)
                         <option
-                            @if(ucfirst($category->category_name) == ucfirst($expense->category))
+                            @if($category->id == $expense->category_id)
                                 selected
                             @endif
                         >
-                        {{ucfirst($category->category_name)}}
+                        {{ucfirst($category->name)}}
                         </option>
                     @endforeach
             </select>
@@ -93,7 +93,7 @@
 
         <div class="form_edit_expense-date">
             <label>Date:</label>
-            <input name="created_at" type="date" value="{{ date( 'Y-m-d', strtotime($expense->created_at) ) }}">
+            <input name="created_at" type="date" value="{{ date( 'Y-m-d', strtotime($expense->date) ) }}">
         </div>
 
 

@@ -21,8 +21,13 @@ class ExpensesController extends Controller
      */
     public function index()
     {
-//        $expenses = auth()->user()->expenses ;
-        $expenses = auth()->user()->expenses()->paginate(5) ;
+        $expenses = Expense::with('category', 'user')
+            ->when(null !== \request("search"), function($query){
+                $query->where("name", "LIKE", "%".\request("search")."%");
+            })
+            ->orderBy("date", "desc")
+            ->paginate(10);
+
         return view('expenses' ,compact('expenses'));
     }
 
@@ -34,9 +39,9 @@ class ExpensesController extends Controller
     public function create()
     {
 
-        $category_set = Category::all();
+        $categories = Category::orderBy("name")->get();
 
-        return view('add_expense',compact('category_set'));
+        return view('add_expense', compact('categories'));
     }
 
     /**
@@ -50,12 +55,12 @@ class ExpensesController extends Controller
         $attributes =  $this->validateExpense();
 
         if(Expense::create([
-            'user_id'=> auth()->id() ,
-            'expense_name'=> sql_sanitize(strtolower(trim(request('expense_name')))) ,
-            'price'=> sql_sanitize(trim(request('price'))),
-            'category'=> sql_sanitize(ucfirst(trim(request('category')))) ,
-            'comment'=> sql_sanitize(strtolower(trim(request('comment')))) ,
-            'created_at'=> sql_sanitize(request('created_at'))
+            'user_id'=> auth()->id(),
+            'name'=> request('expense_name'),
+            'price'=> request('price'),
+            'category_id'=> request('category'),
+            'comment'=> request('comment'),
+            'date'=> request('created_at'),
         ])){
             session()->flash('message','Expense added successfully');
             return redirect('/expenses?page_number=1');
@@ -64,26 +69,6 @@ class ExpensesController extends Controller
             session()->flash('message','Expense didn\'t added successfully');
             return redirect('/expenses/create');
         }
-
-        event(new ExpenseAdded($expense));
-
-//        Expense::create([
-//           'user_id'=> '1' ,
-//           'expense_name'=> request('expense_name') ,
-//            'price'=> request('price') ,
-//            'category'=> request('category') ,
-//            'comment'=> request('comment') ,
-//            'created_at'=> request('created_at')
-//        ]);
-//        Expense::create(request([
-//            'user_id',
-//            'expense_name' ,
-//            'price' ,
-//            'category' ,
-//            'comment' ,
-//            'created_at'
-//        ]));
-        //Expense::create(request()->all())
     }
 
     /**
@@ -109,7 +94,7 @@ class ExpensesController extends Controller
      */
     public function edit($id)
     {
-        $expense = Expense::findOrfail($id);
+        $expense = Expense::findOrFail($id);
         $category_set = Category::all();
         return view('edit_expense',compact('expense','category_set'));
     }
@@ -125,12 +110,12 @@ class ExpensesController extends Controller
     {
         $attributes =  $this->validateExpense();
 
-        $expense = Expense::findOrfail($id);
-        $expense->expense_name = sql_sanitize(strtolower(trim(request('expense_name')))) ;
-        $expense->price = sql_sanitize(trim(request('price'))) ;
-        $expense->category = sql_sanitize(ucfirst(trim(request('category')))) ;
-        $expense->comment = sql_sanitize(strtolower(trim(request('comment'))))  ;
-        $expense->created_at = sql_sanitize(request('created_at'))  ;
+        $expense = Expense::findOrFail($id);
+        $expense->expense_name = strtolower(trim(request('expense_name'))) ;
+        $expense->price = trim(request('price')) ;
+        $expense->category = request('category') ;
+        $expense->comment = strtolower(trim(request('comment')))  ;
+        $expense->created_at = request('created_at') ;
         $expense->updated_at = date("Y-m-d h:i:s");
 
         if($expense->update()){
@@ -143,33 +128,14 @@ class ExpensesController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-    }
-
     public function delete($id)
     {
-        if(Expense::findOrfail($id)->delete()){
+        if(Expense::findOrFail($id)->delete()){
             session()->flash('message','Expense deleted successfully');
         }else{
             session()->flash('message',"Expense didn't delete successfully");
         }
         return redirect('/expenses?page_number=1');
-    }
-
-    public function search()
-    {
-        $search_for = sql_sanitize(strtolower(request('search'))) ;
-        $expenses = auth()->user()->expenses()->where('expense_name',$search_for)->paginate(5) ;
-
-        return view('/expenses',compact('expenses'));
-
     }
 
     protected function validateExpense()
@@ -179,7 +145,6 @@ class ExpensesController extends Controller
                 'expense_name'=> ['required'] ,
                 'price'=> ['required' ] ,
                 'category'=> ['required' ] ,
-
             ]
         );
 

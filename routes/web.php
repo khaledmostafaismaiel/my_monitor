@@ -14,30 +14,21 @@ use Illuminate\Support\Facades\Route;
 */
 Route::resource('expenses', 'ExpensesController')->middleware('auth')/*->middleware('can:update,expense')*/;
 Route::get('/expenses/{expense_id}/delete', 'ExpensesController@delete' )->middleware('auth') ;
-Route::post('/expenses/search/search', 'ExpensesController@search' )->middleware('auth') ;
 
+Route::resource('categories', 'CategoriesController')->middleware('auth')/*->middleware('can:update,expense')*/;
+Route::get('/categories/{category_id}/delete', 'CategoriesController@delete' )->middleware('auth') ;
 
-Route::resource('/backgrounds', 'BackgroundsController')->middleware('auth');
-Route::get('/backgrounds/{background_id}/delete', 'BackgroundsController@delete' )->middleware('auth') ;
-Route::get('/expenses/{background_id}/set', 'BackgroundsController@set' )->middleware('auth') ;
-
-
-Route::resource('/users', 'UsersController');
-Route::post('/users/process_sign_in', 'UsersController@process_sign_in');
+Route::post('/users/sign_in', 'UsersController@sign_in');
 Route::get('/users/process_sign_out', 'UsersController@process_sign_out');
+Route::resource('/users', 'UsersController');
 
 
 Route::get('/', function () {
-    return view('index');
+    $user = auth()->user();
+    $prices = App\Expense::sum("price");
+
+    return view('index', compact(["user", "prices"]));
 })->middleware('auth');
-
-
-
-Route::get('/not_available', function () {
-    return view('not_available');
-});
-
-
 
 /*
     GET /projects (index)

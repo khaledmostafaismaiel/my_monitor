@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Transaction;
 use App\Category;
+use App\User;
 
 use Illuminate\Http\Request;
 
@@ -37,7 +38,9 @@ class TransactionsController extends Controller
         $categories = Category::orderBy("name")
             ->get();
 
-        return view('transactions' ,compact('transactions', 'categories'));
+        $users = User::all();
+
+        return view('transactions' ,compact('transactions', 'categories', 'users'));
     }
 
     public function store(Request $request)
@@ -69,7 +72,7 @@ class TransactionsController extends Controller
                 'price'=> ['required', 'gt:0'] ,
             ]
         );
-        
+
         $expense = Transaction::findOrFail($id);
 
         $expense->update($request->toArray());

@@ -70,6 +70,20 @@
                     </div>
                 </div>
 
+                <!-- User Selection -->
+                <div class="mb-3">
+                    <label class="form-label">User</label>
+                    <select class="form-select" name="user_id" required>
+                        <option disabled>Select a user</option>
+                        @foreach($users as $user)
+                            <option value="{{ $user->id }}" @if($transaction->user_id == $user->id) selected @endif>
+                                {{ $user->first_name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+
                 <!-- Modal Footer -->
                 <div class="modal-footer bg-light d-flex justify-content-between">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>

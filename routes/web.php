@@ -12,9 +12,18 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::resource('transactions', 'TransactionsController')->middleware('auth')/*->middleware('can:update,expense')*/;
 
-Route::resource('categories', 'CategoriesController')->middleware('auth')/*->middleware('can:update,expense')*/;
+// Route::get('/dd', function () {
+    // factory(\App\Transaction::class, 100)->create();
+
+
+    // dd("Done");
+// });
+
+
+Route::resource('transactions', 'TransactionsController')->middleware('auth');
+
+Route::resource('categories', 'CategoriesController')->middleware('auth');
 
 Route::post('/users/sign_in', 'UsersController@sign_in');
 Route::get('/users/sign_out', 'UsersController@sign_out');

@@ -8,10 +8,22 @@
             <form method="POST" action="/categories">
                 <div class="modal-body p-4">
                     {{ csrf_field() }}
+
+                    <!-- Category Name Input -->
                     <div class="mb-3">
                         <label for="categoryName" class="form-label fw-semibold">Category Name</label>
                         <input type="text" class="form-control shadow-sm" id="categoryName" name="name" required>
                     </div>
+
+                    <!-- Status Selection -->
+                    <div class="mb-3">
+                        <label for="categoryStatus" class="form-label fw-semibold">Status</label>
+                        <select class="form-select shadow-sm" id="categoryStatus" name="status" required>
+                            <option value="active" selected>Active</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+                    </div>
+
                 </div>
                 <div class="modal-footer bg-light border-0">
                     <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">Cancel</button>

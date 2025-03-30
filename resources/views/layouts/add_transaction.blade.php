@@ -49,7 +49,9 @@
                         <select class="form-select" name="category_id" required>
                             <option disabled selected>Select a category</option>
                             @foreach($categories as $category)
-                                <option value="{{ $category->id }}">{{ ucfirst($category->name) }}</option>
+                                @if($category->status == "active")
+                                    <option value="{{ $category->id }}">{{ ucfirst($category->name) }}</option>
+                                @endif
                             @endforeach
                         </select>
                     </div>

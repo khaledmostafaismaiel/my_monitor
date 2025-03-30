@@ -8,29 +8,40 @@
                 Categories
             </a>
         </h2>
+
         <!-- Search & Filter Section -->
-        <form method="GET" action="{{ route('categories.index') }}" class="mb-3">
-            <div class="row g-2 align-items-center">
-                <!-- Search Box -->
-                <div class="col-md-4">
-                    <input type="text" name="name" class="form-control" placeholder="Search by name..." value="{{ request('name') }}">
-                </div>
+<form method="GET" action="{{ route('categories.index') }}" class="mb-3">
+    <div class="row g-2 align-items-center">
+        <!-- Search Box -->
+        <div class="col-md-4">
+            <input type="text" name="name" class="form-control" placeholder="Search by name..." value="{{ request('name') }}">
+        </div>
 
-                <!-- Apply Button -->
-                <div class="col-md-2 d-grid">
-                    <button type="submit" class="btn btn-primary">
-                        <i class="bi bi-filter"></i> Apply
-                    </button>
-                </div>
+        <!-- Status Filter -->
+        <div class="col-md-3">
+            <select name="status" class="form-select">
+                <option value="">All Statuses</option>
+                <option value="active" {{ request('status') == 'active' ? 'selected' : '' }}>Active</option>
+                <option value="inactive" {{ request('status') == 'inactive' ? 'selected' : '' }}>Inactive</option>
+            </select>
+        </div>
 
-                <!-- Add Category Button -->
-                <div class="col-md-3 d-grid">
-                    <button type="button" class="btn btn-success px-4" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
-                        <i class="bi bi-plus-lg"></i> Add Category
-                    </button>
-                </div>
-            </div>
-        </form>
+        <!-- Apply Button -->
+        <div class="col-md-2 d-grid">
+            <button type="submit" class="btn btn-primary">
+                <i class="bi bi-filter"></i> Apply
+            </button>
+        </div>
+
+        <!-- Add Category Button -->
+        <div class="col-md-3 d-grid">
+            <button type="button" class="btn btn-success px-4" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
+                <i class="bi bi-plus-lg"></i> Add Category
+            </button>
+        </div>
+    </div>
+</form>
+
 
         @include('layouts/add_category')
 
@@ -38,7 +49,8 @@
             <table class="table table-striped table-hover text-center">
                 <thead class="bg-primary text-white">
                     <tr>
-                        <th scope="col">Category Name</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Status</th>
                         <th scope="col">Actions</th>
                     </tr>
                 </thead>
@@ -46,6 +58,14 @@
                     @foreach($categories as $category)
                         <tr>
                             <td class="fw-semibold">{{ ucfirst($category->name) }}</td>
+                            <td class="fw-semibold">
+                                @if($category->status == "active")
+                                    <span class="badge bg-success">Active</span>
+                                @else
+                                    <span class="badge bg-danger">Inactive</span>
+                                @endif
+                            </td>
+
                             <td>
                                 <button type="button" class="btn btn-sm btn-primary me-2" data-bs-toggle="modal" data-bs-target="#editCategory{{ $category->id }}">
                                     <i class="bi bi-pencil-square"></i>

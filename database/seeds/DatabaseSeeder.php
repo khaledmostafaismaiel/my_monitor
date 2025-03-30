@@ -39,42 +39,49 @@ class DatabaseSeeder extends Seeder
         Category::create(
             [
                 'name'=> "فواتير" ,
+                'status'=> "active" ,
             ]
         );
 
         Category::create(
             [
                 'name'=> "فاكهه" ,
+                'status'=> "active" ,
             ]
         );
 
         Category::create(
             [
                 'name'=> "خالد",
+                'status'=> "active" ,
             ]
         );
 
         Category::create(
             [
                 'name'=> "دعاء" ,
+                'status'=> "active" ,
             ]
         );
 
         Category::create(
             [
                 'name'=> "لحوم" ,
+                'status'=> "active" ,
             ]
         );
 
         Category::create(
             [
                 'name'=> "طيور" ,
+                'status'=> "active" ,
             ]
         );
 
         Category::create(
             [
                 'name'=> "اسماك" ,
+                'status'=> "active" ,
             ]
         );
 
@@ -82,42 +89,49 @@ class DatabaseSeeder extends Seeder
         Category::create(
             [
                 'name'=> "البان" ,
+                'status'=> "active" ,
             ]
         );
 
         Category::create(
             [
                 'name'=> "بقاله" ,
+                'status'=> "active" ,
             ]
         );
 
         Category::create(
             [
                 'name'=> "مستلزمات المنزل" ,
+                'status'=> "active" ,
             ]
         );
 
         Category::create(
             [
                 'name'=> "خضار" ,
+                'status'=> "active" ,
             ]
         );
 
         Category::create(
             [
                 'name'=> "ليلى" ,
+                'status'=> "active" ,
             ]
         );
 
         Category::create(
             [
                 'name'=> "salary" ,
+                'status'=> "active" ,
             ]
         );
 
         Category::create(
             [
                 'name'=> "other" ,
+                'status'=> "active" ,
             ]
         );
     }

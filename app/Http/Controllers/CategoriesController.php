@@ -12,6 +12,9 @@ class CategoriesController extends Controller
         $categories = Category::when(null !== \request("name"), function($query){
                 $query->where("name", "LIKE", "%".\request("name")."%");
             })
+            ->when(null !== \request("status"), function($query){
+                $query->where("status", \request("status"));
+            })
             ->orderBy("name")
             ->paginate(10);
 
@@ -20,29 +23,17 @@ class CategoriesController extends Controller
 
     public function store(Request $request)
     {
-        Category::create(
-            [
-                'name'=> request('name'),
-            ]
-        );
+        Category::create($request->toArray());
 
         return redirect('/categories');
-    }
-
-    public function edit($id)
-    {
-        $category = Category::findOrFail($id);
-        $category_set = Category::all();
-        return view('edit_category',compact('category'));
     }
 
     public function update(Request $request, $id)
     {
 
         $category = Category::findOrFail($id);
-        $category->name = strtolower(trim(request('name'))) ;
 
-        if($category->update()){
+        if($category->update($request->toArray())){
             session()->flash('message','Category updated successfully');
             return redirect('/categories?page_number=1');
 

@@ -10,10 +10,21 @@
                     {{ csrf_field() }}
                     @method('PUT')
 
+                    <!-- Category Name -->
                     <div class="mb-3">
                         <label for="categoryName" class="form-label fw-semibold">Category Name</label>
                         <input type="text" class="form-control" id="categoryName" name="name" value="{{$category->name}}" required>
                     </div>
+
+                    <!-- Status Selection -->
+                    <div class="mb-3">
+                        <label for="categoryStatus" class="form-label fw-semibold">Status</label>
+                        <select class="form-select" id="categoryStatus" name="status" required>
+                            <option value="active" {{ $category->status == 'active' ? 'selected' : '' }}>Active</option>
+                            <option value="inactive" {{ $category->status == 'inactive' ? 'selected' : '' }}>Inactive</option>
+                        </select>
+                    </div>
+
                 </div>
 
                 <div class="modal-footer">

@@ -5,4 +5,3 @@
 </div>
 
 @include('layouts/error_messages')
-@include('layouts/footer')

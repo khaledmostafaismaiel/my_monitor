@@ -32,7 +32,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link text-white fw-bold" href="/users/process_sign_out">
+                        <a class="nav-link text-white fw-bold" href="/users/sign_out">
                             <i class="bi bi-box-arrow-right"></i> Sign Out
                         </a>
                     </li>

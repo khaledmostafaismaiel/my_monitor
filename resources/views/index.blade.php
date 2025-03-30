@@ -1,7 +1,7 @@
 @extends('layouts.master_layout')
 
 @section('content')
-<div class="container d-flex justify-content-center align-items-center mt-5">
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
     <div class="card p-4 shadow-lg w-100" style="max-width: 900px; background: rgba(255, 255, 255, 0.9); border-radius: 12px;">
         <div class="text-center">
             <h1 class="fw-bold text-primary">My Monitor</h1>

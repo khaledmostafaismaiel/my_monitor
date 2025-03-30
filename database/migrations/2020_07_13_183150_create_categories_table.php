@@ -19,7 +19,6 @@ class CreateCategoriesTable extends Migration
             $table->enum('status', ["active", "inactive"]);
             $table->timestamps();
         });
-
     }
 
     /**

@@ -17,7 +17,7 @@ Route::resource('transactions', 'TransactionsController')->middleware('auth')/*-
 Route::resource('categories', 'CategoriesController')->middleware('auth')/*->middleware('can:update,expense')*/;
 
 Route::post('/users/sign_in', 'UsersController@sign_in');
-Route::get('/users/process_sign_out', 'UsersController@process_sign_out');
+Route::get('/users/sign_out', 'UsersController@sign_out');
 Route::resource('/users', 'UsersController');
 
 

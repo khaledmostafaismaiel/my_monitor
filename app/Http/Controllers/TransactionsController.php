@@ -45,6 +45,7 @@ class TransactionsController extends Controller
         $request->validate(
             [
                 'category_id'=> ['required', 'gt:0'] ,
+                'price'=> ['required', 'gt:0'] ,
             ]
         );
 
@@ -62,6 +63,13 @@ class TransactionsController extends Controller
 
     public function update(Request $request, $id)
     {
+        $request->validate(
+            [
+                'category_id'=> ['required', 'gt:0'] ,
+                'price'=> ['required', 'gt:0'] ,
+            ]
+        );
+        
         $expense = Transaction::findOrFail($id);
 
         $expense->update($request->toArray());

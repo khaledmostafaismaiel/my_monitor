@@ -2,14 +2,13 @@
 
 @section('content')
 
-<div class="container d-flex justify-content-center align-items-center mt-5">
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
     <div class="card p-4 shadow-lg w-100" style="max-width: 900px; background: rgba(255, 255, 255, 0.9); border-radius: 12px;">
         <h2 class="text-center fw-bold mb-4">
             <a href="{{ route('transactions.index') }}" class="text-dark text-decoration-none" style="transition: 0.2s;">
                 Transactions
             </a>
         </h2>
-
 
         <!-- Search and Filter Section -->
         <form method="GET" action="{{ route('transactions.index') }}" class="mb-4">
@@ -78,7 +77,7 @@
         @include('layouts/add_transaction')
 
         <div class="table-responsive">
-            <table class="table table-striped table-hover text-center">
+            <table class="table table-striped table-hover text-center align-middle">
                 <thead class="bg-primary text-white">
                     <tr>
                         <th scope="col">Name</th>
@@ -98,7 +97,7 @@
                                     {{ ucfirst($transaction->type) }}
                                 </span>
                             </td>
-                            <td class="fw-bold">${{ number_format($transaction->price, 2) }}</td>
+                            <td class="fw-bold">E£ {{ number_format($transaction->price, 2) }}</td>
                             <td>{{ $transaction->category->name }}</td>
                             <td>{{ date('D d-M-Y', strtotime($transaction->date)) }}</td>
                             <td>

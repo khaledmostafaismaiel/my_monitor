@@ -1,8 +1,6 @@
-<form action="/expenses" method="get">
+<form class="d-flex mt-3" role="search" action="/transactions" method="get">
     {{csrf_field()}}
-    <div class="search_box">
-        <input class="search_box-text" type="text" name="search" placeholder="search">
-        <img src="/images/search.png"  class="search_box-img">
-        <input  class="search_box-btn"   type="submit" name="submit_search"  >
-    </div>
+
+    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search">
+    <button class="btn btn-outline-info" type="submit">Search</button>
 </form>

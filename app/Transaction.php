@@ -6,9 +6,9 @@ use App\Mail\ExpenseAdded;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Mail;
 
-class Expense extends Model
+class Transaction extends Model
 {
-    protected $guarded = [] ;
+    protected $guarded = [];
 
 
     public function user(){

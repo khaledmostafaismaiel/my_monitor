@@ -12,25 +12,21 @@ class CategoriesController extends Controller
         $categories = Category::when(null !== \request("search"), function($query){
                 $query->where("name", "LIKE", "%".\request("search")."%");
             })
+            ->orderBy("name")
             ->paginate(10);
 
         return view('categories' ,compact('categories'));
     }
 
-    public function create()
-    {
-        return view('add_category');
-    }
-
     public function store(Request $request)
     {
-        if(Category::create([
-            'name'=> request('name'),
-        ])){
-            return redirect('/categories');
-        }else{
-            return redirect('/categories/create');
-        }
+        Category::create(
+            [
+                'name'=> request('name'),
+            ]
+        );
+
+        return redirect('/categories');
     }
 
     public function edit($id)
@@ -54,5 +50,15 @@ class CategoriesController extends Controller
             session()->flash('message','Category didn\'t updated successfully');
             return redirect('/categories/'.$id."/edit");
         }
+    }
+
+    public function destroy($id)
+    {
+        if(Category::findOrFail($id)->delete()){
+            session()->flash('message','Category deleted successfully');
+        }else{
+            session()->flash('message',"Category didn't deleted successfully");
+        }
+        return redirect('/categories?page_number=1');
     }
 }

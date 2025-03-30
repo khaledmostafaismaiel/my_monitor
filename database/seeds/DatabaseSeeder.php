@@ -78,11 +78,6 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        Category::create(
-            [
-                'name'=> "دعاء" ,
-            ]
-        );
 
         Category::create(
             [
@@ -111,6 +106,18 @@ class DatabaseSeeder extends Seeder
         Category::create(
             [
                 'name'=> "ليلى" ,
+            ]
+        );
+
+        Category::create(
+            [
+                'name'=> "salary" ,
+            ]
+        );
+
+        Category::create(
+            [
+                'name'=> "other" ,
             ]
         );
     }

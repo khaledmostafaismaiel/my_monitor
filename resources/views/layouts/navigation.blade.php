@@ -1,21 +1,34 @@
-<div class="navigation">
-    <input type="checkbox" class="navigation__checkbox" id="navi-toggle">
-    <label for="navi-toggle" class="navigation__button">
-        <span class="navigation__icon">Menu</span>
-    </label>
+<nav class="navbar bg-primary fixed-top">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">{{env("APP_NAME")}}</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-    <div class="navigation__background">
-        &nbsp;
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            
+            <div class="offcanvas-body">
+
+                @include('layouts/search_box')
+
+                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="/transactions">Transactions</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="/categories">Categories</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="/users/process_sign_out">Signout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
-
-    <nav class="navigation__nav">
-        <ul class="navigation__list">
-            <li class="navigation__item-1"><a href="/expenses/create" class="navigation__link">+ Add Expense</a></li>
-            <li class="navigation__item-2"><a href="/expenses?page_number=1" class="navigation__link">Expenses</a></li>
-            <li class="navigation__item-1"><a href="/categories/create" class="navigation__link">+ Add Category</a></li>
-            <li class="navigation__item-2"><a href="/categories?page_number=1" class="navigation__link">Categories</a></li>
-            <li class="navigation__item-5"><a href="/users/process_sign_out" class="navigation__link">Sign Out</a></li>
-        </ul>
-    </nav>
-
-</div>
+</nav>

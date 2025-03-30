@@ -12,11 +12,9 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::resource('expenses', 'ExpensesController')->middleware('auth')/*->middleware('can:update,expense')*/;
-Route::get('/expenses/{expense_id}/delete', 'ExpensesController@delete' )->middleware('auth') ;
+Route::resource('transactions', 'TransactionsController')->middleware('auth')/*->middleware('can:update,expense')*/;
 
 Route::resource('categories', 'CategoriesController')->middleware('auth')/*->middleware('can:update,expense')*/;
-Route::get('/categories/{category_id}/delete', 'CategoriesController@delete' )->middleware('auth') ;
 
 Route::post('/users/sign_in', 'UsersController@sign_in');
 Route::get('/users/process_sign_out', 'UsersController@process_sign_out');
@@ -25,9 +23,18 @@ Route::resource('/users', 'UsersController');
 
 Route::get('/', function () {
     $user = auth()->user();
-    $prices = App\Expense::sum("price");
 
-    return view('index', compact(["user", "prices"]));
+    $transactions = \App\Transaction::selectRaw("
+        DATE_FORMAT(date, '%Y-%m') as month_year,
+        SUM(CASE WHEN type = 'credit' THEN price ELSE 0 END) as credit,
+        SUM(CASE WHEN type = 'debit' THEN price ELSE 0 END) as debit,
+        (SUM(CASE WHEN type = 'credit' THEN price ELSE 0 END) - SUM(CASE WHEN type = 'debit' THEN price ELSE 0 END)) as undocumented
+    ")
+    ->groupBy('month_year')
+    ->orderBy('month_year', 'desc')
+    ->get();
+
+    return view('index', compact(["user", "transactions"]));
 })->middleware('auth');
 
 /*
@@ -40,7 +47,7 @@ Route::get('/', function () {
     DELETE /projects/1 (destroy)
 
 
-    Route::get('/projects', 'UsersController@index');//GET/expenses
+    Route::get('/projects', 'UsersController@index');//GET/transactions
     Route::get('/projects/create', 'UsersController@create');//GET/add_expense
     Route::get('/projects/{project_id}', 'UsersController@show');//GET/specific expense
     Route::post('/projects', 'UsersController@store');//POST/add_expense form

@@ -32,7 +32,7 @@ Route::get('/', function () {
     ")
     ->groupBy('month_year')
     ->orderBy('month_year', 'desc')
-    ->get();
+    ->paginate(10);
 
     return view('index', compact(["user", "transactions"]));
 })->middleware('auth');

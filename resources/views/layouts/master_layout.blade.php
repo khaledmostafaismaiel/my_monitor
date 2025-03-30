@@ -1,6 +1,8 @@
 @include('layouts/header')
 
-@yield('content')
+<div class="flex-grow-1">
+    @yield('content')
+</div>
 
 @include('layouts/error_messages')
 @include('layouts/footer')

@@ -1,7 +1,8 @@
-        <footer class="bg-primary text-white text-center py-4 fixed-bottom">
-            <p>&copy; {{ date('Y') }} Khaled Mostafa</p>
-        </footer>
+    <footer class="text-center text-white py-3 mt-auto" style="background: linear-gradient(135deg, #6a11cb, #2575fc);">
+        <div class="container">
+            <p class="mb-0">&copy; {{ date('Y') }} My Monitor | Developed by Khaled Mostafa</p>
+        </div>
+    </footer>
 
-</body>
-
+    </body>
 </html>

@@ -9,8 +9,8 @@ class CategoriesController extends Controller
 {
     public function index()
     {
-        $categories = Category::when(null !== \request("search"), function($query){
-                $query->where("name", "LIKE", "%".\request("search")."%");
+        $categories = Category::when(null !== \request("name"), function($query){
+                $query->where("name", "LIKE", "%".\request("name")."%");
             })
             ->orderBy("name")
             ->paginate(10);

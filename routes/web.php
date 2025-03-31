@@ -26,7 +26,7 @@ Route::resource('transactions', 'TransactionsController')->middleware('auth');
 Route::resource('categories', 'CategoriesController')->middleware('auth');
 
 Route::post('/users/sign_in', 'UsersController@sign_in');
-Route::get('/users/sign_out', 'UsersController@sign_out');
+Route::post('/users/sign_out', 'UsersController@sign_out');
 Route::resource('/users', 'UsersController');
 
 

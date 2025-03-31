@@ -35,9 +35,9 @@ Route::get('/', function () {
 
     $transactions = \App\Transaction::selectRaw("
         DATE_FORMAT(date, '%Y-%m') as month_year,
-        SUM(CASE WHEN type = 'credit' THEN price ELSE 0 END) as credit,
-        SUM(CASE WHEN type = 'debit' THEN price ELSE 0 END) as debit,
-        (SUM(CASE WHEN type = 'credit' THEN price ELSE 0 END) - SUM(CASE WHEN type = 'debit' THEN price ELSE 0 END)) as undocumented
+        SUM(CASE WHEN type = 'credit' THEN price * quantity ELSE 0 END) as credit,
+        SUM(CASE WHEN type = 'debit' THEN price * quantity ELSE 0 END) as debit,
+        (SUM(CASE WHEN type = 'credit' THEN price * quantity ELSE 0 END) - SUM(CASE WHEN type = 'debit' THEN price * quantity ELSE 0 END)) as undocumented
     ")
     ->groupBy('month_year')
     ->orderBy('month_year', 'desc')

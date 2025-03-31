@@ -1,7 +1,7 @@
 @extends('layouts.master_layout')
 
 @section('content')
-<div class="container d-flex justify-content-center align-items-center min-vh-100">
+<div class="container d-flex justify-content-center align-items-center py-5 my-4">
     <div class="card p-4 shadow-lg w-100" style="max-width: 900px; background: rgba(255, 255, 255, 0.95); border-radius: 12px;">
         <div class="text-center mb-3">
             <h1 class="fw-bold text-primary">My Monitor</h1>
@@ -10,7 +10,7 @@
 
         <!-- Responsive Table Wrapper -->
         <div class="table-responsive">
-            <table class="table table-bordered table-hover text-center align-middle">
+            <table class="table table-striped table-hover text-center align-middle">
                 <thead class="bg-primary text-white">
                     <tr>
                         <th scope="col">Month</th>

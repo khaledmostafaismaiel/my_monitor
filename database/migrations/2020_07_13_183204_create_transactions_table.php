@@ -15,9 +15,10 @@ class CreateTransactionsTable extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id()->autoIncrement()->unsigned();
+            $table->string('name');
             $table->enum('type', ['debit', 'credit']);
             $table->unsignedInteger('user_id');
-            $table->string('name');
+            $table->float('quantity');
             $table->float('price');
             $table->unsignedInteger('category_id');
             $table->text('comment')->nullable();

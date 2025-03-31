@@ -22,6 +22,14 @@
                             <input type="text" class="form-control" id="transactionName" name="name" placeholder="Enter transaction name" required>
                         </div>
 
+                        <!-- Quantity Input -->
+                        <div class="col-md-6">
+                            <label class="form-label">Quantity</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" name="quantity" value="1" min="1" step="0.01" required>
+                            </div>
+                        </div>
+
                         <!-- Amount Input -->
                         <div class="col-md-6">
                             <label class="form-label">Amount</label>

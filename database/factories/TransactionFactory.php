@@ -12,6 +12,7 @@ $factory->define(Transaction::class, function (Faker $faker) {
         'type' => $this->faker->randomElement(['debit', 'credit']),
         'user_id' => factory(\App\User::class),
         'name' => $this->faker->word(),
+        'quantity' => $this->faker->randomFloat(2, 5, 1000),
         'price' => $this->faker->randomFloat(2, 5, 1000),
         'category_id' => factory(\App\Category::class),
         'comment' => $this->faker->optional()->sentence(),

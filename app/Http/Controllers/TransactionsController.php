@@ -48,7 +48,8 @@ class TransactionsController extends Controller
         $request->validate(
             [
                 'category_id'=> ['required', 'gt:0'] ,
-                'price'=> ['required', 'gt:0'] ,
+                'quantity'=> ['required', 'gte:1'],
+                'price'=> ['required', 'gt:0'],
             ]
         );
 

@@ -10,7 +10,7 @@
         </h2>
 
         <!-- Search & Filter Section -->
-        <form method="GET" action="{{ route('categories.index') }}" class="mb-3">
+        <form method="GET" action="{{ route('categories.index') }}" class="mb-3" id="filter_categories_form">
             <div class="row g-3 align-items-center">
                 <div class="col-lg-3 col-md-4 col-sm-6">
                     <input type="text" name="name" class="form-control" placeholder="Search by name..." value="{{ request('name') }}">
@@ -109,3 +109,18 @@
         }
     }
 </style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const form = document.querySelector("#filter_categories_form");
+        const submitButton = form.querySelector("button[type='submit']");
+        
+        form.addEventListener("submit", function () {
+            submitButton.disabled = true;
+            submitButton.innerHTML = `
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Appling...
+            `;
+        });
+    });
+</script>

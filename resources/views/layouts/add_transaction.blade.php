@@ -96,3 +96,19 @@
         </div>
     </div>
 </div>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const form = document.querySelector("#addTransaction form");
+        const submitButton = form.querySelector("button[type='submit']");
+        
+        form.addEventListener("submit", function () {
+            submitButton.disabled = true;
+            submitButton.innerHTML = `
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Saving...
+            `;
+        });
+    });
+</script>

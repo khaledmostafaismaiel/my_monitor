@@ -11,7 +11,7 @@
         </h2>
 
         <!-- Search and Filter Section -->
-        <form method="GET" action="{{ route('transactions.index') }}" class="mb-4">
+        <form method="GET" action="{{ route('transactions.index') }}" class="mb-4" id="filter_transactions_form">
             <div class="row g-3 align-items-end">
                 <!-- Search Box -->
                 <div class="col-md-3 col-sm-6">
@@ -164,3 +164,18 @@
         }
     }
 </style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const form = document.querySelector("#filter_transactions_form");
+        const submitButton = form.querySelector("button[type='submit']");
+        
+        form.addEventListener("submit", function () {
+            submitButton.disabled = true;
+            submitButton.innerHTML = `
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Appling...
+            `;
+        });
+    });
+</script>

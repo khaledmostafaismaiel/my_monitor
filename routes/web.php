@@ -13,12 +13,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/dd', function () {
-    // factory(\App\Transaction::class, 100)->create();
+Route::get('/dd', function () {
+    factory(\App\Transaction::class, 100)->create();
 
 
-    // dd("Done");
-// });
+    dd("Done");
+});
 
 
 Route::resource('transactions', 'TransactionsController')->middleware('auth');

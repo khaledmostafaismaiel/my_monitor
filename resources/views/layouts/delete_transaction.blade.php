@@ -1,33 +1,36 @@
-<div class="modal fade" id="{{ $modalId }}" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content shadow-lg border-0 rounded-3">
-            
+<div class="modal fade" id="{{ $modalId }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deleteTransactionLabel{{ $transaction->id }}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm"> <!-- Optimized modal size -->
+        <div class="modal-content shadow-lg rounded-3 border-0">
             <!-- Modal Header -->
             <div class="modal-header bg-danger text-white">
-                <h5 class="modal-title" id="deleteModalLabel">
-                    <i class="bi bi-exclamation-triangle-fill me-2"></i> Confirm Deletion
+                <h5 class="modal-title fw-bold" id="deleteTransactionLabel{{ $transaction->id }}">
+                    <i class="bi bi-trash3 me-2"></i> Delete Transaction
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
             <!-- Modal Body -->
             <div class="modal-body text-center p-4">
-                <h5 class="fw-bold text-danger">Are you sure you want to delete this transaction?</h5>
+                <i class="bi bi-exclamation-triangle-fill text-danger fs-1 mb-3"></i>
+                <p class="fs-5 fw-semibold">Are you sure you want to delete this transaction?</p>
                 <p class="text-muted">This action cannot be undone.</p>
-
-                <!-- Delete Form -->
-                <form action="/transactions/{{$transaction->id}}" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    
-                    <!-- Action Buttons -->
-                    <div class="d-flex justify-content-center gap-3 mt-4">
-                        <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-danger px-4">Delete</button>
-                    </div>
-                </form>
             </div>
 
+            <!-- Form -->
+            <form action="/transactions/{{$transaction->id}}" method="POST">
+                {{ csrf_field() }}
+                @method('DELETE')
+
+                <!-- Modal Footer -->
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle"></i> Cancel
+                    </button>
+                    <button type="submit" class="btn btn-danger px-4">
+                        <i class="bi bi-trash"></i> Delete
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

@@ -1,8 +1,8 @@
 <nav class="navbar navbar-dark fixed-top" style="background: linear-gradient(135deg, #6a11cb, #2575fc);">
     <div class="container-fluid">
-        <!-- Brand -->
-        <a class="navbar-brand fw-bold text-white" href="/">
-            <i class="bi bi-bar-chart-line"></i> {{ env("APP_NAME") }}
+        <!-- Brand with Logo -->
+        <a class="navbar-brand fw-bold text-white d-flex align-items-center" href="/">
+            {{ env("APP_NAME") }}
         </a>
 
         <!-- Offcanvas Button -->
@@ -32,9 +32,12 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link text-white fw-bold" href="/users/sign_out">
-                            <i class="bi bi-box-arrow-right"></i> Sign Out
-                        </a>
+                        <form method="POST" action="/users/sign_out">
+                            {{ csrf_field() }}
+                            <button type="submit" class="nav-link text-danger fw-bold bg-transparent border-0">
+                                <i class="bi bi-box-arrow-right"></i> Sign Out
+                            </button>
+                        </form>
                     </li>
                 </ul>
             </div>

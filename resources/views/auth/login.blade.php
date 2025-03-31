@@ -1,7 +1,7 @@
 @extends('layouts.master_layout')
 
 @section('content')
-<div class="d-flex justify-content-center align-items-center vh-100" style="background: linear-gradient(135deg, #6a11cb, #2575fc);">
+<div class="d-flex justify-content-center align-items-center min-vh-100 px-3" style="background: linear-gradient(135deg, #6a11cb, #2575fc);">
     <div class="card p-4 shadow-lg rounded" style="max-width: 400px; width: 100%;">
         <div class="text-center">
             <h1 class="fw-bold text-primary">My Monitor</h1>
@@ -33,4 +33,37 @@
         </form>
     </div>
 </div>
+
+<style>
+    @media (max-width: 576px) { 
+        /* Adjustments for Small Screens (Phones) */
+        .card {
+            padding: 2rem 1.5rem;
+            max-width: 90%;
+        }
+        h1 {
+            font-size: 1.8rem;
+        }
+        h2 {
+            font-size: 1.4rem;
+        }
+        .form-control {
+            font-size: 1rem;
+        }
+    }
+
+    @media (min-width: 768px) {
+        /* Adjustments for Medium Screens (Tablets) */
+        .card {
+            max-width: 450px;
+        }
+    }
+
+    @media (min-width: 1200px) {
+        /* Adjustments for Large Screens (Desktops) */
+        .card {
+            max-width: 400px;
+        }
+    }
+</style>
 @endsection

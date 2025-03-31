@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="container d-flex justify-content-center align-items-center min-vh-100">
+<div class="container d-flex justify-content-center align-items-center py-5">
     <div class="card p-4 shadow-lg w-100" style="max-width: 900px; background: rgba(255, 255, 255, 0.9); border-radius: 12px;">
         <h2 class="text-center fw-bold mb-4">
             <a href="{{ route('transactions.index') }}" class="text-dark text-decoration-none" style="transition: 0.2s;">
@@ -69,7 +69,7 @@
         </form>
 
         <!-- Add Transaction Button -->
-        <div class="d-flex justify-content-end mb-3">
+        <div class="col-lg-4 col-md-6 col-sm-6 d-grid mb-4">
             <button type="button" class="btn btn-success px-4" data-bs-toggle="modal" data-bs-target="#addTransaction">
                 <i class="bi bi-plus-lg"></i> Add Transaction
             </button>
@@ -91,7 +91,7 @@
                 <tbody>
                     @foreach($transactions as $transaction)
                         <tr>
-                            <td class="fw-semibold">{{ $transaction->name }}</td>
+                            <td class="fw-semibold text-truncate">{{ $transaction->name }}</td>
                             <td>
                                 <span class="badge {{ $transaction->type == 'credit' ? 'bg-success' : 'bg-danger' }}">
                                     {{ ucfirst($transaction->type) }}
@@ -117,10 +117,54 @@
             </table>
         </div>
 
+        <!-- Centered Pagination -->
         <div class="d-flex justify-content-center mt-3">
-            {{ $transactions->appends(request()->query())->links() }}
+            <nav aria-label="Page navigation">
+                {{ $transactions->links() }}
+            </nav>
         </div>
     </div>
 </div>
 
 @endsection
+
+<!-- Styles for Responsive Table -->
+<style>
+    .pagination {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .card {
+        margin-top: 20px;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    /* Make table cells more responsive */
+    table {
+        min-width: 600px; /* Prevents columns from shrinking too much */
+    }
+
+    th, td {
+        white-space: nowrap;
+        word-wrap: break-word;
+        min-width: 100px; /* Ensures each column has a minimum width */
+    }
+
+    @media (max-width: 768px) {
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        th, td {
+            min-width: 80px;
+        }
+
+        .table thead {
+            font-size: 14px;
+        }
+    }
+</style>

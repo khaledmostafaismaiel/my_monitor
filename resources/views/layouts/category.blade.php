@@ -1,35 +1,44 @@
-<div class="modal fade" id="{{ $modalId }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content shadow-lg" style="border-radius: 12px;">
+<div class="modal fade" id="{{ $modalId }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editCategoryLabel{{ $category->id }}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg"> <!-- Increased modal size -->
+        <div class="modal-content shadow-lg rounded-3 border-0">
+            <!-- Modal Header -->
             <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title fw-bold" id="staticBackdropLabel">Edit Category</h5>
-                <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title fw-bold text-start" id="editCategoryLabel{{ $category->id }}">
+                    <i class="bi bi-pencil-square me-2"></i> Edit Category
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+
+            <!-- Form -->
             <form method="POST" action="/categories/{{$category->id}}">
                 <div class="modal-body p-4">
                     {{ csrf_field() }}
                     @method('PUT')
 
-                    <!-- Category Name -->
-                    <div class="mb-3">
-                        <label for="categoryName" class="form-label fw-semibold">Category Name</label>
-                        <input type="text" class="form-control" id="categoryName" name="name" value="{{$category->name}}" required>
+                    <!-- Category Name Input -->
+                    <div class="mb-3 text-start">
+                        <label for="categoryName{{ $category->id }}" class="form-label fw-semibold text-start">Category Name</label>
+                        <input type="text" class="form-control form-control-lg shadow-sm" id="categoryName{{ $category->id }}" name="name" value="{{ $category->name }}" placeholder="Enter category name..." required>
                     </div>
 
                     <!-- Status Selection -->
-                    <div class="mb-3">
-                        <label for="categoryStatus" class="form-label fw-semibold">Status</label>
-                        <select class="form-select" id="categoryStatus" name="status" required>
+                    <div class="mb-3 text-start">
+                        <label for="categoryStatus{{ $category->id }}" class="form-label fw-semibold text-start">Status</label>
+                        <select class="form-select form-select-lg shadow-sm" id="categoryStatus{{ $category->id }}" name="status" required>
                             <option value="active" {{ $category->status == 'active' ? 'selected' : '' }}>Active</option>
                             <option value="inactive" {{ $category->status == 'inactive' ? 'selected' : '' }}>Inactive</option>
                         </select>
                     </div>
-
                 </div>
 
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-success px-4">Save</button>
+                <!-- Modal Footer -->
+                <div class="modal-footer bg-light border-0">
+                    <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle"></i> Cancel
+                    </button>
+                    <button type="submit" class="btn btn-primary px-4">
+                        <i class="bi bi-check-circle"></i> Save Changes
+                    </button>
                 </div>
             </form>
         </div>

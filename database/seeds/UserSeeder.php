@@ -15,23 +15,23 @@ class UserSeeder extends Seeder
     {
         User::firstOrCreate(
             [
-                'email'=> "khaledmostafa297@gmail.com" ,
+                'email'=> "khaledmostafa@mymonitor.com" ,
             ],
             [
                 'first_name'=> "Khaled" ,
                 'last_name'=> "Mostafa",
-                'password'=> bcrypt("12345678"),
+                'password'=> bcrypt("password7lw@MYMONITOR"),
             ]
         );
         
         User::firstOrCreate(
             [
-                'email'=> "doaagaber@gmail.com" ,
+                'email'=> "doaaahmed@mymonitor.com" ,
             ],
             [
                 'first_name'=> "Doaa" ,
                 'last_name'=> "Ahmed",
-                'password'=> bcrypt("12345678"),
+                'password'=> bcrypt("password7lw@MYMONITOR"),
             ]
         );
     }

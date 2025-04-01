@@ -43,11 +43,6 @@
                 </div>
 
             </div>
-
-            <!-- Footer -->
-            <div class="offcanvas-footer text-center p-3 bg-secondary text-white rounded-bottom">
-                &copy; {{ date('Y') }} My Monitor | Developed by Khaled Mostafa
-            </div>
         </div>
     </div>
 </nav>

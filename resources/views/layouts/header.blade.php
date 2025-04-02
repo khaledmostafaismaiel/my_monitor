@@ -5,6 +5,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="My Monitor - Track your transactions, salary, rent, food, and expenses easily.">
+   
+    <link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+
     <title>{{ env("APP_NAME") }}</title>
 
     <!-- Tailwind CSS -->

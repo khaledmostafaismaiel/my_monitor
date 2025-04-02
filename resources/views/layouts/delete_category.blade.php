@@ -12,7 +12,7 @@
             <!-- Modal Body -->
             <div class="modal-body text-center p-4">
                 <i class="bi bi-exclamation-triangle-fill text-danger fs-1 mb-3"></i>
-                <p class="fs-5 fw-semibold">Are you sure you want to delete this category?</p>
+                <p class="fs-5 fw-semibold">Are you sure?</p>
                 <p class="text-muted">This action cannot be undone.</p>
             </div>
 

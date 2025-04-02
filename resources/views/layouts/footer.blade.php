@@ -10,7 +10,7 @@
         background: transparent;
         color: white;
         font-weight: 600;
-        position: fixed;
+        position: bottom;
         width: 100%;
         bottom: 0;
         left: 0;

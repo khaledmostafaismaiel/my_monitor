@@ -20,6 +20,7 @@ class CategorySeeder extends Seeder
             ],
             [
                 'status'=> "active" ,
+                'family_id'=> "khaledmostafaismaielahmedmohamed",
             ]
         );
 
@@ -30,6 +31,7 @@ class CategorySeeder extends Seeder
             ],
             [
                 'status'=> "active" ,
+                'family_id'=> "khaledmostafaismaielahmedmohamed",
             ]
         );
 
@@ -40,6 +42,7 @@ class CategorySeeder extends Seeder
             ],
             [
                 'status'=> "active" ,
+                'family_id'=> "khaledmostafaismaielahmedmohamed",
             ]
         );
 
@@ -50,6 +53,7 @@ class CategorySeeder extends Seeder
             ],
             [
                 'status'=> "active" ,
+                'family_id'=> "khaledmostafaismaielahmedmohamed",
             ]
         );
 
@@ -60,6 +64,7 @@ class CategorySeeder extends Seeder
             ],
             [
                 'status'=> "active" ,
+                'family_id'=> "khaledmostafaismaielahmedmohamed",
             ]
         );
 
@@ -70,6 +75,7 @@ class CategorySeeder extends Seeder
             ],
             [
                 'status'=> "active" ,
+                'family_id'=> "khaledmostafaismaielahmedmohamed",
             ]
         );
 
@@ -80,6 +86,7 @@ class CategorySeeder extends Seeder
             ],
             [
                 'status'=> "active" ,
+                'family_id'=> "khaledmostafaismaielahmedmohamed",
             ]
         );
 
@@ -90,6 +97,7 @@ class CategorySeeder extends Seeder
             ],
             [
                 'status'=> "active" ,
+                'family_id'=> "khaledmostafaismaielahmedmohamed",
             ]
         );
 
@@ -100,6 +108,7 @@ class CategorySeeder extends Seeder
             ],
             [
                 'status'=> "active" ,
+                'family_id'=> "khaledmostafaismaielahmedmohamed",
             ]
         );
 
@@ -110,6 +119,7 @@ class CategorySeeder extends Seeder
             ],
             [
                 'status'=> "active" ,
+                'family_id'=> "khaledmostafaismaielahmedmohamed",
             ]
         );
 
@@ -120,6 +130,7 @@ class CategorySeeder extends Seeder
             ],
             [
                 'status'=> "active" ,
+                'family_id'=> "khaledmostafaismaielahmedmohamed",
             ]
         );
 
@@ -130,6 +141,7 @@ class CategorySeeder extends Seeder
             ],
             [
                 'status'=> "active" ,
+                'family_id'=> "khaledmostafaismaielahmedmohamed",
             ]
         );
 
@@ -140,6 +152,7 @@ class CategorySeeder extends Seeder
             ],
             [
                 'status'=> "active" ,
+                'family_id'=> "khaledmostafaismaielahmedmohamed",
             ]
         );
 
@@ -150,6 +163,7 @@ class CategorySeeder extends Seeder
             ],
             [
                 'status'=> "active" ,
+                'family_id'=> "khaledmostafaismaielahmedmohamed",
             ]
         );
     }

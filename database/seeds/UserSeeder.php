@@ -3,6 +3,8 @@
 use Illuminate\Database\Seeder;
 
 use App\User;
+use App\Family;
+
 
 class UserSeeder extends Seeder
 {
@@ -21,6 +23,7 @@ class UserSeeder extends Seeder
                 'first_name'=> "Khaled" ,
                 'last_name'=> "Mostafa",
                 'password'=> bcrypt("password7lw@MYMONITOR"),
+                'family_id'=> Family::first()->id,
             ]
         );
         
@@ -32,6 +35,7 @@ class UserSeeder extends Seeder
                 'first_name'=> "Doaa" ,
                 'last_name'=> "Ahmed",
                 'password'=> bcrypt("password7lw@MYMONITOR"),
+                'family_id'=> Family::first()->id,
             ]
         );
     }

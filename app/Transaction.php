@@ -2,7 +2,6 @@
 
 namespace App;
 
-use App\Mail\ExpenseAdded;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Mail;
 

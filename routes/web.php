@@ -13,14 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/dd', function () {
-    factory(\App\Transaction::class, 100)->create();
-
-
-    dd("Done");
-});
-
-
 Route::resource('transactions', 'TransactionsController')->middleware('auth');
 
 Route::resource('categories', 'CategoriesController')->middleware('auth');
@@ -33,15 +25,16 @@ Route::resource('/users', 'UsersController');
 Route::get('/', function () {
     $user = auth()->user();
 
-    $transactions = \App\Transaction::selectRaw("
-        DATE_FORMAT(date, '%Y-%m') as month_year,
-        SUM(CASE WHEN type = 'credit' THEN price * quantity ELSE 0 END) as credit,
-        SUM(CASE WHEN type = 'debit' THEN price * quantity ELSE 0 END) as debit,
-        (SUM(CASE WHEN type = 'credit' THEN price * quantity ELSE 0 END) - SUM(CASE WHEN type = 'debit' THEN price * quantity ELSE 0 END)) as undocumented
-    ")
-    ->groupBy('month_year')
-    ->orderBy('month_year', 'desc')
-    ->paginate(10);
+    $transactions = \App\Transaction::where('family_id', auth()->user()->family_id)
+        ->selectRaw("
+            DATE_FORMAT(date, '%Y-%m') as month_year,
+            SUM(CASE WHEN type = 'credit' THEN price * quantity ELSE 0 END) as credit,
+            SUM(CASE WHEN type = 'debit' THEN price * quantity ELSE 0 END) as debit,
+            (SUM(CASE WHEN type = 'credit' THEN price * quantity ELSE 0 END) - SUM(CASE WHEN type = 'debit' THEN price * quantity ELSE 0 END)) as undocumented
+        ")
+        ->groupBy('month_year')
+        ->orderBy('month_year', 'desc')
+        ->paginate(10);
 
     return view('index', compact(["user", "transactions"]));
 })->middleware('auth');

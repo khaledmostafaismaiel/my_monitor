@@ -13,7 +13,8 @@ class TransactionsController extends Controller
 
     public function index()
     {
-        $transactions = Transaction::with('category', 'user')
+        $transactions = Transaction::where('family_id', auth()->user()->family_id)
+            ->with('category', 'user')
             ->when(null !== \request("name"), function($query){
                 $query->where("name", "LIKE", "%".\request("name")."%");
             })
@@ -58,6 +59,7 @@ class TransactionsController extends Controller
                 $request->toArray(),
                 [
                     'user_id'=> auth()->id(),
+                    'family_id'=> auth()->user()->family_id,
                 ]
             )
         );

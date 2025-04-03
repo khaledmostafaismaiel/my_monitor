@@ -9,7 +9,8 @@ class CategoriesController extends Controller
 {
     public function index()
     {
-        $categories = Category::when(null !== \request("name"), function($query){
+        $categories = Category::where('family_id', auth()->user()->family_id)
+            ->when(null !== \request("name"), function($query){
                 $query->where("name", "LIKE", "%".\request("name")."%");
             })
             ->when(null !== \request("status"), function($query){
@@ -23,8 +24,15 @@ class CategoriesController extends Controller
 
     public function store(Request $request)
     {
-        Category::create($request->toArray());
-
+        Category::create(
+            array_merge(
+                $request->toArray(),
+                [
+                    'family_id'=> auth()->user()->family_id,
+                ]
+            )
+        );
+        
         return redirect('/categories');
     }
 

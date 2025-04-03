@@ -18,6 +18,23 @@
             </div>
 
             <div class="offcanvas-body d-flex flex-column h-100">
+                <!-- User Info Section -->
+                <div class="text-white mt-3 mb-4 d-flex flex-column">
+                    <!-- User Icon and Name -->
+                    <div class="d-flex align-items-center mb-2">
+                        <i class="bi bi-person-circle me-2" style="font-size: 1.5rem;"></i>
+                        <p class="fw-bold mb-0">{{ auth()->user()->first_name }}</p>
+                    </div>
+                    <!-- Family ID below the Name with Copy Icon -->
+                    <div class="d-flex align-items-center">
+                        <small class="text-light me-2">Family ID: {{ auth()->user()->family_id }}</small>
+                    </div>
+                </div>
+
+                <!-- Divider to separate user info from the menu -->
+                <hr class="text-white">
+
+                <!-- Menu Items -->
                 <ul class="navbar-nav flex-grow-1">
                     <li class="nav-item">
                         <a class="nav-link text-white fw-bold" href="/transactions">
@@ -41,7 +58,6 @@
                         </button>
                     </form>
                 </div>
-
             </div>
         </div>
     </div>

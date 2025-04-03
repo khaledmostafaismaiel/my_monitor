@@ -2,7 +2,7 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\User;
+use App\Family;
 use Faker\Generator as Faker;
 use Illuminate\Support\Str;
 
@@ -17,12 +17,8 @@ use Illuminate\Support\Str;
 |
 */
 
-$factory->define(User::class, function (Faker $faker) {
+$factory->define(Family::class, function (Faker $faker) {
     return [
-        'first_name' => $this->faker->firstName(),
-        'last_name' => $this->faker->lastName(),
-        'email' => $this->faker->unique()->safeEmail(),
-        'password' => Hash::make('12345678'),
-        'family_id' => $this->faker->uuid(),
+        'name' => $this->faker->firstName(),
     ];
 });

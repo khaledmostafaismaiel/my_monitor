@@ -9,6 +9,7 @@ use Faker\Generator as Faker;
 
 $factory->define(Transaction::class, function (Faker $faker) {
     return [
+        'family_id' => $this->faker->uuid(),
         'type' => $this->faker->randomElement(['debit', 'credit']),
         'user_id' => factory(\App\User::class),
         'name' => $this->faker->word(),

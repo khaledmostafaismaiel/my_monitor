@@ -3,6 +3,8 @@
 use Illuminate\Database\Seeder;
 
 use App\Category;
+use App\Family;
+
 
 class CategorySeeder extends Seeder
 {
@@ -20,7 +22,7 @@ class CategorySeeder extends Seeder
             ],
             [
                 'status'=> "active" ,
-                'family_id'=> "khaledmostafaismaielahmedmohamed",
+                'family_id'=> Family::first()->id,
             ]
         );
 
@@ -31,7 +33,7 @@ class CategorySeeder extends Seeder
             ],
             [
                 'status'=> "active" ,
-                'family_id'=> "khaledmostafaismaielahmedmohamed",
+                'family_id'=> Family::first()->id,
             ]
         );
 
@@ -42,7 +44,7 @@ class CategorySeeder extends Seeder
             ],
             [
                 'status'=> "active" ,
-                'family_id'=> "khaledmostafaismaielahmedmohamed",
+                'family_id'=> Family::first()->id,
             ]
         );
 
@@ -53,7 +55,7 @@ class CategorySeeder extends Seeder
             ],
             [
                 'status'=> "active" ,
-                'family_id'=> "khaledmostafaismaielahmedmohamed",
+                'family_id'=> Family::first()->id,
             ]
         );
 
@@ -64,7 +66,7 @@ class CategorySeeder extends Seeder
             ],
             [
                 'status'=> "active" ,
-                'family_id'=> "khaledmostafaismaielahmedmohamed",
+                'family_id'=> Family::first()->id,
             ]
         );
 
@@ -75,7 +77,7 @@ class CategorySeeder extends Seeder
             ],
             [
                 'status'=> "active" ,
-                'family_id'=> "khaledmostafaismaielahmedmohamed",
+                'family_id'=> Family::first()->id,
             ]
         );
 
@@ -86,7 +88,7 @@ class CategorySeeder extends Seeder
             ],
             [
                 'status'=> "active" ,
-                'family_id'=> "khaledmostafaismaielahmedmohamed",
+                'family_id'=> Family::first()->id,
             ]
         );
 
@@ -97,7 +99,7 @@ class CategorySeeder extends Seeder
             ],
             [
                 'status'=> "active" ,
-                'family_id'=> "khaledmostafaismaielahmedmohamed",
+                'family_id'=> Family::first()->id,
             ]
         );
 
@@ -108,7 +110,7 @@ class CategorySeeder extends Seeder
             ],
             [
                 'status'=> "active" ,
-                'family_id'=> "khaledmostafaismaielahmedmohamed",
+                'family_id'=> Family::first()->id,
             ]
         );
 
@@ -119,7 +121,7 @@ class CategorySeeder extends Seeder
             ],
             [
                 'status'=> "active" ,
-                'family_id'=> "khaledmostafaismaielahmedmohamed",
+                'family_id'=> Family::first()->id,
             ]
         );
 
@@ -130,7 +132,7 @@ class CategorySeeder extends Seeder
             ],
             [
                 'status'=> "active" ,
-                'family_id'=> "khaledmostafaismaielahmedmohamed",
+                'family_id'=> Family::first()->id,
             ]
         );
 
@@ -141,7 +143,7 @@ class CategorySeeder extends Seeder
             ],
             [
                 'status'=> "active" ,
-                'family_id'=> "khaledmostafaismaielahmedmohamed",
+                'family_id'=> Family::first()->id,
             ]
         );
 
@@ -152,7 +154,7 @@ class CategorySeeder extends Seeder
             ],
             [
                 'status'=> "active" ,
-                'family_id'=> "khaledmostafaismaielahmedmohamed",
+                'family_id'=> Family::first()->id,
             ]
         );
 
@@ -163,7 +165,7 @@ class CategorySeeder extends Seeder
             ],
             [
                 'status'=> "active" ,
-                'family_id'=> "khaledmostafaismaielahmedmohamed",
+                'family_id'=> Family::first()->id,
             ]
         );
     }

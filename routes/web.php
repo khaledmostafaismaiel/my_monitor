@@ -16,10 +16,12 @@ Route::resource('transactions', 'TransactionsController')->middleware('auth');
 Route::resource('categories', 'CategoriesController')->middleware('auth');
 Route::resource('month_years', 'MonthYearsController')->middleware('auth');
 
-
+Route::post('/users/verify_otp', 'UsersController@verify_otp');
+Route::get('/users/register', 'UsersController@register');
+Route::post('/users/sign_up', 'UsersController@sign_up');
 Route::post('/users/sign_in', 'UsersController@sign_in');
 Route::post('/users/sign_out', 'UsersController@sign_out');
-Route::resource('/users', 'UsersController');
+Route::resource('/users', 'UsersController')->middleware('auth')->only('signout');
 
 
 Route::get('/', function () {

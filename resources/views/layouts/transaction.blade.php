@@ -76,7 +76,7 @@
                             <select class="form-select" name="month_year_id" id="monthYear{{ $transaction->id }}" required>
                                 <option disabled>Select Month-Year</option>
                                 @foreach(auth()->user()->family->monthYears as $monthYear)
-                                    <option value="{{ $monthYear->id }}" {{ $transaction->month_year == $monthYear->id ? 'selected' : '' }}>
+                                    <option value="{{ $monthYear->id }}" {{ $transaction->month_year_id == $monthYear->id ? 'selected' : '' }}>
                                         {{ $monthYear->year }} - {{ $monthYear->month }}
                                     </option>
                                 @endforeach

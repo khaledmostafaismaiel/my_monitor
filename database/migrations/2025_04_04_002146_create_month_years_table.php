@@ -18,6 +18,7 @@ class CreateMonthYearsTable extends Migration
             $table->uuid('family_id');
             $table->year('year');
             $table->string('month', 2);
+            $table->float('settled_on')->nullable();
             $table->timestamps();
         });
     }

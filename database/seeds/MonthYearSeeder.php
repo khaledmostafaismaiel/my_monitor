@@ -20,7 +20,7 @@ class MonthYearSeeder extends Seeder
             $currentDate = Carbon::now(); // Get the current date and time
         
             // Loop through 100 years (1200 months)
-            for ($i = 0; $i <= 1200; $i++) {
+            for ($i = 0; $i <= 12; $i++) {
                 // Calculate the year and month for each iteration
                 $date = $currentDate->copy()->addMonths($i); // Adds $i months to the current date
                 
@@ -29,6 +29,7 @@ class MonthYearSeeder extends Seeder
                     "year" => $date->year,
                     "month" => str_pad($date->month, 2, '0', STR_PAD_LEFT),
                     "family_id" => $family->id,
+                    "settled_on" => rand(-1000, 1000),
                 ]);
             }
         }

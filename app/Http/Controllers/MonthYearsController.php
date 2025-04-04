@@ -35,5 +35,14 @@ class MonthYearsController extends Controller
     
         return view('month_year', compact('monthYear', 'paginatedTransactions', 'categorySummary'));
     }
+
+    public function update(Request $request, $id)
+    {
+        $monthYear = MonthYear::findOrFail($id);
+
+        $monthYear->update($request->toArray());
+
+        return redirect('/');
+    }
     
 }

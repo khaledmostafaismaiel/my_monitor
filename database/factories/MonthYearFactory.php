@@ -20,7 +20,7 @@ use Illuminate\Support\Str;
 $factory->define(MonthYear::class, function (Faker $faker) {
     return [
         'year' => $this->faker->year(),
-        'month' => $this->faker->month(),
+        'month' => str_pad($this->faker->month(), 2, '0', STR_PAD_LEFT),
         'family_id' => $this->faker->uuid(),
     ];
 });

@@ -13,8 +13,8 @@ class TransactionsController extends Controller
 
     public function index()
     {
-        $transactions = Transaction::where('family_id', auth()->user()->family_id)
-            ->with('category', 'user')
+        $transactions = auth()->user()->family
+            ->transactions()
             ->when(\request("name") != "", function ($query) {
                 $query->where("name", "LIKE", "%" . \request("name") . "%");
             })
@@ -28,15 +28,15 @@ class TransactionsController extends Controller
                 $query->whereHas('monthYear', function ($query) {
                     $query->when(\request("month") != "", function ($query) {
                         $query->where("month_years.month", \request("month"));
-                    });
-                    $query->when(\request("year") != "", function ($query) {
+                    })->when(\request("year") != "", function ($query) {
                         $query->where("month_years.year", \request("year"));
                     });
                 });
             })
+            ->with('category', 'user')
             ->orderBy("date", "desc")
             ->paginate(10);
-    
+
         $categories = Category::orderBy("name")->get();
 
         $users = auth()->user()
@@ -44,12 +44,14 @@ class TransactionsController extends Controller
             ->users()
             ->get();
 
-        $monthYears = auth()->user()
+        $uniqueYears = auth()->user()
             ->family
             ->monthYears()
-            ->get();
+            ->distinct('year')
+            ->pluck('year')
+            ->sortDesc();
 
-        return view('transactions', compact('transactions', 'categories', 'users', 'monthYears'));
+        return view('transactions', compact('transactions', 'categories', 'users', 'uniqueYears'));
     }
 
     public function store(Request $request)
@@ -59,6 +61,7 @@ class TransactionsController extends Controller
                 'category_id'=> ['required', 'gt:0'] ,
                 'quantity'=> ['required', 'gte:1'],
                 'price'=> ['required', 'gt:0'],
+                'month_year_id'=> ['required', 'gt:0'],
             ]
         );
 
@@ -80,7 +83,9 @@ class TransactionsController extends Controller
         $request->validate(
             [
                 'category_id'=> ['required', 'gt:0'] ,
-                'price'=> ['required', 'gt:0'] ,
+                'quantity'=> ['required', 'gte:1'],
+                'price'=> ['required', 'gt:0'],
+                'month_year_id'=> ['required', 'gt:0'],
             ]
         );
 

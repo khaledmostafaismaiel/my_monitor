@@ -12,17 +12,6 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/dd', function () {
-    factory(\App\Transaction::class, 100)->create(
-        [
-            'family_id'=>\App\Family::first()->id,
-        ]
-    );
-
-
-    dd("Done");
-});
-
 Route::resource('transactions', 'TransactionsController')->middleware('auth');
 Route::resource('categories', 'CategoriesController')->middleware('auth');
 Route::resource('month_years', 'MonthYearsController')->middleware('auth');

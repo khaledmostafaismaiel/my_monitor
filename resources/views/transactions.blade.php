@@ -47,13 +47,11 @@
                     <label class="form-label fw-semibold">Year</label>
                     <select name="year" class="form-select">
                         <option value="">All Years</option>
-                        @php
-                            $startYear = (new DateTime())->format('Y');
-                            $endYear = 2022; // Change this to your desired starting year
-                            for ($year = $startYear; $year >= $endYear; $year--) {
-                                echo '<option value="' . $year . '"' . (request('year') == $year ? ' selected' : '') . '>' . $year . '</option>';
-                            }
-                        @endphp
+                        @foreach($uniqueYears as $year)
+                            <option value="{{ $year }}" {{ request('year') == $year ? 'selected' : '' }}>
+                                {{ $year }}
+                            </option>
+                        @endforeach
                     </select>
                 </div>
 

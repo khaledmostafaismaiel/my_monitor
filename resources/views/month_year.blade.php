@@ -25,7 +25,7 @@
                 </thead>
                 <tbody>
                     @foreach($paginatedTransactions as $transaction)
-                        <tr onclick="window.location.href='/month_years/{{ $monthYear->id }}'" style="cursor: pointer;">
+                        <tr>
                             <td class="fw-bold">{{ $transaction->category->name }}</td>
                             <td class="fw-bold">{{ $transaction->name }}</td>
                             <td class="fw-bold">{{ number_format($transaction->price, 2) }}</td>

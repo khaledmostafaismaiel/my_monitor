@@ -35,7 +35,7 @@
                             </td>
                             <td>
                                 <!-- Show Button (Redirect to "/") -->
-                                <a href="/month_years/{{ $monthYear->id }}" class="btn btn-sm btn-info">
+                                <a href="/month_years/{{ $monthYear->id }}" class="btn btn-sm btn-info me-2">
                                     <i class="bi bi-eye"></i>
                                 </a>
                                 <button type="button" class="btn btn-sm btn-primary me-2" data-bs-toggle="modal" data-bs-target="#editMonthYear{{ $monthYear->id }}">

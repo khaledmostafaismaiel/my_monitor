@@ -14,4 +14,7 @@ class User extends Authenticatable
 
     protected $guarded = [] ;
 
+    public function family(){
+        return $this->belongsTo(Family::class);
+    }
 }

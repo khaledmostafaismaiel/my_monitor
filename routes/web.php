@@ -12,10 +12,21 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/dd', function () {
+    factory(\App\Transaction::class, 100)->create(
+        [
+            'family_id'=>\App\Family::first()->id,
+        ]
+    );
+
+
+    dd("Done");
+});
 
 Route::resource('transactions', 'TransactionsController')->middleware('auth');
-
 Route::resource('categories', 'CategoriesController')->middleware('auth');
+Route::resource('month_years', 'MonthYearsController')->middleware('auth');
+
 
 Route::post('/users/sign_in', 'UsersController@sign_in');
 Route::post('/users/sign_out', 'UsersController@sign_out');
@@ -25,18 +36,23 @@ Route::resource('/users', 'UsersController');
 Route::get('/', function () {
     $user = auth()->user();
 
-    $transactions = \App\Transaction::where('family_id', auth()->user()->family_id)
+    $monthYears = auth()->user()
+        ->family
+        ->transactions()
+        ->join('month_years', 'transactions.month_year_id', '=', 'month_years.id')
         ->selectRaw("
-            DATE_FORMAT(date, '%Y-%m') as month_year,
-            SUM(CASE WHEN type = 'credit' THEN price * quantity ELSE 0 END) as credit,
-            SUM(CASE WHEN type = 'debit' THEN price * quantity ELSE 0 END) as debit,
-            (SUM(CASE WHEN type = 'credit' THEN price * quantity ELSE 0 END) - SUM(CASE WHEN type = 'debit' THEN price * quantity ELSE 0 END)) as undocumented
+            month_years.id as id,
+            CONCAT(month_years.year, '-', LPAD(month_years.month, 2, '0')) as month_year,
+            SUM(CASE WHEN transactions.type = 'credit' THEN transactions.price * transactions.quantity ELSE 0 END) as credit,
+            SUM(CASE WHEN transactions.type = 'debit' THEN transactions.price * transactions.quantity ELSE 0 END) as debit,
+            (SUM(CASE WHEN transactions.type = 'credit' THEN transactions.price * transactions.quantity ELSE 0 END) - SUM(CASE WHEN transactions.type = 'debit' THEN transactions.price * transactions.quantity ELSE 0 END)) as undocumented
         ")
-        ->groupBy('month_year')
-        ->orderBy('month_year', 'desc')
+        ->groupBy('month_years.id')
+        ->orderByDesc('month_years.year')
+        ->orderByDesc('month_years.month')
         ->paginate(10);
 
-    return view('index', compact(["user", "transactions"]));
+    return view('index', compact(["user", "monthYears"]));
 })->middleware('auth');
 
 /*

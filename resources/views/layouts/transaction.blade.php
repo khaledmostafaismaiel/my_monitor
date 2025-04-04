@@ -70,6 +70,19 @@
                             </select>
                         </div>
 
+                        <!-- MonthYear Dropdown -->
+                        <div class="col-md-6 text-start">
+                            <label for="monthYear{{ $transaction->id }}" class="form-label">Month-Year</label>
+                            <select class="form-select" name="month_year_id" id="monthYear{{ $transaction->id }}" required>
+                                <option disabled>Select Month-Year</option>
+                                @foreach(auth()->user()->family->monthYears as $monthYear)
+                                    <option value="{{ $monthYear->id }}" {{ $transaction->month_year == $monthYear->id ? 'selected' : '' }}>
+                                        {{ $monthYear->year }} - {{ $monthYear->month }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
                         <!-- Date Picker -->
                         <div class="col-md-6 text-start">
                             <label for="transactionDate{{ $transaction->id }}" class="form-label">Transaction Date</label>

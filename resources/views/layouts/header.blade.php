@@ -28,6 +28,9 @@
             background: #f4f4f9;
         }
     </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
 
 <body style="background: linear-gradient(135deg, #6a11cb, #2575fc); min-height: 100vh; display: flex; flex-direction: column;">

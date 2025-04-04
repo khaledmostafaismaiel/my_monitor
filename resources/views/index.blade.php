@@ -20,13 +20,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($transactions as $transaction)
-                        <tr>
-                            <td class="fw-bold">{{ $transaction->month_year }}</td>
-                            <td class="text-success fw-bold">+{{ number_format($transaction->credit, 2) }}</td>
-                            <td class="text-danger fw-bold">-{{ number_format($transaction->debit, 2) }}</td>
-                            <td class="{{ ($transaction->credit - $transaction->debit) < 0 ? 'text-danger' : 'text-success' }} fw-bold">
-                                {{ number_format($transaction->credit - $transaction->debit, 2) }}
+                    @foreach($monthYears as $monthYear)
+                        <tr onclick="window.location.href='/month_years/{{ $monthYear->id }}'" style="cursor: pointer;">
+                            <td class="fw-bold">{{ $monthYear->month_year }}</td>
+                            <td class="text-success fw-bold">+{{ number_format($monthYear->credit, 2) }}</td>
+                            <td class="text-danger fw-bold">-{{ number_format($monthYear->debit, 2) }}</td>
+                            <td class="{{ ($monthYear->credit - $monthYear->debit) < 0 ? 'text-danger' : 'text-success' }} fw-bold">
+                                {{ number_format($monthYear->credit - $monthYear->debit, 2) }}
                             </td>
                         </tr>
                     @endforeach
@@ -37,7 +37,7 @@
         <!-- Responsive Pagination -->
         <div class="d-flex justify-content-center mt-3">
             <div class="w-100 overflow-auto">
-                {{ $transactions->links() }}
+                {{ $monthYears->links() }}
             </div>
         </div>
     </div>

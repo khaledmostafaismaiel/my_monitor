@@ -15,33 +15,41 @@ class TransactionsController extends Controller
     {
         $transactions = Transaction::where('family_id', auth()->user()->family_id)
             ->with('category', 'user')
-            ->when(null !== \request("name"), function($query){
-                $query->where("name", "LIKE", "%".\request("name")."%");
+            ->when(\request("name") != "", function ($query) {
+                $query->where("name", "LIKE", "%" . \request("name") . "%");
             })
-            ->when(null !== \request("type") and (\request("type") != ""), function($query){
+            ->when(\request("type") != "", function ($query) {
                 $query->where("type", \request("type"));
             })
-            ->when(null !== \request("category_id") and (\request("category_id") != ""), function($query){
+            ->when(\request("category_id") != "", function ($query) {
                 $query->where("category_id", \request("category_id"));
             })
-            ->when(null !== \request("month_year") and (\request("month_year") != ""), function($query){
-                $monthYear = explode('-', \request("month_year"));
-                if (count($monthYear) == 2) {
-                    $year = '20' . $monthYear[1];
-                    $month = $monthYear[0];
-        
-                    $query->whereYear('date', $year)->whereMonth('date', $month);
-                }
+            ->when(\request("month") != "" || \request("year") != "", function ($query) {
+                $query->whereHas('monthYear', function ($query) {
+                    $query->when(\request("month") != "", function ($query) {
+                        $query->where("month_years.month", \request("month"));
+                    });
+                    $query->when(\request("year") != "", function ($query) {
+                        $query->where("month_years.year", \request("year"));
+                    });
+                });
             })
             ->orderBy("date", "desc")
             ->paginate(10);
+    
+        $categories = Category::orderBy("name")->get();
 
-        $categories = Category::orderBy("name")
+        $users = auth()->user()
+            ->family
+            ->users()
             ->get();
 
-        $users = User::all();
+        $monthYears = auth()->user()
+            ->family
+            ->monthYears()
+            ->get();
 
-        return view('transactions' ,compact('transactions', 'categories', 'users'));
+        return view('transactions', compact('transactions', 'categories', 'users', 'monthYears'));
     }
 
     public function store(Request $request)

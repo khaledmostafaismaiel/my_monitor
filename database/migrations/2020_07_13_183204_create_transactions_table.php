@@ -24,6 +24,7 @@ class CreateTransactionsTable extends Migration
             $table->text('comment')->nullable();
             $table->date('date');
             $table->uuid('family_id');
+            $table->unsignedInteger('month_year_id');
             $table->timestamps();
         });
     }

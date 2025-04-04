@@ -13,4 +13,18 @@ class Family extends Model
     public $incrementing = false;
     protected $keyType = 'string';
 
+    public function monthYears()
+    {
+        return $this->hasMany(MonthYear::class);
+    }
+
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
+
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
 }

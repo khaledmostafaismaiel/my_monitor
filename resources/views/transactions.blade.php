@@ -42,18 +42,30 @@
                     </select>
                 </div>
 
-                <!-- Month-Year Filter -->
+                <!-- Year Filter -->
                 <div class="col-md-2 col-sm-6">
-                    <label class="form-label fw-semibold">Month-Year</label>
-                    <select name="month_year" class="form-select">
-                        <option value="">All Dates</option>
+                    <label class="form-label fw-semibold">Year</label>
+                    <select name="year" class="form-select">
+                        <option value="">All Years</option>
                         @php
-                            $start = new DateTime();
-                            $end = new DateTime('2022-02-01');
-                            while ($start >= $end) {
-                                $value = $start->format('m-y');
-                                echo '<option value="' . $value . '"' . (request('month_year') == $value ? ' selected' : '') . '>' . $value . '</option>';
-                                $start->modify('-1 month');
+                            $startYear = (new DateTime())->format('Y');
+                            $endYear = 2022; // Change this to your desired starting year
+                            for ($year = $startYear; $year >= $endYear; $year--) {
+                                echo '<option value="' . $year . '"' . (request('year') == $year ? ' selected' : '') . '>' . $year . '</option>';
+                            }
+                        @endphp
+                    </select>
+                </div>
+
+                <!-- Month Filter -->
+                <div class="col-md-2 col-sm-6">
+                    <label class="form-label fw-semibold">Month</label>
+                    <select name="month" class="form-select">
+                        <option value="">All Months</option>
+                        @php
+                            for ($month = 1; $month <= 12; $month++) {
+                                $monthValue = str_pad($month, 2, '0', STR_PAD_LEFT);
+                                echo '<option value="' . $monthValue . '"' . (request('month') == $monthValue ? ' selected' : '') . '>' . date('F', mktime(0, 0, 0, $month, 1)) . '</option>';
                             }
                         @endphp
                     </select>

@@ -8,8 +8,9 @@ use App\Category;
 use Faker\Generator as Faker;
 
 $factory->define(Transaction::class, function (Faker $faker) {
+    $date = $this->faker->date();
     return [
-        'family_id' => $this->faker->uuid(),
+        'family_id' => factory(\App\Family::class),
         'type' => $this->faker->randomElement(['debit', 'credit']),
         'user_id' => factory(\App\User::class),
         'name' => $this->faker->word(),
@@ -17,6 +18,7 @@ $factory->define(Transaction::class, function (Faker $faker) {
         'price' => $this->faker->randomFloat(2, 5, 1000),
         'category_id' => factory(\App\Category::class),
         'comment' => $this->faker->optional()->sentence(),
-        'date' => $this->faker->date(),
+        'date' => $date,
+        'month_year_id' => factory(\App\MonthYear::class),
     ];
 });

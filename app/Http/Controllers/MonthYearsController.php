@@ -10,23 +10,38 @@ use Illuminate\Http\Request;
 
 class MonthYearsController extends Controller
 {
+
+    public function store(Request $request)
+    {
+        $monthYear = $request->month_year;
+
+        list($year, $month) = explode('-', $monthYear);
+
+        MonthYear::updateOrCreate(
+            [
+                'family_id'=> auth()->user()->family_id,
+                'year'=> $year,
+                'month'=> $month,
+            ]
+        );
+
+        return redirect('/');
+    }
+
     public function show(MonthYear $monthYear)
     {
-        // Fetch all transactions for the chart
-        $transactions = $monthYear->transactions()->with('category')->get(); // No pagination here, for the chart
+        $transactions = $monthYear->transactions()->with('category')->get();
     
-        // Paginate transactions for the table
         $paginatedTransactions = $monthYear->transactions()
         ->selectRaw("*, (price * quantity) AS total_amount")
-        ->orderByRaw("total_amount DESC") // Sorting by total_amount (price * quantity)
+        ->orderByRaw("total_amount DESC")
         ->with('category')
-        ->paginate(10); // Pagination for table
+        ->paginate(10);
     
     
-        // Calculate total spent per category (for the chart)
         $categorySummary = $transactions->groupBy('category_id')->map(function ($categoryTransactions) {
             return [
-                'category' => $categoryTransactions->first()->category->name, // Get the category name
+                'category' => $categoryTransactions->first()->category->name,
                 'total_spent' => $categoryTransactions->sum(function ($transaction) {
                     return $transaction->price * $transaction->quantity;
                 })

@@ -8,6 +8,14 @@
             <p class="text-muted">Track your transactions with ease</p>
         </div>
 
+        <!-- Add Transaction Button -->
+        <div class="col-lg-4 col-md-6 col-sm-6 d-grid mb-4">
+            <button type="button" class="btn btn-success px-4" data-bs-toggle="modal" data-bs-target="#addMonthYearModal">
+                <i class="bi bi-plus-lg"></i> Add Month Year
+            </button>
+        </div>
+        @include('layouts/add_month_year')
+
         <!-- Responsive Table Wrapper -->
         <div class="table-responsive">
             <table class="table table-striped table-hover text-center align-middle">

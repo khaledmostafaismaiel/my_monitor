@@ -44,7 +44,7 @@
                             <label class="form-label">Transaction Type</label>
                             <div class="d-flex gap-3">
                                 <div class="form-check">
-                                    <input class="form-check-input border-primary" type="radio" name="type" id="debit-{{ isset($transaction) ? $transaction->id : 'new' }}" value="debit" {{ isset($transaction) && $transaction->type == 'debit' ? 'checked' : '' }}>
+                                    <input class="form-check-input border-primary" type="radio" name="type" id="debit-{{ isset($transaction) ? $transaction->id : 'new' }}" value="debit" {{ (isset($transaction) && $transaction->type == 'debit') || !isset($transaction) ? 'checked' : '' }}>
                                     <label class="form-check-label text-danger fw-bold" for="debit-{{ isset($transaction) ? $transaction->id : 'new' }}">Debit (Expense)</label>
                                 </div>
                                 <div class="form-check">

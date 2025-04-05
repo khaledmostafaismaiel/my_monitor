@@ -37,11 +37,12 @@ Route::get('/', function () {
             CONCAT(month_years.year, '-', LPAD(month_years.month, 2, '0')) as month_year,
             SUM(CASE WHEN transactions.type = 'credit' THEN transactions.price * transactions.quantity ELSE 0 END) as credit,
             SUM(CASE WHEN transactions.type = 'debit' THEN transactions.price * transactions.quantity ELSE 0 END) as debit,
-            (SUM(CASE WHEN transactions.type = 'credit' THEN transactions.price * transactions.quantity ELSE 0 END) - SUM(CASE WHEN transactions.type = 'debit' THEN transactions.price * transactions.quantity ELSE 0 END)) as undocumented,
-            COALESCE(month_years.settled_on,
-                SUM(CASE WHEN transactions.type = 'credit' THEN transactions.price * transactions.quantity ELSE 0 END) -
-                SUM(CASE WHEN transactions.type = 'debit' THEN transactions.price * transactions.quantity ELSE 0 END)
-            ) as settled_on
+            CASE
+                WHEN month_years.settled_on IS NULL THEN
+                    SUM(CASE WHEN transactions.type = 'credit' THEN transactions.price * transactions.quantity ELSE 0 END) -
+                    SUM(CASE WHEN transactions.type = 'debit' THEN transactions.price * transactions.quantity ELSE 0 END)
+                ELSE month_years.settled_on
+            END as settled_on
         ")
         ->groupBy('month_years.id')
         ->orderByDesc('month_years.year')

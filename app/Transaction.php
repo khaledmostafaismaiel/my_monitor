@@ -3,12 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Mail;
 
 class Transaction extends Model
 {
-    protected $guarded = [];
+    protected $table = 'transactions';
 
+    protected $guarded = [];
 
     public function user(){
         return $this->belongsTo(User::class);

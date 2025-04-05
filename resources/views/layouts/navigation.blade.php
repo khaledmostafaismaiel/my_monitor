@@ -37,8 +37,14 @@
                 <!-- Menu Items -->
                 <ul class="navbar-nav flex-grow-1">
                     <li class="nav-item">
-                        <a class="nav-link text-white fw-bold" href="/transactions">
-                            <i class="bi bi-wallet2"></i> Transactions
+                        <a class="nav-link text-white fw-bold" href="/normal_transactions">
+                            <i class="bi bi-wallet2"></i> Normal Transactions
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link text-white fw-bold" href="/blueprint_transactions">
+                            <i class="bi bi-collection"></i> Blueprint Transactions
                         </a>
                     </li>
 

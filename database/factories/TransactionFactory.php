@@ -3,11 +3,11 @@
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
 use App\User;
-use App\Transaction;
+use App\NormalTransaction;
 use App\Category;
 use Faker\Generator as Faker;
 
-$factory->define(Transaction::class, function (Faker $faker) {
+$factory->define(NormalTransaction::class, function (Faker $faker) {
     $date = $this->faker->date();
     return [
         'family_id' => factory(\App\Family::class),
@@ -20,5 +20,6 @@ $factory->define(Transaction::class, function (Faker $faker) {
         'comment' => $this->faker->optional()->sentence(),
         'date' => $date,
         'month_year_id' => factory(\App\MonthYear::class),
+        'is_blueprint' => $this->faker->boolean(),
     ];
 });

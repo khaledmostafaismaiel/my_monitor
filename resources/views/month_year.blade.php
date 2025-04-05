@@ -18,7 +18,7 @@
                     <tr>
                         <th scope="col">Category</th>
                         <th scope="col">Transaction Name</th> <!-- Updated column header -->
-                        <th scope="col">Price</th>
+                        <th scope="col">Price Per Unit</th>
                         <th scope="col">Quantity</th>
                         <th scope="col">Total</th>
                     </tr>
@@ -94,8 +94,8 @@ var pieChart = new Chart(ctx, {
         labels: @json($categorySummary->pluck('category')),
         datasets: [{
             data: @json($categorySummary->pluck('total_spent')),
-            backgroundColor: generateColors(@json($categorySummary->count())).backgroundColor, 
-            hoverBackgroundColor: generateColors(@json($categorySummary->count())).hoverBackgroundColor, 
+            backgroundColor: generateColors(@json($categorySummary->count())).backgroundColor,
+            hoverBackgroundColor: generateColors(@json($categorySummary->count())).hoverBackgroundColor,
         }]
     },
     options: {

@@ -22,9 +22,10 @@ class CreateTransactionsTable extends Migration
             $table->float('price');
             $table->unsignedInteger('category_id');
             $table->text('comment')->nullable();
-            $table->date('date');
+            $table->date('date')->nullable();
             $table->uuid('family_id');
-            $table->unsignedInteger('month_year_id');
+            $table->unsignedInteger('month_year_id')->nullable();
+            $table->boolean('is_blue_print');
             $table->timestamps();
         });
     }

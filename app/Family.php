@@ -33,13 +33,19 @@ class Family extends Model
         return $this->hasMany(User::class);
     }
 
-    public function transactions()
+    public function normalTransactions()
     {
-        return $this->hasMany(Transaction::class);
+        return $this->hasMany(NormalTransaction::class);
     }
 
     public function categories()
     {
         return $this->hasMany(Category::class);
     }
+
+    public function blueprintTransactions()
+    {
+        return $this->hasMany(BlueprintTransaction::class);
+    }
+
 }

@@ -12,7 +12,8 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::resource('transactions', 'TransactionsController')->middleware('auth');
+Route::resource('normal_transactions', 'NormalTransactionsController')->middleware('auth');
+Route::resource('blueprint_transactions', 'BlueprintTransactionsController')->middleware('auth');
 Route::resource('categories', 'CategoriesController')->middleware('auth');
 Route::resource('month_years', 'MonthYearsController')->middleware('auth');
 
@@ -37,8 +38,8 @@ Route::get('/', function () {
             SUM(CASE WHEN transactions.type = 'credit' THEN transactions.price * transactions.quantity ELSE 0 END) as credit,
             SUM(CASE WHEN transactions.type = 'debit' THEN transactions.price * transactions.quantity ELSE 0 END) as debit,
             (SUM(CASE WHEN transactions.type = 'credit' THEN transactions.price * transactions.quantity ELSE 0 END) - SUM(CASE WHEN transactions.type = 'debit' THEN transactions.price * transactions.quantity ELSE 0 END)) as undocumented,
-            COALESCE(month_years.settled_on, 
-                SUM(CASE WHEN transactions.type = 'credit' THEN transactions.price * transactions.quantity ELSE 0 END) - 
+            COALESCE(month_years.settled_on,
+                SUM(CASE WHEN transactions.type = 'credit' THEN transactions.price * transactions.quantity ELSE 0 END) -
                 SUM(CASE WHEN transactions.type = 'debit' THEN transactions.price * transactions.quantity ELSE 0 END)
             ) as settled_on
         ")

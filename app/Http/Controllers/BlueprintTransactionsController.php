@@ -2,19 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Transaction;
-use App\Category;
-use App\User;
-
+use App\BlueprintTransaction;
 use Illuminate\Http\Request;
 
-class TransactionsController extends Controller
+class BlueprintTransactionsController extends Controller
 {
 
     public function index()
     {
         $transactions = auth()->user()->family
-            ->transactions()
+            ->blueprintTransactions()
             ->when(\request("name") != "", function ($query) {
                 $query->where("name", "LIKE", "%" . \request("name") . "%");
             })
@@ -24,16 +21,7 @@ class TransactionsController extends Controller
             ->when(\request("category_id") != "", function ($query) {
                 $query->where("category_id", \request("category_id"));
             })
-            ->when(\request("month") != "" || \request("year") != "", function ($query) {
-                $query->whereHas('monthYear', function ($query) {
-                    $query->when(\request("month") != "", function ($query) {
-                        $query->where("month_years.month", \request("month"));
-                    })->when(\request("year") != "", function ($query) {
-                        $query->where("month_years.year", \request("year"));
-                    });
-                });
-            })
-            ->with('category', 'user')
+            ->with('category')
             ->orderBy("date", "desc")
             ->paginate(10);
 
@@ -44,14 +32,7 @@ class TransactionsController extends Controller
             ->users()
             ->get();
 
-        $uniqueYears = auth()->user()
-            ->family
-            ->monthYears()
-            ->distinct('year')
-            ->pluck('year')
-            ->sortDesc();
-
-        return view('transactions', compact('transactions', 'categories', 'users', 'uniqueYears'));
+        return view('blueprint_transactions', compact('transactions', 'categories', 'users', 'uniqueYears'));
     }
 
     public function store(Request $request)
@@ -61,21 +42,21 @@ class TransactionsController extends Controller
                 'category_id'=> ['required', 'gt:0'] ,
                 'quantity'=> ['required', 'gte:1'],
                 'price'=> ['required', 'gt:0'],
-                'month_year_id'=> ['required', 'gt:0'],
             ]
         );
 
-        Transaction::create(
+        BlueprintTransaction::create(
             array_merge(
                 $request->toArray(),
                 [
                     'user_id'=> auth()->id(),
                     'family_id'=> auth()->user()->family_id,
+                    'is_blue_print'=> 1,
                 ]
             )
         );
 
-        return redirect('/transactions');
+        return redirect('/blueprint_transactions');
     }
 
     public function update(Request $request, $id)
@@ -85,23 +66,22 @@ class TransactionsController extends Controller
                 'category_id'=> ['required', 'gt:0'] ,
                 'quantity'=> ['required', 'gte:1'],
                 'price'=> ['required', 'gt:0'],
-                'month_year_id'=> ['required', 'gt:0'],
             ]
         );
 
-        $expense = Transaction::findOrFail($id);
+        $expense = BlueprintTransaction::findOrFail($id);
 
         $expense->update($request->toArray());
 
-        return redirect('/transactions/');
+        return redirect('/blueprint_transactions/');
     }
 
     public function destroy($id)
     {
-        $expense = Transaction::findOrFail($id);
+        $expense = BlueprintTransaction::findOrFail($id);
 
         $expense->delete();
 
-        return redirect('/transactions');
+        return redirect('/blueprint_transactions');
     }
 }

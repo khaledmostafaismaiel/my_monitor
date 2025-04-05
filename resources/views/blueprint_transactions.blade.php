@@ -5,13 +5,13 @@
 <div class="container d-flex justify-content-center align-items-center py-5">
     <div class="card p-4 shadow-lg w-100" style="max-width: 900px; background: rgba(255, 255, 255, 0.9); border-radius: 12px;">
         <h2 class="text-center fw-bold mb-4">
-            <a href="{{ route('transactions.index') }}" class="text-dark text-decoration-none" style="transition: 0.2s;">
-                Transactions
+            <a href="/blueprint_transactions" class="text-dark text-decoration-none" style="transition: 0.2s;">
+                Blueprint Transactions
             </a>
         </h2>
 
         <!-- Search and Filter Section -->
-        <form method="GET" action="{{ route('transactions.index') }}" class="mb-4" id="filter_transactions_form">
+        <form method="GET" action="/blueprint_transactions" class="mb-4" id="filter_transactions_form">
             <div class="row g-3 align-items-end">
                 <!-- Search Box -->
                 <div class="col-md-3 col-sm-6">
@@ -42,33 +42,6 @@
                     </select>
                 </div>
 
-                <!-- Year Filter -->
-                <div class="col-md-2 col-sm-6">
-                    <label class="form-label fw-semibold">Year</label>
-                    <select name="year" class="form-select">
-                        <option value="">All Years</option>
-                        @foreach($uniqueYears as $year)
-                            <option value="{{ $year }}" {{ request('year') == $year ? 'selected' : '' }}>
-                                {{ $year }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <!-- Month Filter -->
-                <div class="col-md-2 col-sm-6">
-                    <label class="form-label fw-semibold">Month</label>
-                    <select name="month" class="form-select">
-                        <option value="">All Months</option>
-                        @php
-                            for ($month = 1; $month <= 12; $month++) {
-                                $monthValue = str_pad($month, 2, '0', STR_PAD_LEFT);
-                                echo '<option value="' . $monthValue . '"' . (request('month') == $monthValue ? ' selected' : '') . '>' . date('F', mktime(0, 0, 0, $month, 1)) . '</option>';
-                            }
-                        @endphp
-                    </select>
-                </div>
-
                 <!-- Apply Filter Button -->
                 <div class="col-md-2 d-grid">
                     <button type="submit" class="btn btn-primary">
@@ -80,49 +53,71 @@
 
         <!-- Add Transaction Button -->
         <div class="col-lg-4 col-md-6 col-sm-6 d-grid mb-4">
-            <button type="button" class="btn btn-success px-4" data-bs-toggle="modal" data-bs-target="#addTransaction">
-                <i class="bi bi-plus-lg"></i> Add Transaction
+            <button type="button" class="btn btn-success px-4" data-bs-toggle="modal" data-bs-target="#addBlueprintTransaction">
+                <i class="bi bi-plus-lg"></i> Add Blueprint Transaction
             </button>
         </div>
-        @include('layouts/add_transaction')
+        @include('layouts/add_blueprint_transaction')
 
         <div class="table-responsive">
             <table class="table table-striped table-hover text-center align-middle">
                 <thead class="bg-primary text-white">
                     <tr>
                         <th scope="col">Name</th>
-                        <th scope="col">quantity</th>
-                        <th scope="col">Price</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Price Per Unit</th>
                         <th scope="col">Category</th>
-                        <th scope="col">Date</th>
                         <th scope="col">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($transactions as $transaction)
-                        <tr>
-                            <td class="fw-semibold text-truncate">{{ $transaction->name }}</td>
-                            <td class="fw-bold">{{ number_format($transaction->quantity, 2) }}</td>
-                            <td class="fw-bold">E£ {{ number_format($transaction->price, 2) }}</td>
-                            <td>{{ $transaction->category->name }}</td>
-                            <td>{{ date('D d-M-Y', strtotime($transaction->date)) }}</td>
-                            <td>
-                                <button type="button" class="btn btn-sm btn-primary me-2" data-bs-toggle="modal" data-bs-target="#editTransaction{{ $transaction->id }}">
-                                    <i class="bi bi-pencil-square"></i>
-                                </button>
-                                @include('layouts/transaction', ['transaction' => $transaction, 'modalId' => "editTransaction{$transaction->id}"])
+                    @php
+                        $grouped = $transactions->getCollection()->groupBy(function ($t) {
+                            return optional($t->category)->name ?? 'Uncategorized';
+                        });
+                    @endphp
 
-                                <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteTransaction{{ $transaction->id }}">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                                @include('layouts/delete_transaction', ['transaction' => $transaction, 'modalId' => "deleteTransaction{$transaction->id}"])
+
+                    @forelse($grouped as $categoryName => $categoryTransactions)
+                        <tr class="table-secondary">
+                            <td colspan="6" class="fw-bold text-start">
+                                <i class="bi bi-folder-fill me-1 text-muted"></i>
+                                {{ $categoryName }}
                             </td>
                         </tr>
-                    @endforeach
+
+                        @foreach ($categoryTransactions as $transaction)
+                            <tr>
+                                <td class="fw-semibold text-truncate">{{ $transaction->name }}</td>
+                                <td class="fw-bold">{{ number_format($transaction->quantity, 2) }}</td>
+                                <td class="fw-bold">E£ {{ number_format($transaction->price, 2) }}</td>
+                                <td>{{ optional($transaction->category)->name ?? '—' }}</td>
+                                <td>
+                                    <button type="button" class="btn btn-sm btn-success me-2" data-bs-toggle="modal" data-bs-target="#addNormalTransaction-{{ $transaction->id }}">
+                                        <i class="bi bi-plus-circle"></i>
+                                    </button>
+                                    @include('layouts.add_normal_transaction', ['transaction' => $transaction])
+
+                                    <button type="button" class="btn btn-sm btn-primary me-2" data-bs-toggle="modal" data-bs-target="#editTransaction{{ $transaction->id }}">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </button>
+                                    @include('layouts.edit_blueprint_transaction', ['transaction' => $transaction, 'modalId' => "editTransaction{$transaction->id}"])
+
+                                    <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteTransaction{{ $transaction->id }}">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                    @include('layouts.delete_blueprint_transaction', ['transaction' => $transaction, 'modalId' => "deleteTransaction{$transaction->id}"])
+                                </td>
+                            </tr>
+                        @endforeach
+                    @empty
+                        <tr>
+                            <td colspan="6" class="text-muted">No blueprint transactions found.</td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
-
         <!-- Centered Pagination -->
         <div class="d-flex justify-content-center mt-3">
             <nav aria-label="Page navigation">
@@ -179,7 +174,7 @@
     document.addEventListener("DOMContentLoaded", function () {
         const form = document.querySelector("#filter_transactions_form");
         const submitButton = form.querySelector("button[type='submit']");
-        
+
         form.addEventListener("submit", function () {
             submitButton.disabled = true;
             submitButton.innerHTML = `

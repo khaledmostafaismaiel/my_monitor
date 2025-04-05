@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\MonthYear;
-use App\Transaction;
+use App\NormalTransaction;
 use \DB;
 
 use Illuminate\Http\Request;
@@ -30,15 +30,15 @@ class MonthYearsController extends Controller
 
     public function show(MonthYear $monthYear)
     {
-        $transactions = $monthYear->transactions()->with('category')->get();
-    
-        $paginatedTransactions = $monthYear->transactions()
+        $transactions = $monthYear->normalTransactions()->with('category')->get();
+
+        $paginatedTransactions = $monthYear->normalTransactions()
         ->selectRaw("*, (price * quantity) AS total_amount")
         ->orderByRaw("total_amount DESC")
         ->with('category')
         ->paginate(10);
-    
-    
+
+
         $categorySummary = $transactions->groupBy('category_id')->map(function ($categoryTransactions) {
             return [
                 'category' => $categoryTransactions->first()->category->name,
@@ -47,7 +47,7 @@ class MonthYearsController extends Controller
                 })
             ];
         });
-    
+
         return view('month_year', compact('monthYear', 'paginatedTransactions', 'categorySummary'));
     }
 
@@ -59,5 +59,5 @@ class MonthYearsController extends Controller
 
         return redirect('/');
     }
-    
+
 }

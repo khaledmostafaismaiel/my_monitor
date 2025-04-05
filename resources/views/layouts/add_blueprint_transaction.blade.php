@@ -1,21 +1,25 @@
-<div class="modal fade" id="addTransaction" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="addBlueprintTransaction" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content shadow-lg border-0 rounded-3">
-            
+
             <!-- Modal Header -->
             <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title" id="staticBackdropLabel">
-                    <i class="bi bi-folder-plus me-2"></i> New Transaction
+                    <i class="bi bi-folder-plus me-2"></i> New Blueprint Transaction
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
             <!-- Form Start -->
-            <form method="POST" action="/transactions">
+            <form method="POST" action="/blueprint_transactions">
+                <input type="hidden" name="is_blue_print" value="1">
+
                 <div class="modal-body px-4">
                     {{ csrf_field() }}
 
                     <div class="row g-3">
+                        <input type="text" class="form-control" id="is_blue_print" name="is_blue_print" value="0" hidden>
+
                         <!-- Transaction Name -->
                         <div class="col-md-6">
                             <label for="transactionName" class="form-label">Transaction Name</label>
@@ -24,7 +28,7 @@
 
                         <!-- Amount Input -->
                         <div class="col-md-6">
-                            <label class="form-label">Amount</label>
+                            <label class="form-label">Price Per Unit</label>
                             <div class="input-group">
                                 <span class="input-group-text bg-light">E£</span>
                                 <input type="number" class="form-control" name="price" placeholder="Enter amount" min="0" step="0.01" required>
@@ -67,25 +71,6 @@
                             </select>
                         </div>
 
-                        <!-- MonthYear Dropdown -->
-                        <div class="col-md-6">
-                            <label class="form-label">Month-Year</label>
-                            <select class="form-select" name="month_year_id" required>
-                                <option disabled>Select Month-Year</option>
-                                @foreach(auth()->user()->family->monthYears as $monthYear)
-                                    <option value="{{ $monthYear->id }}">
-                                        {{ $monthYear->year }} - {{ $monthYear->month }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <!-- Date Picker -->
-                        <div class="col-md-6">
-                            <label for="transactionDate" class="form-label">Transaction Date</label>
-                            <input type="date" class="form-control" id="transactionDate" name="date" value="{{ date('Y-m-d') }}" required>
-                        </div>
-
                         <!-- Comment -->
                         <div class="col-12">
                             <label for="transactionComment" class="form-label">Comment (Optional)</label>
@@ -115,7 +100,7 @@
     document.addEventListener("DOMContentLoaded", function () {
         const form = document.querySelector("#addTransaction form");
         const submitButton = form.querySelector("button[type='submit']");
-        
+
         form.addEventListener("submit", function () {
             submitButton.disabled = true;
             submitButton.innerHTML = `

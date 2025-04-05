@@ -13,7 +13,7 @@ class MonthYear extends Model
         return $this->belongsTo(Family::class);
     }
 
-    public function transactions(){
-        return $this->hasMany(Transaction::class);
+    public function normalTransactions(){
+        return $this->hasMany(NormalTransaction::class);
     }
 }

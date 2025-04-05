@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\Transaction;
+use App\NormalTransaction;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -25,10 +25,10 @@ class ExpensePolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\User  $user
-     * @param  \App\Transaction  $expense
+     * @param  \App\NormalTransaction  $expense
      * @return mixed
      */
-    public function view(User $user, Transaction $expense)
+    public function view(User $user, NormalTransaction $expense)
     {
         return $expense->user_id == $user->id ;
     }
@@ -48,10 +48,10 @@ class ExpensePolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\User  $user
-     * @param  \App\Transaction  $expense
+     * @param  \App\NormalTransaction  $expense
      * @return mixed
      */
-    public function update(User $user, Transaction $expense)
+    public function update(User $user, NormalTransaction $expense)
     {
         //
     }
@@ -60,10 +60,10 @@ class ExpensePolicy
      * Determine whether the user can delete the model.
      *
      * @param  \App\User  $user
-     * @param  \App\Transaction  $expense
+     * @param  \App\NormalTransaction  $expense
      * @return mixed
      */
-    public function delete(User $user, Transaction $expense)
+    public function delete(User $user, NormalTransaction $expense)
     {
         //
     }
@@ -72,10 +72,10 @@ class ExpensePolicy
      * Determine whether the user can restore the model.
      *
      * @param  \App\User  $user
-     * @param  \App\Transaction  $expense
+     * @param  \App\NormalTransaction  $expense
      * @return mixed
      */
-    public function restore(User $user, Transaction $expense)
+    public function restore(User $user, NormalTransaction $expense)
     {
         //
     }
@@ -84,10 +84,10 @@ class ExpensePolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\User  $user
-     * @param  \App\Transaction  $expense
+     * @param  \App\NormalTransaction  $expense
      * @return mixed
      */
-    public function forceDelete(User $user, Transaction $expense)
+    public function forceDelete(User $user, NormalTransaction $expense)
     {
         //
     }

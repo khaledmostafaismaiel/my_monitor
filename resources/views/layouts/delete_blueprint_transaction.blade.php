@@ -4,7 +4,7 @@
             <!-- Modal Header -->
             <div class="modal-header bg-danger text-white">
                 <h5 class="modal-title fw-bold" id="deleteTransactionLabel{{ $transaction->id }}">
-                    <i class="bi bi-trash3 me-2"></i> Delete Transaction
+                    <i class="bi bi-trash3 me-2"></i> Delete Blueprint Transaction
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -17,7 +17,7 @@
             </div>
 
             <!-- Form -->
-            <form action="/transactions/{{$transaction->id}}" method="POST">
+            <form action="/blueprint_transactions/{{$transaction->id}}" method="POST">
                 {{ csrf_field() }}
                 @method('DELETE')
 
@@ -40,7 +40,7 @@
     document.addEventListener("DOMContentLoaded", function () {
         const form = document.querySelector("#{{ $modalId }} form");
         const submitButton = form.querySelector("button[type='submit']");
-        
+
         form.addEventListener("submit", function () {
             submitButton.disabled = true;
             submitButton.innerHTML = `

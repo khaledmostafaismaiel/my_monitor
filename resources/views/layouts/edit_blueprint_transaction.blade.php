@@ -1,17 +1,17 @@
 <div class="modal fade" id="editTransaction{{ $transaction->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editTransactionLabel{{ $transaction->id }}" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content shadow-lg border-0 rounded-3">
-            
+
             <!-- Modal Header -->
             <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title" id="editTransactionLabel{{ $transaction->id }}">
-                    <i class="bi bi-pencil-square me-2"></i> Edit Transaction
+                    <i class="bi bi-pencil-square me-2"></i> Edit Blueprint Transaction
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
             <!-- Form Start -->
-            <form method="POST" action="/transactions/{{ $transaction->id }}">
+            <form method="POST" action="/blueprint_transactions/{{ $transaction->id }}">
                 <div class="modal-body px-4">
                     {{ csrf_field() }}
                     @method('PUT')
@@ -25,7 +25,7 @@
 
                         <!-- Amount Input -->
                         <div class="col-md-6 text-start">
-                            <label class="form-label">Amount</label>
+                            <label class="form-label">Price Per Unit</label>
                             <div class="input-group">
                                 <span class="input-group-text bg-light">E£</span>
                                 <input type="number" class="form-control" name="price" value="{{ $transaction->price }}" min="0" step="0.01" required>
@@ -70,23 +70,17 @@
                             </select>
                         </div>
 
-                        <!-- MonthYear Dropdown -->
+                        <!-- User Dropdown -->
                         <div class="col-md-6 text-start">
-                            <label for="monthYear{{ $transaction->id }}" class="form-label">Month-Year</label>
-                            <select class="form-select" name="month_year_id" id="monthYear{{ $transaction->id }}" required>
-                                <option disabled>Select Month-Year</option>
-                                @foreach(auth()->user()->family->monthYears as $monthYear)
-                                    <option value="{{ $monthYear->id }}" {{ $transaction->month_year_id == $monthYear->id ? 'selected' : '' }}>
-                                        {{ $monthYear->year }} - {{ $monthYear->month }}
+                            <label for="user_id{{ $transaction->id }}" class="form-label">User</label>
+                            <select class="form-select" name="user_id" id="user_id{{ $transaction->id }}" required>
+                                <option disabled>Select User</option>
+                                @foreach($users as $user)
+                                    <option value="{{ $user->id }}" {{ $transaction->user_id == $user->id ? 'selected' : '' }}>
+                                        {{ $user->first_name }}
                                     </option>
                                 @endforeach
                             </select>
-                        </div>
-
-                        <!-- Date Picker -->
-                        <div class="col-md-6 text-start">
-                            <label for="transactionDate{{ $transaction->id }}" class="form-label">Transaction Date</label>
-                            <input type="date" class="form-control" id="transactionDate{{ $transaction->id }}" name="date" value="{{ $transaction->date }}" required>
                         </div>
 
                         <!-- Comment -->
@@ -115,7 +109,7 @@
     document.addEventListener("DOMContentLoaded", function () {
         const form = document.querySelector("#editTransaction{{ $transaction->id }} form");
         const submitButton = form.querySelector("button[type='submit']");
-        
+
         form.addEventListener("submit", function () {
             submitButton.disabled = true;
             submitButton.innerHTML = `

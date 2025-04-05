@@ -37,7 +37,7 @@ class TransactionsController extends Controller
             ->orderBy("date", "desc")
             ->paginate(10);
 
-        $categories = Category::orderBy("name")->get();
+        $categories = auth()->user()->family->categories()->orderBy("name")->get();
 
         $users = auth()->user()
             ->family

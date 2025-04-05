@@ -22,7 +22,9 @@ class UsersController extends Controller
         if(\Auth::attempt(['email' => \request('user_name'), 'password' => \request('password')])){
             return redirect('/');
         }else{
-            return redirect('/');
+            return redirect()->back()->withErrors(['email' => 'Email or Password is not correct.']);
+
+            return redirect('/login');
         }
     }
 

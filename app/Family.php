@@ -37,4 +37,9 @@ class Family extends Model
     {
         return $this->hasMany(Transaction::class);
     }
+
+    public function categories()
+    {
+        return $this->hasMany(Category::class);
+    }
 }

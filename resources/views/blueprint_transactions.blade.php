@@ -66,7 +66,6 @@
                         <th scope="col">Name</th>
                         <th scope="col">Quantity</th>
                         <th scope="col">Price Per Unit</th>
-                        <th scope="col">Category</th>
                         <th scope="col">Actions</th>
                     </tr>
                 </thead>
@@ -91,22 +90,18 @@
                                 <td class="fw-semibold text-truncate">{{ $transaction->name }}</td>
                                 <td class="fw-bold">{{ number_format($transaction->quantity, 2) }}</td>
                                 <td class="fw-bold">E£ {{ number_format($transaction->price, 2) }}</td>
-                                <td>{{ optional($transaction->category)->name ?? '—' }}</td>
                                 <td>
                                     <button type="button" class="btn btn-sm btn-success me-2" data-bs-toggle="modal" data-bs-target="#addNormalTransaction-{{ $transaction->id }}">
                                         <i class="bi bi-plus-circle"></i>
                                     </button>
-                                    @include('layouts.add_normal_transaction', ['transaction' => $transaction])
 
                                     <button type="button" class="btn btn-sm btn-primary me-2" data-bs-toggle="modal" data-bs-target="#editTransaction{{ $transaction->id }}">
                                         <i class="bi bi-pencil-square"></i>
                                     </button>
-                                    @include('layouts.edit_blueprint_transaction', ['transaction' => $transaction, 'modalId' => "editTransaction{$transaction->id}"])
 
                                     <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteTransaction{{ $transaction->id }}">
                                         <i class="bi bi-trash"></i>
                                     </button>
-                                    @include('layouts.delete_blueprint_transaction', ['transaction' => $transaction, 'modalId' => "deleteTransaction{$transaction->id}"])
                                 </td>
                             </tr>
                         @endforeach
@@ -128,6 +123,15 @@
 </div>
 
 @endsection
+
+@push('modals')
+    @foreach($transactions as $transaction)
+        @include('layouts.add_normal_transaction', ['transaction' => $transaction])
+        @include('layouts.edit_blueprint_transaction', ['transaction' => $transaction, 'modalId' => "editTransaction{$transaction->id}"])
+        @include('layouts.delete_blueprint_transaction', ['transaction' => $transaction, 'modalId' => "deleteTransaction{$transaction->id}"])
+    @endforeach
+@endpush
+
 
 <!-- Styles for Responsive Table -->
 <style>

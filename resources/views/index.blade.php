@@ -46,10 +46,10 @@
                                 <a href="/month_years/{{ $monthYear->id }}" class="btn btn-sm btn-info me-2">
                                     <i class="bi bi-eye"></i>
                                 </a>
+                                
                                 <button type="button" class="btn btn-sm btn-primary me-2" data-bs-toggle="modal" data-bs-target="#editMonthYear{{ $monthYear->id }}">
                                     <i class="bi bi-pencil-square"></i>
                                 </button>
-                                @include('layouts/month_year', ['monthYear' => $monthYear, 'modalId' => "editMonthYear{$monthYear->id}"])
                             </td>
                         </tr>
                     @endforeach
@@ -74,3 +74,9 @@
     }
 </style>
 @endsection
+
+@push('modals')
+    @foreach($monthYears as $monthYear)
+       @include('layouts/month_year', ['monthYear' => $monthYear, 'modalId' => "editMonthYear{$monthYear->id}"])
+    @endforeach
+@endpush

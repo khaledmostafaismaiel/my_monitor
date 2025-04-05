@@ -6,4 +6,6 @@
     @yield('content')
 </div>
 
+@stack('modals')
+
 @include('layouts/footer')

@@ -1,7 +1,9 @@
-<!-- Footer Section -->
-<footer class="footer">
-    &copy; {{ date('Y') }} My Monitor | Developed by Khaled Mostafa
-</footer>
+    <!-- Footer Section -->
+    <footer class="footer">
+        &copy; {{ date('Y') }} My Monitor | Developed by Khaled Mostafa
+    </footer>
+
+</body>
 
 <style>
     .footer {

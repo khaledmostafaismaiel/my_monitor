@@ -66,12 +66,10 @@
                                 <button type="button" class="btn btn-sm btn-primary me-2" data-bs-toggle="modal" data-bs-target="#editCategory{{ $category->id }}">
                                     <i class="bi bi-pencil-square"></i>
                                 </button>
-                                @include('layouts/category', ['category' => $category, 'modalId' => "editCategory{$category->id}"])
 
                                 <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteCategory{{ $category->id }}">
                                     <i class="bi bi-trash"></i>
                                 </button>
-                                @include('layouts/delete_category', ['category' => $category, 'modalId' => "deleteCategory{$category->id}"])
                             </td>
                         </tr>
                     @endforeach
@@ -90,13 +88,21 @@
 
 @endsection
 
+@push('modals')
+    @foreach($categories as $category)
+        @include('layouts/category', ['category' => $category, 'modalId' => "editCategory{$category->id}"])
+        @include('layouts/delete_category', ['category' => $category, 'modalId' => "deleteCategory{$category->id}"])
+    @endforeach
+@endpush
+
+
 <!-- Styles for Centering & Spacing -->
 <style>
     .pagination {
         flex-wrap: wrap;
         justify-content: center;
     }
-    
+
     /* Fix card positioning */
     .card {
         margin-top: 20px;
@@ -114,7 +120,7 @@
     document.addEventListener("DOMContentLoaded", function () {
         const form = document.querySelector("#filter_categories_form");
         const submitButton = form.querySelector("button[type='submit']");
-        
+
         form.addEventListener("submit", function () {
             submitButton.disabled = true;
             submitButton.innerHTML = `

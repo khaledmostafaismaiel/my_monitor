@@ -110,12 +110,10 @@
                                 <button type="button" class="btn btn-sm btn-primary me-2" data-bs-toggle="modal" data-bs-target="#editTransaction{{ $transaction->id }}">
                                     <i class="bi bi-pencil-square"></i>
                                 </button>
-                                @include('layouts/edit_normal_transaction', ['transaction' => $transaction, 'modalId' => "editTransaction{$transaction->id}"])
 
                                 <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteTransaction{{ $transaction->id }}">
                                     <i class="bi bi-trash"></i>
                                 </button>
-                                @include('layouts/delete_normal_transaction', ['transaction' => $transaction, 'modalId' => "deleteTransaction{$transaction->id}"])
                             </td>
                         </tr>
                     @endforeach
@@ -133,6 +131,14 @@
 </div>
 
 @endsection
+
+@push('modals')
+    @foreach($transactions as $transaction)
+        @include('layouts/edit_normal_transaction', ['transaction' => $transaction, 'modalId' => "editTransaction{$transaction->id}"])
+        @include('layouts/delete_normal_transaction', ['transaction' => $transaction, 'modalId' => "deleteTransaction{$transaction->id}"])
+    @endforeach
+@endpush
+
 
 <!-- Styles for Responsive Table -->
 <style>

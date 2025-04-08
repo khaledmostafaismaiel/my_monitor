@@ -42,10 +42,10 @@
                     </select>
                 </div>
 
-                <!-- Apply Filter Button -->
+                <!-- Search Filter Button -->
                 <div class="col-md-2 d-grid">
                     <button type="submit" class="btn btn-primary">
-                        <i class="bi bi-funnel-fill"></i> Apply
+                        <i class="bi bi-funnel-fill"></i> Search
                     </button>
                 </div>
             </div>
@@ -183,7 +183,7 @@
             submitButton.disabled = true;
             submitButton.innerHTML = `
                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                Appling...
+                Searching...
             `;
         });
     });

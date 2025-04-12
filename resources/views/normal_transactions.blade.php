@@ -108,7 +108,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($transactions as $transaction)
+                    @forelse($transactions as $transaction)
                         <tr>
                             <td class="fw-semibold text-truncate">{{ $transaction->name }}</td>
                             <td class="fw-bold">{{ number_format($transaction->quantity, 2) }}</td>
@@ -124,7 +124,11 @@
                                 </button>
                             </td>
                         </tr>
-                    @endforeach
+                    @empty
+                        <tr>
+                            <td colspan="3" class="text-muted">No normal transactions  found.</td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>

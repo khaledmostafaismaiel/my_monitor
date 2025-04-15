@@ -20,21 +20,28 @@ services:
         image: mysql:8.0
         container_name: mymonitor-db
         environment:
-            MYSQL_ALLOW_EMPTY_PASSWORD: "true"
-            MYSQL_DATABASE: ${DB_DATABASE}
-            MYSQL_USER: ${DB_USERNAME}
-            MYSQL_PASSWORD: ${DB_PASSWORD}
-            MYSQL_ROOT_PASSWORD: root
-            MYSQL_AUTHENTICATION_PLUGIN: mysql_native_password
+          MYSQL_ALLOW_EMPTY_PASSWORD: "true"
+          MYSQL_DATABASE: ${DB_DATABASE}
+          MYSQL_USER: ${DB_USERNAME}
+          MYSQL_PASSWORD: ${DB_PASSWORD}
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_AUTHENTICATION_PLUGIN: mysql_native_password
         ports:
-            - "${DB_PORT}:3306"
+          - "${DB_PORT}:3306"
         volumes:
-            - dbdata:/var/lib/mysql
+          - dbdata:/var/lib/mysql
+          - ./mysql/my.cnf:/etc/mysql/conf.d/low-memory.cnf
         networks:
-            - mymonitor-network
+          - mymonitor-network
+        healthcheck:
+          test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+          interval: 10s
+          timeout: 5s
+          retries: 5
 
 volumes:
-    dbdata:
+    - dbdata:/var/lib/mysql
+    - ./mysql/my.cnf:/etc/mysql/conf.d/low-memory.cnf
 
 networks:
     mymonitor-network:

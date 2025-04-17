@@ -1,5 +1,4 @@
 /*universal selector*/
-
 *,
 *::after,
 *::before {
@@ -14,8 +13,7 @@
 
 html {
   /*this define 1rem*/
-  font-size: 10px;
-  /*this percantage is to take ratio from the user font size*/
+  font-size: 10px; /*this percantage is to take ratio from the user font size*/
 }
 
 body {
@@ -33,91 +31,149 @@ legend {
     opacity: 0;
     transform: translateX(30rem);
   }
-
   90% {
     transform: translateX(-5rem);
   }
-
   100% {
     opacity: 1;
     transform: translateX(0rem);
   }
 }
-
 @keyframes flash {
   0% {
     opacity: 1;
   }
-
   10% {
     opacity: 0;
   }
-
   20% {
     opacity: 1;
   }
-
   30% {
     opacity: 0;
   }
-
   40% {
     opacity: 1;
   }
-
   50% {
     opacity: 0;
   }
-
   60% {
     opacity: 1;
   }
-
   70% {
     opacity: 0;
   }
-
   80% {
     opacity: 1;
   }
-
   90% {
     opacity: 0;
   }
-
   100% {
     opacity: 1;
   }
 }
-
 @keyframes from_left_to_right {
   0% {
     opacity: 0;
     transform: translateX(-30rem);
   }
-
   90% {
     transform: translateX(5rem);
   }
-
   100% {
     opacity: 1;
     transform: translateX(0rem);
   }
 }
-
 @keyframes from_up_to_down {
   0% {
     transform: translateY(0rem);
   }
-
   50% {
     transform: translateY(25rem);
   }
-
   100% {
     transform: translateY(0rem);
   }
+}
+.money_spent {
+  font-weight: bold;
+  text-align: center;
+  padding: 2rem;
+  height: 43%;
+  width: 43%;
+  background-color: rgba(245, 222, 179, 0.4);
+  border-radius: 2rem;
+  position: absolute;
+  top: 25%;
+  left: 28%;
+}
+.money_spent-first_line {
+  color: black;
+  font-size: 4rem;
+  position: relative;
+  left: -0.5rem;
+  animation: from_right_to_left;
+  animation-duration: 5s;
+  backface-visibility: hidden; /*to prevent shake of the chars when its animated*/
+}
+.money_spent-first_line-user_name {
+  color: red;
+}
+.money_spent-second_line {
+  color: gold;
+  font-size: 10rem;
+  animation: flash;
+  animation-duration: 5s;
+  backface-visibility: hidden; /*to prevent shake of the chars when its animated*/
+  position: relative;
+  left: 0rem;
+  top: 1rem;
+}
+.money_spent-third_line {
+  color: black;
+  font-size: 4rem;
+  animation: from_left_to_right;
+  animation-duration: 5s;
+  backface-visibility: hidden; /*to prevent shake of the chars when its animated*/
+  position: relative;
+  left: 0rem;
+  top: 3rem;
+}
+
+.message-welcome {
+  color: white;
+  text-align: center;
+  position: absolute;
+  top: 7.5rem;
+  left: 38rem;
+  font-size: 5rem;
+  font-weight: bold;
+  animation: from_left_to_right;
+  animation-duration: 5s;
+  backface-visibility: hidden; /*to prevent shake of the chars when its animated*/
+}
+.message-session {
+  height: 10rem;
+  width: 50rem;
+  font-size: 1.5rem;
+  text-align: center;
+  position: absolute;
+  top: 1.3rem;
+  left: 5rem;
+}
+.message-session-span {
+  padding: 1.5rem;
+  background-color: gold;
+  border-radius: 1.5rem;
+  position: relative;
+  left: -6rem;
+  text-transform: uppercase;
+  animation: flash;
+  animation-duration: 5s;
+  backface-visibility: hidden; /*to prevent shake of the chars when its animated*/
 }
 
 .bg-video {
@@ -152,21 +208,18 @@ legend {
   border: none;
   cursor: pointer;
 }
-
 .btn-list {
   margin: 0rem 0rem 5rem 5rem;
   position: absolute;
   left: 7rem;
   bottom: 4rem;
 }
-
 .btn-list-page_number {
   font-size: 3rem;
   margin: 2rem;
   padding: 1rem 2rem 1rem 2.5rem;
   text-align: center;
 }
-
 .btn-list-page_number-selected {
   color: white;
   background-color: red;
@@ -174,73 +227,59 @@ legend {
   font-weight: bold;
   font-size: 3.5rem;
 }
-
 .btn-list-page_number-selected-min {
   background-color: darkgreen;
   padding: 0.5rem 1.5rem;
 }
-
 .btn-list-page_number-selected-max {
   background-color: darkgreen;
   padding: 0.5rem 1rem;
 }
-
 .btn-list-page_number-link {
   color: black;
   padding: 0.5rem;
   background-color: darkgreen;
 }
-
 .btn-list-page_number-link-min {
   background-color: darkgreen;
   padding: 0.5rem 1.5rem;
 }
-
 .btn-list-page_number-link-max {
   background-color: darkgreen;
   padding: 0.5rem 1.5rem;
 }
-
 .btn-list-next {
   position: absolute;
   right: -10rem;
 }
-
 .btn-action {
   position: relative;
   text-align: center;
 }
-
 .btn-action-edit {
   position: absolute;
   top: -1.7rem;
   left: 2rem;
 }
-
 .btn-action-edit-image {
   height: 3rem;
   width: 3rem;
 }
-
 .btn-action-edit:hover {
   background-color: rgba(245, 222, 179, 0.4);
 }
-
 .btn-action-delete {
   position: absolute;
   top: -1.5rem;
   left: 8rem;
 }
-
 .btn-action-delete-image {
   height: 3rem;
   width: 3rem;
 }
-
 .btn-action-delete:hover {
   background-color: rgba(245, 222, 179, 0.4);
 }
-
 .btn:hover {
   transform: translateY(-3px);
   box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2);
@@ -257,7 +296,6 @@ legend {
   font-size: 2rem;
   text-align: center;
 }
-
 .form_add_expense {
   color: black;
   background-color: rgba(245, 222, 179, 0.4);
@@ -270,28 +308,24 @@ legend {
   padding: 2rem 4rem 8rem 4rem;
   font-size: 2rem;
 }
-
 .form_add_expense-name {
   position: relative;
   top: -2rem;
   left: 1rem;
   padding: 1rem;
 }
-
 .form_add_expense-price {
   position: relative;
   left: 1.6rem;
   top: -2rem;
   padding: 1rem;
 }
-
 .form_add_expense-category {
   padding: 1rem;
   position: relative;
   left: -3rem;
   top: -2rem;
 }
-
 .form_add_expense-category-menu {
   position: relative;
   left: 1rem;
@@ -299,27 +333,23 @@ legend {
   width: 18rem;
   text-align: center;
 }
-
 .form_add_expense-comment {
   padding: 1rem;
   position: relative;
   left: -2.5rem;
   top: -2rem;
 }
-
 .form_add_expense-date {
   padding: 1rem;
   position: relative;
   left: 1.9rem;
   top: -2rem;
 }
-
 .form_add_expense-cancel {
   position: absolute;
   top: 36rem;
   left: 2rem;
 }
-
 .form_add_expense-submit {
   text-align: center;
   padding: 1rem;
@@ -327,7 +357,6 @@ legend {
   top: 35rem;
   left: 22rem;
 }
-
 .form_edit_expense {
   color: black;
   background-color: rgba(245, 222, 179, 0.4);
@@ -340,28 +369,24 @@ legend {
   padding: 2rem 4rem 8rem 4rem;
   font-size: 2rem;
 }
-
 .form_edit_expense-name {
   position: relative;
   top: -2rem;
   left: 1rem;
   padding: 1rem;
 }
-
 .form_edit_expense-price {
   position: relative;
   left: 1.6rem;
   top: -2rem;
   padding: 1rem;
 }
-
 .form_edit_expense-category {
   padding: 1rem;
   position: relative;
   left: -3rem;
   top: -2rem;
 }
-
 .form_edit_expense-category-menu {
   position: relative;
   left: 1rem;
@@ -369,27 +394,23 @@ legend {
   width: 18rem;
   text-align: center;
 }
-
 .form_edit_expense-comment {
   padding: 1rem;
   position: relative;
   left: -2.5rem;
   top: -2rem;
 }
-
 .form_edit_expense-date {
   padding: 1rem;
   position: relative;
   left: 1.9rem;
   top: -2rem;
 }
-
 .form_edit_expense-cancel {
   position: absolute;
   top: 36rem;
   left: 2rem;
 }
-
 .form_edit_expense-submit {
   text-align: center;
   padding: 1rem;
@@ -397,7 +418,6 @@ legend {
   top: 35rem;
   left: 22rem;
 }
-
 .form-sign_up {
   color: black;
   background-color: rgba(245, 222, 179, 0.4);
@@ -409,55 +429,46 @@ legend {
   top: 10rem;
   left: 25rem;
 }
-
 .form-sign_up-first_name {
   position: absolute;
   left: 9.5rem;
   top: 7rem;
 }
-
 .form-sign_up-second_name {
   position: absolute;
   left: 44rem;
   top: 7rem;
 }
-
 .form-sign_up-email {
   position: absolute;
   left: 14.3rem;
   top: 11rem;
 }
-
 .form-sign_up-password {
   position: absolute;
   left: 10.5rem;
   top: 15rem;
 }
-
 .form-sign_up-confirm_password {
   position: absolute;
   left: 3rem;
   top: 19rem;
 }
-
 .form-sign_up-not_robot {
   position: absolute;
   left: 30rem;
   top: 23rem;
 }
-
 .form-sign_up-terms_of_conditions {
   position: absolute;
   left: 20rem;
   top: 27rem;
 }
-
 .form-sign_up-submit {
   position: absolute;
   left: 30rem;
   top: 31rem;
 }
-
 .form-add_back_ground {
   color: black;
   background-color: rgba(245, 222, 179, 0.4);
@@ -469,25 +480,21 @@ legend {
   top: 13rem;
   left: 45rem;
 }
-
 .form-add_back_ground-choose_file {
   position: absolute;
   top: 7rem;
   left: 9.5rem;
 }
-
 .form-add_back_ground-caption {
   position: absolute;
   top: 12rem;
   left: 2rem;
 }
-
 .form-add_back_ground-add_btn {
   position: absolute;
   top: 20rem;
   left: 12.5rem;
 }
-
 .form-add_back_ground-cancel_btn {
   position: absolute;
   top: 27rem;
@@ -501,7 +508,6 @@ legend {
   border-radius: 2rem;
   padding: 2rem;
 }
-
 .table-expenses {
   height: 5%;
   width: 80%;
@@ -509,24 +515,20 @@ legend {
   top: 8rem;
   left: 12rem;
 }
-
 .table-expenses-body {
   font-size: 2rem;
   background-color: rgba(245, 222, 179, 0.4);
   text-align: center;
   border-radius: 2rem;
 }
-
 .table-expenses-body-raw:hover {
   background-color: black;
   color: white;
 }
-
 .table-expenses-td {
   border-radius: 0.5rem;
   padding: 1rem;
 }
-
 .table-backgrounds {
   height: 5%;
   width: 80%;
@@ -534,19 +536,16 @@ legend {
   top: 8rem;
   left: 12rem;
 }
-
 .table-backgrounds-body {
   font-size: 2rem;
   background-color: rgba(245, 222, 179, 0.4);
   text-align: center;
   border-radius: 2rem;
 }
-
 .table-backgrounds-body-raw:hover {
   background-color: black;
   color: white;
 }
-
 .table-backgrounds-td {
   border-radius: 0.5rem;
   padding: 1rem;
@@ -563,11 +562,9 @@ footer {
   position: absolute;
   bottom: 0rem;
 }
-
 footer__copyright footer--link {
   color: navy;
 }
-
 footer__copyright footer--link:active {
   color: red;
 }
@@ -584,7 +581,6 @@ header {
   top: 1.3rem;
   left: 1rem;
 }
-
 header .header-image {
   width: 5rem;
   height: 5rem;
@@ -593,7 +589,6 @@ header .header-image {
   left: 2rem;
   z-index: 2;
 }
-
 .navigation__checkbox {
   display: none;
 }
@@ -699,7 +694,6 @@ header .header-image {
   background: rgba(245, 222, 179, 0.6);
   padding: 0rem 1rem;
 }
-
 .search_box-text {
   height: 80%;
   width: 70%;
@@ -718,7 +712,6 @@ header .header-image {
   top: 0.3rem;
   left: 10%;
 }
-
 .search_box-img {
   position: absolute;
   top: 0.5rem;
@@ -726,7 +719,6 @@ header .header-image {
   height: 2.5rem;
   width: 2.5rem;
 }
-
 .search_box-btn {
   float: right;
   width: 4rem;
@@ -752,7 +744,6 @@ header .header-image {
 .not_available {
   position: relative;
 }
-
 .not_available-image {
   height: 35rem;
   width: 90rem;
@@ -760,4 +751,3 @@ header .header-image {
   top: 15rem;
   left: 20rem;
 }
-

@@ -12,17 +12,18 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::resource('normal_transactions', 'NormalTransactionsController')->middleware('auth');
-Route::resource('blueprint_transactions', 'BlueprintTransactionsController')->middleware('auth');
-Route::resource('categories', 'CategoriesController')->middleware('auth');
-Route::resource('month_years', 'MonthYearsController')->middleware('auth');
+
+Route::resource('normal_transactions', 'NormalTransactionsController')->middleware(['auth', 'verified']);
+Route::resource('blueprint_transactions', 'BlueprintTransactionsController')->middleware(['auth', 'verified']);
+Route::resource('categories', 'CategoriesController')->middleware(['auth', 'verified']);
+Route::resource('month_years', 'MonthYearsController')->middleware(['auth', 'verified']);
 
 Route::post('/users/verify_otp', 'UsersController@verify_otp');
-Route::get('/users/register', 'UsersController@register');
+Route::get('/users/register', 'UsersController@register')->name('login');
 Route::post('/users/sign_up', 'UsersController@sign_up');
 Route::post('/users/sign_in', 'UsersController@sign_in');
 Route::post('/users/sign_out', 'UsersController@sign_out');
-Route::resource('/users', 'UsersController')->middleware('auth')->only('signout');
+Route::resource('/users', 'UsersController')->middleware(['auth', 'verified'])->only('signout');
 
 
 Route::get('/', function () {
@@ -50,7 +51,7 @@ Route::get('/', function () {
         ->paginate(10);
 
     return view('index', compact(["user", "monthYears"]));
-})->middleware('auth');
+})->middleware(['auth', 'verified']);
 
 /*
     GET /projects (index)
@@ -72,7 +73,5 @@ Route::get('/', function () {
                     ==
     Route::resource('projects','UsersController')
 */
-
-Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');

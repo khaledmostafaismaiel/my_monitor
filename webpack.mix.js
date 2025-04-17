@@ -12,4 +12,18 @@ const mix = require('laravel-mix');
  */
 
 mix.js('resources/js/app.js', 'public/js')
-    .sass('resources/sass/main.scss', 'public/css');
+    .vue()
+    .sass('resources/sass/main.scss', 'public/css')
+    .postCss('resources/css/app.css', 'public/css', [
+        require('postcss-import'),
+        require('tailwindcss'),
+    ])
+    .version();
+
+mix.webpackConfig({
+    resolve: {
+        fallback: {
+        buffer: require.resolve('buffer/'),
+        },
+    },
+    });

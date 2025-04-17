@@ -32,7 +32,7 @@ class BlueprintTransactionsController extends Controller
             ->users()
             ->get();
 
-        return view('blueprint_transactions', compact('transactions', 'categories', 'users', 'uniqueYears'));
+        return view('blueprint_transactions', compact('transactions', 'categories', 'users'));
     }
 
     public function store(Request $request)

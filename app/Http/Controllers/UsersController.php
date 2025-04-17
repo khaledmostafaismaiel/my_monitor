@@ -14,7 +14,7 @@ class UsersController extends Controller
 
     public function register()
     {
-        return view('auth.register');
+        return view('auth.login');
     }
 
     public function sign_in()
@@ -47,7 +47,7 @@ class UsersController extends Controller
             'family_id' => 'required_if:family_option,join|nullable',
             'family_name' => 'required_if:family_option,create|string|max:255',
         ]);
-        
+
         if($request->family_option == "join"){
             $family = Family::find($request->family_id);
             if($family){
@@ -69,7 +69,7 @@ class UsersController extends Controller
             }else{
 
             }
-        
+
             return view('auth.verify');
         }else{
             $family = Family::create(

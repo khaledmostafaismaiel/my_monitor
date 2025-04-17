@@ -9,13 +9,11 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
-        "illuminate/auth": "^10.0",
-        "laravel/framework": "^10.0",
-        "symfony/console": "^6.2"
+        "laravel/framework": "^11.0"
     },
     "require-dev": {
-        "laravel/breeze": "^1.20",
-        "nunomaduro/collision": "^7.0",
+        "laravel/breeze": "^2.0",
+        "nunomaduro/collision": "^8.0",
         "phpunit/phpunit": "^10.0"
     },
     "config": {

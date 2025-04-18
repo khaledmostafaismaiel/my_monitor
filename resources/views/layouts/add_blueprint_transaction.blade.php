@@ -12,13 +12,13 @@
 
             <!-- Form Start -->
             <form method="POST" action="/blueprint_transactions">
-                <input type="hidden" name="is_blue_print" value="1">
+                <input type="hidden" name="type" value="blue_print">
 
                 <div class="modal-body px-4">
                     {{ csrf_field() }}
 
                     <div class="row g-3">
-                        <input type="text" class="form-control" id="is_blue_print" name="is_blue_print" value="0" hidden>
+                        <input type="text" class="form-control" id="type" name="type" value="normal" hidden>
 
                         <!-- Transaction Name -->
                         <div class="col-md-6">

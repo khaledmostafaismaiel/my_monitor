@@ -25,7 +25,7 @@ class CreateTransactionsTable extends Migration
             $table->date('date')->nullable();
             $table->uuid('family_id');
             $table->unsignedInteger('month_year_id')->nullable();
-            $table->boolean('is_blue_print');
+            $table->enum('type', ['normal', 'blue_print', 'draft']);
             $table->timestamps();
         });
     }

@@ -51,4 +51,8 @@ class Family extends Model
         return $this->hasMany(BlueprintTransaction::class);
     }
 
+    public function draftTransactions()
+    {
+        return $this->hasMany(DraftTransaction::class);
+    }
 }

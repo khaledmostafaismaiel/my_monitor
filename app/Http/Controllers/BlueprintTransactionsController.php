@@ -51,7 +51,7 @@ class BlueprintTransactionsController extends Controller
                 [
                     'user_id'=> auth()->id(),
                     'family_id'=> auth()->user()->family_id,
-                    'is_blue_print'=> 1,
+                    'type'=> 'blue_print',
                 ]
             )
         );

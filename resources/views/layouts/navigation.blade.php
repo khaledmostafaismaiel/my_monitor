@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <!-- Brand with Logo -->
         <a class="navbar-brand fw-bold text-white d-flex align-items-center" href="/">
-            {{ env("APP_NAME") }}
+            <i class="bi bi-graph-up-arrow me-2"></i> {{ env('APP_NAME') }}
         </a>
 
         <!-- Offcanvas Button -->
@@ -39,6 +39,12 @@
                     <li class="nav-item">
                         <a class="nav-link text-white fw-bold" href="/normal_transactions">
                             <i class="bi bi-wallet2"></i> Normal Transactions
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link text-white fw-bold" href="/draft_transactions">
+                            <i class="bi bi-pencil-square"></i> Drafted Transactions
                         </a>
                     </li>
 

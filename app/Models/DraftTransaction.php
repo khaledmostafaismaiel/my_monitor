@@ -5,7 +5,7 @@ namespace App\Models;
 use Parental\HasParent;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class BlueprintTransaction extends Transaction
+class DraftTransaction extends Transaction
 {
     use HasFactory;
     use HasParent;

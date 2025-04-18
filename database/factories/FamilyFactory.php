@@ -1,24 +1,18 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
-use App\Family;
-use Faker\Generator as Faker;
-use Illuminate\Support\Str;
+use App\Models\Family;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-/*
-|--------------------------------------------------------------------------
-| Model Factories
-|--------------------------------------------------------------------------
-|
-| This directory should contain each of the model factory definitions for
-| your application. Factories provide a convenient way to generate new
-| model instances for testing / seeding your application's database.
-|
-*/
+class FamilyFactory extends Factory
+{
+    protected $model = Family::class;
 
-$factory->define(Family::class, function (Faker $faker) {
-    return [
-        'name' => $this->faker->firstName(),
-    ];
-});
+    public function definition()
+    {
+        return [
+            'name' => $this->faker->firstName(),
+        ];
+    }
+}

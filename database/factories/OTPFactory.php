@@ -1,12 +1,21 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
-use App\OTP;
-use Faker\Generator as Faker;
+use App\Models\OTP;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(OTP::class, function (Faker $faker) {
-    return [
-        //
-    ];
-});
+class OtpFactory extends Factory
+{
+    protected $model = OTP::class;
+
+    public function definition(): array
+    {
+        return [
+            'code' => $this->faker->numberBetween(100000, 999999), // 6-digit code
+            'phone' => $this->faker->phoneNumber,
+            'expires_at' => now()->addMinutes(5),
+            'verified' => false,
+        ];
+    }
+}

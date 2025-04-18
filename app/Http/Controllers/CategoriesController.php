@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use Illuminate\Http\Request;
-use App\Category;
 
 class CategoriesController extends Controller
 {
@@ -32,7 +32,7 @@ class CategoriesController extends Controller
                 ]
             )
         );
-        
+
         return redirect('/categories');
     }
 

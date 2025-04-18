@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\OTP;
+use App\Models\OTP;
 use Illuminate\Http\Request;
 
 class OTPController extends Controller
@@ -41,7 +41,7 @@ class OTPController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\OTP  $oTP
+     * @param  \App\Models\OTP  $oTP
      * @return \Illuminate\Http\Response
      */
     public function show(OTP $oTP)
@@ -52,7 +52,7 @@ class OTPController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\OTP  $oTP
+     * @param  \App\Models\OTP  $oTP
      * @return \Illuminate\Http\Response
      */
     public function edit(OTP $oTP)
@@ -64,7 +64,7 @@ class OTPController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\OTP  $oTP
+     * @param  \App\Models\OTP  $oTP
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, OTP $oTP)
@@ -75,7 +75,7 @@ class OTPController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\OTP  $oTP
+     * @param  \App\Models\OTP  $oTP
      * @return \Illuminate\Http\Response
      */
     public function destroy(OTP $oTP)

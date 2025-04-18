@@ -2,8 +2,6 @@
 
 use Illuminate\Database\Seeder;
 
-use App\MonthYear;
-
 class MonthYearSeeder extends Seeder
 {
     /**
@@ -14,6 +12,6 @@ class MonthYearSeeder extends Seeder
     public function run()
     {
 
-        
+
     }
 }

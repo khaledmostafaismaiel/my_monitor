@@ -1,13 +1,15 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class MonthYear extends Model
 {
-    protected $guarded = [];
+    use HasFactory;
 
+    protected $guarded = [];
 
     public function family(){
         return $this->belongsTo(Family::class);

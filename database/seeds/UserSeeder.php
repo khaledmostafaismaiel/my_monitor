@@ -1,9 +1,8 @@
 <?php
 
+use App\Models\Family;
+use App\Models\User;
 use Illuminate\Database\Seeder;
-
-use App\User;
-use App\Family;
 
 
 class UserSeeder extends Seeder
@@ -26,7 +25,7 @@ class UserSeeder extends Seeder
                 'family_id'=> Family::first()->id,
             ]
         );
-        
+
         User::firstOrCreate(
             [
                 'email'=> "doaaahmed@mymonitor.com" ,

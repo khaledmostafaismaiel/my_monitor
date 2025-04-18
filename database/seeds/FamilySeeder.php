@@ -1,8 +1,7 @@
 <?php
 
+use App\Models\Family;
 use Illuminate\Database\Seeder;
-
-use App\Family;
 
 class FamilySeeder extends Seeder
 {
@@ -13,6 +12,6 @@ class FamilySeeder extends Seeder
      */
     public function run()
     {
-        factory(Family::class)->create();
+        Family::factory()->create();
     }
 }

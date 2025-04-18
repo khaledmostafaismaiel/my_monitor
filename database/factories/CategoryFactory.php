@@ -1,14 +1,20 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
-use App\Category;
-use Faker\Generator as Faker;
+use App\Models\Category;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(Category::class, function (Faker $faker) {
-    return [
-        'name' => $this->faker->unique()->word(),
-        'status' => $this->faker->randomElement(['active', 'inactive']),
-        'family_id' => $this->faker->uuid(),
-    ];
-});
+class CategoryFactory extends Factory
+{
+    protected $model = Category::class;
+
+    public function definition(): array
+    {
+        return [
+            'name' => $this->faker->unique()->word,
+            'status' => $this->faker->randomElement(['active', 'inactive']),
+            'family_id' => $this->faker->uuid,
+        ];
+    }
+}

@@ -12,6 +12,25 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Request;
+Route::get('/deploy', function () {
+    $password = Request::get('password');
+
+    if ($password === '12345678') {
+        Artisan::call('migrate', ['--force' => true]);
+        Artisan::call('db:seed', ['--force' => true]);
+        return nl2br(Artisan::output());
+    }
+
+    abort(403, 'Unauthorized');
+});
+
+use Illuminate\Support\Facades\Log;
+Route::get('/log-test', function () {
+    Log::info("✅ Logging works without writing to file!");
+    return "Logged to errorlog.";
+});
 
 Route::resource('normal_transactions', 'NormalTransactionsController')->middleware(['auth', 'verified']);
 Route::resource('blueprint_transactions', 'BlueprintTransactionsController')->middleware(['auth', 'verified']);

@@ -1,25 +1,34 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
-use App\User;
-use App\NormalTransaction;
-use App\Category;
-use Faker\Generator as Faker;
+use App\Models\NormalTransaction;
+use App\Models\User;
+use App\Models\Family;
+use App\Models\Category;
+use App\Models\MonthYear;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(NormalTransaction::class, function (Faker $faker) {
-    $date = $this->faker->date();
-    return [
-        'family_id' => factory(\App\Family::class),
-        'type' => $this->faker->randomElement(['debit', 'credit']),
-        'user_id' => factory(\App\User::class),
-        'name' => $this->faker->word(),
-        'quantity' => $this->faker->randomFloat(2, 5, 1000),
-        'price' => $this->faker->randomFloat(2, 5, 1000),
-        'category_id' => factory(\App\Category::class),
-        'comment' => $this->faker->optional()->sentence(),
-        'date' => $date,
-        'month_year_id' => factory(\App\MonthYear::class),
-        'is_blueprint' => $this->faker->boolean(),
-    ];
-});
+class NormalTransactionFactory extends Factory
+{
+    protected $model = NormalTransaction::class;
+
+    public function definition(): array
+    {
+        $date = $this->faker->date();
+
+        return [
+            'family_id' => Family::factory(),
+            'type' => $this->faker->randomElement(['debit', 'credit']),
+            'user_id' => User::factory(),
+            'name' => $this->faker->word(),
+            'quantity' => $this->faker->randomFloat(2, 5, 1000),
+            'price' => $this->faker->randomFloat(2, 5, 1000),
+            'category_id' => Category::factory(),
+            'comment' => $this->faker->optional()->sentence(),
+            'date' => $date,
+            'month_year_id' => MonthYear::factory(),
+            'is_blueprint' => $this->faker->boolean(),
+        ];
+    }
+}

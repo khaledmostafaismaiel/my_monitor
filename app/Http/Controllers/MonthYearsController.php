@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\MonthYear;
-use App\NormalTransaction;
-use \DB;
-
+use App\Models\MonthYear;
+use DB;
 use Illuminate\Http\Request;
 
 class MonthYearsController extends Controller

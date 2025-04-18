@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\NormalTransaction;
-
+use App\Models\NormalTransaction;
 use Illuminate\Http\Request;
 
 class NormalTransactionsController extends Controller

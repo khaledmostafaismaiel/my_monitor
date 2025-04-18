@@ -1,15 +1,15 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Mail;
 
 class User extends Authenticatable
 {
     use Notifiable;
+    use HasFactory;
 
     protected $fillable = [
         "first_name",
@@ -18,7 +18,7 @@ class User extends Authenticatable
         "password",
         "email_verified_at",
         "family_id",
-        
+
     ] ;
 
     public function family(){

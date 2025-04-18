@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\BlueprintTransaction;
+use App\Models\BlueprintTransaction;
 use Illuminate\Http\Request;
 
 class BlueprintTransactionsController extends Controller

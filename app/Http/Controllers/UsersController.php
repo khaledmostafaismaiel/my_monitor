@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\UserSignedup;
+use App\Models\Family;
+use App\Models\User;
+use Auth;
 use Illuminate\Http\Request;
-use App\User;
-use App\Family;
-use Illuminate\Support\Facades\Mail;
-use \Auth;
 
 class UsersController extends Controller
 {

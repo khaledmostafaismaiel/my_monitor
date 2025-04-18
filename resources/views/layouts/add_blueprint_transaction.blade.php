@@ -43,16 +43,16 @@
                             </div>
                         </div>
 
-                        <!-- Transaction Type -->
+                        <!-- Transaction Direction -->
                         <div class="col-md-6">
-                            <label class="form-label">Transaction Type</label>
+                            <label class="form-label">Transaction Direction</label>
                             <div class="d-flex gap-3">
                                 <div class="form-check">
-                                    <input class="form-check-input border-primary" type="radio" name="type" id="debit" value="debit" checked>
+                                    <input class="form-check-input border-primary" type="radio" name="direction" id="debit" value="debit" checked>
                                     <label class="form-check-label text-danger fw-bold" for="debit">Debit (Expense)</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input border-primary" type="radio" name="type" id="credit" value="credit">
+                                    <input class="form-check-input border-primary" type="radio" name="direction" id="credit" value="credit">
                                     <label class="form-check-label text-success fw-bold" for="credit">Credit (Income)</label>
                                 </div>
                             </div>

@@ -15,8 +15,8 @@ class BlueprintTransactionsController extends Controller
             ->when(\request("name") != "", function ($query) {
                 $query->where("name", "LIKE", "%" . \request("name") . "%");
             })
-            ->when(\request("type") != "", function ($query) {
-                $query->where("type", \request("type"));
+            ->when(\request("direction") != "", function ($query) {
+                $query->where("direction", \request("direction"));
             })
             ->when(\request("category_id") != "", function ($query) {
                 $query->where("category_id", \request("category_id"));

@@ -39,16 +39,16 @@
                             </div>
                         </div>
 
-                        <!-- Transaction Type -->
+                        <!-- Transaction Direction -->
                         <div class="col-md-6">
-                            <label class="form-label">Transaction Type</label>
+                            <label class="form-label">Transaction Direction</label>
                             <div class="d-flex gap-3">
                                 <div class="form-check">
-                                    <input class="form-check-input border-primary" type="radio" name="type" id="debit-{{ isset($transaction) ? $transaction->id : 'new' }}" value="debit" {{ (isset($transaction) && $transaction->type == 'debit') || !isset($transaction) ? 'checked' : '' }}>
+                                    <input class="form-check-input border-primary" type="radio" name="direction" id="debit-{{ isset($transaction) ? $transaction->id : 'new' }}" value="debit" {{ (isset($transaction) && $transaction->direction == 'debit') || !isset($transaction) ? 'checked' : '' }}>
                                     <label class="form-check-label text-danger fw-bold" for="debit-{{ isset($transaction) ? $transaction->id : 'new' }}">Debit (Expense)</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input border-primary" type="radio" name="type" id="credit-{{ isset($transaction) ? $transaction->id : 'new' }}" value="credit" {{ isset($transaction) && $transaction->type == 'credit' ? 'checked' : '' }}>
+                                    <input class="form-check-input border-primary" type="radio" name="direction" id="credit-{{ isset($transaction) ? $transaction->id : 'new' }}" value="credit" {{ isset($transaction) && $transaction->direction == 'credit' ? 'checked' : '' }}>
                                     <label class="form-check-label text-success fw-bold" for="credit-{{ isset($transaction) ? $transaction->id : 'new' }}">Credit (Income)</label>
                                 </div>
                             </div>

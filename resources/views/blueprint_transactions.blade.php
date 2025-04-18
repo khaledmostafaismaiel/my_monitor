@@ -26,13 +26,13 @@
                         <input type="text" name="name" class="form-control" placeholder="Enter transaction name..." value="{{ request('name') }}">
                     </div>
 
-                    <!-- Type Filter -->
+                    <!-- Direction Filter -->
                     <div class="col-md-2 col-sm-6">
-                        <label class="form-label fw-semibold">Type</label>
-                        <select name="type" class="form-select">
-                            <option value="">All Types</option>
-                            <option value="credit" {{ request('type') == 'credit' ? 'selected' : '' }}>Credit</option>
-                            <option value="debit" {{ request('type') == 'debit' ? 'selected' : '' }}>Debit</option>
+                        <label class="form-label fw-semibold">Direction</label>
+                        <select name="direction" class="form-select">
+                            <option value="">All Directions</option>
+                            <option value="credit" {{ request('direction') == 'credit' ? 'selected' : '' }}>Credit</option>
+                            <option value="debit" {{ request('direction') == 'debit' ? 'selected' : '' }}>Debit</option>
                         </select>
                     </div>
 
@@ -195,7 +195,7 @@
         const urlParams = new URLSearchParams(window.location.search);
         if (
             urlParams.has('name') ||
-            urlParams.has('type') ||
+            urlParams.has('direction') ||
             urlParams.has('category_id')
         ) {
             searchSection.classList.remove('d-none');

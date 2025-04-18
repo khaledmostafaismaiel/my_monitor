@@ -40,16 +40,16 @@
                             </div>
                         </div>
 
-                        <!-- Transaction Type -->
+                        <!-- Transaction Direction -->
                         <div class="col-md-6 text-start">
-                            <label class="form-label">Transaction Type</label>
+                            <label class="form-label">Transaction Direction</label>
                             <div class="d-flex gap-3">
                                 <div class="form-check">
-                                    <input class="form-check-input border-primary" type="radio" name="type" id="debit{{ $transaction->id }}" value="debit" {{ $transaction->type == 'debit' ? 'checked' : '' }}>
+                                    <input class="form-check-input border-primary" type="radio" name="direction" id="debit{{ $transaction->id }}" value="debit" {{ $transaction->direction == 'debit' ? 'checked' : '' }}>
                                     <label class="form-check-label text-danger fw-bold" for="debit{{ $transaction->id }}">Debit (Expense)</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input border-primary" type="radio" name="type" id="credit{{ $transaction->id }}" value="credit" {{ $transaction->type == 'credit' ? 'checked' : '' }}>
+                                    <input class="form-check-input border-primary" type="radio" name="direction" id="credit{{ $transaction->id }}" value="credit" {{ $transaction->direction == 'credit' ? 'checked' : '' }}>
                                     <label class="form-check-label text-success fw-bold" for="credit{{ $transaction->id }}">Credit (Income)</label>
                                 </div>
                             </div>

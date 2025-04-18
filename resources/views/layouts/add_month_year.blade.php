@@ -4,7 +4,7 @@
             <!-- Modal Header -->
             <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title fw-bold" id="addMonthYearLabel">
-                    <i class="bi bi-folder-plus me-2"></i> New Month Year
+                    <i class="bi bi-folder-plus me-2"></i> New
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -39,7 +39,7 @@
     document.addEventListener("DOMContentLoaded", function () {
         const form = document.querySelector("#addCategoryModal form");
         const submitButton = form.querySelector("button[type='submit']");
-        
+
         form.addEventListener("submit", function () {
             submitButton.disabled = true;
             submitButton.innerHTML = `

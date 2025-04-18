@@ -4,7 +4,7 @@
             <!-- Modal Header -->
             <div class="modal-header bg-danger text-white">
                 <h5 class="modal-title fw-bold" id="deleteCategoryLabel{{ $category->id }}">
-                    <i class="bi bi-trash3 me-2"></i> Delete Category
+                    <i class="bi bi-trash3 me-2"></i> Delete
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -39,7 +39,7 @@
     document.addEventListener("DOMContentLoaded", function () {
         const form = document.querySelector("#{{ $modalId }} form");
         const submitButton = form.querySelector("button[type='submit']");
-        
+
         form.addEventListener("submit", function () {
             submitButton.disabled = true;
             submitButton.innerHTML = `

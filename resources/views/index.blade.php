@@ -11,7 +11,7 @@
         <!-- Add Transaction Button -->
         <div class="col-lg-4 col-md-6 col-sm-6 d-grid mb-4">
             <button type="button" class="btn btn-success px-4" data-bs-toggle="modal" data-bs-target="#addMonthYearModal">
-                <i class="bi bi-plus-lg"></i> Add Month Year
+                <i class="bi bi-plus-lg"></i> Add
             </button>
         </div>
         @include('layouts/add_month_year')
@@ -46,7 +46,7 @@
                                 <a href="/month_years/{{ $monthYear->id }}" class="btn btn-sm btn-info me-2">
                                     <i class="bi bi-eye"></i>
                                 </a>
-                                
+
                                 <button type="button" class="btn btn-sm btn-primary me-2" data-bs-toggle="modal" data-bs-target="#editMonthYear{{ $monthYear->id }}">
                                     <i class="bi bi-pencil-square"></i>
                                 </button>

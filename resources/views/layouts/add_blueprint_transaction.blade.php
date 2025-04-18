@@ -5,7 +5,7 @@
             <!-- Modal Header -->
             <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title" id="staticBackdropLabel">
-                    <i class="bi bi-folder-plus me-2"></i> New Blueprint Transaction
+                    <i class="bi bi-folder-plus me-2"></i> New
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -86,7 +86,7 @@
                         <i class="bi bi-x-circle"></i> Cancel
                     </button>
                     <button type="submit" class="btn btn-success px-4">
-                        <i class="bi bi-check-circle"></i> Save Transaction
+                        <i class="bi bi-check-circle"></i> Save
                     </button>
                 </div>
 

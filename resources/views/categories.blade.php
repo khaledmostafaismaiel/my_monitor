@@ -46,7 +46,7 @@
         <!-- Add Category Button -->
         <div class="col-lg-4 col-md-6 col-sm-6 d-grid mb-4">
             <button type="button" class="btn btn-success px-4" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
-                <i class="bi bi-plus-lg"></i> Add Category
+                <i class="bi bi-plus-lg"></i> Add
             </button>
         </div>
         @include('layouts/add_category')

@@ -5,7 +5,7 @@
             <!-- Modal Header -->
             <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title" id="editTransactionLabel{{ $transaction->id }}">
-                    <i class="bi bi-pencil-square me-2"></i> Edit Blueprint Transaction
+                    <i class="bi bi-pencil-square me-2"></i> Edit
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -97,7 +97,7 @@
                         <i class="bi bi-x-circle"></i> Cancel
                     </button>
                     <button type="submit" class="btn btn-success px-4">
-                        <i class="bi bi-check-circle"></i> Save Changes
+                        <i class="bi bi-check-circle"></i> Save
                     </button>
                 </div>
             </form>

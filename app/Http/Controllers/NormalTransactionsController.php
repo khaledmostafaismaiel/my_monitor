@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\NormalTransaction;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 
 class NormalTransactionsController extends Controller
@@ -62,7 +62,7 @@ class NormalTransactionsController extends Controller
             ]
         );
 
-        NormalTransaction::create(
+        Transaction::create(
             array_merge(
                 $request->toArray(),
                 [
@@ -87,18 +87,18 @@ class NormalTransactionsController extends Controller
             ]
         );
 
-        $expense = NormalTransaction::findOrFail($id);
+        $transaction = Transaction::findOrFail($id);
 
-        $expense->update($request->toArray());
+        $transaction->update($request->toArray());
 
         return redirect('/normal_transactions');
     }
 
     public function destroy($id)
     {
-        $expense = NormalTransaction::findOrFail($id);
+        $transaction = Transaction::findOrFail($id);
 
-        $expense->delete();
+        $transaction->delete();
 
         return redirect('/normal_transactions');
     }

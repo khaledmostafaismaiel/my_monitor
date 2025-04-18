@@ -1,25 +1,26 @@
 <!-- Modal -->
-<div class="modal fade" id="addNormalTransaction-{{ isset($transaction) ? $transaction->id : 'new' }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="{{$modalId}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content shadow-lg border-0 rounded-3">
             <!-- Modal Header -->
             <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title" id="staticBackdropLabel">
                     <i class="bi bi-folder-plus me-2"></i>
-                    {{ isset($transaction) ? 'Edit' : 'New' }}
+                    {{ 'Transfer' }}
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <!-- Form Start -->
-            <form method="POST" action="/normal_transactions">
+            <form method="POST" action="/draft_transactions/transfer_to_normal">
                 <div class="modal-body px-4">
                     {{ csrf_field() }}
+                    <input type="text" class="form-control" id="transactionId" name="id" value="{{ $transaction->id}}" hidden>
 
                     <div class="row g-3">
                         <!-- Transaction Name -->
                         <div class="col-md-6">
                             <label for="transactionName" class="form-label">Transaction Name</label>
-                            <input type="text" class="form-control" id="transactionName" name="name" placeholder="Enter transaction name" value="{{ isset($transaction) ? $transaction->name : '' }}" required>
+                            <input type="text" class="form-control" id="transactionName" name="name" placeholder="Enter transaction name" value="{{ $transaction->name}}" required>
                         </div>
 
                         <!-- Amount Input -->
@@ -27,7 +28,7 @@
                             <label class="form-label">Price Per Unit</label>
                             <div class="input-group">
                                 <span class="input-group-text bg-light">E£</span>
-                                <input type="number" class="form-control" name="price" placeholder="Enter amount" min="0" step="0.01" value="{{ isset($transaction) ? $transaction->price : '' }}" required>
+                                <input type="number" class="form-control" name="price" placeholder="Enter amount" min="0" step="0.01" value="{{ $transaction->price }}" required>
                             </div>
                         </div>
 
@@ -35,7 +36,7 @@
                         <div class="col-md-6">
                             <label class="form-label">Quantity</label>
                             <div class="input-group">
-                                <input type="number" class="form-control" name="quantity" value="{{ isset($transaction) ? $transaction->quantity : 1 }}" min="1" step="0.01" required>
+                                <input type="number" class="form-control" name="quantity" value="{{$transaction->quantity }}" min="1" step="0.01" required>
                             </div>
                         </div>
 
@@ -44,12 +45,12 @@
                             <label class="form-label">Transaction Direction</label>
                             <div class="d-flex gap-3">
                                 <div class="form-check">
-                                    <input class="form-check-input border-primary" type="radio" name="direction" id="debit-{{ isset($transaction) ? $transaction->id : 'new' }}" value="debit" {{ (isset($transaction) && $transaction->direction == 'debit') || !isset($transaction) ? 'checked' : '' }}>
-                                    <label class="form-check-label text-danger fw-bold" for="debit-{{ isset($transaction) ? $transaction->id : 'new' }}">Debit (Expense)</label>
+                                    <input class="form-check-input border-primary" type="radio" name="direction" id="debit-{{  $transaction->id  }}" value="debit" {{ $transaction->direction == 'debit' }}>
+                                    <label class="form-check-label text-danger fw-bold" for="debit-{{  $transaction->id  }}">Debit (Expense)</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input border-primary" type="radio" name="direction" id="credit-{{ isset($transaction) ? $transaction->id : 'new' }}" value="credit" {{ isset($transaction) && $transaction->direction == 'credit' ? 'checked' : '' }}>
-                                    <label class="form-check-label text-success fw-bold" for="credit-{{ isset($transaction) ? $transaction->id : 'new' }}">Credit (Income)</label>
+                                    <input class="form-check-input border-primary" type="radio" name="direction" id="credit-{{ $transaction->id }}" value="credit" {{ $transaction->direction == 'credit' ? 'checked' : '' }}>
+                                    <label class="form-check-label text-success fw-bold" for="credit-{{ $transaction->id  }}">Credit (Income)</label>
                                 </div>
                             </div>
                         </div>
@@ -61,7 +62,7 @@
                                 <option disabled selected>Select a category</option>
                                 @foreach($categories as $category)
                                     @if($category->status == "active")
-                                        <option value="{{ $category->id }}" {{ isset($transaction) && $transaction->category_id == $category->id ? 'selected' : '' }}>
+                                        <option value="{{ $category->id }}" {{ $transaction->category_id == $category->id ? 'selected' : '' }}>
                                             {{ ucfirst($category->name) }}
                                         </option>
                                     @endif
@@ -75,7 +76,7 @@
                             <select class="form-select" name="month_year_id" required>
                                 <option disabled>Select Month-Year</option>
                                 @foreach(auth()->user()->family->monthYears as $monthYear)
-                                    <option value="{{ $monthYear->id }}" {{ isset($transaction) && $transaction->month_year_id == $monthYear->id ? 'selected' : '' }}>
+                                    <option value="{{ $monthYear->id }}" {{ $transaction->month_year_id == $monthYear->id ? 'selected' : '' }}>
                                         {{ $monthYear->year }} - {{ $monthYear->month }}
                                     </option>
                                 @endforeach
@@ -91,7 +92,7 @@
                         <!-- Comment -->
                         <div class="col-12">
                             <label for="transactionComment" class="form-label">Comment (Optional)</label>
-                            <textarea class="form-control" id="transactionComment" rows="3" name="comment" placeholder="Enter any additional details...">{{ isset($transaction) ? $transaction->comment : '' }}</textarea>
+                            <textarea class="form-control" id="transactionComment" rows="3" name="comment" placeholder="Enter any additional details...">{{  $transaction->comment }}</textarea>
                         </div>
                     </div>
                 </div>
@@ -102,7 +103,7 @@
                         <i class="bi bi-x-circle"></i> Cancel
                     </button>
                     <button type="submit" class="btn btn-success px-4">
-                        <i class="bi bi-check-circle"></i> Save
+                        <i class="bi bi-check-circle"></i> Transfer
                     </button>
                 </div>
             </form>

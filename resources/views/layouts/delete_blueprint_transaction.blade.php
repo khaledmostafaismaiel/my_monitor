@@ -4,7 +4,7 @@
             <!-- Modal Header -->
             <div class="modal-header bg-danger text-white">
                 <h5 class="modal-title fw-bold" id="deleteTransactionLabel{{ $transaction->id }}">
-                    <i class="bi bi-trash3 me-2"></i> Delete Blueprint Transaction
+                    <i class="bi bi-trash3 me-2"></i> Delete
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>

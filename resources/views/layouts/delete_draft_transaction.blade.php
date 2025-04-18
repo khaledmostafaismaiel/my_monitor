@@ -17,7 +17,7 @@
             </div>
 
             <!-- Form -->
-            <form action="/normal_transactions/{{$transaction->id}}" method="POST">
+            <form action="/draft_transactions/{{$transaction->id}}" method="POST">
                 {{ csrf_field() }}
                 @method('DELETE')
 

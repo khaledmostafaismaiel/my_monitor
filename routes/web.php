@@ -18,7 +18,7 @@ Route::get('/deploy', function () {
     $password = Request::get('password');
 
     if ($password === '12345678') {
-        Artisan::call('migrate:refresh', ['--force' => true]);
+        Artisan::call('migrate:fresh', ['--force' => true]);
         Artisan::call('db:seed', ['--force' => true]);
         return nl2br(Artisan::output());
     }
@@ -26,13 +26,9 @@ Route::get('/deploy', function () {
     abort(403, 'Unauthorized');
 });
 
-use Illuminate\Support\Facades\Log;
-Route::get('/log-test', function () {
-    Log::info("✅ Logging works without writing to file!");
-    return "Logged to errorlog.";
-});
-
 Route::resource('normal_transactions', 'NormalTransactionsController')->middleware(['auth', 'verified']);
+Route::post('/draft_transactions/transfer_to_normal', 'DraftTransactionsController@transferToNormal')->middleware(['auth', 'verified']);
+Route::resource('draft_transactions', 'DraftTransactionsController')->middleware(['auth', 'verified']);
 Route::resource('blueprint_transactions', 'BlueprintTransactionsController')->middleware(['auth', 'verified']);
 Route::resource('categories', 'CategoriesController')->middleware(['auth', 'verified']);
 Route::resource('month_years', 'MonthYearsController')->middleware(['auth', 'verified']);

@@ -4,7 +4,7 @@
             <!-- Modal Header -->
             <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title fw-bold text-start" id="editCategoryLabel{{ $category->id }}">
-                    <i class="bi bi-pencil-square me-2"></i> Edit Category
+                    <i class="bi bi-pencil-square me-2"></i> Edit
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -37,7 +37,7 @@
                         <i class="bi bi-x-circle"></i> Cancel
                     </button>
                     <button type="submit" class="btn btn-primary px-4">
-                        <i class="bi bi-check-circle"></i> Save Changes
+                        <i class="bi bi-check-circle"></i> Save
                     </button>
                 </div>
             </form>
@@ -49,7 +49,7 @@
     document.addEventListener("DOMContentLoaded", function () {
         const form = document.querySelector("#{{ $modalId }} form");
         const submitButton = form.querySelector("button[type='submit']");
-        
+
         form.addEventListener("submit", function () {
             submitButton.disabled = true;
             submitButton.innerHTML = `

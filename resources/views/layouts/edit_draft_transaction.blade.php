@@ -11,7 +11,7 @@
             </div>
 
             <!-- Form Start -->
-            <form method="POST" action="/normal_transactions/{{ $transaction->id }}">
+            <form method="POST" action="/draft_transactions/{{ $transaction->id }}">
                 <div class="modal-body px-4">
                     {{ csrf_field() }}
                     @method('PUT')

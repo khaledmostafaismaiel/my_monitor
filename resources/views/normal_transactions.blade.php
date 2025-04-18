@@ -90,7 +90,7 @@
         <!-- Add Transaction Button -->
         <div class="col-lg-4 col-md-6 col-sm-6 d-grid mb-4">
             <button type="button" class="btn btn-success px-4" data-bs-toggle="modal" data-bs-target="#addNormalTransaction-new">
-                <i class="bi bi-plus-lg"></i> Add Normal Transaction
+                <i class="bi bi-plus-lg"></i> Add
             </button>
         </div>
         @include('layouts/add_normal_transaction')
@@ -126,7 +126,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="text-muted">No normal transactions  found.</td>
+                            <td colspan="6" class="text-muted">No normal transactions found.</td>
                         </tr>
                     @endforelse
                 </tbody>

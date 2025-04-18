@@ -1,5 +1,5 @@
 <!-- Modal -->
-<div class="modal fade" id="addNormalTransaction-{{ isset($transaction) ? $transaction->id : 'new' }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="addDraftTransaction-{{ isset($transaction) ? $transaction->id : 'new' }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content shadow-lg border-0 rounded-3">
             <!-- Modal Header -->
@@ -11,7 +11,7 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <!-- Form Start -->
-            <form method="POST" action="/normal_transactions">
+            <form method="POST" action="/draft_transactions">
                 <div class="modal-body px-4">
                     {{ csrf_field() }}
 

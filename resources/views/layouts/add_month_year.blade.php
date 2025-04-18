@@ -37,7 +37,7 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        const form = document.querySelector("#addCategoryModal form");
+        const form = document.querySelector("#addMonthYearModal form");
         const submitButton = form.querySelector("button[type='submit']");
 
         form.addEventListener("submit", function () {

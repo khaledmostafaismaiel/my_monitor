@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Family;
 use App\Models\User;
+use App\Models\OTP;
 use Auth;
 use Illuminate\Http\Request;
 
@@ -42,8 +43,8 @@ class UsersController extends Controller
             'password' => 'required|string|min:8|confirmed',
             'terms' => 'accepted',
             'family_option' => 'required|string|in:create,join',
-            'family_id' => 'required_if:family_option,join|nullable',
-            'family_name' => 'required_if:family_option,create|string|max:255',
+            'family_id' => 'required_if:family_option,join|nullable|string|max:255',
+            'family_name' => 'required_if:family_option,create|nullable|string|max:255',
         ]);
 
         if($request->family_option == "join"){
@@ -93,9 +94,10 @@ class UsersController extends Controller
         }
     }
 
-    public function verify_otp()
+    public function verify_otp(Request $request)
     {
-        $otp = OTP::where("body", \request("body"))->first();
+        $otp = OTP::where("body", $request->otp1.$request->otp2.$request->otp3.$request->otp4.$request->otp5.$request->otp6)->first();
+
         if($otp){
             $user = $otp->user;
 
@@ -105,6 +107,8 @@ class UsersController extends Controller
 
             return redirect('/');
         }else{
+            return redirect('/');
+
             return redirect()->back()->withErrors(['otp' => 'Invalid OTP. Please try again.']);
         }
     }

@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\OTP;
 use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class UsersController extends Controller
 {
@@ -52,9 +53,10 @@ class UsersController extends Controller
             if($family){
                 $user = User::create(
                     array_merge(
-                        $request->toArray(),
+                        Arr::except($request->toArray(), ['password']),
                         [
                             'family_id'=> $family->id,
+                            'password'=> bcrypt($request->password),
                         ]
                     )
                 );
@@ -79,10 +81,11 @@ class UsersController extends Controller
 
             $user = User::create(
                 array_merge(
-                    $request->toArray(),
+                    Arr::except($request->toArray(), ['password']),
                     [
                         'family_id'=> $family->id,
                         'email_verified_at'=> now(),
+                        'password'=> bcrypt($request->password),
                     ]
                 )
             );
@@ -100,6 +103,8 @@ class UsersController extends Controller
 
         if($otp){
             $user = $otp->user;
+
+            $user->update(['email_verified_at'=> now()]);
 
             Auth::login($user);
 

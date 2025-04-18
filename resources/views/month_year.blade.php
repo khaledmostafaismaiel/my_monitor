@@ -102,10 +102,19 @@ var pieChart = new Chart(ctx, {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
+            title: {
+                display: true,
+                text: 'Transaction Summary for {{ $monthYear->year }}-{{ str_pad($monthYear->month, 2, '0', STR_PAD_LEFT) }}',
+                color: '#FFFFFF', // 👈 this sets the title color to white
+                font: {
+                    size: 18,
+                    weight: 'bold'
+                }
+            },
             legend: {
                 position: 'top',
                 labels: {
-                    fontColor: '#FFFFFF' // Set legend label color to white
+                    color: '#FFFFFF' // 👈 this sets legend labels to white
                 }
             },
             tooltip: {
@@ -114,9 +123,9 @@ var pieChart = new Chart(ctx, {
                         return tooltipItem.raw.toFixed(2);
                     }
                 },
-                titleColor: '#FFFFFF', // Set tooltip title color to white
-                bodyColor: '#FFFFFF' // Set tooltip body color to white
-            },
+                titleColor: '#FFFFFF',
+                bodyColor: '#FFFFFF'
+            }
         }
     }
 });

@@ -98,7 +98,7 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        const form = document.querySelector("#addTransaction form");
+        const form = document.querySelector("#addBlueprintTransaction form");
         const submitButton = form.querySelector("button[type='submit']");
 
         form.addEventListener("submit", function () {

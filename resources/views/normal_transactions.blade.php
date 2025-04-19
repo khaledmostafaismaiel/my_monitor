@@ -195,6 +195,11 @@
         const form = document.querySelector("#filter_transactions_form");
         const submitButton = form.querySelector("button[type='submit']");
 
+        // Initialize Select2 for dropdowns
+        $('select').select2({
+            width: '100%'  // Ensures full width of the select element
+        });
+
         // Toggle search section visibility
         toggleBtn.addEventListener('click', function () {
             const isShown = !searchSection.classList.contains('d-none');

@@ -57,9 +57,9 @@
 
                         <!-- Category Selection -->
                         <div class="col-md-6">
-                            <label class="form-label">Category</label>
-                            <select class="form-select" name="category_id">
-                                <option disabled selected>Select a category</option>
+                            <label for="categorySelect{{ $transaction->id }}" class="form-label">Category</label>
+                            <select class="form-select" id="categorySelect{{ $transaction->id }}" name="category_id" required>
+                                <option disabled>Select a category</option>
                                 @foreach($categories as $category)
                                     @if($category->status == "active")
                                         <option value="{{ $category->id }}" {{ $transaction->category_id == $category->id ? 'selected' : '' }}>
@@ -73,7 +73,7 @@
                         <!-- MonthYear Dropdown -->
                         <div class="col-md-6">
                             <label class="form-label">Month-Year</label>
-                            <select class="form-select" name="month_year_id">
+                            <select class="form-select" id="monthYearSelect{{ $transaction->id }}" name="month_year_id" required>
                                 <option disabled>Select Month-Year</option>
                                 @foreach(auth()->user()->family->monthYears as $monthYear)
                                     <option value="{{ $monthYear->id }}" {{ $transaction->month_year_id == $monthYear->id ? 'selected' : '' }}>
@@ -113,7 +113,8 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        const form = document.querySelector("#{{ $modalId }} form");
+        const modalId = "#{{ $modalId }}";
+        const form = document.querySelector(`${modalId} form`);
         const submitButton = form.querySelector("button[type='submit']");
 
         form.addEventListener("submit", function () {
@@ -122,6 +123,22 @@
                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                 Saving...
             `;
+        });
+
+        // Initialize Select2 when modal is shown
+        const modalElement = document.querySelector(modalId);
+        modalElement.addEventListener("shown.bs.modal", function () {
+            $('#categorySelect{{ $transaction->id }}').select2({
+                dropdownParent: $(modalId),
+                placeholder: "Select a category",
+                width: '100%'
+            });
+        });
+
+        $('#monthYearSelect{{ $transaction->id }}').select2({
+            dropdownParent: $(modalId),
+            placeholder: "Select Month-Year",
+            width: '100%'
         });
     });
 </script>

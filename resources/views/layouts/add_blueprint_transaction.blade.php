@@ -60,8 +60,8 @@
 
                         <!-- Category Selection -->
                         <div class="col-md-6">
-                            <label class="form-label">Category</label>
-                            <select class="form-select" name="category_id" required>
+                            <label for="categorySelectNew" class="form-label">Category</label>
+                            <select class="form-select" id="categorySelectNew" name="category_id" required>
                                 <option disabled selected>Select a category</option>
                                 @foreach($categories as $category)
                                     @if($category->status == "active")
@@ -107,6 +107,16 @@
                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                 Saving...
             `;
+        });
+
+        // Initialize Select2 when modal is shown
+        const modalElement = document.querySelector("#addBlueprintTransaction");
+        modalElement.addEventListener("shown.bs.modal", function () {
+            $('#categorySelectNew').select2({
+                dropdownParent: $('#addBlueprintTransaction'),
+                placeholder: "Select a category",
+                width: '100%'
+            });
         });
     });
 </script>

@@ -57,7 +57,7 @@
                         <!-- Category Selection -->
                         <div class="col-md-6">
                             <label class="form-label">Category</label>
-                            <select class="form-select" name="category_id">
+                            <select class="form-select select2-category" name="category_id" required>
                                 <option disabled selected>Select a category</option>
                                 @foreach($categories as $category)
                                     @if($category->status == "active")
@@ -69,11 +69,11 @@
                             </select>
                         </div>
 
-                        <!-- MonthYear Dropdown -->
+                        <!-- MonthYear Dropdown (Handled by Select2) -->
                         <div class="col-md-6">
                             <label class="form-label">Month-Year</label>
-                            <select class="form-select" name="month_year_id">
-                                <option disabled>Select Month-Year</option>
+                            <select class="form-select select2-month-year" name="month_year_id">
+                                <option disabled selected>Select Month-Year</option>
                                 @foreach(auth()->user()->family->monthYears as $monthYear)
                                     <option value="{{ $monthYear->id }}" {{ isset($transaction) && $transaction->month_year_id == $monthYear->id ? 'selected' : '' }}>
                                         {{ $monthYear->year }} - {{ $monthYear->month }}
@@ -121,6 +121,18 @@
                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                 Saving...
             `;
+        });
+
+        // Initialize Select2 for category
+        $(form).find('.select2-category').select2({
+            dropdownParent: $('#addDraftTransaction-{{ isset($transaction) ? $transaction->id : 'new' }}'),
+            width: '100%'
+        });
+
+        // Initialize Select2 for Month-Year dropdown
+        $(form).find('.select2-month-year').select2({
+            dropdownParent: $('#addDraftTransaction-{{ isset($transaction) ? $transaction->id : 'new' }}'),
+            width: '100%'
         });
     });
 </script>

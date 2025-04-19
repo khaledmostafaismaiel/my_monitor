@@ -27,7 +27,7 @@
 
                     <div class="col-lg-4 col-md-6 col-sm-6">
                         <label class="form-label fw-semibold">Status</label>
-                        <select name="status" class="form-select">
+                        <select name="status" class="form-select select2">
                             <option value="">All Statuses</option>
                             <option value="active" {{ request('status') == 'active' ? 'selected' : '' }}>Active</option>
                             <option value="inactive" {{ request('status') == 'inactive' ? 'selected' : '' }}>Inactive</option>
@@ -147,6 +147,13 @@
         const searchSection = document.getElementById('searchSection');
         const form = document.querySelector("#filter_categories_form");
         const submitButton = form.querySelector("button[type='submit']");
+
+        // Initialize select2
+        $('.select2').select2({
+            width: '100%',
+            placeholder: 'All Statuses',
+            allowClear: true
+        });
 
         // Toggle filter section
         toggleBtn.addEventListener('click', function () {

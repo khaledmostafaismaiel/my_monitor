@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="container mt-5" style="display: flex; flex-direction: column; align-items: center; justify-content: flex-start; min-height: 100vh;">
-    <h1 class="text-center mb-4 mt-5">Transaction Summary for {{ $monthYear->year }}-{{ str_pad($monthYear->month, 2, '0', STR_PAD_LEFT) }}</h1>
+    <div class="text-center mb-4 mt-5"></div>
 
     <!-- Pie chart container -->
     <div class="d-flex justify-content-center" style="position: relative; width: 80%; max-width: 600px; height: 300px;">

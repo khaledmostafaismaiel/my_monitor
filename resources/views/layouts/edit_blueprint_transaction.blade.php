@@ -57,8 +57,8 @@
 
                         <!-- Category Selection -->
                         <div class="col-md-6 text-start">
-                            <label class="form-label">Category</label>
-                            <select class="form-select" name="category_id" required>
+                            <label for="categorySelect{{ $transaction->id }}" class="form-label">Category</label>
+                            <select class="form-select" id="categorySelect{{ $transaction->id }}" name="category_id" required>
                                 <option disabled>Select a category</option>
                                 @foreach($categories as $category)
                                     @if($category->status == "active")
@@ -73,7 +73,7 @@
                         <!-- User Dropdown -->
                         <div class="col-md-6 text-start">
                             <label for="user_id{{ $transaction->id }}" class="form-label">User</label>
-                            <select class="form-select" name="user_id" id="user_id{{ $transaction->id }}" required>
+                            <select class="form-select" id="userSelect{{ $transaction->id }}" name="user_id" required>
                                 <option disabled>Select User</option>
                                 @foreach($users as $user)
                                     <option value="{{ $user->id }}" {{ $transaction->user_id == $user->id ? 'selected' : '' }}>
@@ -116,6 +116,22 @@
                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                 Saving...
             `;
+        });
+
+        // Initialize Select2 when modal is shown
+        const modalElement = document.querySelector("#editTransaction{{ $transaction->id }}");
+        modalElement.addEventListener("shown.bs.modal", function () {
+            $('#categorySelect{{ $transaction->id }}').select2({
+                dropdownParent: $('#editTransaction{{ $transaction->id }}'),
+                placeholder: "Select a category",
+                width: '100%'
+            });
+
+            $('#userSelect{{ $transaction->id }}').select2({
+                dropdownParent: $('#editTransaction{{ $transaction->id }}'),
+                placeholder: "Select a user",
+                width: '100%'
+            });
         });
     });
 </script>

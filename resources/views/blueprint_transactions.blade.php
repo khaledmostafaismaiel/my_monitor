@@ -29,7 +29,7 @@
                     <!-- Direction Filter -->
                     <div class="col-md-2 col-sm-6">
                         <label class="form-label fw-semibold">Direction</label>
-                        <select name="direction" class="form-select">
+                        <select name="direction" class="form-select select2">
                             <option value="">All Directions</option>
                             <option value="credit" {{ request('direction') == 'credit' ? 'selected' : '' }}>Credit</option>
                             <option value="debit" {{ request('direction') == 'debit' ? 'selected' : '' }}>Debit</option>
@@ -39,7 +39,7 @@
                     <!-- Category Filter -->
                     <div class="col-md-3 col-sm-6">
                         <label class="form-label fw-semibold">Category</label>
-                        <select name="category_id" class="form-select">
+                        <select name="category_id" class="form-select select2">
                             <option value="">All Categories</option>
                             @foreach($categories as $category)
                                 <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>
@@ -209,6 +209,13 @@
                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                 Searching...
             `;
+        });
+
+        // Initialize select2
+        $('.select2').select2({
+            width: '100%',
+            placeholder: 'Select an option',
+            allowClear: true
         });
     });
 </script>

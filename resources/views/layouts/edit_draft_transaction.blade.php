@@ -57,15 +57,13 @@
 
                         <!-- Category Selection -->
                         <div class="col-md-6 text-start">
-                            <label class="form-label">Category</label>
-                            <select class="form-select" name="category_id">
-                                <option disabled selected>Select a category</option>
-                                @foreach($categories as $category)
-                                    @if($category->status == "active")
-                                        <option value="{{ $category->id }}" {{ $transaction->category_id == $category->id ? 'selected' : '' }}>
-                                            {{ ucfirst($category->name) }}
-                                        </option>
-                                    @endif
+                            <label for="category_id{{ $transaction->id }}" class="form-label">Category</label>
+                            <select class="form-select select2-inside-modal" id="category_id{{ $transaction->id }}" name="category_id">
+                                <option disabled {{ !$transaction->category_id ? 'selected' : '' }}>Select a category</option>
+                                @foreach($categories->where('status', 'active') as $category)
+                                    <option value="{{ $category->id }}" {{ $transaction->category_id == $category->id ? 'selected' : '' }}>
+                                        {{ ucfirst($category->name) }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
@@ -73,7 +71,7 @@
                         <!-- MonthYear Dropdown -->
                         <div class="col-md-6 text-start">
                             <label for="monthYear{{ $transaction->id }}" class="form-label">Month-Year</label>
-                            <select class="form-select" name="month_year_id" id="monthYear{{ $transaction->id }}">
+                            <select class="form-select select2-inside-modal" name="month_year_id" id="monthYear{{ $transaction->id }}">
                                 <option disabled>Select Month-Year</option>
                                 @foreach(auth()->user()->family->monthYears as $monthYear)
                                     <option value="{{ $monthYear->id }}" {{ $transaction->month_year_id == $monthYear->id ? 'selected' : '' }}>
@@ -92,11 +90,11 @@
                         <!-- User Dropdown -->
                         <div class="col-md-6 text-start">
                             <label for="user_id{{ $transaction->id }}" class="form-label">User</label>
-                            <select class="form-select" name="user_id" id="user_id{{ $transaction->id }}" required>
-                                <option disabled>Select User</option>
+                            <select class="form-select select2-inside-modal" id="user_id{{ $transaction->id }}" name="user_id">
+                                <option disabled {{ !$transaction->user_id ? 'selected' : '' }}>Select User</option>
                                 @foreach($users as $user)
                                     <option value="{{ $user->id }}" {{ $transaction->user_id == $user->id ? 'selected' : '' }}>
-                                        {{ $user->first_name }}
+                                        {{ $user->first_name }} {{ $user->last_name }}
                                     </option>
                                 @endforeach
                             </select>
@@ -135,6 +133,29 @@
                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                 Saving...
             `;
+        });
+
+        const modalId = "#editTransaction{{ $transaction->id }}";
+        const modalElement = document.querySelector(modalId);
+
+        modalElement.addEventListener("shown.bs.modal", function () {
+            $('#category_id{{ $transaction->id }}').select2({
+                dropdownParent: $(modalId),
+                placeholder: "Select a category",
+                width: '100%'
+            });
+
+            $('#user_id{{ $transaction->id }}').select2({
+                dropdownParent: $(modalId),
+                placeholder: "Select a user",
+                width: '100%'
+            });
+
+            $('#monthYear{{ $transaction->id }}').select2({
+                dropdownParent: $(modalId),
+                placeholder: "Select Month-Year",
+                width: '100%'
+            });
         });
     });
 </script>

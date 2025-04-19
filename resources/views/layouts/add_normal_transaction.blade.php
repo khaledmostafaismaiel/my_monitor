@@ -57,7 +57,7 @@
                         <!-- Category Selection -->
                         <div class="col-md-6">
                             <label class="form-label">Category</label>
-                            <select class="form-select" name="category_id" required>
+                            <select class="form-select" name="category_id" id="categoryDropdown" required>
                                 <option disabled selected>Select a category</option>
                                 @foreach($categories as $category)
                                     @if($category->status == "active")
@@ -72,8 +72,8 @@
                         <!-- MonthYear Dropdown -->
                         <div class="col-md-6">
                             <label class="form-label">Month-Year</label>
-                            <select class="form-select" name="month_year_id" required>
-                                <option disabled>Select Month-Year</option>
+                            <select class="form-select" name="month_year_id" id="monthYearDropdown" required>
+                                <option disabled selected>Select Month-Year</option>
                                 @foreach(auth()->user()->family->monthYears as $monthYear)
                                     <option value="{{ $monthYear->id }}" {{ isset($transaction) && $transaction->month_year_id == $monthYear->id ? 'selected' : '' }}>
                                         {{ $monthYear->year }} - {{ $monthYear->month }}
@@ -121,6 +121,20 @@
                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                 Saving...
             `;
+        });
+
+        // Initialize Select2 for Category dropdown
+        $('#categoryDropdown').select2({
+            dropdownParent: $('#{{ $modalId }}'),
+            placeholder: 'Select a category',
+            width: '100%'
+        });
+
+        // Initialize Select2 for Month-Year dropdown
+        $('#monthYearDropdown').select2({
+            dropdownParent: $('#{{ $modalId }}'),
+            placeholder: 'Select Month-Year',
+            width: '100%'
         });
     });
 </script>

@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="My Monitor - Track your transactions, salary, rent, food, and expenses easily.">
-   
+
     <link rel="shortcut icon" type="image/png" href="/images/favicon.png">
 
     <title>{{ env("APP_NAME") }}</title>
@@ -30,6 +30,15 @@
     </style>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- jQuery (Required by Select2) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+    <!-- Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 </head>
 

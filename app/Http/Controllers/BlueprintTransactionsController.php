@@ -4,10 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use App\Http\Requests\BlueprintTransactionStoreRequest;
+use App\Http\Requests\BlueprintTransactionUpdateRequest;
 
 class BlueprintTransactionsController extends Controller
 {
-
     public function index()
     {
         $transactions = auth()->user()->family
@@ -35,16 +36,8 @@ class BlueprintTransactionsController extends Controller
         return view('blueprint_transactions', compact('transactions', 'categories', 'users'));
     }
 
-    public function store(Request $request)
+    public function store(BlueprintTransactionStoreRequest $request)
     {
-        $request->validate(
-            [
-                'category_id'=> ['required', 'gt:0'] ,
-                'quantity'=> ['required', 'gte:1'],
-                'price'=> ['required', 'gt:0'],
-            ]
-        );
-
         Transaction::create(
             array_merge(
                 $request->toArray(),
@@ -59,16 +52,8 @@ class BlueprintTransactionsController extends Controller
         return redirect('/blueprint_transactions');
     }
 
-    public function update(Request $request, $id)
+    public function update(BlueprintTransactionUpdateRequest $request, $id)
     {
-        $request->validate(
-            [
-                'category_id'=> ['required', 'gt:0'] ,
-                'quantity'=> ['required', 'gte:1'],
-                'price'=> ['required', 'gt:0'],
-            ]
-        );
-
         $transaction = Transaction::findOrFail($id);
 
         $transaction->update($request->toArray());

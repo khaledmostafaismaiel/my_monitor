@@ -101,7 +101,7 @@
 
 @push('modals')
     @foreach($categories as $category)
-        @include('layouts/category', ['category' => $category, 'modalId' => "editCategory{$category->id}"])
+        @include('layouts/edit_category', ['category' => $category, 'modalId' => "editCategory{$category->id}"])
         @include('layouts/delete_category', ['category' => $category, 'modalId' => "deleteCategory{$category->id}"])
     @endforeach
 @endpush

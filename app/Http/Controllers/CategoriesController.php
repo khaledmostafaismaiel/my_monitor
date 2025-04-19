@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Http\Requests\CategoryStoreRequest;
+use App\Http\Requests\CategoryUpdateRequest;
 
 class CategoriesController extends Controller
 {
@@ -22,7 +24,7 @@ class CategoriesController extends Controller
         return view('categories' ,compact('categories'));
     }
 
-    public function store(Request $request)
+    public function store(CategoryStoreRequest $request)
     {
         Category::create(
             array_merge(
@@ -36,7 +38,7 @@ class CategoriesController extends Controller
         return redirect('/categories');
     }
 
-    public function update(Request $request, $id)
+    public function update(CategoryUpdateRequest $request, $id)
     {
 
         $category = Category::findOrFail($id);

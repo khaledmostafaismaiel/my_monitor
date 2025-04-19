@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use App\Http\Requests\DraftTransactionStoreRequest;
+use App\Http\Requests\DraftTransactionUpdateRequest;
+use App\Http\Requests\DraftTransactionTransferRequest;
 
 class DraftTransactionsController extends Controller
 {
@@ -51,17 +54,8 @@ class DraftTransactionsController extends Controller
         return view('draft_transactions', compact('transactions', 'categories', 'users', 'uniqueYears'));
     }
 
-    public function store(Request $request)
+    public function store(DraftTransactionStoreRequest $request)
     {
-        $request->validate(
-            [
-                'category_id'=> ['required', 'gt:0'] ,
-                'quantity'=> ['required', 'gte:1'],
-                'price'=> ['required', 'gt:0'],
-                'month_year_id'=> ['required', 'gt:0'],
-            ]
-        );
-
         Transaction::create(
             array_merge(
                 $request->toArray(),
@@ -76,17 +70,8 @@ class DraftTransactionsController extends Controller
         return redirect('/draft_transactions');
     }
 
-    public function update(Request $request, $id)
+    public function update(DraftTransactionUpdateRequest $request, $id)
     {
-        $request->validate(
-            [
-                'category_id'=> ['required', 'gt:0'] ,
-                'quantity'=> ['required', 'gte:1'],
-                'price'=> ['required', 'gt:0'],
-                'month_year_id'=> ['required', 'gt:0'],
-            ]
-        );
-
         $transaction = Transaction::findOrFail($id);
 
         $transaction->update($request->toArray());
@@ -103,11 +88,20 @@ class DraftTransactionsController extends Controller
         return redirect('/draft_transactions');
     }
 
-    public function transferToNormal(Request $request)
+    public function transferToNormal(DraftTransactionTransferRequest $request)
     {
         $transaction = Transaction::findOrFail($request->id);
 
-        $transaction->update(['type'=> 'normal']);
+        $transaction->name = $request->name;
+        $transaction->price = $request->price;
+        $transaction->quantity = $request->quantity;
+        $transaction->direction = $request->direction;
+        $transaction->category_id = $request->category_id;
+        $transaction->month_year_id = $request->month_year_id;
+        $transaction->date = $request->date;
+        $transaction->comment = $request->comment;
+        $transaction->type = 'normal';
+        $transaction->save();
 
         return redirect('/draft_transactions');
     }

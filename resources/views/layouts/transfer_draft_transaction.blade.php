@@ -45,7 +45,7 @@
                             <label class="form-label">Transaction Direction</label>
                             <div class="d-flex gap-3">
                                 <div class="form-check">
-                                    <input class="form-check-input border-primary" type="radio" name="direction" id="debit-{{  $transaction->id  }}" value="debit" {{ $transaction->direction == 'debit' }}>
+                                    <input class="form-check-input border-primary" type="radio" name="direction" id="debit-{{  $transaction->id  }}" value="debit" {{ $transaction->direction == 'debit' ? 'checked' : '' }}>
                                     <label class="form-check-label text-danger fw-bold" for="debit-{{  $transaction->id  }}">Debit (Expense)</label>
                                 </div>
                                 <div class="form-check">
@@ -58,7 +58,7 @@
                         <!-- Category Selection -->
                         <div class="col-md-6">
                             <label class="form-label">Category</label>
-                            <select class="form-select" name="category_id" required>
+                            <select class="form-select" name="category_id">
                                 <option disabled selected>Select a category</option>
                                 @foreach($categories as $category)
                                     @if($category->status == "active")
@@ -73,7 +73,7 @@
                         <!-- MonthYear Dropdown -->
                         <div class="col-md-6">
                             <label class="form-label">Month-Year</label>
-                            <select class="form-select" name="month_year_id" required>
+                            <select class="form-select" name="month_year_id">
                                 <option disabled>Select Month-Year</option>
                                 @foreach(auth()->user()->family->monthYears as $monthYear)
                                     <option value="{{ $monthYear->id }}" {{ $transaction->month_year_id == $monthYear->id ? 'selected' : '' }}>
@@ -86,7 +86,7 @@
                         <!-- Date Picker -->
                         <div class="col-md-6">
                             <label for="transactionDate" class="form-label">Transaction Date</label>
-                            <input type="date" class="form-control" id="transactionDate" name="date" value="{{ isset($transaction) ? $transaction->date : date('Y-m-d') }}" required>
+                            <input type="date" class="form-control" id="transactionDate" name="date" value="{{ isset($transaction) ? $transaction->date : date('Y-m-d') }}">
                         </div>
 
                         <!-- Comment -->

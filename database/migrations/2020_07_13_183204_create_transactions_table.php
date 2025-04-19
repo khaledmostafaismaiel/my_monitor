@@ -18,9 +18,9 @@ class CreateTransactionsTable extends Migration
             $table->string('name');
             $table->enum('direction', ['debit', 'credit']);
             $table->unsignedInteger('user_id');
-            $table->float('quantity');
-            $table->float('price');
-            $table->unsignedInteger('category_id');
+            $table->float('quantity')->nullable();
+            $table->float('price')->nullable();
+            $table->unsignedInteger('category_id')->nullable();
             $table->text('comment')->nullable();
             $table->date('date')->nullable();
             $table->uuid('family_id');

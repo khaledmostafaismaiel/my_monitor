@@ -27,7 +27,7 @@
                             <label class="form-label">Price Per Unit</label>
                             <div class="input-group">
                                 <span class="input-group-text bg-light">E£</span>
-                                <input type="number" class="form-control" name="price" placeholder="Enter amount" min="0" step="0.01" value="{{ isset($transaction) ? $transaction->price : '' }}" required>
+                                <input type="number" class="form-control" name="price" placeholder="Enter amount" min="0" step="0.01" value="{{ isset($transaction) ? $transaction->price : '' }}">
                             </div>
                         </div>
 
@@ -35,7 +35,7 @@
                         <div class="col-md-6">
                             <label class="form-label">Quantity</label>
                             <div class="input-group">
-                                <input type="number" class="form-control" name="quantity" value="{{ isset($transaction) ? $transaction->quantity : 1 }}" min="1" step="0.01" required>
+                                <input type="number" class="form-control" name="quantity" value="{{ isset($transaction) ? $transaction->quantity : 1 }}" min="1" step="0.01">
                             </div>
                         </div>
 
@@ -57,7 +57,7 @@
                         <!-- Category Selection -->
                         <div class="col-md-6">
                             <label class="form-label">Category</label>
-                            <select class="form-select" name="category_id" required>
+                            <select class="form-select" name="category_id">
                                 <option disabled selected>Select a category</option>
                                 @foreach($categories as $category)
                                     @if($category->status == "active")
@@ -72,7 +72,7 @@
                         <!-- MonthYear Dropdown -->
                         <div class="col-md-6">
                             <label class="form-label">Month-Year</label>
-                            <select class="form-select" name="month_year_id" required>
+                            <select class="form-select" name="month_year_id">
                                 <option disabled>Select Month-Year</option>
                                 @foreach(auth()->user()->family->monthYears as $monthYear)
                                     <option value="{{ $monthYear->id }}" {{ isset($transaction) && $transaction->month_year_id == $monthYear->id ? 'selected' : '' }}>
@@ -85,7 +85,7 @@
                         <!-- Date Picker -->
                         <div class="col-md-6">
                             <label for="transactionDate" class="form-label">Transaction Date</label>
-                            <input type="date" class="form-control" id="transactionDate" name="date" value="{{ isset($transaction) ? $transaction->date : date('Y-m-d') }}" required>
+                            <input type="date" class="form-control" id="transactionDate" name="date" value="{{ isset($transaction) ? $transaction->date : date('Y-m-d') }}">
                         </div>
 
                         <!-- Comment -->

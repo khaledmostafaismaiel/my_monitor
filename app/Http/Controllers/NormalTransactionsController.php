@@ -4,10 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use App\Http\Requests\NormalTransactionStoreRequest;
+use App\Http\Requests\NormalTransactionUpdateRequest;
 
 class NormalTransactionsController extends Controller
 {
-
     public function index()
     {
         $transactions = auth()->user()->family
@@ -51,17 +52,8 @@ class NormalTransactionsController extends Controller
         return view('normal_transactions', compact('transactions', 'categories', 'users', 'uniqueYears'));
     }
 
-    public function store(Request $request)
+    public function store(NormalTransactionStoreRequest $request)
     {
-        $request->validate(
-            [
-                'category_id'=> ['required', 'gt:0'] ,
-                'quantity'=> ['required', 'gte:1'],
-                'price'=> ['required', 'gt:0'],
-                'month_year_id'=> ['required', 'gt:0'],
-            ]
-        );
-
         Transaction::create(
             array_merge(
                 $request->toArray(),
@@ -76,17 +68,8 @@ class NormalTransactionsController extends Controller
         return redirect('/normal_transactions');
     }
 
-    public function update(Request $request, $id)
+    public function update(NormalTransactionUpdateRequest $request, $id)
     {
-        $request->validate(
-            [
-                'category_id'=> ['required', 'gt:0'] ,
-                'quantity'=> ['required', 'gte:1'],
-                'price'=> ['required', 'gt:0'],
-                'month_year_id'=> ['required', 'gt:0'],
-            ]
-        );
-
         $transaction = Transaction::findOrFail($id);
 
         $transaction->update($request->toArray());

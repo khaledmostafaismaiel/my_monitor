@@ -113,7 +113,7 @@
                             <td class="fw-semibold text-truncate">{{ $transaction->name }}</td>
                             <td class="fw-bold">{{ number_format($transaction->quantity, 2) }}</td>
                             <td class="fw-bold">E£ {{ number_format($transaction->price, 2) }}</td>
-                            <td>{{ $transaction->category->name }}</td>
+                            <td>{{ $transaction->category?->name }}</td>
                             <td>{{ date('D d-M-Y', strtotime($transaction->date)) }}</td>
                             <td>
                                 <button type="button" class="btn btn-sm btn-success me-2" data-bs-toggle="modal" data-bs-target="#transferDraftTransaction-{{ $transaction->id }}">

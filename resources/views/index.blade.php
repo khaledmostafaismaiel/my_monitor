@@ -77,6 +77,6 @@
 
 @push('modals')
     @foreach($monthYears as $monthYear)
-       @include('layouts/month_year', ['monthYear' => $monthYear, 'modalId' => "editMonthYear{$monthYear->id}"])
+       @include('layouts/edit_month_year', ['monthYear' => $monthYear, 'modalId' => "editMonthYear{$monthYear->id}"])
     @endforeach
 @endpush

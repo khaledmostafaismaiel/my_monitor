@@ -98,7 +98,7 @@
                                 <td class="fw-bold">{{ number_format($transaction->quantity, 2) }}</td>
                                 <td class="fw-bold">E£ {{ number_format($transaction->price, 2) }}</td>
                                 <td>
-                                    <button type="button" class="btn btn-sm btn-success me-2" data-bs-toggle="modal" data-bs-target="#addNormalTransaction-{{ $transaction->id }}">
+                                    <button type="button" class="btn btn-sm btn-success me-2" data-bs-toggle="modal" data-bs-target="#addNormalTransaction{{ $transaction->id }}">
                                         <i class="bi bi-plus-circle"></i>
                                     </button>
 
@@ -133,7 +133,7 @@
 
 @push('modals')
     @foreach($transactions as $transaction)
-        @include('layouts.add_normal_transaction', ['transaction' => $transaction])
+        @include('layouts.add_normal_transaction', ['transaction' => $transaction, 'modalId' => "addNormalTransaction{$transaction->id}"])
         @include('layouts.edit_blueprint_transaction', ['transaction' => $transaction, 'modalId' => "editTransaction{$transaction->id}"])
         @include('layouts.delete_blueprint_transaction', ['transaction' => $transaction, 'modalId' => "deleteTransaction{$transaction->id}"])
     @endforeach

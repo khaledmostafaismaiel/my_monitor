@@ -17,7 +17,7 @@
                     <!-- Month-Year Filter -->
                     <div>
                         <label class="form-label fw-semibold">Select Month & Year</label>
-                        <input type="month" name="month_year" class="form-control" value="{{ request('month_year') }}">
+                        <input type="month" name="month_year" class="form-control" value="{{ request('month_year') }}" required>
                     </div>
                 </div>
 

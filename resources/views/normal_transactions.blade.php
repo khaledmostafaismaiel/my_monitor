@@ -89,11 +89,11 @@
 
         <!-- Add Transaction Button -->
         <div class="col-lg-4 col-md-6 col-sm-6 d-grid mb-4">
-            <button type="button" class="btn btn-success px-4" data-bs-toggle="modal" data-bs-target="#addNormalTransaction-new">
+            <button type="button" class="btn btn-success px-4" data-bs-toggle="modal" data-bs-target="#addNormalTransaction">
                 <i class="bi bi-plus-lg"></i> Add
             </button>
         </div>
-        @include('layouts/add_normal_transaction')
+        @include('layouts/add_normal_transaction', ['modalId' => "addNormalTransaction"])
 
         <div class="table-responsive">
             <table class="table table-striped table-hover text-center align-middle">

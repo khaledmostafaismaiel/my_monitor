@@ -1,5 +1,5 @@
 <!-- Modal -->
-<div class="modal fade" id="addNormalTransaction-{{ isset($transaction) ? $transaction->id : 'new' }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="{{$modalId}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content shadow-lg border-0 rounded-3">
             <!-- Modal Header -->
@@ -109,3 +109,18 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const form = document.querySelector("#{{ $modalId }} form");
+        const submitButton = form.querySelector("button[type='submit']");
+
+        form.addEventListener("submit", function () {
+            submitButton.disabled = true;
+            submitButton.innerHTML = `
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Saving...
+            `;
+        });
+    });
+</script>

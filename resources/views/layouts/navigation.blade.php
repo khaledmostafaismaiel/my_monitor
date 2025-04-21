@@ -27,7 +27,12 @@
                     </div>
                     <!-- Family ID below the Name with Copy Icon -->
                     <div class="d-flex align-items-center">
-                        <small class="text-light me-2">Family ID: {{ auth()->user()->family_id }}</small>
+                        <small class="text-light me-2">
+                            Family ID: <span id="familyId">{{ auth()->user()->family_id }}</span>
+                        </small>
+                        <button class="btn btn-sm btn-outline-light py-0 px-1" onclick="copyFamilyId()" title="Copy ID">
+                            <i class="bi bi-clipboard"></i>
+                        </button>
                     </div>
                 </div>
 
@@ -74,3 +79,11 @@
         </div>
     </div>
 </nav>
+
+<!-- Copy Script -->
+<script>
+    function copyFamilyId() {
+        const familyId = document.getElementById('familyId').textContent;
+        navigator.clipboard.writeText(familyId);
+    }
+</script>

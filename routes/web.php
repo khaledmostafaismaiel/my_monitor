@@ -47,7 +47,10 @@ Route::get('/', function () {
     $monthYears = auth()->user()
         ->family
         ->monthYears()
-        ->leftJoin('transactions', 'transactions.month_year_id', '=', 'month_years.id')
+        ->leftJoin('transactions', function ($join) {
+            $join->on('transactions.month_year_id', '=', 'month_years.id')
+                ->where('transactions.type', "normal");
+        })
         ->selectRaw("
             month_years.id as id,
             CONCAT(month_years.year, '-', LPAD(month_years.month, 2, '0')) as month_year,

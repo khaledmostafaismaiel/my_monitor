@@ -74,6 +74,7 @@
                         <th scope="col">Name</th>
                         <th scope="col">Quantity</th>
                         <th scope="col">Price Per Unit</th>
+                        <th scope="col">Direction</th>
                         <th scope="col">Actions</th>
                     </tr>
                 </thead>
@@ -97,6 +98,19 @@
                                 <td class="fw-semibold text-truncate">{{ $transaction->name }}</td>
                                 <td class="fw-bold">{{ number_format($transaction->quantity, 2) }}</td>
                                 <td class="fw-bold">E£ {{ number_format($transaction->price, 2) }}</td>
+                                <td>
+                                    @if ($transaction->direction === 'credit')
+                                        <span class="badge bg-success">
+                                            <i class="bi bi-arrow-down-circle me-1"></i> Credit
+                                        </span>
+                                    @elseif ($transaction->direction === 'debit')
+                                        <span class="badge bg-danger">
+                                            <i class="bi bi-arrow-up-circle me-1"></i> Debit
+                                        </span>
+                                    @else
+                                        <span class="badge bg-secondary">N/A</span>
+                                    @endif
+                                </td>
                                 <td>
                                     <button type="button" class="btn btn-sm btn-success me-2" data-bs-toggle="modal" data-bs-target="#addNormalTransaction{{ $transaction->id }}">
                                         <i class="bi bi-plus-circle"></i>

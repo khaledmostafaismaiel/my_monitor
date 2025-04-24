@@ -17,10 +17,11 @@
                 <thead class="bg-primary text-white">
                     <tr>
                         <th scope="col">Category</th>
-                        <th scope="col">Transaction Name</th> <!-- Updated column header -->
-                        <th scope="col">Price Per Unit</th>
+                        <th scope="col">Name</th>
                         <th scope="col">Quantity</th>
+                        <th scope="col">Price Per Unit</th>
                         <th scope="col">Total</th>
+                        <th scope="col">Direction</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -28,9 +29,22 @@
                         <tr>
                             <td class="fw-bold">{{ $transaction->category->name }}</td>
                             <td class="fw-bold">{{ $transaction->name }}</td>
-                            <td class="fw-bold">{{ number_format($transaction->price, 2) }}</td>
                             <td class="fw-bold">{{ $transaction->quantity }}</td>
+                            <td class="fw-bold">{{ number_format($transaction->price, 2) }}</td>
                             <td class="fw-bold">{{ number_format($transaction->price * $transaction->quantity, 2) }}</td>
+                            <td>
+                                @if ($transaction->direction === 'credit')
+                                    <span class="badge bg-success">
+                                        <i class="bi bi-arrow-down-circle me-1"></i> Credit
+                                    </span>
+                                @elseif ($transaction->direction === 'debit')
+                                    <span class="badge bg-danger">
+                                        <i class="bi bi-arrow-up-circle me-1"></i> Debit
+                                    </span>
+                                @else
+                                    <span class="badge bg-secondary">N/A</span>
+                                @endif
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>

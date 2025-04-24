@@ -104,6 +104,7 @@
                         <th scope="col">Price Per Unit</th>
                         <th scope="col">Category</th>
                         <th scope="col">Date</th>
+                        <th scope="col">Direction</th>
                         <th scope="col">Actions</th>
                     </tr>
                 </thead>
@@ -115,6 +116,19 @@
                             <td class="fw-bold">E£ {{ number_format($transaction->price, 2) }}</td>
                             <td>{{ $transaction->category->name }}</td>
                             <td>{{ date('D d-M-Y', strtotime($transaction->date)) }}</td>
+                            <td>
+                                @if ($transaction->direction === 'credit')
+                                    <span class="badge bg-success">
+                                        <i class="bi bi-arrow-down-circle me-1"></i> Credit
+                                    </span>
+                                @elseif ($transaction->direction === 'debit')
+                                    <span class="badge bg-danger">
+                                        <i class="bi bi-arrow-up-circle me-1"></i> Debit
+                                    </span>
+                                @else
+                                    <span class="badge bg-secondary">N/A</span>
+                                @endif
+                            </td>
                             <td>
                                 <button type="button" class="btn btn-sm btn-primary me-2" data-bs-toggle="modal" data-bs-target="#editTransaction{{ $transaction->id }}">
                                     <i class="bi bi-pencil-square"></i>

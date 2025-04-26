@@ -41,7 +41,7 @@
                         <label class="form-label fw-semibold">Category</label>
                         <select name="category_id" class="form-select select2">
                             <option value="">All Categories</option>
-                            @foreach($categories as $category)
+                            @foreach($all_categories as $category)
                                 <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>
                                     {{ $category->name }}
                                 </option>
@@ -65,7 +65,7 @@
                 <i class="bi bi-plus-lg"></i> Add
             </button>
         </div>
-        @include('layouts/add_blueprint_transaction')
+        @include('layouts.add_blueprint_transaction')
 
         <div class="table-responsive">
             <table class="table table-striped table-hover text-center align-middle">
@@ -79,58 +79,56 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @php
-                        $grouped = $transactions->getCollection()->groupBy(function ($t) {
-                            return optional($t->category)->name ?? 'Uncategorized';
-                        });
-                    @endphp
-
-                    @forelse($grouped as $categoryName => $categoryTransactions)
+                    @foreach($categories as $category)
                         <tr class="table-secondary">
                             <td colspan="6" class="fw-bold text-start">
-                                <i class="bi bi-folder-fill me-1 text-muted"></i>
-                                {{ $categoryName }}
+                                <a href="javascript:void(0);" class="category-toggle d-flex align-items-center" data-target="#category{{ $category->id }}">
+                                    <i class="bi bi-plus-circle me-2"></i>
+                                    {{ $category->name }}
+                                </a>
                             </td>
                         </tr>
 
-                        @foreach ($categoryTransactions as $transaction)
-                            <tr>
-                                <td class="fw-semibold text-truncate">{{ $transaction->name }}</td>
-                                <td class="fw-bold">{{ number_format($transaction->quantity, 2) }}</td>
-                                <td class="fw-bold">E£ {{ number_format($transaction->price, 2) }}</td>
-                                <td>
-                                    @if ($transaction->direction === 'credit')
-                                        <span class="badge bg-success">
-                                            <i class="bi bi-arrow-down-circle me-1"></i> Credit
-                                        </span>
-                                    @elseif ($transaction->direction === 'debit')
-                                        <span class="badge bg-danger">
-                                            <i class="bi bi-arrow-up-circle me-1"></i> Debit
-                                        </span>
-                                    @else
-                                        <span class="badge bg-secondary">N/A</span>
-                                    @endif
-                                </td>
-                                <td>
-                                    <button type="button" class="btn btn-sm btn-success me-2" data-bs-toggle="modal" data-bs-target="#addNormalTransaction{{ $transaction->id }}">
-                                        <i class="bi bi-plus-circle"></i>
-                                    </button>
-
-                                    <button type="button" class="btn btn-sm btn-primary me-2" data-bs-toggle="modal" data-bs-target="#editTransaction{{ $transaction->id }}">
-                                        <i class="bi bi-pencil-square"></i>
-                                    </button>
-
-                                    <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteTransaction{{ $transaction->id }}">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                        @endforeach
-                    @empty
-                        <tr>
-                            <td colspan="6" class="text-muted">No blueprint transactions found.</td>
+                        <tr id="category{{ $category->id }}" class="collapse">
+                            <td colspan="6">
+                                <table class="table table-striped table-hover text-center align-middle">
+                                    <tbody>
+                                        @foreach ($category->blueprintTransactions as $transaction)
+                                            <tr>
+                                                <td class="fw-semibold text-truncate">{{ $transaction->name }}</td>
+                                                <td class="fw-bold">{{ number_format($transaction->quantity, 2) }}</td>
+                                                <td class="fw-bold">E£ {{ number_format($transaction->price, 2) }}</td>
+                                                <td>
+                                                    @if ($transaction->direction === 'credit')
+                                                        <span class="badge bg-success">
+                                                            <i class="bi bi-arrow-down-circle me-1"></i> Credit
+                                                        </span>
+                                                    @elseif ($transaction->direction === 'debit')
+                                                        <span class="badge bg-danger">
+                                                            <i class="bi bi-arrow-up-circle me-1"></i> Debit
+                                                        </span>
+                                                    @else
+                                                        <span class="badge bg-secondary">N/A</span>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    <button type="button" class="btn btn-sm btn-success me-2" data-bs-toggle="modal" data-bs-target="#addNormalTransaction{{ $transaction->id }}">
+                                                        <i class="bi bi-plus-circle"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-sm btn-primary me-2" data-bs-toggle="modal" data-bs-target="#editTransaction{{ $transaction->id }}">
+                                                        <i class="bi bi-pencil-square"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteTransaction{{ $transaction->id }}">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </td>
                         </tr>
-                    @endforelse
+                    @endforeach
                 </tbody>
             </table>
         </div>
@@ -138,7 +136,7 @@
         <!-- Centered Pagination with filters preserved -->
         <div class="d-flex justify-content-center mt-3">
             <nav aria-label="Page navigation">
-                {{ $transactions->appends(request()->query())->links() }}
+                {{ $categories->links() }}
             </nav>
         </div>
     </div>
@@ -146,10 +144,12 @@
 @endsection
 
 @push('modals')
-    @foreach($transactions as $transaction)
-        @include('layouts.add_normal_transaction', ['transaction' => $transaction, 'modalId' => "addNormalTransaction{$transaction->id}"])
-        @include('layouts.edit_blueprint_transaction', ['transaction' => $transaction, 'modalId' => "editTransaction{$transaction->id}"])
-        @include('layouts.delete_blueprint_transaction', ['transaction' => $transaction, 'modalId' => "deleteTransaction{$transaction->id}"])
+    @foreach($categories as $category)
+        @foreach ($category->blueprintTransactions as $transaction)
+            @include('layouts.add_normal_transaction', ['transaction' => $transaction, 'modalId' => "addNormalTransaction{$transaction->id}"])
+            @include('layouts.edit_blueprint_transaction', ['transaction' => $transaction, 'modalId' => "editTransaction{$transaction->id}"])
+            @include('layouts.delete_blueprint_transaction', ['transaction' => $transaction, 'modalId' => "deleteTransaction{$transaction->id}"])
+        @endforeach
     @endforeach
 @endpush
 
@@ -190,46 +190,68 @@
 </style>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const toggleBtn = document.getElementById('toggleSearchBtn');
-        const searchSection = document.getElementById('searchSection');
-        const form = document.querySelector("#filter_transactions_form");
-        const submitButton = form.querySelector("button[type='submit']");
+document.addEventListener("DOMContentLoaded", function () {
+    const toggleBtn = document.getElementById('toggleSearchBtn');
+    const searchSection = document.getElementById('searchSection');
+    const form = document.querySelector("#filter_transactions_form");
+    const submitButton = form.querySelector("button[type='submit']");
 
-        // Toggle search section visibility
-        toggleBtn.addEventListener('click', function () {
-            const isShown = !searchSection.classList.contains('d-none');
-            searchSection.classList.toggle('d-none');
-            toggleBtn.innerHTML = isShown
-                ? '<i class="bi bi-search"></i> Search'
-                : '<i class="bi bi-x-circle"></i> Close';
-        });
+    // Toggle search section visibility
+    toggleBtn.addEventListener('click', function () {
+        const isShown = !searchSection.classList.contains('d-none');
+        searchSection.classList.toggle('d-none');
+        toggleBtn.innerHTML = isShown
+            ? '<i class="bi bi-search"></i> Search'
+            : '<i class="bi bi-x-circle"></i> Close';
+    });
 
-        // Show search section on page load if filters exist
-        const urlParams = new URLSearchParams(window.location.search);
-        if (
-            urlParams.has('name') ||
-            urlParams.has('direction') ||
-            urlParams.has('category_id')
-        ) {
-            searchSection.classList.remove('d-none');
-            toggleBtn.innerHTML = '<i class="bi bi-x-circle"></i> Close';
-        }
+    // Show search section on page load if filters exist
+    const urlParams = new URLSearchParams(window.location.search);
+    if (
+        urlParams.has('name') ||
+        urlParams.has('direction') ||
+        urlParams.has('category_id')
+    ) {
+        searchSection.classList.remove('d-none');
+        toggleBtn.innerHTML = '<i class="bi bi-x-circle"></i> Close';
+    }
 
-        // Add loading indicator to submit
-        form.addEventListener("submit", function () {
-            submitButton.disabled = true;
-            submitButton.innerHTML = `
-                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                Searching...
-            `;
-        });
+    // Add loading indicator to submit
+    form.addEventListener("submit", function () {
+        submitButton.disabled = true;
+        submitButton.innerHTML = `
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            Searching...
+        `;
+    });
 
-        // Initialize select2
-        $('.select2').select2({
-            width: '100%',
-            placeholder: 'Select an option',
-            allowClear: true
+    // Initialize select2
+    $('.select2').select2({
+        width: '100%',
+        placeholder: 'Select an option',
+        allowClear: true
+    });
+
+    // Collapse functionality for categories
+    const categoryRows = document.querySelectorAll('.category-toggle');
+    categoryRows.forEach(row => {
+        row.addEventListener('click', function () {
+            const target = document.querySelector(this.dataset.target);
+            const icon = this.querySelector('i');
+
+            if (target.classList.contains('collapse')) {
+                target.classList.remove('collapse');
+                target.classList.add('collapsing');
+                icon.classList.remove('bi-plus-circle');
+                icon.classList.add('bi-dash-circle');
+                setTimeout(() => target.classList.remove('collapsing'), 300);
+            } else {
+                target.classList.add('collapse');
+                target.classList.remove('collapsing');
+                icon.classList.remove('bi-dash-circle');
+                icon.classList.add('bi-plus-circle');
+            }
         });
     });
+});
 </script>

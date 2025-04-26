@@ -11,4 +11,9 @@ class Category extends Model
 
     protected $guarded = [] ;
 
+    public function blueprintTransactions()
+    {
+        return $this->hasMAny(BlueprintTransaction::class);
+    }
+
 }

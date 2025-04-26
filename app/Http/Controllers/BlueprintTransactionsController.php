@@ -11,29 +11,56 @@ class BlueprintTransactionsController extends Controller
 {
     public function index()
     {
-        $transactions = auth()->user()->family
-            ->blueprintTransactions()
-            ->when(\request("name") != "", function ($query) {
-                $query->where("name", "LIKE", "%" . \request("name") . "%");
-            })
-            ->when(\request("direction") != "", function ($query) {
-                $query->where("direction", \request("direction"));
-            })
-            ->when(\request("category_id") != "", function ($query) {
-                $query->where("category_id", \request("category_id"));
-            })
-            ->with('category')
-            ->orderBy("date", "desc")
-            ->paginate(10);
+        // $transactions = auth()->user()->family
+        //     ->blueprintTransactions()
+        //     ->when(\request("name") != "", function ($query) {
+        //         $query->where("name", "LIKE", "%" . \request("name") . "%");
+        //     })
+        //     ->when(\request("direction") != "", function ($query) {
+        //         $query->where("direction", \request("direction"));
+        //     })
+        //     ->when(\request("category_id") != "", function ($query) {
+        //         $query->where("category_id", \request("category_id"));
+        //     })
+        //     ->with('category')
+        //     ->orderBy("date", "desc")
+        //     ->paginate(10);
 
-        $categories = auth()->user()->family->categories()->orderBy("name")->get();
+        $categories = auth()->user()->family->categories()
+        ->whereHas('blueprintTransactions', function ($query) {
+            $query->when(request("name") != "", function ($query) {
+                $query->where("transactions.name", "LIKE", "%" . request("name") . "%");
+            })
+            ->when(request("direction") != "", function ($query) {
+                $query->where("transactions.direction", request("direction"));
+            })
+            ->when(request("category_id") != "", function ($query) {
+                $query->where("transactions.category_id", request("category_id"));
+            });
+        })
+        ->orderBy("name")
+        ->with(['blueprintTransactions' => function ($query) {
+            $query->when(request("name") != "", function ($query) {
+                $query->where("transactions.name", "LIKE", "%" . request("name") . "%");
+            })
+            ->when(request("direction") != "", function ($query) {
+                $query->where("transactions.direction", request("direction"));
+            })
+            ->when(request("category_id") != "", function ($query) {
+                $query->where("transactions.category_id", request("category_id"));
+            });
+        }])
+        ->paginate(10);
 
         $users = auth()->user()
             ->family
             ->users()
             ->get();
 
-        return view('blueprint_transactions', compact('transactions', 'categories', 'users'));
+        $all_categories = auth()->user()->family->categories()->orderBy("name")
+            ->get();
+
+        return view('blueprint_transactions', compact('categories', 'users', 'all_categories'));
     }
 
     public function store(BlueprintTransactionStoreRequest $request)

@@ -12,20 +12,6 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Request;
-Route::get('/deploy', function () {
-    $password = Request::get('password');
-
-    if ($password === '12345678') {
-        Artisan::call('migrate:fresh', ['--force' => true]);
-        Artisan::call('db:seed', ['--force' => true]);
-        return nl2br(Artisan::output());
-    }
-
-    abort(403, 'Unauthorized');
-});
-
 Route::resource('normal_transactions', 'NormalTransactionsController')->middleware(['auth', 'verified']);
 Route::post('/draft_transactions/transfer_to_normal', 'DraftTransactionsController@transferToNormal')->middleware(['auth', 'verified']);
 Route::resource('draft_transactions', 'DraftTransactionsController')->middleware(['auth', 'verified']);
@@ -55,13 +41,7 @@ Route::get('/', function () {
             month_years.id as id,
             CONCAT(month_years.year, '-', LPAD(month_years.month, 2, '0')) as month_year,
             SUM(CASE WHEN transactions.direction = 'credit' THEN transactions.price * transactions.quantity ELSE 0 END) as credit,
-            SUM(CASE WHEN transactions.direction = 'debit' THEN transactions.price * transactions.quantity ELSE 0 END) as debit,
-            CASE
-                WHEN month_years.settled_on IS NULL THEN
-                    SUM(CASE WHEN transactions.direction = 'credit' THEN transactions.price * transactions.quantity ELSE 0 END) -
-                    SUM(CASE WHEN transactions.direction = 'debit' THEN transactions.price * transactions.quantity ELSE 0 END)
-                ELSE month_years.settled_on
-            END as settled_on
+            SUM(CASE WHEN transactions.direction = 'debit' THEN transactions.price * transactions.quantity ELSE 0 END) as debit
         ")
         ->groupBy('month_years.id')
         ->orderByDesc('month_years.year')

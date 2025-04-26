@@ -25,7 +25,6 @@
                         <th scope="col">Credit</th>
                         <th scope="col">Debit</th>
                         <th scope="col">Balance</th>
-                        <th scope="col">Settled On</th>
                         <th scope="col">Actions</th>
                     </tr>
                 </thead>
@@ -38,18 +37,11 @@
                             <td class="{{ ($monthYear->credit - $monthYear->debit) < 0 ? 'text-danger' : 'text-success' }} fw-bold">
                                 {{ number_format($monthYear->credit - $monthYear->debit, 2) }}
                             </td>
-                            <td class="{{ ($monthYear->settled_on) < 0 ? 'text-danger' : 'text-success' }} fw-bold">
-                                {{ number_format($monthYear->settled_on, 2) }}
-                            </td>
                             <td>
                                 <!-- Show Button (Redirect to "/") -->
                                 <a href="/month_years/{{ $monthYear->id }}" class="btn btn-sm btn-info me-2">
                                     <i class="bi bi-eye"></i>
                                 </a>
-
-                                <button type="button" class="btn btn-sm btn-primary me-2" data-bs-toggle="modal" data-bs-target="#editMonthYear{{ $monthYear->id }}">
-                                    <i class="bi bi-pencil-square"></i>
-                                </button>
                             </td>
                         </tr>
                     @endforeach
@@ -74,9 +66,3 @@
     }
 </style>
 @endsection
-
-@push('modals')
-    @foreach($monthYears as $monthYear)
-       @include('layouts/edit_month_year', ['monthYear' => $monthYear, 'modalId' => "editMonthYear{$monthYear->id}"])
-    @endforeach
-@endpush

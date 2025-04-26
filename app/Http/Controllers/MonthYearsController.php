@@ -6,7 +6,6 @@ use App\Models\MonthYear;
 use DB;
 use Illuminate\Http\Request;
 use App\Http\Requests\MonthYearStoreRequest;
-use App\Http\Requests\MonthYearUpdateRequest;
 
 class MonthYearsController extends Controller
 {
@@ -50,14 +49,4 @@ class MonthYearsController extends Controller
 
         return view('month_year', compact('monthYear', 'paginatedTransactions', 'categorySummary'));
     }
-
-    public function update(MonthYearUpdateRequest $request, $id)
-    {
-        $monthYear = MonthYear::findOrFail($id);
-
-        $monthYear->update($request->toArray());
-
-        return redirect('/');
-    }
-
 }

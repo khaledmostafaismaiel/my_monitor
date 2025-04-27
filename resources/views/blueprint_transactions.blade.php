@@ -118,6 +118,9 @@
                                                     <button type="button" class="btn btn-sm btn-primary me-2" data-bs-toggle="modal" data-bs-target="#editTransaction{{ $transaction->id }}">
                                                         <i class="bi bi-pencil-square"></i>
                                                     </button>
+                                                    <button type="button" class="btn btn-sm btn-warning me-2" data-bs-toggle="modal" data-bs-target="#updateAndAddTransaction{{ $transaction->id }}">
+                                                        <i class="bi bi-arrow-repeat"></i>
+                                                    </button>
                                                     <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteTransaction{{ $transaction->id }}">
                                                         <i class="bi bi-trash"></i>
                                                     </button>
@@ -148,6 +151,7 @@
         @foreach ($category->blueprintTransactions as $transaction)
             @include('layouts.add_normal_transaction', ['transaction' => $transaction, 'modalId' => "addNormalTransaction{$transaction->id}"])
             @include('layouts.edit_blueprint_transaction', ['transaction' => $transaction, 'modalId' => "editTransaction{$transaction->id}"])
+            @include('layouts.update_and_add_transaction', ['transaction' => $transaction, 'modalId' => "updateAndAddTransaction{$transaction->id}"])
             @include('layouts.delete_blueprint_transaction', ['transaction' => $transaction, 'modalId' => "deleteTransaction{$transaction->id}"])
         @endforeach
     @endforeach

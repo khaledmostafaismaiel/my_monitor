@@ -11,7 +11,7 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <!-- Form Start -->
-            <form method="POST" action="/draft_transactions/update_and_add_transaction">
+            <form method="POST" action="/blueprint_transactions/update_and_add_transaction">
                 <div class="modal-body px-4">
                     {{ csrf_field() }}
 
@@ -61,7 +61,7 @@
                             <label class="form-label">Category</label>
                             <select class="form-select" name="category_id" id="categoryDropdown" required>
                                 <option disabled selected>Select a category</option>
-                                @foreach($categories as $category)
+                                @foreach($all_categories as $category)
                                     @if($category->status == "active")
                                         <option value="{{ $category->id }}" {{ isset($transaction) && $transaction->category_id == $category->id ? 'selected' : '' }}>
                                             {{ ucfirst($category->name) }}

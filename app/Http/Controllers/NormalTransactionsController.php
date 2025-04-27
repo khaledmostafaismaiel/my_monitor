@@ -35,7 +35,8 @@ class NormalTransactionsController extends Controller
             ->orderBy("date", "desc")
             ->paginate(10);
 
-        $categories = auth()->user()->family->categories()->orderBy("name")->get();
+        $all_categories = auth()->user()->family->categories()->orderBy("name")
+            ->get();
 
         $users = auth()->user()
             ->family
@@ -49,7 +50,7 @@ class NormalTransactionsController extends Controller
             ->pluck('year')
             ->sortDesc();
 
-        return view('normal_transactions', compact('transactions', 'categories', 'users', 'uniqueYears'));
+        return view('normal_transactions', compact('transactions', 'all_categories', 'users', 'uniqueYears'));
     }
 
     public function store(NormalTransactionStoreRequest $request)

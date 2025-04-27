@@ -63,7 +63,7 @@
                             <label for="categorySelectNew" class="form-label">Category</label>
                             <select class="form-select" id="categorySelectNew" name="category_id" required>
                                 <option disabled selected>Select a category</option>
-                                @foreach($categories as $category)
+                                @foreach($all_categories as $category)
                                     @if($category->status == "active")
                                         <option value="{{ $category->id }}">{{ ucfirst($category->name) }}</option>
                                     @endif

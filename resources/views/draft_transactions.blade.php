@@ -42,7 +42,7 @@
                         <label class="form-label fw-semibold">Category</label>
                         <select name="category_id" class="form-select select2">
                             <option value="">All Categories</option>
-                            @foreach($categories as $category)
+                            @foreach($all_categories as $category)
                                 <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>
                                     {{ $category->name }}
                                 </option>

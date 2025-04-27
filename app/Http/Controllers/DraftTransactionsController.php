@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Http\Requests\DraftTransactionStoreRequest;
 use App\Http\Requests\DraftTransactionUpdateRequest;
 use App\Http\Requests\DraftTransactionTransferRequest;
-use App\Http\Requests\DraftTransactionUpdateAndAddRequest;
 
 class DraftTransactionsController extends Controller
 {
@@ -38,8 +37,8 @@ class DraftTransactionsController extends Controller
             ->orderBy("date", "desc")
             ->paginate(10);
 
-        $categories = auth()->user()->family->categories()->orderBy("name")->get();
-
+        $all_categories = auth()->user()->family->categories()->orderBy("name")
+            ->get();
         $users = auth()->user()
             ->family
             ->users()
@@ -52,7 +51,7 @@ class DraftTransactionsController extends Controller
             ->pluck('year')
             ->sortDesc();
 
-        return view('draft_transactions', compact('transactions', 'categories', 'users', 'uniqueYears'));
+        return view('draft_transactions', compact('transactions', 'all_categories', 'users', 'uniqueYears'));
     }
 
     public function store(DraftTransactionStoreRequest $request)
@@ -105,33 +104,5 @@ class DraftTransactionsController extends Controller
         $transaction->save();
 
         return redirect('/draft_transactions');
-    }
-
-    public function updateAndAddTransaction(DraftTransactionUpdateAndAddRequest $request)
-    {
-        $transaction = Transaction::findOrFail($request->id);
-        $transaction->name = $request->name;
-        $transaction->price = $request->price;
-        $transaction->quantity = $request->quantity;
-        $transaction->direction = $request->direction;
-        $transaction->category_id = $request->category_id;
-        $transaction->comment = $request->comment;
-        $transaction->save();
-
-        $transaction = new Transaction();
-        $transaction->name = $request->name;
-        $transaction->price = $request->price;
-        $transaction->quantity = $request->quantity;
-        $transaction->direction = $request->direction;
-        $transaction->category_id = $request->category_id;
-        $transaction->month_year_id = $request->month_year_id;
-        $transaction->date = $request->date;
-        $transaction->comment = $request->comment;
-        $transaction->type = 'normal';
-        $transaction->user_id = auth()->id();
-        $transaction->family_id = auth()->user()->family_id;
-        $transaction->save();
-
-        return redirect('/normal_transactions');
     }
 }

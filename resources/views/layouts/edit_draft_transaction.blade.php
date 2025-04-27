@@ -60,7 +60,7 @@
                             <label for="category_id{{ $transaction->id }}" class="form-label">Category</label>
                             <select class="form-select select2-inside-modal" id="category_id{{ $transaction->id }}" name="category_id">
                                 <option disabled {{ !$transaction->category_id ? 'selected' : '' }}>Select a category</option>
-                                @foreach($categories->where('status', 'active') as $category)
+                                @foreach($all_categories->where('status', 'active') as $category)
                                     <option value="{{ $category->id }}" {{ $transaction->category_id == $category->id ? 'selected' : '' }}>
                                         {{ ucfirst($category->name) }}
                                     </option>

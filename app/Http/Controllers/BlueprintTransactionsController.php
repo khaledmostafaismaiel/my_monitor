@@ -6,6 +6,7 @@ use App\Models\Transaction;
 use Illuminate\Http\Request;
 use App\Http\Requests\BlueprintTransactionStoreRequest;
 use App\Http\Requests\BlueprintTransactionUpdateRequest;
+use App\Http\Requests\BlueprintTransactionUpdateAndAddRequest;
 
 class BlueprintTransactionsController extends Controller
 {
@@ -95,5 +96,33 @@ class BlueprintTransactionsController extends Controller
         $transaction->delete();
 
         return redirect('/blueprint_transactions');
+    }
+
+    public function updateAndAddTransaction(BlueprintTransactionUpdateAndAddRequest $request)
+    {
+        $transaction = Transaction::findOrFail($request->id);
+        $transaction->name = $request->name;
+        $transaction->price = $request->price;
+        $transaction->quantity = $request->quantity;
+        $transaction->direction = $request->direction;
+        $transaction->category_id = $request->category_id;
+        $transaction->comment = $request->comment;
+        $transaction->save();
+
+        $transaction = new Transaction();
+        $transaction->name = $request->name;
+        $transaction->price = $request->price;
+        $transaction->quantity = $request->quantity;
+        $transaction->direction = $request->direction;
+        $transaction->category_id = $request->category_id;
+        $transaction->month_year_id = $request->month_year_id;
+        $transaction->date = $request->date;
+        $transaction->comment = $request->comment;
+        $transaction->type = 'normal';
+        $transaction->user_id = auth()->id();
+        $transaction->family_id = auth()->user()->family_id;
+        $transaction->save();
+
+        return redirect('/normal_transactions');
     }
 }

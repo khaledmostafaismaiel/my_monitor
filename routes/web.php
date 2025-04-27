@@ -13,11 +13,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::resource('normal_transactions', 'NormalTransactionsController')->middleware(['auth', 'verified']);
+
 Route::post('/draft_transactions/transfer_to_normal', 'DraftTransactionsController@transferToNormal')->middleware(['auth', 'verified']);
-Route::post('/draft_transactions/update_and_add_transaction', 'DraftTransactionsController@updateAndAddTransaction')->middleware(['auth', 'verified']);
 Route::resource('draft_transactions', 'DraftTransactionsController')->middleware(['auth', 'verified']);
+
+Route::post('/blueprint_transactions/update_and_add_transaction', 'BlueprintTransactionsController@updateAndAddTransaction')->middleware(['auth', 'verified']);
 Route::resource('blueprint_transactions', 'BlueprintTransactionsController')->middleware(['auth', 'verified']);
+
 Route::resource('categories', 'CategoriesController')->middleware(['auth', 'verified']);
+
 Route::resource('month_years', 'MonthYearsController')->middleware(['auth', 'verified']);
 
 Route::post('/users/verify_otp', 'UsersController@verify_otp');

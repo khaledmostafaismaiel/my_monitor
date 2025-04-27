@@ -150,7 +150,7 @@
         <!-- Centered Pagination -->
         <div class="d-flex justify-content-center mt-3">
             <nav aria-label="Page navigation">
-                {{ $transactions->links() }}
+                {{ $transactions->appends(request()->query())->links() }}
             </nav>
         </div>
     </div>

@@ -139,7 +139,7 @@
         <!-- Centered Pagination with filters preserved -->
         <div class="d-flex justify-content-center mt-3">
             <nav aria-label="Page navigation">
-                {{ $categories->links() }}
+                {{ $categories->appends(request()->query())->links() }}
             </nav>
         </div>
     </div>

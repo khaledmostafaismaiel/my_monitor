@@ -54,7 +54,7 @@
         <!-- Responsive Pagination -->
         <div class="d-flex justify-content-center mt-3">
             <div class="w-100 overflow-auto">
-                {{ $paginatedTransactions->links() }}
+                {{ $paginatedTransactions->appends(request()->query())->links() }}
             </div>
         </div>
     </div>

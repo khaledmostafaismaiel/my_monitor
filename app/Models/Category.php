@@ -16,4 +16,9 @@ class Category extends Model
         return $this->hasMAny(BlueprintTransaction::class);
     }
 
+    public function normalTransactions()
+    {
+        return $this->hasMAny(NormalTransaction::class);
+    }
+
 }

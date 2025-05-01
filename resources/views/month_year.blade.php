@@ -25,25 +25,47 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($paginatedTransactions as $transaction)
-                        <tr>
-                            <td class="fw-bold">{{ $transaction->category->name }}</td>
-                            <td class="fw-bold">{{ $transaction->name }}</td>
-                            <td class="fw-bold">{{ $transaction->quantity }}</td>
-                            <td class="fw-bold">{{ number_format($transaction->price, 2) }}</td>
-                            <td class="fw-bold">{{ number_format($transaction->price * $transaction->quantity, 2) }}</td>
-                            <td>
-                                @if ($transaction->direction === 'credit')
-                                    <span class="badge bg-success">
-                                        <i class="bi bi-arrow-down-circle me-1"></i> Credit
-                                    </span>
-                                @elseif ($transaction->direction === 'debit')
-                                    <span class="badge bg-danger">
-                                        <i class="bi bi-arrow-up-circle me-1"></i> Debit
-                                    </span>
-                                @else
-                                    <span class="badge bg-secondary">N/A</span>
-                                @endif
+                    @foreach($categories as $category)
+                        <tr class="table-secondary">
+                            <td colspan="5" class="fw-bold text-start">
+                                <a href="javascript:void(0);" class="category-toggle d-flex align-items-center" data-target="#category{{ $category->id }}">
+                                    <i class="bi bi-plus-circle me-2"></i>
+                                    {{ $category->name }}
+                                </a>
+                            </td>
+                            <td class="fw-bold text-start">
+                                E£ {{ $category->total_spent }}
+                            </td>
+                        </tr>
+
+                        <tr id="category{{ $category->id }}" class="collapse">
+                            <td colspan="6">
+                                <table class="table table-striped table-hover text-center align-middle">
+                                    <tbody>
+                                        @foreach ($category->normalTransactions as $transaction)
+                                            <tr>
+                                                <td class="fw-bold"></td>
+                                                <td class="fw-semibold text-truncate">{{ $transaction->name }}</td>
+                                                <td class="fw-bold">{{ number_format($transaction->quantity, 2) }}</td>
+                                                <td class="fw-bold">E£ {{ number_format($transaction->price, 2) }}</td>
+                                                <td class="fw-bold">E£ {{ number_format($transaction->quantity * $transaction->price, 2) }}</td>
+                                                <td>
+                                                    @if ($transaction->direction === 'credit')
+                                                        <span class="badge bg-success">
+                                                            <i class="bi bi-arrow-down-circle me-1"></i> Credit
+                                                        </span>
+                                                    @elseif ($transaction->direction === 'debit')
+                                                        <span class="badge bg-danger">
+                                                            <i class="bi bi-arrow-up-circle me-1"></i> Debit
+                                                        </span>
+                                                    @else
+                                                        <span class="badge bg-secondary">N/A</span>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
                             </td>
                         </tr>
                     @endforeach
@@ -51,22 +73,78 @@
             </table>
         </div>
 
-        <!-- Responsive Pagination -->
+        <!-- Centered Pagination with filters preserved -->
         <div class="d-flex justify-content-center mt-3">
-            <div class="w-100 overflow-auto">
-                {{ $paginatedTransactions->appends(request()->query())->links() }}
-            </div>
+            <nav aria-label="Page navigation">
+                {{ $categories->appends(request()->query())->links() }}
+            </nav>
         </div>
     </div>
 </div>
 
 <!-- Additional Styling for Mobile -->
+<!-- Styles for Responsive Table -->
 <style>
     .pagination {
         flex-wrap: wrap;
         justify-content: center;
     }
+
+    .card {
+        margin-top: 20px;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    table {
+        min-width: 600px;
+    }
+
+    th, td {
+        white-space: nowrap;
+        word-wrap: break-word;
+        min-width: 100px;
+    }
+
+    @media (max-width: 768px) {
+        th, td {
+            min-width: 80px;
+        }
+
+        .table thead {
+            font-size: 14px;
+        }
+    }
 </style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    // Collapse functionality for categories
+    const categoryRows = document.querySelectorAll('.category-toggle');
+    categoryRows.forEach(row => {
+        row.addEventListener('click', function () {
+            const target = document.querySelector(this.dataset.target);
+            const icon = this.querySelector('i');
+
+            if (target.classList.contains('collapse')) {
+                target.classList.remove('collapse');
+                target.classList.add('collapsing');
+                icon.classList.remove('bi-plus-circle');
+                icon.classList.add('bi-dash-circle');
+                setTimeout(() => target.classList.remove('collapsing'), 300);
+            } else {
+                target.classList.add('collapse');
+                target.classList.remove('collapsing');
+                icon.classList.remove('bi-dash-circle');
+                icon.classList.add('bi-plus-circle');
+            }
+        });
+    });
+});
+</script>
+
 
 <script>
 // Array of 200 curated colors

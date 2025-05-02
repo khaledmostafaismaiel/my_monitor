@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class DraftTransactionStoreRequest extends FormRequest
+class WalletStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,14 +22,7 @@ class DraftTransactionStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255',
-            'price' => 'nullable|numeric|min:0',
-            'quantity' => 'nullable|numeric|min:1',
-            'direction' => 'required|in:debit,credit',
-            'category_id' => 'nullable|exists:categories,id',
-            'month_year_id' => 'nullable|exists:month_years,id',
-            'date' => 'nullable|date',
-            'comment' => 'nullable|string|max:1000',
+            'name' => ['required', 'string', 'min:2', 'max:100'],
         ];
     }
 }

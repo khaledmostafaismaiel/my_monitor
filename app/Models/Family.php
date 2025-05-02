@@ -55,4 +55,9 @@ class Family extends Model
     {
         return $this->hasMany(DraftTransaction::class);
     }
+
+    public function wallets()
+    {
+        return $this->hasMany(Wallet::class);
+    }
 }

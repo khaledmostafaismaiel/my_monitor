@@ -29,8 +29,9 @@ class BlueprintTransactionUpdateAndAddRequest extends FormRequest
             'direction' => 'required|in:debit,credit',
             'category_id' => 'required|exists:categories,id',
             'month_year_id' => 'required|exists:month_years,id',
-            'date' => 'required|date|before_or_equal:today',
+            'date' => 'required|date',
             'comment' => 'nullable|string|max:500',
+            'wallet_id' => 'required|exists:wallets,id',
         ];
     }
 }

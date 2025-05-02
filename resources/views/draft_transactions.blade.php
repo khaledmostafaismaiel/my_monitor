@@ -50,6 +50,19 @@
                         </select>
                     </div>
 
+                    <!-- Wallet Filter -->
+                    <div class="col-md-3 col-sm-6">
+                        <label class="form-label fw-semibold">Wallet</label>
+                        <select name="wallet_id" class="form-select select2">
+                            <option value="">All Wallets</option>
+                            @foreach($all_wallets as $wallet)
+                                <option value="{{ $wallet->id }}" {{ request('wallet_id') == $wallet->id ? 'selected' : '' }}>
+                                    {{ $wallet->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
                     <!-- Year Filter -->
                     <div class="col-md-2 col-sm-6">
                         <label class="form-label fw-semibold">Year</label>
@@ -229,7 +242,8 @@
             urlParams.has('direction') ||
             urlParams.has('category_id') ||
             urlParams.has('year') ||
-            urlParams.has('month')
+            urlParams.has('month') ||
+            urlParams.has('wallet_id')
         ) {
             searchSection.classList.remove('d-none');
             toggleBtn.innerHTML = '<i class="bi bi-x-circle"></i> Close';

@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::resource('wallets', 'WalletsController')->middleware(['auth', 'verified']);
+
 Route::resource('normal_transactions', 'NormalTransactionsController')->middleware(['auth', 'verified']);
 
 Route::post('/draft_transactions/transfer_to_normal', 'DraftTransactionsController@transferToNormal')->middleware(['auth', 'verified']);

@@ -37,4 +37,8 @@ class Transaction extends Model
     public function monthYear(){
         return $this->belongsTo(MonthYear::class);
     }
+
+    public function wallet(){
+        return $this->belongsTo(Wallet::class);
+    }
 }

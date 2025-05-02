@@ -12,21 +12,6 @@ class BlueprintTransactionsController extends Controller
 {
     public function index()
     {
-        // $transactions = auth()->user()->family
-        //     ->blueprintTransactions()
-        //     ->when(\request("name") != "", function ($query) {
-        //         $query->where("name", "LIKE", "%" . \request("name") . "%");
-        //     })
-        //     ->when(\request("direction") != "", function ($query) {
-        //         $query->where("direction", \request("direction"));
-        //     })
-        //     ->when(\request("category_id") != "", function ($query) {
-        //         $query->where("category_id", \request("category_id"));
-        //     })
-        //     ->with('category')
-        //     ->orderBy("date", "desc")
-        //     ->paginate(10);
-
         $categories = auth()->user()->family->categories()
         ->whereHas('blueprintTransactions', function ($query) {
             $query->when(request("name") != "", function ($query) {
@@ -61,7 +46,14 @@ class BlueprintTransactionsController extends Controller
         $all_categories = auth()->user()->family->categories()->orderBy("name")
             ->get();
 
-        return view('blueprint_transactions', compact('categories', 'users', 'all_categories'));
+        $all_wallets = auth()->user()->family->wallets()->orderBy("name")
+            ->get();
+
+
+        $all_month_years = auth()->user()->family->monthYears()->orderBy("id", "Desc")
+            ->get();
+
+        return view('blueprint_transactions', compact('categories', 'users', 'all_categories', 'all_wallets', 'all_month_years'));
     }
 
     public function store(BlueprintTransactionStoreRequest $request)
@@ -121,6 +113,7 @@ class BlueprintTransactionsController extends Controller
         $transaction->type = 'normal';
         $transaction->user_id = auth()->id();
         $transaction->family_id = auth()->user()->family_id;
+        $transaction->wallet_id = $request->wallet_id;
         $transaction->save();
 
         return redirect('/normal_transactions');

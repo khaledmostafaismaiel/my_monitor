@@ -64,6 +64,12 @@
                             <i class="bi bi-tags"></i> Categories
                         </a>
                     </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link text-white fw-bold" href="/wallets">
+                            <i class="bi bi-wallet2"></i> Wallets
+                        </a>
+                    </li>
                 </ul>
 
                 <!-- Sign Out Button at the Bottom -->

@@ -70,6 +70,21 @@
                             </select>
                         </div>
 
+                        <!-- Wallet Selection -->
+                        <div class="col-md-6">
+                            <label class="form-label">Wallet</label>
+                            <select class="form-select" name="wallet_id" id="walletDropdown{{ $transaction->id }}" required>
+                                <option disabled selected>Select a wallet</option>
+                                @foreach($all_wallets as $wallet)
+                                    @if($wallet->status == "active")
+                                        <option value="{{ $wallet->id }}" {{ $transaction->wallet_id == $wallet->id ? 'selected' : '' }}>
+                                            {{ ucfirst($wallet->name) }}
+                                        </option>
+                                    @endif
+                                @endforeach
+                            </select>
+                        </div>
+
                         <!-- MonthYear Dropdown -->
                         <div class="col-md-6 text-start">
                             <label for="monthYear{{ $transaction->id }}" class="form-label">Month-Year</label>
@@ -147,6 +162,14 @@
                 placeholder: "Select a category",
                 width: '100%'
             });
+
+            // Initialize Select2 for Category Dropdown
+            $('#walletDropdown{{ $transaction->id }}').select2({
+                dropdownParent: $(modalId),
+                placeholder: "Select a category",
+                width: '100%'
+            });
+
 
             // Initialize Select2 for User Dropdown
             $('#userDropdown{{ $transaction->id }}').select2({

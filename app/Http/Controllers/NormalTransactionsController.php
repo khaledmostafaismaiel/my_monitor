@@ -31,6 +31,9 @@ class NormalTransactionsController extends Controller
                     });
                 });
             })
+            ->when(\request("wallet_id") != "", function ($query) {
+                $query->where("wallet_id", \request("wallet_id"));
+            })
             ->with('category', 'user')
             ->orderBy("date", "desc")
             ->paginate(10);
@@ -50,7 +53,13 @@ class NormalTransactionsController extends Controller
             ->pluck('year')
             ->sortDesc();
 
-        return view('normal_transactions', compact('transactions', 'all_categories', 'users', 'uniqueYears'));
+        $all_wallets = auth()->user()->family->wallets()->orderBy("name")
+            ->get();
+
+        $all_month_years = auth()->user()->family->monthYears()->orderBy("id", "Desc")
+            ->get();
+
+        return view('normal_transactions', compact('transactions', 'all_categories', 'users', 'uniqueYears', 'all_wallets', 'all_month_years'));
     }
 
     public function store(NormalTransactionStoreRequest $request)

@@ -28,8 +28,9 @@ class NormalTransactionStoreRequest extends FormRequest
             'direction' => ['required', 'in:credit,debit'],
             'category_id' => ['required', 'integer', 'exists:categories,id'],
             'month_year_id' => ['required', 'integer', 'exists:month_years,id'],
-            'date' => ['required', 'date', 'before_or_equal:today'],
+            'date' => ['required', 'date'],
             'comment' => ['nullable', 'string', 'max:500'],
+            'wallet_id' => 'required|exists:wallets,id',
         ];
     }
 }

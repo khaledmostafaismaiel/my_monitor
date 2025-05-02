@@ -69,6 +69,19 @@
                             </select>
                         </div>
 
+                        <!-- Wallet Selection -->
+                        <div class="col-md-6">
+                            <label class="form-label">Wallet</label>
+                            <select class="form-select select2-wallet" name="wallet_id">
+                                <option disabled selected>Select a wallet</option>
+                                @foreach($all_wallets as $wallet)
+                                    @if($wallet->status == "active")
+                                        <option value="{{ $wallet->id }}">{{ ucfirst($wallet->name) }}</option>
+                                    @endif
+                                @endforeach
+                            </select>
+                        </div>
+
                         <!-- MonthYear Dropdown (Handled by Select2) -->
                         <div class="col-md-6">
                             <label class="form-label">Month-Year</label>
@@ -128,6 +141,13 @@
             dropdownParent: $('#addDraftTransaction-{{ isset($transaction) ? $transaction->id : 'new' }}'),
             width: '100%'
         });
+
+        // Initialize Select2 for Category dropdown
+        $(form).find('.select2-wallet').select2({
+            dropdownParent: $('#addDraftTransaction-{{ isset($transaction) ? $transaction->id : 'new' }}'),
+            width: '100%'
+        });
+
 
         // Initialize Select2 for Month-Year dropdown
         $(form).find('.select2-month-year').select2({

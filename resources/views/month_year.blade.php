@@ -20,8 +20,8 @@
                         <th scope="col">Name</th>
                         <th scope="col">Quantity</th>
                         <th scope="col">Price Per Unit</th>
-                        <th scope="col">Total</th>
                         <th scope="col">Direction</th>
+                        <th scope="col">Total</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -48,7 +48,6 @@
                                                 <td class="fw-semibold text-truncate">{{ $transaction->name }}</td>
                                                 <td class="fw-bold">{{ number_format($transaction->quantity, 2) }}</td>
                                                 <td class="fw-bold">E£ {{ number_format($transaction->price, 2) }}</td>
-                                                <td class="fw-bold">E£ {{ number_format($transaction->quantity * $transaction->price, 2) }}</td>
                                                 <td>
                                                     @if ($transaction->direction === 'credit')
                                                         <span class="badge bg-success">
@@ -62,6 +61,7 @@
                                                         <span class="badge bg-secondary">N/A</span>
                                                     @endif
                                                 </td>
+                                                <td class="fw-bold">E£ {{ number_format($transaction->quantity * $transaction->price, 2) }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>

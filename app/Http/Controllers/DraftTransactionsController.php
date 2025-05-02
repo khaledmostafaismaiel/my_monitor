@@ -33,6 +33,9 @@ class DraftTransactionsController extends Controller
                     });
                 });
             })
+            ->when(\request("wallet_id") != "", function ($query) {
+                $query->where("wallet_id", \request("wallet_id"));
+            })
             ->with('category', 'user')
             ->orderBy("date", "desc")
             ->paginate(10);
@@ -51,7 +54,10 @@ class DraftTransactionsController extends Controller
             ->pluck('year')
             ->sortDesc();
 
-        return view('draft_transactions', compact('transactions', 'all_categories', 'users', 'uniqueYears'));
+        $all_wallets = auth()->user()->family->wallets()->orderBy("name")
+            ->get();
+
+        return view('draft_transactions', compact('transactions', 'all_categories', 'users', 'uniqueYears', 'all_wallets'));
     }
 
     public function store(DraftTransactionStoreRequest $request)
@@ -101,6 +107,7 @@ class DraftTransactionsController extends Controller
         $transaction->date = $request->date;
         $transaction->comment = $request->comment;
         $transaction->type = 'normal';
+        $transaction->wallet_id = $request->wallet_id;
         $transaction->save();
 
         return redirect('/draft_transactions');

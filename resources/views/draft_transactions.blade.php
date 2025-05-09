@@ -106,7 +106,7 @@
                 <i class="bi bi-plus-lg"></i> Add
             </button>
         </div>
-        @include('layouts/add_draft_transaction')
+        @include('layouts/add_draft_transaction', ['modalId' => "addDraftTransaction-new"])
 
         <div class="table-responsive">
             <table class="table table-striped table-hover text-center align-middle">

@@ -67,11 +67,11 @@
             <table class="table table-striped table-hover text-center align-middle">
                 <thead class="bg-primary text-white">
                     <tr>
-                        <th>Name</th>
-                        <th>Quantity</th>
-                        <th>Price Per Unit</th>
-                        <th>Direction</th>
-                        <th>Actions</th>
+                        <th>Category</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -89,6 +89,7 @@
                                 <table class="table table-striped table-hover text-center align-middle mb-0">
                                     <thead class="table-light">
                                         <tr>
+                                            <th></th>
                                             <th>Name</th>
                                             <th>Quantity</th>
                                             <th>Price Per Unit</th>
@@ -99,6 +100,7 @@
                                     <tbody>
                                         @foreach ($category->blueprintTransactions as $transaction)
                                             <tr>
+                                                <td class="fw-bold"></td>
                                                 <td class="fw-semibold text-truncate">{{ $transaction->name }}</td>
                                                 <td class="fw-bold">{{ number_format($transaction->quantity, 2) }}</td>
                                                 <td class="fw-bold">E£ {{ number_format($transaction->price, 2) }}</td>
@@ -126,7 +128,7 @@
                                                         Edit
                                                     </button>
                                                     <button type="button" class="btn btn-sm btn-warning me-2" data-bs-toggle="modal" data-bs-target="#updateAndAddTransaction{{ $transaction->id }}">
-                                                        Edit And Transfer
+                                                        Normal Then Edit
                                                     </button>
                                                     <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteTransaction{{ $transaction->id }}">
                                                         Delete

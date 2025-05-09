@@ -17,10 +17,10 @@
                 <thead class="bg-primary text-white">
                     <tr>
                         <th>Category</th>
-                        <th>Name</th>
-                        <th>Quantity</th>
-                        <th>Price Per Unit</th>
-                        <th>Direction</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
                         <th>Total</th>
                     </tr>
                 </thead>

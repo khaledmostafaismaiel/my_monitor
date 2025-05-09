@@ -1,5 +1,5 @@
 <!-- Modal -->
-<div class="modal fade" id="addDraftTransaction-{{ isset($transaction) ? $transaction->id : 'new' }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="{{$modalId}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content shadow-lg border-0 rounded-3">
             <!-- Modal Header -->
@@ -125,7 +125,7 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        const form = document.querySelector("#addDraftTransaction-{{ isset($transaction) ? $transaction->id : 'new' }} form");
+        const form = document.querySelector("#{{$modalId}} form");
         const submitButton = form.querySelector("button[type='submit']");
 
         form.addEventListener("submit", function () {
@@ -138,20 +138,20 @@
 
         // Initialize Select2 for category
         $(form).find('.select2-category').select2({
-            dropdownParent: $('#addDraftTransaction-{{ isset($transaction) ? $transaction->id : 'new' }}'),
+            dropdownParent: $('#{{$modalId}}'),
             width: '100%'
         });
 
         // Initialize Select2 for Category dropdown
         $(form).find('.select2-wallet').select2({
-            dropdownParent: $('#addDraftTransaction-{{ isset($transaction) ? $transaction->id : 'new' }}'),
+            dropdownParent: $('#{{$modalId}}'),
             width: '100%'
         });
 
 
         // Initialize Select2 for Month-Year dropdown
         $(form).find('.select2-month-year').select2({
-            dropdownParent: $('#addDraftTransaction-{{ isset($transaction) ? $transaction->id : 'new' }}'),
+            dropdownParent: $('#{{$modalId}}'),
             width: '100%'
         });
     });

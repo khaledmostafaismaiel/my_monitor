@@ -49,7 +49,7 @@
 
                     <li class="nav-item">
                         <a class="nav-link text-white fw-bold" href="/draft_transactions">
-                            <i class="bi bi-pencil-square"></i> Drafted Transactions
+                            <i class="bi bi-pencil-square"></i> Draft Transactions
                         </a>
                     </li>
 

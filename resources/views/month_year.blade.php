@@ -16,12 +16,12 @@
             <table class="table table-striped table-hover text-center align-middle">
                 <thead class="bg-primary text-white">
                     <tr>
-                        <th scope="col">Category</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Quantity</th>
-                        <th scope="col">Price Per Unit</th>
-                        <th scope="col">Direction</th>
-                        <th scope="col">Total</th>
+                        <th>Category</th>
+                        <th>Name</th>
+                        <th>Quantity</th>
+                        <th>Price Per Unit</th>
+                        <th>Direction</th>
+                        <th>Total</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -40,7 +40,17 @@
 
                         <tr id="category{{ $category->id }}" class="collapse">
                             <td colspan="6">
-                                <table class="table table-striped table-hover text-center align-middle">
+                                <table class="table table-striped table-hover text-center align-middle mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th></th>
+                                            <th>Name</th>
+                                            <th>Quantity</th>
+                                            <th>Price Per Unit</th>
+                                            <th>Direction</th>
+                                            <th>Total</th>
+                                        </tr>
+                                    </thead>
                                     <tbody>
                                         @foreach ($category->normalTransactions as $transaction)
                                             <tr>

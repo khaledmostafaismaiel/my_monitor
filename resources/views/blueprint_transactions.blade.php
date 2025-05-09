@@ -20,13 +20,11 @@
         <div id="searchSection" class="d-none mb-4">
             <form method="GET" action="/blueprint_transactions" class="mb-4" id="filter_transactions_form">
                 <div class="row g-3 align-items-end">
-                    <!-- Search Box -->
                     <div class="col-md-3 col-sm-6">
                         <label class="form-label fw-semibold">Search</label>
                         <input type="text" name="name" class="form-control" placeholder="Enter transaction name..." value="{{ request('name') }}">
                     </div>
 
-                    <!-- Direction Filter -->
                     <div class="col-md-2 col-sm-6">
                         <label class="form-label fw-semibold">Direction</label>
                         <select name="direction" class="form-select select2">
@@ -36,7 +34,6 @@
                         </select>
                     </div>
 
-                    <!-- Category Filter -->
                     <div class="col-md-3 col-sm-6">
                         <label class="form-label fw-semibold">Category</label>
                         <select name="category_id" class="form-select select2">
@@ -49,7 +46,6 @@
                         </select>
                     </div>
 
-                    <!-- Search Filter Button -->
                     <div class="col-md-2 d-grid">
                         <button type="submit" class="btn btn-primary">
                             <i class="bi bi-funnel-fill"></i> Search
@@ -71,27 +67,35 @@
             <table class="table table-striped table-hover text-center align-middle">
                 <thead class="bg-primary text-white">
                     <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col">Quantity</th>
-                        <th scope="col">Price Per Unit</th>
-                        <th scope="col">Direction</th>
-                        <th scope="col">Actions</th>
+                        <th>Name</th>
+                        <th>Quantity</th>
+                        <th>Price Per Unit</th>
+                        <th>Direction</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($categories as $category)
                         <tr class="table-secondary">
-                            <td colspan="6" class="fw-bold text-start">
+                            <td colspan="5" class="fw-bold text-start">
                                 <a href="javascript:void(0);" class="category-toggle d-flex align-items-center" data-target="#category{{ $category->id }}">
-                                    <i class="bi bi-plus-circle me-2"></i>
-                                    {{ $category->name }}
+                                    <i class="bi bi-plus-circle me-2"></i> {{ $category->name }}
                                 </a>
                             </td>
                         </tr>
 
                         <tr id="category{{ $category->id }}" class="collapse">
-                            <td colspan="6">
-                                <table class="table table-striped table-hover text-center align-middle">
+                            <td colspan="5">
+                                <table class="table table-striped table-hover text-center align-middle mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Quantity</th>
+                                            <th>Price Per Unit</th>
+                                            <th>Direction</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
                                     <tbody>
                                         @foreach ($category->blueprintTransactions as $transaction)
                                             <tr>
@@ -114,6 +118,9 @@
                                                 <td>
                                                     <button type="button" class="btn btn-sm btn-success me-2" data-bs-toggle="modal" data-bs-target="#addNormalTransaction{{ $transaction->id }}">
                                                         Normal
+                                                    </button>
+                                                    <button type="button" class="btn btn-sm btn-dark me-2" data-bs-toggle="modal" data-bs-target="#addDraftTransaction{{ $transaction->id }}">
+                                                        Draft
                                                     </button>
                                                     <button type="button" class="btn btn-sm btn-primary me-2" data-bs-toggle="modal" data-bs-target="#editTransaction{{ $transaction->id }}">
                                                         Edit
@@ -150,6 +157,7 @@
     @foreach($categories as $category)
         @foreach ($category->blueprintTransactions as $transaction)
             @include('layouts.add_normal_transaction', ['transaction' => $transaction, 'modalId' => "addNormalTransaction{$transaction->id}"])
+            @include('layouts.add_draft_transaction', ['transaction' => $transaction, 'modalId' => "addDraftTransaction{$transaction->id}"])
             @include('layouts.edit_blueprint_transaction', ['transaction' => $transaction, 'modalId' => "editTransaction{$transaction->id}"])
             @include('layouts.update_and_add_transaction', ['transaction' => $transaction, 'modalId' => "updateAndAddTransaction{$transaction->id}"])
             @include('layouts.delete_blueprint_transaction', ['transaction' => $transaction, 'modalId' => "deleteTransaction{$transaction->id}"])
@@ -157,7 +165,6 @@
     @endforeach
 @endpush
 
-<!-- Styles for Responsive Table -->
 <style>
     .pagination {
         flex-wrap: wrap;
@@ -200,7 +207,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const form = document.querySelector("#filter_transactions_form");
     const submitButton = form.querySelector("button[type='submit']");
 
-    // Toggle search section visibility
     toggleBtn.addEventListener('click', function () {
         const isShown = !searchSection.classList.contains('d-none');
         searchSection.classList.toggle('d-none');
@@ -209,7 +215,6 @@ document.addEventListener("DOMContentLoaded", function () {
             : '<i class="bi bi-x-circle"></i> Close';
     });
 
-    // Show search section on page load if filters exist
     const urlParams = new URLSearchParams(window.location.search);
     if (
         urlParams.has('name') ||
@@ -220,7 +225,6 @@ document.addEventListener("DOMContentLoaded", function () {
         toggleBtn.innerHTML = '<i class="bi bi-x-circle"></i> Close';
     }
 
-    // Add loading indicator to submit
     form.addEventListener("submit", function () {
         submitButton.disabled = true;
         submitButton.innerHTML = `
@@ -229,14 +233,12 @@ document.addEventListener("DOMContentLoaded", function () {
         `;
     });
 
-    // Initialize select2
     $('.select2').select2({
         width: '100%',
         placeholder: 'Select an option',
         allowClear: true
     });
 
-    // Collapse functionality for categories
     const categoryRows = document.querySelectorAll('.category-toggle');
     categoryRows.forEach(row => {
         row.addEventListener('click', function () {

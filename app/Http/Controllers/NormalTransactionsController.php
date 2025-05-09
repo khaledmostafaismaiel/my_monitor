@@ -6,6 +6,7 @@ use App\Models\Transaction;
 use Illuminate\Http\Request;
 use App\Http\Requests\NormalTransactionStoreRequest;
 use App\Http\Requests\NormalTransactionUpdateRequest;
+use App\Http\Requests\NormalTransactionTransferToDraftRequest;
 
 class NormalTransactionsController extends Controller
 {
@@ -94,5 +95,14 @@ class NormalTransactionsController extends Controller
         $transaction->delete();
 
         return redirect('/normal_transactions');
+    }
+
+    public function transferToDraft(NormalTransactionTransferToDraftRequest $request)
+    {
+        $transaction = Transaction::findOrFail($request->id);
+
+        $transaction->update(["type"=>"draft"]);
+
+        return redirect('/draft_transactions');
     }
 }

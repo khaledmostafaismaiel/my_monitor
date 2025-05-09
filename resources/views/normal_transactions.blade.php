@@ -147,6 +147,9 @@
                                 <button type="button" class="btn btn-sm btn-primary me-2" data-bs-toggle="modal" data-bs-target="#editTransaction{{ $transaction->id }}">
                                     Edit
                                 </button>
+                                <button type="button" class="btn btn-sm btn-dark me-2" data-bs-toggle="modal" data-bs-target="#transferNormalToDraft{{ $transaction->id }}">
+                                    Draft
+                                </button>
                                 <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteTransaction{{ $transaction->id }}">
                                     Delete
                                 </button>
@@ -175,6 +178,7 @@
 @push('modals')
     @foreach($transactions as $transaction)
         @include('layouts/edit_normal_transaction', ['transaction' => $transaction, 'modalId' => "editTransaction{$transaction->id}"])
+        @include('layouts/transfer_normal_to_draft', ['transaction' => $transaction, 'modalId' => "transferNormalToDraft{$transaction->id}"])
         @include('layouts/delete_normal_transaction', ['transaction' => $transaction, 'modalId' => "deleteTransaction{$transaction->id}"])
     @endforeach
 @endpush

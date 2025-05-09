@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 Route::resource('wallets', 'WalletsController')->middleware(['auth', 'verified']);
 
+Route::post('/normal_transactions/transfer_to_draft', 'NormalTransactionsController@transferToDraft')->middleware(['auth', 'verified']);
 Route::resource('normal_transactions', 'NormalTransactionsController')->middleware(['auth', 'verified']);
 
 Route::post('/draft_transactions/transfer_to_normal', 'DraftTransactionsController@transferToNormal')->middleware(['auth', 'verified']);

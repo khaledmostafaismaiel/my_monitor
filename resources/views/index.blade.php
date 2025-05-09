@@ -40,7 +40,7 @@
                             <td>
                                 <!-- Show Button (Redirect to "/") -->
                                 <a href="/month_years/{{ $monthYear->id }}" class="btn btn-sm btn-info me-2">
-                                    <i class="bi bi-eye"></i>
+                                    Show
                                 </a>
                             </td>
                         </tr>

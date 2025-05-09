@@ -74,10 +74,10 @@
                             </td>
                             <td>
                                 <button type="button" class="btn btn-sm btn-primary me-2" data-bs-toggle="modal" data-bs-target="#editWallet{{ $wallet->id }}">
-                                    <i class="bi bi-pencil-square"></i>
+                                    Edit
                                 </button>
                                 <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteWallet{{ $wallet->id }}">
-                                    <i class="bi bi-trash"></i>
+                                    Delete
                                 </button>
                             </td>
                         </tr>
@@ -158,7 +158,7 @@
             placeholder: 'Select an option',
             allowClear: true
         });
-        
+
         // Toggle search section visibility
         toggleBtn.addEventListener('click', function () {
             const isShown = !searchSection.classList.contains('d-none');

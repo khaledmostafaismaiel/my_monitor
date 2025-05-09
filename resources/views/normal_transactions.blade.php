@@ -145,10 +145,10 @@
                             </td>
                             <td>
                                 <button type="button" class="btn btn-sm btn-primary me-2" data-bs-toggle="modal" data-bs-target="#editTransaction{{ $transaction->id }}">
-                                    <i class="bi bi-pencil-square"></i>
+                                    Edit
                                 </button>
                                 <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteTransaction{{ $transaction->id }}">
-                                    <i class="bi bi-trash"></i>
+                                    Delete
                                 </button>
                             </td>
                         </tr>

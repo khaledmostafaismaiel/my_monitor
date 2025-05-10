@@ -54,10 +54,13 @@ class DraftTransactionsController extends Controller
             ->pluck('year')
             ->sortDesc();
 
+        $all_month_years = auth()->user()->family->monthYears()->orderBy("id", "Desc")
+            ->get();
+
         $all_wallets = auth()->user()->family->wallets()->orderBy("name")
             ->get();
 
-        return view('draft_transactions', compact('transactions', 'all_categories', 'users', 'uniqueYears', 'all_wallets'));
+        return view('draft_transactions', compact('transactions', 'all_categories', 'users', 'uniqueYears', 'all_wallets', 'all_month_years'));
     }
 
     public function store(DraftTransactionStoreRequest $request)

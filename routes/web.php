@@ -52,11 +52,27 @@ Route::get('/', function () {
             SUM(CASE WHEN transactions.direction = 'debit' THEN transactions.price * transactions.quantity ELSE 0 END) as debit
         ")
         ->groupBy('month_years.id')
-        ->orderByDesc('month_years.year')
-        ->orderByDesc('month_years.month')
+        ->orderByDesc('month_years.id')
         ->paginate(10);
 
-    return view('index', compact(["user", "monthYears"]));
+    $wallets = auth()->user()
+        ->family
+        ->normalTransactions()
+        ->whereIn('transactions.month_year_id', $monthYears->pluck('id')->toArray())
+        ->leftJoin('wallets', 'wallets.id', 'transactions.wallet_id')
+        ->selectRaw("
+            transactions.month_year_id,
+            wallets.id as wallet_id,
+            wallets.name as wallet_name,
+            SUM(CASE WHEN transactions.direction = 'credit' THEN transactions.price * transactions.quantity ELSE 0 END) as credit,
+            SUM(CASE WHEN transactions.direction = 'debit' THEN transactions.price * transactions.quantity ELSE 0 END) as debit
+        ")
+        ->groupBy('transactions.month_year_id', 'wallets.id', 'wallets.name')
+        ->orderBy('wallets.name')
+        ->get()
+        ->groupBy('month_year_id');
+
+        return view('index', compact(["user", "monthYears", "wallets"]));
 })->middleware(['auth', 'verified']);
 
 /*

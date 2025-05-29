@@ -43,16 +43,19 @@ class MonthYearsController extends Controller
             });
 
         $categories = auth()->user()
-        ->family->categories()
-        ->select('categories.*')
-        ->selectRaw('SUM(transactions.price * transactions.quantity) as total_spent')
-        ->join('transactions', 'categories.id', '=', 'transactions.category_id')
-        ->where('transactions.month_year_id', $monthYear->id)
-        ->where('transactions.type', 'normal')
-        ->groupBy('categories.id')
-        ->orderByDesc('total_spent')
-        ->with('normalTransactions')
-        ->paginate(10);
+            ->family->categories()
+            ->select('categories.*')
+            ->selectRaw('SUM(transactions.price * transactions.quantity) as total_spent')
+            ->join('transactions', 'transactions.category_id', 'categories.id')
+            ->where('transactions.month_year_id', $monthYear->id)
+            ->where('transactions.type', 'normal')
+            ->groupBy('categories.id')
+            ->orderByDesc('total_spent')
+            ->with(['normalTransactions' => function ($query) use ($monthYear) {
+                $query->where('month_year_id', $monthYear->id)
+                    ->where('type', 'normal');
+            }])
+            ->paginate(10);
 
         return view('month_year', compact('monthYear', 'categories', 'categorySummary'));
     }

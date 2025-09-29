@@ -21,9 +21,9 @@
                 <thead class="bg-primary text-white">
                     <tr>
                         <th>Month</th>
+                        <th>Balance</th>
                         <th>Credit</th>
                         <th>Debit</th>
-                        <th>Balance</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -35,11 +35,11 @@
                                     <i class="bi bi-plus-circle me-2"></i> {{ $monthYear->month_year }}
                                 </a>
                             </td>
-                            <td class="text-success fw-bold">+{{ number_format($monthYear->credit, 2) }}</td>
-                            <td class="text-danger fw-bold">-{{ number_format($monthYear->debit, 2) }}</td>
                             <td class="{{ ($monthYear->credit - $monthYear->debit) < 0 ? 'text-danger' : 'text-success' }} fw-bold">
                                 {{ number_format($monthYear->credit - $monthYear->debit, 2) }}
                             </td>
+                            <td class="text-success fw-bold">+{{ number_format($monthYear->credit, 2) }}</td>
+                            <td class="text-danger fw-bold">-{{ number_format($monthYear->debit, 2) }}</td>
                             <td>
                                 <!-- Show Button (Redirect to "/") -->
                                 <a href="/month_years/{{ $monthYear->id }}" class="btn btn-sm btn-info me-2">
@@ -54,20 +54,20 @@
                                     <thead class="table-light">
                                         <tr>
                                             <th>Wallet</th>
+                                            <th>Balance</th>
                                             <th>Credit</th>
                                             <th>Debit</th>
-                                            <th>Balance</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($wallets[$monthYear->id] ?? [] as $wallet)
                                             <tr>
                                                 <td class="fw-semibold text-truncate">{{ $wallet->wallet_name }}</td>
-                                                <td class="text-success fw-bold">+{{ number_format($wallet->credit, 2) }}</td>
-                                                <td class="text-danger fw-bold">-{{ number_format($wallet->debit, 2) }}</td>
                                                 <td class="{{ ($wallet->credit - $wallet->debit) < 0 ? 'text-danger' : 'text-success' }} fw-bold">
                                                     {{ number_format($wallet->credit - $wallet->debit, 2) }}
                                                 </td>
+                                                <td class="text-success fw-bold">+{{ number_format($wallet->credit, 2) }}</td>
+                                                <td class="text-danger fw-bold">-{{ number_format($wallet->debit, 2) }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>

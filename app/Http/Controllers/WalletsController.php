@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\WalletDestroyRequest;
 use App\Models\Wallet;
-use Illuminate\Http\Request;
 use App\Http\Requests\WalletStoreRequest;
 use App\Http\Requests\WalletUpdateRequest;
 
@@ -48,10 +48,8 @@ class WalletsController extends Controller
         return redirect('/wallets');
     }
 
-    public function destroy($id)
+    public function destroy(WalletDestroyRequest $request, Wallet $wallet)
     {
-        $wallet = Wallet::findOrFail($id);
-
         $wallet->delete();
 
         return redirect('/wallets');

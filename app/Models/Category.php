@@ -21,4 +21,13 @@ class Category extends Model
         return $this->hasMAny(NormalTransaction::class);
     }
 
+    public function draftTransactions()
+    {
+        return $this->hasMAny(DraftTransaction::class);
+    }
+
+    public function transactions()
+    {
+        return $this->hasMAny(Transaction::class);
+    }
 }

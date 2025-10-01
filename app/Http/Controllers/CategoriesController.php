@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CategoryDestroyRequest;
 use App\Models\Category;
-use Illuminate\Http\Request;
 use App\Http\Requests\CategoryStoreRequest;
 use App\Http\Requests\CategoryUpdateRequest;
 
@@ -53,9 +53,9 @@ class CategoriesController extends Controller
         }
     }
 
-    public function destroy($id)
+    public function destroy(CategoryDestroyRequest $request, Category $category)
     {
-        if(Category::findOrFail($id)->delete()){
+        if($category->delete()){
             session()->flash('message','Category deleted successfully');
         }else{
             session()->flash('message',"Category didn't deleted successfully");

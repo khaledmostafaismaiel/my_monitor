@@ -11,4 +11,13 @@ class Wallet extends Model
 
     protected $guarded = [] ;
 
+    public function transactions()
+    {
+        return $this->hasMAny(Transaction::class);
+    }
+
+    public function family()
+    {
+        return $this->belongsTo(Family::class);
+    }
 }

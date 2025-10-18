@@ -1,0 +1,6 @@
+documentation:
+  phpDoc:
+    requiredTags: ["@param", "@return"]
+    descriptionFirst: true
+  readme:
+    sections: ["Overview", "Installation", "Usage", "License"]

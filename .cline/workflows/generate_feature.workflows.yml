@@ -1,0 +1,160 @@
+# .cline/workflows.yml
+workflows:
+  extends: ./rules.yml
+  generate-feature:
+    description: >
+      Generate a full feature/module (migration, model, validators, invokable actions,
+      GraphQL types/queries/mutations (optional), and union types). Intended for Laravel + Lighthouse (GraphQL).
+    inputs:
+      - name: ModuleName
+        description: "Singular module name in PascalCase (e.g., Book, RatingScale)"
+        required: true
+      - name: ModulePlural
+        description: "Plural module name in camel or PascalCase (e.g., Books, RatingScales). If omitted, auto-pluralize."
+        required: false
+      - name: DatabaseSchema
+        description: >
+          "JSON or YAML describing fields, types, nullable, default, foreign keys, indices, and submodules.
+           Example:
+           - name: 'title' type: 'string' nullable: false
+           - name: 'author_id' type: 'unsignedBigInteger' foreign: {table: users, column: id, onDelete: cascade} index: true"
+        required: true
+      - name: UsesGraphQL
+        description: "true|false — whether project uses GraphQL. If not provided, Cline must ask."
+        required: false
+      - name: Submodules
+        description: "Optional list of submodules (features) related to this module."
+        required: false
+    steps:
+      - name: NormalizeInputs
+        action: "Normalize ModuleName/ModulePlural, derive moduleNameCamel, table_name (snake plural)."
+        details: |
+          ModuleNamePascal: {ModuleName}
+          moduleNameCamel: lowerCamelCase({ModuleName})
+          table_name: snake_case_plural({ModuleName})
+          migrationClassName: Create{ModulePlural or pluralize(ModuleName)}Table
+      - name: GenerateMigration
+        action: |
+          - Create migration file at database/migrations/{timestamp}_create_{table_name}_table.php
+          - Generate up() with Schema::create('{table_name}', function (Blueprint $table) { ... })
+            - For each field in DatabaseSchema:
+              - Add column type, nullable, default, comment if provided
+              - If field.foreign present: add ->unsignedBigInteger(...) or matching type then:
+                $table->foreign('{field.name}')->references('{field.foreign.column}')->on('{field.foreign.table}')->onDelete('{field.foreign.onDelete or restrict}');
+              - Add indices for fields with index: true
+          - Ensure proper indexing for FK columns (->index()) and composite indices if requested.
+          - Add down() that drops foreign keys first, drops table safely: Schema::dropIfExists('{table_name}');
+          - Add docblock at top with description and developer-provided schema JSON.
+        files:
+          - path: database/migrations/{timestamp}_create_{table_name}_table.php
+      - name: GenerateModel
+        action: |
+          - Create Eloquent Model at app/Models/{ModuleName}.php
+          - Apply $fillable for non-protected fields (from DatabaseSchema except id, timestamps).
+          - Add relationships:
+            - if column ends with _id => belongsTo(RelatedModel::class, '...').
+            - if submodule describes relation => hasMany / morphMany as applicable.
+          - Add casts as per types (date, json, integer).
+          - Ensure proper namespacing and PHPDoc comments for properties and relations.
+        files:
+          - path: app/Models/{ModuleName}.php
+      - name: GenerateValidatorClasses
+        action: |
+          - For each operation create a FormRequest / Validator class under app/Http/Requests/{ModuleName}/
+            - {UpdateOrCreate}{ModuleName}Request.php
+            - {Delete}{ModuleName}Request.php
+          - Fill rules based on DatabaseSchema:
+            - string => 'required|string|max:...'
+            - text => 'nullable|string'
+            - integer => 'required|integer'
+            - unsignedBigInteger => 'required|exists:{foreign.table},{foreign.column}'
+            - unique rules applied when needed (use sometimesRule for update)
+          - Add messages() skeleton and authorize() returning true (team can adjust).
+        files:
+          - path: app/Http/Requests/{ModuleName}/{UpdateOrCreate}{ModuleName}Request.php
+          - path: app/Http/Requests/{ModuleName}/{Delete}{ModuleName}Request.php
+      - name: CreateInvokableActions
+        action: |
+          - Create invokable classes (single-action) under app/Actions/{ModuleName}/
+            - {ModuleName}ShowAction.php        (for single query)
+            - {ModulePlural}IndexAction.php     (for list query, handle pagination)
+            - UpdateOrCreate{ModuleName}Action.php
+            - Delete{ModuleName}Action.php
+          - Each class should be invokable: public function __invoke({RequestClass} $request): ResponseType
+          - Use constructor injection for dependencies (Repositories, Services)
+          - Each action includes PHPDoc, typed args, and returns Eloquent Resource (or typed union for mutations).
+        files:
+          - path: app/Actions/{ModuleName}/{*}.php
+      - name: GenerateGraphQLIfUsed
+        condition: "UsesGraphQL == true OR ask user 'This project uses GraphQL? (yes/no)'."
+        action: |
+          - Create GraphQL Type in graphql/schema/{types}/{ModuleName}Type.graphql (or project convention)
+          - Create union type for mutations:
+            - UpdateOrCreate{ModuleName}Union = {ModuleName} | GeneralException
+            - Delete{ModuleName}Union = {ModuleName} | GeneralException
+          - Create queries:
+            - type Query {
+                {moduleNameCamel}(input: {moduleNameCamel}ShowInput!): {ModuleName} @auth @can(if: "can.view", with: "{injectedArgs}") @throttle(limit: 1, decay: 1)
+                {modulePluralCamel}(input: {moduleNamePlural}IndexInput): {ModuleName} @paginate(type: "paginator") @auth @can(if: "can.viewAny", with: "{injectedArgs}") @throttle(limit: 1, decay: 1)
+              }
+          - Create mutations:
+            - type Mutation {
+                updateOrCreate{ModuleName}(input: UpdateOrCreate{ModuleName}Input!): UpdateOrCreate{ModuleName}Union @auth @can(if: "can.updateOrCreate", with: "{injectedArgs}") @throttle(limit: 1, decay: 1) @validator(class: "App\\Http\\Requests\\{ModuleName}\\UpdateOrCreate{ModuleName}Request")
+                delete{ModuleName}(input: Delete{ModuleName}Input!): Delete{ModuleName}Union @auth @can(if: "can.delete", with: "{injectedArgs}") @throttle(limit: 1, decay: 1) @validator(class: "App\\Http\\Requests\\{ModuleName}\\Delete{ModuleName}Request")
+              }
+          - Ensure inputs are created:
+            - UpdateOrCreate{ModuleName}Input, Delete{ModuleName}Input, {moduleNameCamel}ShowInput, {moduleNamePlural}IndexInput
+            - Input naming convention: {OperationName}Input
+          - Each GraphQL resolver points to corresponding invokable action class (use path app/Actions/{ModuleName}::{class}).
+        files:
+          - path: graphql/schema/{ModuleName}.graphql
+          - path: graphql/schema/unions/{*}.graphql
+          - path: graphql/inputs/{*}.graphql
+      - name: CreateUnionFiles
+        action: |
+          - For each mutation create union file under graphql/schema/unions/
+            - UpdateOrCreate{ModuleName}Union.graphql
+            - Delete{ModuleName}Union.graphql
+          - Include comments and docblocks.
+      - name: PoliciesAndCanArgs
+        action: |
+          - Suggest or scaffold Policy methods if missing:
+            - view, viewAny, updateOrCreate, delete
+          - Ensure @can directives include injected args so policy gets required model/input values.
+            - Example: @can(if: "can.updateOrCreate", with: "{ 'input': $input }")
+      - name: DocumentationAndDocblocks
+        action: |
+          - Add top-of-file PHPDoc for each generated file describing purpose, author, creation date.
+          - For GraphQL fields add comments describing each field.
+      - name: TestsScaffold
+        action: |
+          - Create test skeletons under tests/Feature/{ModuleName}Test.php and tests/Unit/{ModuleName}Test.php
+          - Follow AAA pattern. Each test file uses setUp() and has sample tests for index, show, updateOrCreate, delete.
+      - name: FinalChecks
+        action: |
+          - Run static checks if available (phpcs --standard=PSR12), lint, and run phpunit (if CI available).
+          - Print a summary of created files and suggested next steps (adjust validators/messages, fill injections).
+    examples:
+      - trigger: "create feature"
+        userPrompt: >
+          "create rating scales feature: DB fields: id, scale_name:string required, description:text nullable,
+           min_value:int default 1, max_value:int default 5, created_by_id:unsignedBigInteger -> users(id) onDelete cascade.
+           Submodules: options (id, rating_scale_id, label:string, value:int). UsesGraphQL: true"
+        outcome: "Generated migration, model, validators, invokable actions, GraphQL types/queries/mutations, unions, and tests."
+    naming_conventions:
+      - MigrationClass: Create{ModulePlural}Table
+      - TableName: snake_case_plural({ModuleName})
+      - Model: app/Models/{ModuleName}.php
+      - InvokableActions: app/Actions/{ModuleName}/{ActionName}Action.php
+      - Validators: app/Http/Requests/{ModuleName}/{Operation}{ModuleName}Request.php
+      - GraphQLType: graphql/schema/types/{ModuleName}.graphql
+      - UnionName: {Operation}{ModuleName}Union (e.g., UpdateOrCreateBookUnion)
+    notes: |
+      - The workflow must parse the provided DatabaseSchema input and produce concrete column definitions and validation rules.
+      - If UsesGraphQL not provided, the AI must ask the user: "Does this project use GraphQL? (yes/no)". If user answers yes, proceed with GraphQL generation.
+      - All generated PHP must comply with PSR-12 (if available in Rules).
+      - All generated classes/files must include PHPDoc and inline comments explaining generated relationships, FKs, indices and validation choices.
+      - For policy @can directives, the workflow injects the input in a way the policy can access (e.g., with: "{'input': $input}" or a structure matching your policy signature).
+      - Throttle directive uses limit:1 decay:1 (1 request per second).
+      - Mutations return a union: main type | GeneralException. The workflow also scaffolds GeneralException if not present.
+      - Adjust any project-specific folder conventions where necessary.

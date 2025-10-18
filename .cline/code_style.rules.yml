@@ -1,0 +1,19 @@
+formatter: psr12
+
+# --- General coding conventions ---
+style:
+  php:
+    standard: PSR12
+    details:
+      indentation: 4 spaces
+      maxLineLength: 120
+      braces:
+        classOpeningBraceOnNewLine: true
+        functionOpeningBraceOnNewLine: true
+      blankLines:
+        beforeReturn: true
+        afterNamespace: 1
+  js:
+    standard: eslint
+  css:
+    formatter: prettier

@@ -30,14 +30,87 @@
                         @foreach($categories as $category)
                             <tr class="table-secondary">
                                 <td colspan="5" class="fw-bold text-start">
-                                    <a href="javascript:void(0);" class="category-toggle d-flex align-items-center"
-                                        data-target="#category{{ $category->id }}">
-                                        <i class="bi bi-plus-circle me-2"></i>
-                                        {{ $category->name }}
-                                    </a>
+                                    <div class="d-flex flex-column">
+                                        <a href="javascript:void(0);" class="category-toggle d-flex align-items-center"
+                                            data-target="#category{{ $category->id }}">
+                                            <i class="bi bi-plus-circle me-2"></i>
+                                            {{ $category->name }}
+                                        </a>
+
+                                        @if($category->limit)
+                                            @php
+                                                $percentage = ($category->total_spent / $category->limit) * 100;
+                                                $overAmount = $category->total_spent - $category->limit;
+
+                                                if ($overAmount > 0) {
+                                                    $progressColor = 'danger';
+                                                } elseif ($percentage >= 100 || $percentage >= 80) {
+                                                    $progressColor = 'warning';
+                                                } else {
+                                                    $progressColor = 'success';
+                                                }
+                                            @endphp
+                                            <div class="mt-2">
+                                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                                    <small class="text-muted">
+                                                        <i class="bi bi-speedometer2"></i> Limit: E£
+                                                        {{ number_format($category->limit, 2) }}
+                                                    </small>
+                                                    <small class="fw-semibold text-{{ $progressColor }}">
+                                                        {{ number_format($percentage, 1) }}%
+                                                    </small>
+                                                </div>
+                                                <div class="progress" style="height: 8px;">
+                                                    <div class="progress-bar bg-{{ $progressColor }}" role="progressbar"
+                                                        style="width: {{ min($percentage, 100) }}%"
+                                                        aria-valuenow="{{ $percentage }}" aria-valuemin="0" aria-valuemax="100">
+                                                    </div>
+                                                </div>
+                                                @if($percentage >= 100)
+                                                    @php
+                                                        $overAmount = $category->total_spent - $category->limit;
+                                                        $overLimitColor = $overAmount == 0 ? 'warning' : 'danger';
+                                                    @endphp
+                                                    <small class="text-{{ $overLimitColor }}">
+                                                        <i class="bi bi-exclamation-triangle-fill"></i>
+                                                        {{ $overAmount == 0 ? 'At limit' : 'Over limit by E£ ' . number_format($overAmount, 2) }}
+                                                    </small>
+                                                @endif
+                                            </div>
+                                        @else
+                                            <small class="text-muted mt-1">
+                                                <i class="bi bi-infinity"></i> No limit set
+                                            </small>
+                                        @endif
+                                    </div>
                                 </td>
                                 <td class="fw-bold text-start">
-                                    E£ {{ $category->total_spent }}
+                                    <div class="d-flex flex-column align-items-start">
+                                        <span class="mb-1">E£ {{ number_format($category->total_spent, 2) }}</span>
+                                        @if($category->limit)
+                                            @php
+                                                $percentage = ($category->total_spent / $category->limit) * 100;
+                                                $overAmount = $category->total_spent - $category->limit;
+                                            @endphp
+                                            @if($overAmount > 0)
+                                                <span class="badge bg-danger">
+                                                    <i class="bi bi-exclamation-circle"></i> Over Budget
+                                                </span>
+                                            @elseif($percentage >= 100)
+                                                <span class="badge bg-warning text-dark">
+                                                    <i class="bi bi-dash-circle"></i> At Limit
+                                                </span>
+                                            @elseif($percentage >= 80)
+                                                <span class="badge bg-warning text-dark">
+                                                    <i class="bi bi-exclamation-triangle"></i> Near Limit
+                                                </span>
+                                            @else
+                                                <span class="badge bg-success">
+                                                    <i class="bi bi-check-circle"></i> Within Budget
+                                                </span>
+                                            @endif
+                                        @endif
+                                    </div>
                                 </td>
                             </tr>
 
@@ -60,7 +133,8 @@
                                                 <tr>
                                                     <td class="fw-bold"></td>
                                                     <td class="fw-semibold text-truncate">{{ $transaction->name }}</td>
-                                                    <td class="fw-bold">E£ {{ number_format($transaction->price * $transaction->quantity, 2) }}</td>
+                                                    <td class="fw-bold">E£
+                                                        {{ number_format($transaction->price * $transaction->quantity, 2) }}</td>
                                                     <td class="fw-bold">E£ {{ number_format($transaction->price, 2) }}</td>
                                                     <td class="fw-bold">{{ number_format($transaction->quantity, 2) }}</td>
                                                     <td>
@@ -77,7 +151,8 @@
                                                         @endif
                                                     </td>
                                                     <td class="fw-bold">E£
-                                                        {{ number_format($transaction->quantity * $transaction->price, 2) }}</td>
+                                                        {{ number_format($transaction->quantity * $transaction->price, 2) }}
+                                                    </td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -128,6 +203,29 @@
             .table thead {
                 font-size: 14px;
             }
+        }
+
+        /* Custom soft amber/orange colors for better eye comfort */
+        .text-warning {
+            color: #f59e0b !important;
+            /* Softer amber instead of bright yellow */
+        }
+
+        .bg-warning {
+            background-color: #fbbf24 !important;
+            /* Soft amber background */
+        }
+
+        .progress-bar.bg-warning {
+            background-color: #f59e0b !important;
+            /* Amber progress bar */
+        }
+
+        .badge.bg-warning {
+            background-color: #fbbf24 !important;
+            /* Soft amber badge */
+            color: #78350f !important;
+            /* Dark brown text for better contrast */
         }
     </style>
 

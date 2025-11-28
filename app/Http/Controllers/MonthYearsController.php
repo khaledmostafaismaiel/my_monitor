@@ -18,9 +18,9 @@ class MonthYearsController extends Controller
 
         MonthYear::updateOrCreate(
             [
-                'family_id'=> auth()->user()->family_id,
-                'year'=> $year,
-                'month'=> $month,
+                'family_id' => auth()->user()->family_id,
+                'year' => $year,
+                'month' => $month,
             ]
         );
 
@@ -51,11 +51,13 @@ class MonthYearsController extends Controller
             ->where('transactions.type', 'normal')
             ->groupBy('categories.id')
             ->orderByDesc('total_spent')
-            ->with(['normalTransactions' => function ($query) use ($monthYear) {
-                $query->where('month_year_id', $monthYear->id)
-                    ->where('type', 'normal');
-            }])
-            ->paginate(10);
+            ->with([
+                'normalTransactions' => function ($query) use ($monthYear) {
+                    $query->where('month_year_id', $monthYear->id)
+                        ->where('type', 'normal');
+                }
+            ])
+            ->get();
 
         return view('month_year', compact('monthYear', 'categories', 'categorySummary'));
     }

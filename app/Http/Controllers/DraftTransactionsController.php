@@ -13,7 +13,7 @@ class DraftTransactionsController extends Controller
 
     public function index()
     {
-        $transactions = auth()->user()->family
+        $query = auth()->user()->family
             ->draftTransactions()
             ->when(\request("name") != "", function ($query) {
                 $query->where("name", "LIKE", "%" . \request("name") . "%");
@@ -35,8 +35,23 @@ class DraftTransactionsController extends Controller
             })
             ->when(\request("wallet_id") != "", function ($query) {
                 $query->where("wallet_id", \request("wallet_id"));
-            })
-            ->with('category', 'user')
+            });
+
+        // Clone query for totals to avoid modifying the base query for pagination
+        $totalsQuery = clone $query;
+        $transactionsForTotals = $totalsQuery->get();
+
+        $total_drafts_count = $transactionsForTotals->count();
+
+        $total_estimated_income = $transactionsForTotals->where('direction', 'credit')->sum(function ($t) {
+            return $t->price * $t->quantity;
+        });
+
+        $total_estimated_expense = $transactionsForTotals->where('direction', 'debit')->sum(function ($t) {
+            return $t->price * $t->quantity;
+        });
+
+        $transactions = $query->with('category', 'user')
             ->orderBy("date", "desc")
             ->paginate(10);
 
@@ -60,7 +75,17 @@ class DraftTransactionsController extends Controller
         $all_wallets = auth()->user()->family->wallets()->orderBy("name")
             ->get();
 
-        return view('draft_transactions', compact('transactions', 'all_categories', 'users', 'uniqueYears', 'all_wallets', 'all_month_years'));
+        return view('draft_transactions', compact(
+            'transactions',
+            'all_categories',
+            'users',
+            'uniqueYears',
+            'all_wallets',
+            'all_month_years',
+            'total_drafts_count',
+            'total_estimated_income',
+            'total_estimated_expense'
+        ));
     }
 
     public function store(DraftTransactionStoreRequest $request)
@@ -69,9 +94,9 @@ class DraftTransactionsController extends Controller
             array_merge(
                 $request->toArray(),
                 [
-                    'user_id'=> auth()->id(),
-                    'family_id'=> auth()->user()->family_id,
-                    'type'=> 'draft',
+                    'user_id' => auth()->id(),
+                    'family_id' => auth()->user()->family_id,
+                    'type' => 'draft',
                 ]
             )
         );

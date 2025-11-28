@@ -12,7 +12,7 @@ class NormalTransactionsController extends Controller
 {
     public function index()
     {
-        $transactions = auth()->user()->family
+        $query = auth()->user()->family
             ->normalTransactions()
             ->when(\request("name") != "", function ($query) {
                 $query->where("name", "LIKE", "%" . \request("name") . "%");
@@ -34,8 +34,23 @@ class NormalTransactionsController extends Controller
             })
             ->when(\request("wallet_id") != "", function ($query) {
                 $query->where("wallet_id", \request("wallet_id"));
-            })
-            ->with('category', 'user')
+            });
+
+        // Clone query for totals to avoid modifying the base query for pagination
+        $totalsQuery = clone $query;
+        $transactionsForTotals = $totalsQuery->get();
+
+        $total_income = $transactionsForTotals->where('direction', 'credit')->sum(function ($t) {
+            return $t->price * $t->quantity;
+        });
+
+        $total_expense = $transactionsForTotals->where('direction', 'debit')->sum(function ($t) {
+            return $t->price * $t->quantity;
+        });
+
+        $total_balance = $total_income - $total_expense;
+
+        $transactions = $query->with('category', 'user')
             ->orderBy("date", "desc")
             ->paginate(10);
 
@@ -60,7 +75,17 @@ class NormalTransactionsController extends Controller
         $all_month_years = auth()->user()->family->monthYears()->orderBy("id", "Desc")
             ->get();
 
-        return view('normal_transactions', compact('transactions', 'all_categories', 'users', 'uniqueYears', 'all_wallets', 'all_month_years'));
+        return view('normal_transactions', compact(
+            'transactions',
+            'all_categories',
+            'users',
+            'uniqueYears',
+            'all_wallets',
+            'all_month_years',
+            'total_income',
+            'total_expense',
+            'total_balance'
+        ));
     }
 
     public function store(NormalTransactionStoreRequest $request)
@@ -69,9 +94,9 @@ class NormalTransactionsController extends Controller
             array_merge(
                 $request->toArray(),
                 [
-                    'user_id'=> auth()->id(),
-                    'family_id'=> auth()->user()->family_id,
-                    'type'=> 'normal',
+                    'user_id' => auth()->id(),
+                    'family_id' => auth()->user()->family_id,
+                    'type' => 'normal',
                 ]
             )
         );
@@ -101,7 +126,7 @@ class NormalTransactionsController extends Controller
     {
         $transaction = Transaction::findOrFail($request->id);
 
-        $transaction->update(["type"=>"draft"]);
+        $transaction->update(["type" => "draft"]);
 
         return redirect('/draft_transactions');
     }

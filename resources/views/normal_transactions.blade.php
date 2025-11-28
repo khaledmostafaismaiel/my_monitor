@@ -2,23 +2,63 @@
 
 @section('content')
 
-<div class="container d-flex justify-content-center align-items-center py-5">
-    <div class="card p-4 shadow-lg w-100" style="max-width: 900px; background: rgba(255, 255, 255, 0.9); border-radius: 12px;">
-        <h2 class="text-center fw-bold mb-4">
-            <a href="/normal_transactions" class="text-dark text-decoration-none" style="transition: 0.2s;">
-                Normal Transactions
-            </a>
-        </h2>
+<div class="container d-flex justify-content-center align-items-center py-5 my-4">
+    <div class="card p-4 shadow-lg w-100" style="max-width: 1100px; background: rgba(255, 255, 255, 0.95); border-radius: 12px;">
+        <div class="text-center mb-4">
+            <h1 class="fw-bold text-primary mb-2">
+                <i class="bi bi-receipt"></i> Normal Transactions
+            </h1>
+            <p class="text-muted">Track your daily income and expenses</p>
+        </div>
 
-        <!-- Toggle Search Button -->
-        <div class="d-flex justify-content-end mb-3">
+        <!-- Summary Cards -->
+        <div class="row g-3 mb-4">
+            <!-- Total Balance -->
+            <div class="col-md-4">
+                <div class="card border-0 bg-primary bg-opacity-10 h-100">
+                    <div class="card-body text-center">
+                        <i class="bi bi-wallet2 text-primary fs-2 mb-2"></i>
+                        <h6 class="text-muted mb-1">Net Balance</h6>
+                        <h4 class="fw-bold text-primary mb-0">E£ {{ number_format($total_balance, 2) }}</h4>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Total Income -->
+            <div class="col-md-4">
+                <div class="card border-0 bg-success bg-opacity-10 h-100">
+                    <div class="card-body text-center">
+                        <i class="bi bi-arrow-down-circle text-success fs-2 mb-2"></i>
+                        <h6 class="text-muted mb-1">Total Income</h6>
+                        <h4 class="fw-bold text-success mb-0">E£ {{ number_format($total_income, 2) }}</h4>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Total Expenses -->
+            <div class="col-md-4">
+                <div class="card border-0 bg-danger bg-opacity-10 h-100">
+                    <div class="card-body text-center">
+                        <i class="bi bi-arrow-up-circle text-danger fs-2 mb-2"></i>
+                        <h6 class="text-muted mb-1">Total Expenses</h6>
+                        <h4 class="fw-bold text-danger mb-0">E£ {{ number_format($total_expense, 2) }}</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Actions Bar -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
             <button type="button" class="btn btn-outline-secondary" id="toggleSearchBtn">
                 <i class="bi bi-search"></i> Search
+            </button>
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addNormalTransaction">
+                <i class="bi bi-plus-lg"></i> Add Transaction
             </button>
         </div>
 
         <!-- Search and Filter Section -->
-        <div id="searchSection" class="d-none mb-4">
+        <div id="searchSection" class="d-none mb-4 p-3 bg-light rounded shadow-sm">
             <form method="GET" action="/normal_transactions" id="filter_transactions_form">
                 <div class="row g-3 align-items-end">
                     <!-- Search Box -->
@@ -40,7 +80,7 @@
                     <!-- Category Filter -->
                     <div class="col-md-3 col-sm-6">
                         <label class="form-label fw-semibold">Category</label>
-                        <select name="category_id" class="form-select">
+                        <select name="category_id" class="form-select select2">
                             <option value="">All Categories</option>
                             @foreach($all_categories as $category)
                                 <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>
@@ -62,7 +102,6 @@
                             @endforeach
                         </select>
                     </div>
-
 
                     <!-- Year Filter -->
                     <div class="col-md-2 col-sm-6">
@@ -101,76 +140,83 @@
             </form>
         </div>
 
-        <!-- Add Transaction Button -->
-        <div class="col-lg-4 col-md-6 col-sm-6 d-grid mb-4">
-            <button type="button" class="btn btn-success px-4" data-bs-toggle="modal" data-bs-target="#addNormalTransaction">
-                <i class="bi bi-plus-lg"></i> Add
-            </button>
-        </div>
-        @include('layouts/add_normal_transaction', ['modalId' => "addNormalTransaction"])
-
         <div class="table-responsive">
-            <table class="table table-striped table-hover text-center align-middle">
+            <table class="table table-hover text-center align-middle mb-0">
                 <thead class="bg-primary text-white">
                     <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Price Per Unit</th>
-                        <th scope="col">Quantity</th>
-                        <th scope="col">Category</th>
-                        <th scope="col">Date</th>
-                        <th scope="col">Direction</th>
-                        <th scope="col">Actions</th>
+                        <th class="py-3">Name</th>
+                        <th class="py-3">Total</th>
+                        <th class="py-3">Unit Price</th>
+                        <th class="py-3">Qty</th>
+                        <th class="py-3">Category</th>
+                        <th class="py-3">Date</th>
+                        <th class="py-3">Direction</th>
+                        <th class="py-3">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse($transactions as $transaction)
-                        <tr>
-                            <td class="fw-semibold text-truncate">{{ $transaction->name }}</td>
-                            <td class="fw-bold">E£ {{ number_format($transaction->price * $transaction->quantity, 2) }}</td>
-                            <td class="fw-bold">E£ {{ number_format($transaction->price, 2) }}</td>
-                            <td class="fw-bold">{{ number_format($transaction->quantity, 2) }}</td>
-                            <td>{{ $transaction->category->name }}</td>
-                            <td>{{ date('D d-M-Y', strtotime($transaction->date)) }}</td>
-                            <td>
+                        <tr class="transaction-row">
+                            <td class="fw-semibold text-start ps-4" data-label="Name">
+                                <div class="d-flex align-items-center">
+                                    <div class="rounded-circle bg-primary bg-opacity-10 p-2 me-3 text-primary">
+                                        <i class="bi bi-receipt"></i>
+                                    </div>
+                                    {{ $transaction->name }}
+                                </div>
+                            </td>
+                            <td class="fw-bold" data-label="Total">E£ {{ number_format($transaction->price * $transaction->quantity, 2) }}</td>
+                            <td class="text-muted" data-label="Unit Price">E£ {{ number_format($transaction->price, 2) }}</td>
+                            <td data-label="Quantity">{{ number_format($transaction->quantity, 2) }}</td>
+                            <td data-label="Category">
+                                <span class="badge bg-info text-dark">{{ $transaction->category->name }}</span>
+                            </td>
+                            <td data-label="Date">{{ date('d M Y', strtotime($transaction->date)) }}</td>
+                            <td data-label="Direction">
                                 @if ($transaction->direction === 'credit')
-                                    <span class="badge bg-success">
+                                    <span class="badge rounded-pill bg-success px-3 py-2">
                                         <i class="bi bi-arrow-down-circle me-1"></i> Credit
                                     </span>
                                 @elseif ($transaction->direction === 'debit')
-                                    <span class="badge bg-danger">
+                                    <span class="badge rounded-pill bg-danger px-3 py-2">
                                         <i class="bi bi-arrow-up-circle me-1"></i> Debit
                                     </span>
                                 @else
                                     <span class="badge bg-secondary">N/A</span>
                                 @endif
                             </td>
-                            <td>
-                                <button type="button" class="btn btn-sm btn-primary me-2" data-bs-toggle="modal" data-bs-target="#editTransaction{{ $transaction->id }}">
-                                    Edit
-                                </button>
-                                <button type="button" class="btn btn-sm btn-dark me-2" data-bs-toggle="modal" data-bs-target="#transferNormalToDraft{{ $transaction->id }}">
-                                    Draft
-                                </button>
-                                <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteTransaction{{ $transaction->id }}">
-                                    Delete
-                                </button>
+                            <td data-label="Actions">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editTransaction{{ $transaction->id }}" title="Edit">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-outline-dark" data-bs-toggle="modal" data-bs-target="#transferNormalToDraft{{ $transaction->id }}" title="Draft">
+                                        <i class="bi bi-file-earmark-text"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteTransaction{{ $transaction->id }}" title="Delete">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="text-muted">No normal transactions found.</td>
+                            <td colspan="8" class="text-center py-5">
+                                <div class="text-muted">
+                                    <i class="bi bi-receipt fs-1 d-block mb-3 opacity-50"></i>
+                                    <h5>No transactions found</h5>
+                                    <p class="mb-0">Add a new transaction to get started</p>
+                                </div>
+                            </td>
                         </tr>
                     @endforelse
                 </tbody>
             </table>
         </div>
 
-        <!-- Centered Pagination -->
-        <div class="d-flex justify-content-center mt-3">
-            <nav aria-label="Page navigation">
-                {{ $transactions->appends(request()->query())->links() }}
-            </nav>
+        <!-- Pagination -->
+        <div class="d-flex justify-content-center mt-4">
+            {{ $transactions->appends(request()->query())->links() }}
         </div>
     </div>
 </div>
@@ -178,6 +224,8 @@
 @endsection
 
 @push('modals')
+    @include('layouts/add_normal_transaction', ['modalId' => "addNormalTransaction"])
+
     @foreach($transactions as $transaction)
         @include('layouts/edit_normal_transaction', ['transaction' => $transaction, 'modalId' => "editTransaction{$transaction->id}"])
         @include('layouts/transfer_normal_to_draft', ['transaction' => $transaction, 'modalId' => "transferNormalToDraft{$transaction->id}"])
@@ -192,31 +240,95 @@
         justify-content: center;
     }
 
-    .card {
+    /* Only apply hover effects to page cards, not modals */
+    .container > .card {
         margin-top: 20px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
-    .table-responsive {
-        overflow-x: auto;
+    .container > .card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.15) !important;
     }
 
-    table {
-        min-width: 600px;
+    /* Ensure modal stays stable */
+    .modal-content {
+        transform: none !important;
+        transition: none !important;
+        animation: none !important;
     }
 
-    th, td {
-        white-space: nowrap;
-        word-wrap: break-word;
-        min-width: 100px;
+    .transaction-row {
+        transition: background-color 0.2s ease;
+    }
+
+    .transaction-row:hover {
+        background-color: rgba(13, 110, 253, 0.05) !important;
+    }
+
+    .btn-group .btn {
+        transition: all 0.2s ease;
+    }
+
+    .btn-group .btn:hover {
+        transform: translateY(-2px);
+    }
+
+    /* Fade-in animation */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .container > .card {
+        animation: fadeIn 0.5s ease;
     }
 
     @media (max-width: 768px) {
-        th, td {
-            min-width: 80px;
+        .table thead { display: none; }
+        
+        .transaction-row {
+            display: block;
+            margin-bottom: 1rem;
+            background: #fff;
+            border: 1px solid #e9ecef;
+            border-radius: 0.5rem;
+            padding: 1.25rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
         }
 
-        .table thead {
-            font-size: 14px;
+        .transaction-row td {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: none;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #f8f9fa;
+        }
+
+        .transaction-row td:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+            margin-top: 0.5rem;
+            justify-content: center;
+        }
+
+        .transaction-row td::before {
+            content: attr(data-label);
+            font-weight: 600;
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-right: auto;
+        }
+
+        /* Special handling for the name column */
+        .transaction-row td:first-child {
+            flex-direction: row;
+            justify-content: space-between;
+        }
+        
+        .transaction-row td:first-child .d-flex {
+            margin-left: auto;
         }
     }
 </style>
@@ -230,17 +342,33 @@
         const submitButton = form.querySelector("button[type='submit']");
 
         // Initialize Select2 for dropdowns
-        $('select').select2({
-            width: '100%'  // Ensures full width of the select element
+        $('.select2').select2({
+            width: '100%',
+            placeholder: 'Select an option',
+            allowClear: true,
+            dropdownParent: $('#searchSection')
         });
 
         // Toggle search section visibility
         toggleBtn.addEventListener('click', function () {
-            const isShown = !searchSection.classList.contains('d-none');
-            searchSection.classList.toggle('d-none');
-            toggleBtn.innerHTML = isShown
-                ? '<i class="bi bi-search"></i> Search'
-                : '<i class="bi bi-x-circle"></i> Close';
+            const isHidden = searchSection.classList.contains('d-none');
+            if (isHidden) {
+                searchSection.classList.remove('d-none');
+                // Small animation for opening
+                searchSection.style.opacity = '0';
+                searchSection.style.transform = 'translateY(-10px)';
+                searchSection.style.transition = 'all 0.3s ease';
+                setTimeout(() => {
+                    searchSection.style.opacity = '1';
+                    searchSection.style.transform = 'translateY(0)';
+                }, 10);
+                toggleBtn.innerHTML = '<i class="bi bi-x-circle"></i> Close';
+                toggleBtn.classList.replace('btn-outline-secondary', 'btn-outline-danger');
+            } else {
+                searchSection.classList.add('d-none');
+                toggleBtn.innerHTML = '<i class="bi bi-search"></i> Search';
+                toggleBtn.classList.replace('btn-outline-danger', 'btn-outline-secondary');
+            }
         });
 
         // Show search section on page load if filters exist
@@ -255,6 +383,7 @@
         ) {
             searchSection.classList.remove('d-none');
             toggleBtn.innerHTML = '<i class="bi bi-x-circle"></i> Close';
+            toggleBtn.classList.replace('btn-outline-secondary', 'btn-outline-danger');
         }
 
         // Add loading indicator to submit

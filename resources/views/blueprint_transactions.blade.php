@@ -1,41 +1,44 @@
 @extends('layouts.master_layout')
 
 @section('content')
-<div class="container d-flex justify-content-center align-items-center py-5">
-    <div class="card p-4 shadow-lg w-100" style="max-width: 900px; background: rgba(255, 255, 255, 0.9); border-radius: 12px;">
-        <h2 class="text-center fw-bold mb-4">
-            <a href="/blueprint_transactions" class="text-dark text-decoration-none" style="transition: 0.2s;">
-                Blueprint Transactions
-            </a>
-        </h2>
-
-        <!-- Toggle Search Button -->
-        <div class="d-flex justify-content-end mb-3">
-            <button type="button" class="btn btn-outline-secondary" id="toggleSearchBtn">
+<div class="container py-5 mt-5">
+    <!-- Header Section -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-5">
+        <div class="mb-3 mb-md-0">
+            <h1 class="h2 fw-bold text-secondary mb-1" style="font-family: 'Outfit', sans-serif;">Blueprint Transactions</h1>
+            <p class="text-muted mb-0">Templates for recurring transactions</p>
+        </div>
+        <div class="d-flex gap-2">
+            <button type="button" class="btn btn-outline-secondary shadow-sm" id="toggleSearchBtn">
                 <i class="bi bi-search"></i> Search
             </button>
+            <button type="button" class="btn btn-primary-custom shadow-sm" data-bs-toggle="modal" data-bs-target="#addBlueprintTransaction">
+                <i class="bi bi-plus-lg"></i> Add Blueprint
+            </button>
         </div>
+    </div>
 
-        <!-- Search and Filter Section -->
-        <div id="searchSection" class="d-none mb-4">
-            <form method="GET" action="/blueprint_transactions" class="mb-4" id="filter_transactions_form">
+    <!-- Search and Filter Section -->
+    <div id="searchSection" class="d-none mb-4">
+        <div class="card-custom p-4">
+            <form method="GET" action="/blueprint_transactions" id="filter_transactions_form">
                 <div class="row g-3 align-items-end">
-                    <div class="col-md-3 col-sm-6">
-                        <label class="form-label fw-semibold">Search</label>
-                        <input type="text" name="name" class="form-control" placeholder="Enter transaction name..." value="{{ request('name') }}">
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold text-secondary small">Search</label>
+                        <input type="text" name="name" class="form-control-custom" placeholder="Transaction name..." value="{{ request('name') }}">
                     </div>
 
-                    <div class="col-md-2 col-sm-6">
-                        <label class="form-label fw-semibold">Direction</label>
+                    <div class="col-md-3">
+                        <label class="form-label fw-semibold text-secondary small">Direction</label>
                         <select name="direction" class="form-select select2">
-                            <option value="">All Directions</option>
+                            <option value="">All</option>
                             <option value="credit" {{ request('direction') == 'credit' ? 'selected' : '' }}>Credit</option>
                             <option value="debit" {{ request('direction') == 'debit' ? 'selected' : '' }}>Debit</option>
                         </select>
                     </div>
 
-                    <div class="col-md-3 col-sm-6">
-                        <label class="form-label fw-semibold">Category</label>
+                    <div class="col-md-3">
+                        <label class="form-label fw-semibold text-secondary small">Category</label>
                         <select name="category_id" class="form-select select2">
                             <option value="">All Categories</option>
                             @foreach($all_categories as $category)
@@ -46,100 +49,115 @@
                         </select>
                     </div>
 
-                    <div class="col-md-2 d-grid">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="bi bi-funnel-fill"></i> Search
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary-custom w-100">
+                            <i class="bi bi-funnel-fill"></i> Apply
                         </button>
                     </div>
                 </div>
             </form>
         </div>
+    </div>
 
-        <!-- Add Transaction Button -->
-        <div class="col-lg-4 col-md-6 col-sm-6 d-grid mb-4">
-            <button type="button" class="btn btn-success px-4" data-bs-toggle="modal" data-bs-target="#addBlueprintTransaction">
-                <i class="bi bi-plus-lg"></i> Add
-            </button>
-        </div>
-        @include('layouts.add_blueprint_transaction')
+    @include('layouts.add_blueprint_transaction')
 
+    <!-- Blueprint Transactions Table -->
+    <div class="card-custom overflow-hidden">
         <div class="table-responsive">
-            <table class="table table-striped table-hover text-center align-middle">
-                <thead class="bg-primary text-white">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="bg-light text-secondary">
                     <tr>
-                        <th>Category</th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
+                        <th class="ps-4 py-3 text-uppercase small fw-bold ls-1 border-0">Category</th>
+                        <th class="border-0"></th>
+                        <th class="border-0"></th>
+                        <th class="border-0"></th>
+                        <th class="border-0"></th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="border-top-0">
                     @foreach($categories as $category)
-                        <tr class="table-secondary">
-                            <td colspan="5" class="fw-bold text-start">
-                                <a href="javascript:void(0);" class="category-toggle d-flex align-items-center" data-target="#category{{ $category->id }}">
-                                    <i class="bi bi-plus-circle me-2"></i> {{ $category->name }}
+                        <tr class="group-row bg-light">
+                            <td colspan="5" class="ps-4 py-3">
+                                <a href="javascript:void(0);" class="category-toggle d-flex align-items-center text-decoration-none" data-target="#category{{ $category->id }}">
+                                    <button class="btn btn-sm btn-light rounded-circle shadow-sm p-0 d-flex align-items-center justify-content-center me-2" 
+                                            style="width: 24px; height: 24px;">
+                                        <i class="bi bi-plus-circle small transition-transform text-primary-custom"></i>
+                                    </button>
+                                    <span class="fw-bold text-secondary">{{ $category->name }}</span>
                                 </a>
                             </td>
                         </tr>
 
                         <tr id="category{{ $category->id }}" class="collapse">
-                            <td colspan="5">
-                                <table class="table table-striped table-hover text-center align-middle mb-0">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th></th>
-                                            <th>Name</th>
-                                            <th>Price</th>
-                                            <th>Price Per Unit</th>
-                                            <th>Quantity</th>
-                                            <th>Direction</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($category->blueprintTransactions as $transaction)
-                                            <tr>
-                                                <td class="fw-bold"></td>
-                                                <td class="fw-semibold text-truncate">{{ $transaction->name }}</td>
-                                                <td class="fw-bold">E£ {{ number_format($transaction->price * $transaction->quantity, 2) }}</td>
-                                                <td class="fw-bold">E£ {{ number_format($transaction->price, 2) }}</td>
-                                                <td class="fw-bold">{{ number_format($transaction->quantity, 2) }}</td>
-                                                <td>
-                                                    @if ($transaction->direction === 'credit')
-                                                        <span class="badge bg-success">
-                                                            <i class="bi bi-arrow-down-circle me-1"></i> Credit
-                                                        </span>
-                                                    @elseif ($transaction->direction === 'debit')
-                                                        <span class="badge bg-danger">
-                                                            <i class="bi bi-arrow-up-circle me-1"></i> Debit
-                                                        </span>
-                                                    @else
-                                                        <span class="badge bg-secondary">N/A</span>
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    <button type="button" class="btn btn-sm btn-success me-2" data-bs-toggle="modal" data-bs-target="#addNormalTransaction{{ $transaction->id }}">
-                                                        Normal
-                                                    </button>
-                                                    <button type="button" class="btn btn-sm btn-dark me-2" data-bs-toggle="modal" data-bs-target="#addDraftTransaction{{ $transaction->id }}">
-                                                        Draft
-                                                    </button>
-                                                    <button type="button" class="btn btn-sm btn-primary me-2" data-bs-toggle="modal" data-bs-target="#editTransaction{{ $transaction->id }}">
-                                                        Edit
-                                                    </button>
-                                                    <button type="button" class="btn btn-sm btn-warning me-2" data-bs-toggle="modal" data-bs-target="#updateAndAddTransaction{{ $transaction->id }}">
-                                                        Normal Then Edit
-                                                    </button>
-                                                    <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteTransaction{{ $transaction->id }}">
-                                                        Delete
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                            <td colspan="5" class="p-0 border-0">
+                                <div class="bg-light p-4">
+                                    <div class="card border-0 shadow-sm">
+                                        <div class="card-body p-0">
+                                            <table class="table table-sm mb-0">
+                                                <thead class="text-muted">
+                                                    <tr>
+                                                        <th class="ps-4 py-2 small fw-medium border-0"></th>
+                                                        <th class="py-2 small fw-medium border-0">Name</th>
+                                                        <th class="py-2 small fw-medium border-0">Price</th>
+                                                        <th class="py-2 small fw-medium border-0">Per Unit</th>
+                                                        <th class="py-2 small fw-medium border-0">Qty</th>
+                                                        <th class="py-2 small fw-medium border-0">Direction</th>
+                                                        <th class="pe-4 py-2 small fw-medium border-0 text-end">Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($category->blueprintTransactions as $transaction)
+                                                        <tr>
+                                                            <td class="ps-4 py-2 border-0"></td>
+                                                            <td class="py-2 border-0">
+                                                                <span class="text-secondary small fw-semibold">{{ $transaction->name }}</span>
+                                                            </td>
+                                                            <td class="py-2 border-0">
+                                                                <span class="small fw-bold text-secondary">E£ {{ number_format($transaction->price * $transaction->quantity, 2) }}</span>
+                                                            </td>
+                                                            <td class="py-2 border-0">
+                                                                <span class="small text-secondary">E£ {{ number_format($transaction->price, 2) }}</span>
+                                                            </td>
+                                                            <td class="py-2 border-0">
+                                                                <span class="small text-secondary">{{ number_format($transaction->quantity, 2) }}</span>
+                                                            </td>
+                                                            <td class="py-2 border-0">
+                                                                @if ($transaction->direction === 'credit')
+                                                                    <span class="badge bg-success-subtle text-success rounded-pill px-2 py-1 small">
+                                                                        <i class="bi bi-arrow-down-circle"></i> Credit
+                                                                    </span>
+                                                                @elseif ($transaction->direction === 'debit')
+                                                                    <span class="badge bg-danger-subtle text-danger rounded-pill px-2 py-1 small">
+                                                                        <i class="bi bi-arrow-up-circle"></i> Debit
+                                                                    </span>
+                                                                @else
+                                                                    <span class="badge bg-secondary rounded-pill px-2 py-1 small">N/A</span>
+                                                                @endif
+                                                            </td>
+                                                            <td class="pe-4 py-2 border-0 text-end">
+                                                                <button type="button" class="btn btn-sm btn-outline-success border shadow-sm rounded-pill px-2 me-1" data-bs-toggle="modal" data-bs-target="#addNormalTransaction{{ $transaction->id }}" title="Add as Normal">
+                                                                    <i class="bi bi-check-circle"></i>
+                                                                </button>
+                                                                <button type="button" class="btn btn-sm btn-outline-secondary border shadow-sm rounded-pill px-2 me-1" data-bs-toggle="modal" data-bs-target="#addDraftTransaction{{ $transaction->id }}" title="Add as Draft">
+                                                                    <i class="bi bi-file-earmark"></i>
+                                                                </button>
+                                                                <button type="button" class="btn btn-sm btn-outline-light text-secondary border shadow-sm rounded-pill px-2 me-1" data-bs-toggle="modal" data-bs-target="#editTransaction{{ $transaction->id }}" title="Edit">
+                                                                    <i class="bi bi-pencil"></i>
+                                                                </button>
+                                                                <button type="button" class="btn btn-sm btn-outline-warning border shadow-sm rounded-pill px-2 me-1" data-bs-toggle="modal" data-bs-target="#updateAndAddTransaction{{ $transaction->id }}" title="Add & Edit">
+                                                                    <i class="bi bi-pencil-square"></i>
+                                                                </button>
+                                                                <button type="button" class="btn btn-sm btn-outline-danger border shadow-sm rounded-pill px-2" data-bs-toggle="modal" data-bs-target="#deleteTransaction{{ $transaction->id }}" title="Delete">
+                                                                    <i class="bi bi-trash"></i>
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                     @endforeach
@@ -147,12 +165,11 @@
             </table>
         </div>
 
-        <!-- Centered Pagination with filters preserved -->
-        <div class="d-flex justify-content-center mt-3">
-            <nav aria-label="Page navigation">
+        @if($categories->hasPages())
+            <div class="p-4 border-top bg-light">
                 {{ $categories->appends(request()->query())->links() }}
-            </nav>
-        </div>
+            </div>
+        @endif
     </div>
 </div>
 @endsection
@@ -170,37 +187,43 @@
 @endpush
 
 <style>
-    .pagination {
-        flex-wrap: wrap;
-        justify-content: center;
+    .ls-1 { letter-spacing: 0.05em; }
+    
+    .bg-success-subtle { background-color: #dcfce7 !important; }
+    .bg-danger-subtle { background-color: #fee2e2 !important; }
+    
+    .transition-transform { transition: transform 0.2s ease; }
+    
+    .table > :not(caption) > * > * {
+        background-color: transparent;
+        box-shadow: none;
+    }
+    
+    .group-row:hover {
+        background-color: #f1f5f9 !important;
     }
 
-    .card {
-        margin-top: 20px;
+    .form-select {
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 0.5rem 1rem;
+        transition: all 0.3s ease;
     }
 
-    .table-responsive {
-        overflow-x: auto;
+    .form-select:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
     }
 
-    table {
-        min-width: 600px;
+    /* Styles required for the manual toggle script */
+    .collapse {
+        display: none;
     }
-
-    th, td {
-        white-space: nowrap;
-        word-wrap: break-word;
-        min-width: 100px;
-    }
-
-    @media (max-width: 768px) {
-        th, td {
-            min-width: 80px;
-        }
-
-        .table thead {
-            font-size: 14px;
-        }
+    .collapsing {
+        position: relative;
+        height: 0;
+        overflow: hidden;
+        transition: height 0.35s ease;
     }
 </style>
 
@@ -245,7 +268,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const categoryRows = document.querySelectorAll('.category-toggle');
     categoryRows.forEach(row => {
-        row.addEventListener('click', function () {
+        row.addEventListener('click', function (e) {
+            e.preventDefault();
+            
             const target = document.querySelector(this.dataset.target);
             const icon = this.querySelector('i');
 

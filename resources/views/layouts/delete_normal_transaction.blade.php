@@ -1,19 +1,26 @@
-<div class="modal fade" id="{{ $modalId }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deleteTransactionLabel{{ $transaction->id }}" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-sm"> <!-- Optimized modal size -->
-        <div class="modal-content shadow-lg rounded-3 border-0">
+<div class="modal fade" id="{{ $modalId }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="deleteTransactionLabel{{ $transaction->id }}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 12px;">
             <!-- Modal Header -->
-            <div class="modal-header bg-danger text-white">
-                <h5 class="modal-title fw-bold" id="deleteTransactionLabel{{ $transaction->id }}">
-                    <i class="bi bi-trash3 me-2"></i> Delete
+            <div class="modal-header border-0 pb-2">
+                <h5 class="modal-title fw-bold text-danger" id="deleteTransactionLabel{{ $transaction->id }}"
+                    style="font-family: 'Outfit', sans-serif;">
+                    <i class="bi bi-trash3 me-2"></i> Delete Transaction
                 </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
             <!-- Modal Body -->
-            <div class="modal-body text-center p-4">
-                <i class="bi bi-exclamation-triangle-fill text-danger fs-1 mb-3"></i>
-                <p class="fs-5 fw-semibold">Are you sure?</p>
-                <p class="text-muted">This action cannot be undone.</p>
+            <div class="modal-body text-center px-4 py-3">
+                <div class="mb-3">
+                    <div class="d-inline-flex align-items-center justify-content-center bg-danger-subtle rounded-circle"
+                        style="width: 64px; height: 64px;">
+                        <i class="bi bi-exclamation-triangle-fill text-danger fs-2"></i>
+                    </div>
+                </div>
+                <h6 class="fw-bold text-secondary mb-2">Are you sure?</h6>
+                <p class="text-muted small mb-0">This action cannot be undone.</p>
             </div>
 
             <!-- Form -->
@@ -22,12 +29,12 @@
                 @method('DELETE')
 
                 <!-- Modal Footer -->
-                <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
-                        <i class="bi bi-x-circle"></i> Cancel
+                <div class="modal-footer border-0 pt-0 justify-content-center">
+                    <button type="button" class="btn btn-outline-secondary rounded-pill px-4" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle me-1"></i> Cancel
                     </button>
-                    <button type="submit" class="btn btn-danger px-4">
-                        <i class="bi bi-trash"></i> Delete
+                    <button type="submit" class="btn btn-danger rounded-pill px-4">
+                        <i class="bi bi-trash me-1"></i> Delete
                     </button>
                 </div>
             </form>
@@ -45,8 +52,14 @@
             submitButton.disabled = true;
             submitButton.innerHTML = `
                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                Saving...
+                Deleting...
             `;
         });
     });
 </script>
+
+<style>
+    .bg-danger-subtle {
+        background-color: #fee2e2 !important;
+    }
+</style>

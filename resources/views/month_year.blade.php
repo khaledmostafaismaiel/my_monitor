@@ -4,14 +4,15 @@
 
     <div class="container mt-5"
         style="display: flex; flex-direction: column; align-items: center; justify-content: flex-start; min-height: 100vh;">
-        
+
         <!-- Month/Year Header with Navigation -->
         <div class="w-100 mb-4" style="max-width: 900px;">
             <div class="card shadow-sm border-0 mb-4">
                 <div class="card-body p-4">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         @if($prevMonthYear)
-                            <a href="{{ route('month_years.show', $prevMonthYear->id) }}" class="btn btn-outline-primary btn-sm">
+                            <a href="{{ route('month_years.show', $prevMonthYear->id) }}"
+                                class="btn btn-outline-primary btn-sm">
                                 <i class="bi bi-chevron-left"></i> Previous
                             </a>
                         @else
@@ -19,14 +20,15 @@
                                 <i class="bi bi-chevron-left"></i> Previous
                             </button>
                         @endif
-                        
+
                         <h3 class="mb-0 fw-bold text-primary">
                             <i class="bi bi-calendar3"></i>
                             {{ date('F Y', strtotime($monthYear->year . '-' . str_pad($monthYear->month, 2, '0', STR_PAD_LEFT))) }}
                         </h3>
-                        
+
                         @if($nextMonthYear)
-                            <a href="{{ route('month_years.show', $nextMonthYear->id) }}" class="btn btn-outline-primary btn-sm">
+                            <a href="{{ route('month_years.show', $nextMonthYear->id) }}"
+                                class="btn btn-outline-primary btn-sm">
                                 Next <i class="bi bi-chevron-right"></i>
                             </a>
                         @else
@@ -42,8 +44,8 @@
                             $totalSpent = $categories->sum('total_spent');
                             $totalLimit = $categories->where('limit', '>', 0)->sum('limit');
                             $categoriesWithLimit = $categories->where('limit', '>', 0)->count();
-                            $overBudgetCount = $categories->filter(function($cat) {
-                                return $cat->limit && ($cat->total_spent - $cat->limit) > 0;
+                            $overBudgetCount = $categories->filter(function ($cat) {
+                                return $cat->limit && (abs($cat->total_spent) - $cat->limit) > 0;
                             })->count();
                         @endphp
 
@@ -101,7 +103,8 @@
         </div>
 
         <!-- Pie chart container -->
-        <div class="d-flex justify-content-center mb-4" style="position: relative; width: 80%; max-width: 600px; height: 350px;">
+        <div class="d-flex justify-content-center mb-4"
+            style="position: relative; width: 80%; max-width: 600px; height: 350px;">
             <canvas id="pieChart"></canvas>
         </div>
 
@@ -133,13 +136,12 @@
 
                                         @if($category->limit)
                                             @php
-                                                $percentage = ($category->total_spent / $category->limit) * 100;
-                                                $overAmount = $category->total_spent - $category->limit;
+                                                $spent = abs($category->total_spent);
+                                                $percentage = ($spent / $category->limit) * 100;
+                                                $overAmount = $spent - $category->limit;
 
                                                 if ($overAmount > 0) {
                                                     $progressColor = 'danger';
-                                                } elseif ($percentage >= 100 || $percentage >= 80) {
-                                                    $progressColor = 'warning';
                                                 } else {
                                                     $progressColor = 'success';
                                                 }
@@ -162,11 +164,12 @@
                                                 </div>
                                                 @if($percentage >= 100)
                                                     @php
-                                                        $overAmount = $category->total_spent - $category->limit;
-                                                        $overLimitColor = $overAmount == 0 ? 'warning' : 'danger';
+                                                        $overAmount = $spent - $category->limit;
+                                                        $textColor = $overAmount > 0 ? 'danger' : 'success';
+                                                        $icon = $overAmount > 0 ? 'bi-exclamation-triangle-fill' : 'bi-check-circle-fill';
                                                     @endphp
-                                                    <small class="text-{{ $overLimitColor }}">
-                                                        <i class="bi bi-exclamation-triangle-fill"></i>
+                                                    <small class="text-{{ $textColor }}">
+                                                        <i class="bi {{ $icon }}"></i>
                                                         {{ $overAmount == 0 ? 'At limit' : 'Over limit by E£ ' . number_format($overAmount, 2) }}
                                                     </small>
                                                 @endif
@@ -183,20 +186,13 @@
                                         <span class="mb-1">E£ {{ number_format($category->total_spent, 2) }}</span>
                                         @if($category->limit)
                                             @php
-                                                $percentage = ($category->total_spent / $category->limit) * 100;
-                                                $overAmount = $category->total_spent - $category->limit;
+                                                $spent = abs($category->total_spent);
+                                                $percentage = ($spent / $category->limit) * 100;
+                                                $overAmount = $spent - $category->limit;
                                             @endphp
                                             @if($overAmount > 0)
                                                 <span class="badge bg-danger">
                                                     <i class="bi bi-exclamation-circle"></i> Over Budget
-                                                </span>
-                                            @elseif($percentage >= 100)
-                                                <span class="badge bg-warning text-dark">
-                                                    <i class="bi bi-dash-circle"></i> At Limit
-                                                </span>
-                                            @elseif($percentage >= 80)
-                                                <span class="badge bg-warning text-dark">
-                                                    <i class="bi bi-exclamation-triangle"></i> Near Limit
                                                 </span>
                                             @else
                                                 <span class="badge bg-success">
@@ -228,7 +224,8 @@
                                                     <td class="fw-bold"></td>
                                                     <td class="fw-semibold text-truncate">{{ $transaction->name }}</td>
                                                     <td class="fw-bold">E£
-                                                        {{ number_format($transaction->price * $transaction->quantity, 2) }}</td>
+                                                        {{ number_format($transaction->price * $transaction->quantity, 2) }}
+                                                    </td>
                                                     <td class="fw-bold">E£ {{ number_format($transaction->price, 2) }}</td>
                                                     <td class="fw-bold">{{ number_format($transaction->quantity, 2) }}</td>
                                                     <td>
@@ -254,7 +251,7 @@
                                 </td>
                             </tr>
                         @endforeach
-                        
+
                         @if($categories->count() === 0)
                             <tr>
                                 <td colspan="6" class="text-center py-5">
@@ -415,13 +412,16 @@
                 opacity: 0;
                 transform: translateY(20px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
 
-        .card, .table, canvas {
+        .card,
+        .table,
+        canvas {
             animation: fadeIn 0.5s ease;
         }
 
@@ -430,7 +430,7 @@
             .card-body {
                 padding: 1rem !important;
             }
-            
+
             h3 {
                 font-size: 1.25rem;
             }

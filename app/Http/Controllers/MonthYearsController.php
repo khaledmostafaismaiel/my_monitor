@@ -61,11 +61,11 @@ class MonthYearsController extends Controller
             ->map(function ($categoryTransactions) {
                 return [
                     'category' => $categoryTransactions->first()->category->name,
-                    'total_spent' => $categoryTransactions->sum(function ($transaction) {
+                    'total_spent' => abs($categoryTransactions->sum(function ($transaction) {
                         $amount = $transaction->price * $transaction->quantity;
                         // Credit = income (positive), Debit = expense (negative)
                         return $transaction->direction === 'credit' ? $amount : -$amount;
-                    })
+                    }))
                 ];
             });
 

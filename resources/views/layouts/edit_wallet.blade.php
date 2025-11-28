@@ -1,44 +1,52 @@
-<div class="modal fade" id="editWallet{{ $wallet->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editWalletLabel{{ $wallet->id }}" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content shadow-lg border-0 rounded-3">
+<div class="modal fade" id="editWallet{{ $wallet->id }}" data-bs-backdrop="static" data-bs-keyboard="false"
+    tabindex="-1" aria-labelledby="editWalletLabel{{ $wallet->id }}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 12px;">
 
             <!-- Modal Header -->
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title" id="editWalletLabel{{ $wallet->id }}">
-                    <i class="bi bi-pencil-square me-2"></i> Edit
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-bold text-secondary" id="editWalletLabel{{ $wallet->id }}"
+                    style="font-family: 'Outfit', sans-serif;">
+                    <i class="bi bi-pencil-square me-2 text-primary-custom"></i> Edit Wallet
                 </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
             <!-- Form Start -->
             <form method="POST" action="/wallets/{{ $wallet->id }}">
-                <div class="modal-body p-4">
+                <div class="modal-body px-4 pt-3">
                     {{ csrf_field() }}
                     @method('PUT')
 
                     <!-- Wallet Name Input -->
-                    <div class="mb-3 text-start">
-                        <label for="walletName{{ $wallet->id }}" class="form-label fw-semibold text-start">Wallet Name</label>
-                        <input type="text" class="form-control form-control-lg shadow-sm" id="walletName{{ $wallet->id }}" name="name" value="{{ $wallet->name }}" placeholder="Enter wallet name..." required>
+                    <div class="mb-3">
+                        <label for="walletName{{ $wallet->id }}"
+                            class="form-label fw-semibold text-secondary small">Wallet Name</label>
+                        <input type="text" class="form-control-custom" id="walletName{{ $wallet->id }}" name="name"
+                            value="{{ $wallet->name }}" placeholder="Enter wallet name..." required>
                     </div>
 
                     <!-- Status Selection -->
-                    <div class="mb-3 text-start">
-                        <label for="walletStatus{{ $wallet->id }}" class="form-label fw-semibold text-start">Status</label>
-                        <select class="form-select form-select-lg shadow-sm" id="walletStatus{{ $wallet->id }}" name="status" required>
+                    <div class="mb-3">
+                        <label for="walletStatus{{ $wallet->id }}"
+                            class="form-label fw-semibold text-secondary small">Status</label>
+                        <select class="form-select"
+                            style="border: 1px solid #e2e8f0; border-radius: 8px; padding: 0.5rem 1rem;"
+                            id="walletStatus{{ $wallet->id }}" name="status" required>
                             <option value="active" {{ $wallet->status == 'active' ? 'selected' : '' }}>Active</option>
-                            <option value="inactive" {{ $wallet->status == 'inactive' ? 'selected' : '' }}>Inactive</option>
+                            <option value="inactive" {{ $wallet->status == 'inactive' ? 'selected' : '' }}>Inactive
+                            </option>
                         </select>
                     </div>
                 </div>
 
                 <!-- Modal Footer -->
-                <div class="modal-footer bg-light border-0">
-                    <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
-                        <i class="bi bi-x-circle"></i> Cancel
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn btn-outline-secondary rounded-pill px-4" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle me-1"></i> Cancel
                     </button>
-                    <button type="submit" class="btn btn-success px-4">
-                        <i class="bi bi-check-circle"></i> Save
+                    <button type="submit" class="btn btn-primary-custom rounded-pill px-4">
+                        <i class="bi bi-check-circle me-1"></i> Save
                     </button>
                 </div>
             </form>

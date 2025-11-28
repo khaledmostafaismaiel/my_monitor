@@ -1,4 +1,5 @@
-<div class="modal fade" id="{{ $modalId }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editCategoryLabel{{ $category->id }}" aria-hidden="true">
+<div class="modal fade" id="{{ $modalId }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="editCategoryLabel{{ $category->id }}" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg"> <!-- Increased modal size -->
         <div class="modal-content shadow-lg rounded-3 border-0">
             <!-- Modal Header -->
@@ -6,7 +7,8 @@
                 <h5 class="modal-title fw-bold text-start" id="editCategoryLabel{{ $category->id }}">
                     <i class="bi bi-pencil-square me-2"></i> Edit
                 </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
             </div>
 
             <!-- Form -->
@@ -17,17 +19,32 @@
 
                     <!-- Category Name Input -->
                     <div class="mb-3 text-start">
-                        <label for="categoryName{{ $category->id }}" class="form-label fw-semibold text-start">Category Name</label>
-                        <input type="text" class="form-control form-control-lg shadow-sm" id="categoryName{{ $category->id }}" name="name" value="{{ $category->name }}" placeholder="Enter category name..." required>
+                        <label for="categoryName{{ $category->id }}" class="form-label fw-semibold text-start">Category
+                            Name</label>
+                        <input type="text" class="form-control form-control-lg shadow-sm"
+                            id="categoryName{{ $category->id }}" name="name" value="{{ $category->name }}"
+                            placeholder="Enter category name..." required>
                     </div>
 
                     <!-- Status Selection -->
                     <div class="mb-3 text-start">
-                        <label for="categoryStatus{{ $category->id }}" class="form-label fw-semibold text-start">Status</label>
-                        <select class="form-select form-select-lg shadow-sm" id="categoryStatus{{ $category->id }}" name="status" required>
+                        <label for="categoryStatus{{ $category->id }}"
+                            class="form-label fw-semibold text-start">Status</label>
+                        <select class="form-select form-select-lg shadow-sm" id="categoryStatus{{ $category->id }}"
+                            name="status" required>
                             <option value="active" {{ $category->status == 'active' ? 'selected' : '' }}>Active</option>
-                            <option value="inactive" {{ $category->status == 'inactive' ? 'selected' : '' }}>Inactive</option>
+                            <option value="inactive" {{ $category->status == 'inactive' ? 'selected' : '' }}>Inactive
+                            </option>
                         </select>
+                    </div>
+
+                    <!-- Limit Input -->
+                    <div class="mb-3 text-start">
+                        <label for="categoryLimit{{ $category->id }}"
+                            class="form-label fw-semibold text-start">Limit</label>
+                        <input type="number" step="0.01" min="0" class="form-control form-control-lg shadow-sm"
+                            id="categoryLimit{{ $category->id }}" name="limit" value="{{ $category->limit }}"
+                            placeholder="Enter limit (optional)...">
                     </div>
                 </div>
 

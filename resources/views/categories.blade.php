@@ -1,102 +1,110 @@
 @extends('layouts.master_layout')
 
 @section('content')
-<div class="container d-flex justify-content-center align-items-center py-5">
-    <div class="card p-4 shadow-lg w-100" style="max-width: 900px; background: rgba(255, 255, 255, 0.95); border-radius: 12px;">
-        <h2 class="text-center fw-bold mb-4">
-            <a href="{{ route('categories.index') }}" class="text-dark text-decoration-none" style="transition: 0.2s;">
-                Categories
-            </a>
-        </h2>
+    <div class="container d-flex justify-content-center align-items-center py-5">
+        <div class="card p-4 shadow-lg w-100"
+            style="max-width: 900px; background: rgba(255, 255, 255, 0.95); border-radius: 12px;">
+            <h2 class="text-center fw-bold mb-4">
+                <a href="{{ route('categories.index') }}" class="text-dark text-decoration-none" style="transition: 0.2s;">
+                    Categories
+                </a>
+            </h2>
 
-        <!-- Toggle Search Button -->
-        <div class="d-flex justify-content-end mb-3">
-            <button type="button" class="btn btn-outline-secondary" id="toggleSearchBtn">
-                <i class="bi bi-search"></i> Search
-            </button>
-        </div>
+            <!-- Toggle Search Button -->
+            <div class="d-flex justify-content-end mb-3">
+                <button type="button" class="btn btn-outline-secondary" id="toggleSearchBtn">
+                    <i class="bi bi-search"></i> Search
+                </button>
+            </div>
 
-        <!-- Search & Filter Section -->
-        <div id="searchSection" class="d-none mb-4">
-            <form method="GET" action="{{ route('categories.index') }}" class="mb-3" id="filter_categories_form">
-                <div class="row g-3 align-items-end">
-                    <div class="col-lg-4 col-md-6 col-sm-6">
-                        <label class="form-label fw-semibold">Search by Name</label>
-                        <input type="text" name="name" class="form-control" placeholder="Category name..." value="{{ request('name') }}">
+            <!-- Search & Filter Section -->
+            <div id="searchSection" class="d-none mb-4">
+                <form method="GET" action="{{ route('categories.index') }}" class="mb-3" id="filter_categories_form">
+                    <div class="row g-3 align-items-end">
+                        <div class="col-lg-4 col-md-6 col-sm-6">
+                            <label class="form-label fw-semibold">Search by Name</label>
+                            <input type="text" name="name" class="form-control" placeholder="Category name..."
+                                value="{{ request('name') }}">
+                        </div>
+
+                        <div class="col-lg-4 col-md-6 col-sm-6">
+                            <label class="form-label fw-semibold">Status</label>
+                            <select name="status" class="form-select select2">
+                                <option value="">All Statuses</option>
+                                <option value="active" {{ request('status') == 'active' ? 'selected' : '' }}>Active</option>
+                                <option value="inactive" {{ request('status') == 'inactive' ? 'selected' : '' }}>Inactive
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="col-lg-2 d-grid">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-filter"></i> Apply
+                            </button>
+                        </div>
                     </div>
+                </form>
+            </div>
 
-                    <div class="col-lg-4 col-md-6 col-sm-6">
-                        <label class="form-label fw-semibold">Status</label>
-                        <select name="status" class="form-select select2">
-                            <option value="">All Statuses</option>
-                            <option value="active" {{ request('status') == 'active' ? 'selected' : '' }}>Active</option>
-                            <option value="inactive" {{ request('status') == 'inactive' ? 'selected' : '' }}>Inactive</option>
-                        </select>
-                    </div>
+            <!-- Add Category Button -->
+            <div class="col-lg-4 col-md-6 col-sm-6 d-grid mb-4">
+                <button type="button" class="btn btn-success px-4" data-bs-toggle="modal"
+                    data-bs-target="#addCategoryModal">
+                    <i class="bi bi-plus-lg"></i> Add
+                </button>
+            </div>
+            @include('layouts/add_category')
 
-                    <div class="col-lg-2 d-grid">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="bi bi-filter"></i> Apply
-                        </button>
-                    </div>
-                </div>
-            </form>
-        </div>
-
-        <!-- Add Category Button -->
-        <div class="col-lg-4 col-md-6 col-sm-6 d-grid mb-4">
-            <button type="button" class="btn btn-success px-4" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
-                <i class="bi bi-plus-lg"></i> Add
-            </button>
-        </div>
-        @include('layouts/add_category')
-
-        <!-- Category Table -->
-        <div class="table-responsive">
-            <table class="table table-striped table-hover text-center align-middle">
-                <thead class="bg-primary text-white">
-                    <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse($categories as $category)
+            <!-- Category Table -->
+            <div class="table-responsive">
+                <table class="table table-striped table-hover text-center align-middle">
+                    <thead class="bg-primary text-white">
                         <tr>
-                            <td class="fw-semibold">{{ ucfirst($category->name) }}</td>
-                            <td class="fw-semibold">
-                                <span class="badge bg-{{ $category->status == 'active' ? 'success' : 'danger' }}">
-                                    {{ ucfirst($category->status) }}
-                                </span>
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-sm btn-primary me-2" data-bs-toggle="modal" data-bs-target="#editCategory{{ $category->id }}">
-                                    Edit
-                                </button>
-
-                                <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteCategory{{ $category->id }}">
-                                    Delete
-                                </button>
-                            </td>
+                            <th scope="col">Name</th>
+                            <th scope="col">Limit</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Actions</th>
                         </tr>
-                    @empty
-                        <tr>
-                            <td colspan="3" class="text-muted">No categories found.</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
+                    </thead>
+                    <tbody>
+                        @forelse($categories as $category)
+                            <tr>
+                                <td class="fw-semibold">{{ ucfirst($category->name) }}</td>
+                                <td class="fw-semibold">{{ $category->limit ?? 'No limit' }}</td>
+                                <td class="fw-semibold">
+                                    <span class="badge bg-{{ $category->status == 'active' ? 'success' : 'danger' }}">
+                                        {{ ucfirst($category->status) }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-sm btn-primary me-2" data-bs-toggle="modal"
+                                        data-bs-target="#editCategory{{ $category->id }}">
+                                        Edit
+                                    </button>
 
-        <!-- Centered Pagination -->
-        <div class="d-flex justify-content-center mt-3">
-            <nav aria-label="Page navigation">
-                {{ $categories->appends(request()->query())->links() }}
-            </nav>
+                                    <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal"
+                                        data-bs-target="#deleteCategory{{ $category->id }}">
+                                        Delete
+                                    </button>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="4" class="text-muted">No categories found.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Centered Pagination -->
+            <div class="d-flex justify-content-center mt-3">
+                <nav aria-label="Page navigation">
+                    {{ $categories->appends(request()->query())->links() }}
+                </nav>
+            </div>
         </div>
     </div>
-</div>
 @endsection
 
 @push('modals')
@@ -125,13 +133,16 @@
         min-width: 600px;
     }
 
-    th, td {
+    th,
+    td {
         white-space: nowrap;
         min-width: 100px;
     }
 
     @media (max-width: 768px) {
-        th, td {
+
+        th,
+        td {
             min-width: 80px;
         }
 

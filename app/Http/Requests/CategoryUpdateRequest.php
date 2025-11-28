@@ -24,6 +24,7 @@ class CategoryUpdateRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'status' => 'required|in:active,inactive',
+            'limit' => 'nullable|numeric|min:0',
         ];
     }
 }

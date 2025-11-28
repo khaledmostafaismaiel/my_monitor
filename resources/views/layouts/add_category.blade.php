@@ -1,4 +1,5 @@
-<div class="modal fade" id="addCategoryModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addCategoryLabel" aria-hidden="true">
+<div class="modal fade" id="addCategoryModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="addCategoryLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg"> <!-- Increased modal size -->
         <div class="modal-content shadow-lg rounded-3 border-0">
             <!-- Modal Header -->
@@ -6,7 +7,8 @@
                 <h5 class="modal-title fw-bold" id="addCategoryLabel">
                     <i class="bi bi-folder-plus me-2"></i> New
                 </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
             </div>
 
             <!-- Form -->
@@ -17,7 +19,8 @@
                     <!-- Category Name Input -->
                     <div class="mb-3">
                         <label for="categoryName" class="form-label fw-semibold">Category Name</label>
-                        <input type="text" class="form-control form-control-lg shadow-sm" id="categoryName" name="name" placeholder="Enter category name..." required>
+                        <input type="text" class="form-control form-control-lg shadow-sm" id="categoryName" name="name"
+                            placeholder="Enter category name..." required>
                     </div>
 
                     <!-- Status Selection -->
@@ -27,6 +30,13 @@
                             <option value="active" selected>Active</option>
                             <option value="inactive">Inactive</option>
                         </select>
+                    </div>
+
+                    <!-- Limit Input -->
+                    <div class="mb-3">
+                        <label for="categoryLimit" class="form-label fw-semibold">Limit</label>
+                        <input type="number" step="0.01" min="0" class="form-control form-control-lg shadow-sm"
+                            id="categoryLimit" name="limit" placeholder="Enter limit (optional)...">
                     </div>
                 </div>
 

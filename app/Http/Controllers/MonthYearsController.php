@@ -29,6 +29,31 @@ class MonthYearsController extends Controller
 
     public function show(MonthYear $monthYear)
     {
+        // Calculate previous and next month/year for navigation
+        $prevMonthYear = MonthYear::where('family_id', auth()->user()->family_id)
+            ->where(function ($query) use ($monthYear) {
+                $query->where('year', '<', $monthYear->year)
+                    ->orWhere(function ($q) use ($monthYear) {
+                        $q->where('year', '=', $monthYear->year)
+                            ->where('month', '<', $monthYear->month);
+                    });
+            })
+            ->orderBy('year', 'desc')
+            ->orderBy('month', 'desc')
+            ->first();
+
+        $nextMonthYear = MonthYear::where('family_id', auth()->user()->family_id)
+            ->where(function ($query) use ($monthYear) {
+                $query->where('year', '>', $monthYear->year)
+                    ->orWhere(function ($q) use ($monthYear) {
+                        $q->where('year', '=', $monthYear->year)
+                            ->where('month', '>', $monthYear->month);
+                    });
+            })
+            ->orderBy('year', 'asc')
+            ->orderBy('month', 'asc')
+            ->first();
+
         $categorySummary = $monthYear->normalTransactions()
             ->with('category')
             ->get()
@@ -37,7 +62,9 @@ class MonthYearsController extends Controller
                 return [
                     'category' => $categoryTransactions->first()->category->name,
                     'total_spent' => $categoryTransactions->sum(function ($transaction) {
-                        return $transaction->price * $transaction->quantity;
+                        $amount = $transaction->price * $transaction->quantity;
+                        // Credit = income (positive), Debit = expense (negative)
+                        return $transaction->direction === 'credit' ? $amount : -$amount;
                     })
                 ];
             });
@@ -45,7 +72,13 @@ class MonthYearsController extends Controller
         $categories = auth()->user()
             ->family->categories()
             ->select('categories.*')
-            ->selectRaw('SUM(transactions.price * transactions.quantity) as total_spent')
+            ->selectRaw('SUM(
+                CASE 
+                    WHEN transactions.direction = "credit" THEN transactions.price * transactions.quantity
+                    WHEN transactions.direction = "debit" THEN -(transactions.price * transactions.quantity)
+                    ELSE 0
+                END
+            ) as total_spent')
             ->join('transactions', 'transactions.category_id', 'categories.id')
             ->where('transactions.month_year_id', $monthYear->id)
             ->where('transactions.type', 'normal')
@@ -59,6 +92,6 @@ class MonthYearsController extends Controller
             ])
             ->get();
 
-        return view('month_year', compact('monthYear', 'categories', 'categorySummary'));
+        return view('month_year', compact('monthYear', 'categories', 'categorySummary', 'prevMonthYear', 'nextMonthYear'));
     }
 }

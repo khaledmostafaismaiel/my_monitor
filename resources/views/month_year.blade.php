@@ -4,10 +4,104 @@
 
     <div class="container mt-5"
         style="display: flex; flex-direction: column; align-items: center; justify-content: flex-start; min-height: 100vh;">
-        <div class="text-center mb-4 mt-5"></div>
+        
+        <!-- Month/Year Header with Navigation -->
+        <div class="w-100 mb-4" style="max-width: 900px;">
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        @if($prevMonthYear)
+                            <a href="{{ route('month_years.show', $prevMonthYear->id) }}" class="btn btn-outline-primary btn-sm">
+                                <i class="bi bi-chevron-left"></i> Previous
+                            </a>
+                        @else
+                            <button class="btn btn-outline-secondary btn-sm" disabled>
+                                <i class="bi bi-chevron-left"></i> Previous
+                            </button>
+                        @endif
+                        
+                        <h3 class="mb-0 fw-bold text-primary">
+                            <i class="bi bi-calendar3"></i>
+                            {{ date('F Y', strtotime($monthYear->year . '-' . str_pad($monthYear->month, 2, '0', STR_PAD_LEFT))) }}
+                        </h3>
+                        
+                        @if($nextMonthYear)
+                            <a href="{{ route('month_years.show', $nextMonthYear->id) }}" class="btn btn-outline-primary btn-sm">
+                                Next <i class="bi bi-chevron-right"></i>
+                            </a>
+                        @else
+                            <button class="btn btn-outline-secondary btn-sm" disabled>
+                                Next <i class="bi bi-chevron-right"></i>
+                            </button>
+                        @endif
+                    </div>
+
+                    <!-- Summary Cards -->
+                    <div class="row g-3 mt-2">
+                        @php
+                            $totalSpent = $categories->sum('total_spent');
+                            $totalLimit = $categories->where('limit', '>', 0)->sum('limit');
+                            $categoriesWithLimit = $categories->where('limit', '>', 0)->count();
+                            $overBudgetCount = $categories->filter(function($cat) {
+                                return $cat->limit && ($cat->total_spent - $cat->limit) > 0;
+                            })->count();
+                        @endphp
+
+                        <!-- Total Spent Card -->
+                        <div class="col-md-4">
+                            <div class="card border-0 bg-light h-100">
+                                <div class="card-body text-center">
+                                    <i class="bi bi-cash-stack text-primary fs-2 mb-2"></i>
+                                    <h6 class="text-muted mb-1">Total Spent</h6>
+                                    <h4 class="fw-bold mb-0">E£ {{ number_format($totalSpent, 2) }}</h4>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Categories Card -->
+                        <div class="col-md-4">
+                            <div class="card border-0 bg-light h-100">
+                                <div class="card-body text-center">
+                                    <i class="bi bi-tags text-info fs-2 mb-2"></i>
+                                    <h6 class="text-muted mb-1">Categories</h6>
+                                    <h4 class="fw-bold mb-0">{{ $categories->count() }}</h4>
+                                    @if($categoriesWithLimit > 0)
+                                        <small class="text-muted">{{ $categoriesWithLimit }} with limits</small>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Budget Status Card -->
+                        <div class="col-md-4">
+                            <div class="card border-0 bg-light h-100">
+                                <div class="card-body text-center">
+                                    @if($overBudgetCount > 0)
+                                        <i class="bi bi-exclamation-triangle text-danger fs-2 mb-2"></i>
+                                        <h6 class="text-muted mb-1">Budget Status</h6>
+                                        <h4 class="fw-bold text-danger mb-0">{{ $overBudgetCount }}</h4>
+                                        <small class="text-danger">Over Budget</small>
+                                    @elseif($totalLimit > 0)
+                                        <i class="bi bi-check-circle text-success fs-2 mb-2"></i>
+                                        <h6 class="text-muted mb-1">Budget Status</h6>
+                                        <h4 class="fw-bold text-success mb-0">On Track</h4>
+                                        <small class="text-success">All within limits</small>
+                                    @else
+                                        <i class="bi bi-info-circle text-secondary fs-2 mb-2"></i>
+                                        <h6 class="text-muted mb-1">Budget Status</h6>
+                                        <h4 class="fw-bold text-secondary mb-0">No Limits</h4>
+                                        <small class="text-muted">Set limits to track</small>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- Pie chart container -->
-        <div class="d-flex justify-content-center" style="position: relative; width: 80%; max-width: 600px; height: 300px;">
+        <div class="d-flex justify-content-center mb-4" style="position: relative; width: 80%; max-width: 600px; height: 350px;">
             <canvas id="pieChart"></canvas>
         </div>
 
@@ -160,6 +254,16 @@
                                 </td>
                             </tr>
                         @endforeach
+                        
+                        @if($categories->count() === 0)
+                            <tr>
+                                <td colspan="6" class="text-center py-5">
+                                    <i class="bi bi-inbox fs-1 text-muted mb-3 d-block"></i>
+                                    <h5 class="text-muted">No transactions found</h5>
+                                    <p class="text-muted">There are no transactions for this month yet.</p>
+                                </td>
+                            </tr>
+                        @endif
                     </tbody>
                 </table>
             </div>
@@ -226,6 +330,110 @@
             /* Soft amber badge */
             color: #78350f !important;
             /* Dark brown text for better contrast */
+        }
+
+        /* Enhanced UX Animations and Transitions */
+        .card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.15) !important;
+        }
+
+        .category-toggle {
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .category-toggle:hover {
+            color: #0d6efd !important;
+            transform: translateX(5px);
+        }
+
+        .category-toggle i {
+            transition: transform 0.3s ease;
+        }
+
+        .category-toggle:hover i {
+            transform: scale(1.2);
+        }
+
+        .table-secondary {
+            transition: background-color 0.3s ease;
+        }
+
+        .table-secondary:hover {
+            background-color: rgba(108, 117, 125, 0.15) !important;
+        }
+
+        .progress {
+            transition: all 0.3s ease;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            transition: width 0.6s ease;
+        }
+
+        .badge {
+            transition: all 0.2s ease;
+        }
+
+        .badge:hover {
+            transform: scale(1.05);
+        }
+
+        .btn {
+            transition: all 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Smooth collapse animation */
+        .collapse {
+            display: none;
+        }
+
+        .collapsing {
+            position: relative;
+            height: 0;
+            overflow: hidden;
+            transition: height 0.35s ease;
+        }
+
+        /* Loading animation for chart */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card, .table, canvas {
+            animation: fadeIn 0.5s ease;
+        }
+
+        /* Responsive improvements */
+        @media (max-width: 768px) {
+            .card-body {
+                padding: 1rem !important;
+            }
+            
+            h3 {
+                font-size: 1.25rem;
+            }
         }
     </style>
 

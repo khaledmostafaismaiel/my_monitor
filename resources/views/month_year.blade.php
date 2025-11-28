@@ -48,6 +48,7 @@
                                             <tr>
                                                 <th></th>
                                                 <th>Name</th>
+                                                <th>Price</th>
                                                 <th>Price Per Unit</th>
                                                 <th>Quantity</th>
                                                 <th>Direction</th>
@@ -59,6 +60,7 @@
                                                 <tr>
                                                     <td class="fw-bold"></td>
                                                     <td class="fw-semibold text-truncate">{{ $transaction->name }}</td>
+                                                    <td class="fw-bold">E£ {{ number_format($transaction->price * $transaction->quantity, 2) }}</td>
                                                     <td class="fw-bold">E£ {{ number_format($transaction->price, 2) }}</td>
                                                     <td class="fw-bold">{{ number_format($transaction->quantity, 2) }}</td>
                                                     <td>

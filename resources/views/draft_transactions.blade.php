@@ -113,6 +113,7 @@
                 <thead class="bg-primary text-white">
                     <tr>
                         <th scope="col">Name</th>
+                        <th scope="col">Price</th>
                         <th scope="col">Price Per Unit</th>
                         <th scope="col">Quantity</th>
                         <th scope="col">Category</th>
@@ -125,6 +126,7 @@
                     @forelse($transactions as $transaction)
                         <tr>
                             <td class="fw-semibold text-truncate">{{ $transaction->name }}</td>
+                            <td class="fw-bold">E£ {{ number_format($transaction->price * $transaction->quantity, 2) }}</td>
                             <td class="fw-bold">E£ {{ number_format($transaction->price, 2) }}</td>
                             <td class="fw-bold">{{ number_format($transaction->quantity, 2) }}</td>
                             <td>{{ $transaction->category?->name }}</td>

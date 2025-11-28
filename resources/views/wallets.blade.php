@@ -106,7 +106,7 @@
                     <tbody>
                         @forelse($wallets as $wallet)
                             <tr class="wallet-row">
-                                <td class="fw-semibold text-start ps-4">
+                                <td class="fw-semibold text-start ps-4" data-label="Name">
                                     <div class="d-flex align-items-center">
                                         <div class="rounded-circle bg-primary bg-opacity-10 p-2 me-3 text-primary">
                                             <i class="bi bi-wallet2"></i>
@@ -114,7 +114,7 @@
                                         {{ $wallet->name }}
                                     </div>
                                 </td>
-                                <td>
+                                <td data-label="Status">
                                     <span
                                         class="badge rounded-pill bg-{{ $wallet->status == 'active' ? 'success' : 'secondary' }} px-3 py-2">
                                         <i
@@ -122,7 +122,7 @@
                                         {{ ucfirst($wallet->status) }}
                                     </span>
                                 </td>
-                                <td>
+                                <td data-label="Actions">
                                     <div class="btn-group">
                                         <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
                                             data-bs-target="#editWallet{{ $wallet->id }}" title="Edit">
@@ -234,9 +234,11 @@
         .wallet-row {
             display: block;
             margin-bottom: 1rem;
-            border: 1px solid #dee2e6;
+            background: #fff;
+            border: 1px solid #e9ecef;
             border-radius: 0.5rem;
-            padding: 1rem;
+            padding: 1.25rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
         }
 
         .wallet-row td {
@@ -244,13 +246,33 @@
             justify-content: space-between;
             align-items: center;
             border: none;
-            padding: 0.5rem 0;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #f8f9fa;
+        }
+
+        .wallet-row td:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+            margin-top: 0.5rem;
+            justify-content: center;
         }
 
         .wallet-row td::before {
             content: attr(data-label);
-            font-weight: bold;
-            margin-right: 1rem;
+            font-weight: 600;
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-right: auto;
+        }
+
+        /* Special handling for the name column to keep icon and text together */
+        .wallet-row td:first-child {
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        .wallet-row td:first-child .d-flex {
+            margin-left: auto;
         }
     }
 </style>

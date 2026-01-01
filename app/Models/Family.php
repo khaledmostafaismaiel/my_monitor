@@ -60,4 +60,9 @@ class Family extends Model
     {
         return $this->hasMany(Wallet::class);
     }
+
+    public function todos()
+    {
+        return $this->hasMany(Todo::class);
+    }
 }

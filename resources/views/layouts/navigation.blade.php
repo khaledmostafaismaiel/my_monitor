@@ -98,6 +98,14 @@
                             <span>Wallets</span>
                         </a>
                     </li>
+
+                    <li class="nav-item mb-2">
+                        <a class="nav-link text-white px-3 py-3 rounded-3 nav-link-custom d-flex align-items-center"
+                            href="/todos">
+                            <i class="bi bi-check2-square me-3 fs-5 text-primary"></i>
+                            <span>Todos</span>
+                        </a>
+                    </li>
                 </ul>
 
                 <!-- Sign Out Button -->

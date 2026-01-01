@@ -27,6 +27,10 @@ Route::resource('categories', 'CategoriesController')->middleware(['auth', 'veri
 
 Route::resource('month_years', 'MonthYearsController')->middleware(['auth', 'verified']);
 
+Route::post('/todos/{todo}/toggle', 'TodosController@toggleStatus')->middleware(['auth', 'verified']);
+Route::post('/todos/reorder', 'TodosController@reorder')->middleware(['auth', 'verified']);
+Route::resource('todos', 'TodosController')->middleware(['auth', 'verified']);
+
 Route::post('/users/verify_otp', 'UsersController@verify_otp');
 Route::get('/users/register', 'UsersController@register')->name('login');
 Route::post('/users/sign_up', 'UsersController@sign_up');

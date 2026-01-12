@@ -515,7 +515,7 @@
                     title: {
                         display: true,
                         text: 'Transaction Summary for {{ $monthYear->year }}-{{ str_pad($monthYear->month, 2, '0', STR_PAD_LEFT) }}',
-                        color: '#FFFFFF', // 👈 this sets the title color to white
+                        color: '#000000',
                         font: {
                             size: 18,
                             weight: 'bold'
@@ -524,7 +524,7 @@
                     legend: {
                         position: 'top',
                         labels: {
-                            color: '#FFFFFF' // 👈 this sets legend labels to white
+                            color: '#000000'
                         }
                     },
                     tooltip: {

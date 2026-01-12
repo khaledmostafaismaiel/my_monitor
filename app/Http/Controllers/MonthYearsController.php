@@ -72,13 +72,13 @@ class MonthYearsController extends Controller
         $categories = auth()->user()
             ->family->categories()
             ->select('categories.*')
-            ->selectRaw('SUM(
-                CASE 
-                    WHEN transactions.direction = "credit" THEN transactions.price * transactions.quantity
-                    WHEN transactions.direction = "debit" THEN -(transactions.price * transactions.quantity)
+            ->selectRaw("SUM(
+                CASE
+                    WHEN transactions.direction = 'credit' THEN transactions.price * transactions.quantity
+                    WHEN transactions.direction = 'debit' THEN -(transactions.price * transactions.quantity)
                     ELSE 0
                 END
-            ) as total_spent')
+            ) as total_spent")
             ->join('transactions', 'transactions.category_id', 'categories.id')
             ->where('transactions.month_year_id', $monthYear->id)
             ->where('transactions.type', 'normal')

@@ -41,8 +41,14 @@
                                     <a href="#" class="text-primary-custom text-decoration-none small fw-medium">Forgot
                                         password?</a>
                                 </div>
-                                <input type="password" id="password" class="form-control form-control-custom"
-                                    name="password" placeholder="Enter your password" required>
+                                <div class="position-relative">
+                                    <input type="password" id="password" class="form-control form-control-custom pe-5"
+                                        name="password" placeholder="Enter your password" required>
+                                    <button type="button" class="btn position-absolute end-0 top-0 h-100 pe-3 text-muted toggle-password"
+                                        data-target="#password">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                </div>
                             </div>
 
                             <button type="submit" name="submit_sign_in" class="btn btn-primary-custom w-100 mb-3">
@@ -125,16 +131,28 @@
                             <div class="mb-3">
                                 <label for="password_signup"
                                     class="form-label fw-medium text-secondary small text-uppercase ls-1">Password</label>
-                                <input type="password" name="password" id="password_signup"
-                                    class="form-control form-control-custom" required>
+                                <div class="position-relative">
+                                    <input type="password" name="password" id="password_signup"
+                                        class="form-control form-control-custom pe-5" required>
+                                    <button type="button" class="btn position-absolute end-0 top-0 h-100 pe-3 text-muted toggle-password"
+                                        data-target="#password_signup">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                </div>
                             </div>
 
                             <div class="mb-4">
                                 <label for="password_confirmation"
                                     class="form-label fw-medium text-secondary small text-uppercase ls-1">Confirm
                                     Password</label>
-                                <input type="password" name="password_confirmation" id="password_confirmation"
-                                    class="form-control form-control-custom" required>
+                                <div class="position-relative">
+                                    <input type="password" name="password_confirmation" id="password_confirmation"
+                                        class="form-control form-control-custom pe-5" required>
+                                    <button type="button" class="btn position-absolute end-0 top-0 h-100 pe-3 text-muted toggle-password"
+                                        data-target="#password_confirmation">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                </div>
                             </div>
 
                             <div class="form-check mb-4">
@@ -231,6 +249,23 @@
                 familyNameInput.style.display = 'none';
                 familyIdInput.style.display = 'block';
             }
+        });
+
+        // Toggle Password Visibility
+        document.querySelectorAll('.toggle-password').forEach(button => {
+            button.addEventListener('click', function() {
+                const target = document.querySelector(this.dataset.target);
+                const icon = this.querySelector('i');
+                if (target.type === 'password') {
+                    target.type = 'text';
+                    icon.classList.remove('bi-eye');
+                    icon.classList.add('bi-eye-slash');
+                } else {
+                    target.type = 'password';
+                    icon.classList.remove('bi-eye-slash');
+                    icon.classList.add('bi-eye');
+                }
+            });
         });
     </script>
 @endsection

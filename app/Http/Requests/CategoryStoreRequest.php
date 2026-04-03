@@ -25,6 +25,7 @@ class CategoryStoreRequest extends FormRequest
             'name' => 'required|string|max:255',
             'status' => 'required|in:active,inactive',
             'limit' => 'nullable|numeric|min:0',
+            'parent_id' => 'nullable|exists:categories,id',
         ];
     }
 }

@@ -2,6 +2,65 @@
 
 @section('content')
 
+@php
+function renderMonthYearCategoryRow($category, $level = 0, $collapsed = false) {
+    $display = $collapsed ? 'display:none;' : '';
+    $hasChildren = $category->children && $category->children->count() > 0;
+    $chevronClass = $hasChildren ? ($collapsed ? 'bi-chevron-right' : 'bi-chevron-down') : '';
+    $cursorStyle = $hasChildren ? 'cursor:pointer;' : '';
+    $iconClass = $hasChildren ? 'text-warning' : 'text-muted';
+    $rowClass = $hasChildren ? 'parent-row' : '';
+    
+    $parentId = $category->parent_id ?? '';
+    echo '<tr class="group-row child-row ' . $rowClass . '" data-category-id="' . $category->id . '" data-parent-id="' . $parentId . '" data-children-parent-id="' . $category->id . '" style="' . $display . '">';
+    echo '<td colspan="5" class="fw-bold text-start"><div class="d-flex flex-column">';
+    echo '<a href="javascript:void(0);" class="category-toggle d-flex align-items-center" data-target="#category' . $category->id . '" data-level="' . $level . '">';
+    if ($hasChildren) {
+        echo '<i class="bi ' . $chevronClass . ' toggle-icon me-2" style="cursor:pointer;"></i>';
+    } else {
+        echo '<span style="width:16px;display:inline-block;" class="me-2"></span>';
+    }
+    echo '<i class="bi bi-folder ' . $iconClass . ' me-2"></i>';
+    echo '<span class="fw-semibold" style="padding-left: ' . ($level * 12) . 'px">' . ucfirst($category->name) . '</span>';
+    if ($hasChildren) {
+        echo '<span class="text-muted small ms-2">(' . $category->children->count() . ')</span>';
+    }
+    echo '</a>';
+    
+    if($category->limit) {
+        $spent = abs($category->total_spent ?? 0);
+        $percentage = $category->limit > 0 ? ($spent / $category->limit) * 100 : 0;
+        $overAmount = $spent - $category->limit;
+        $progressColor = $overAmount > 0 ? 'danger' : 'success';
+        
+        echo '<div class="mt-2 ms-4"><div class="d-flex justify-content-between align-items-center mb-1"><small class="text-muted"><i class="bi bi-speedometer2"></i> Limit: E£ ' . number_format($category->limit, 2) . '</small><small class="fw-semibold text-' . $progressColor . '">' . number_format($percentage, 1) . '%</small></div><div class="progress" style="height: 8px;"><div class="progress-bar bg-' . $progressColor . '" role="progressbar" style="width: ' . min($percentage, 100) . '%" aria-valuenow="' . $percentage . '" aria-valuemin="0" aria-valuemax="100"></div></div></div>';
+    } else {
+        echo '<small class="text-muted mt-1 ms-4"><i class="bi bi-infinity"></i> No limit set</small>';
+    }
+    
+    echo '</div></td>';
+    echo '<td class="fw-bold text-start"><div class="d-flex flex-column align-items-start">';
+    echo '<span class="mb-1">E£ ' . number_format($category->total_spent ?? 0, 2) . '</span>';
+    if($category->limit) {
+        $spent = abs($category->total_spent ?? 0);
+        $percentage = $category->limit > 0 ? ($spent / $category->limit) * 100 : 0;
+        $overAmount = $spent - $category->limit;
+        if($overAmount > 0) {
+            echo '<span class="badge bg-danger"><i class="bi bi-exclamation-circle"></i> Over Budget</span>';
+        } else {
+            echo '<span class="badge bg-success"><i class="bi bi-check-circle"></i> Within Budget</span>';
+        }
+    }
+    echo '</div></td></tr>';
+    
+    if ($hasChildren) {
+        foreach ($category->children as $child) {
+            renderMonthYearCategoryRow($child, $level + 1, $collapsed);
+        }
+    }
+}
+@endphp
+
     <div class="container mt-5"
         style="display: flex; flex-direction: column; align-items: center; justify-content: flex-start; min-height: 100vh;">
 
@@ -124,135 +183,17 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($categories as $category)
-                            <tr class="table-secondary">
-                                <td colspan="5" class="fw-bold text-start">
-                                    <div class="d-flex flex-column">
-                                        <a href="javascript:void(0);" class="category-toggle d-flex align-items-center"
-                                            data-target="#category{{ $category->id }}">
-                                            <i class="bi bi-plus-circle me-2"></i>
-                                            {{ $category->name }}
-                                        </a>
-
-                                        @if($category->limit)
-                                            @php
-                                                $spent = abs($category->total_spent);
-                                                $percentage = ($spent / $category->limit) * 100;
-                                                $overAmount = $spent - $category->limit;
-
-                                                if ($overAmount > 0) {
-                                                    $progressColor = 'danger';
-                                                } else {
-                                                    $progressColor = 'success';
-                                                }
-                                            @endphp
-                                            <div class="mt-2">
-                                                <div class="d-flex justify-content-between align-items-center mb-1">
-                                                    <small class="text-muted">
-                                                        <i class="bi bi-speedometer2"></i> Limit: E£
-                                                        {{ number_format($category->limit, 2) }}
-                                                    </small>
-                                                    <small class="fw-semibold text-{{ $progressColor }}">
-                                                        {{ number_format($percentage, 1) }}%
-                                                    </small>
-                                                </div>
-                                                <div class="progress" style="height: 8px;">
-                                                    <div class="progress-bar bg-{{ $progressColor }}" role="progressbar"
-                                                        style="width: {{ min($percentage, 100) }}%"
-                                                        aria-valuenow="{{ $percentage }}" aria-valuemin="0" aria-valuemax="100">
-                                                    </div>
-                                                </div>
-                                                @if($percentage >= 100)
-                                                    @php
-                                                        $overAmount = $spent - $category->limit;
-                                                        $textColor = $overAmount > 0 ? 'danger' : 'success';
-                                                        $icon = $overAmount > 0 ? 'bi-exclamation-triangle-fill' : 'bi-check-circle-fill';
-                                                    @endphp
-                                                    <small class="text-{{ $textColor }}">
-                                                        <i class="bi {{ $icon }}"></i>
-                                                        {{ $overAmount == 0 ? 'At limit' : 'Over limit by E£ ' . number_format($overAmount, 2) }}
-                                                    </small>
-                                                @endif
-                                            </div>
-                                        @else
-                                            <small class="text-muted mt-1">
-                                                <i class="bi bi-infinity"></i> No limit set
-                                            </small>
-                                        @endif
-                                    </div>
-                                </td>
-                                <td class="fw-bold text-start">
-                                    <div class="d-flex flex-column align-items-start">
-                                        <span class="mb-1">E£ {{ number_format($category->total_spent, 2) }}</span>
-                                        @if($category->limit)
-                                            @php
-                                                $spent = abs($category->total_spent);
-                                                $percentage = ($spent / $category->limit) * 100;
-                                                $overAmount = $spent - $category->limit;
-                                            @endphp
-                                            @if($overAmount > 0)
-                                                <span class="badge bg-danger">
-                                                    <i class="bi bi-exclamation-circle"></i> Over Budget
-                                                </span>
-                                            @else
-                                                <span class="badge bg-success">
-                                                    <i class="bi bi-check-circle"></i> Within Budget
-                                                </span>
-                                            @endif
-                                        @endif
-                                    </div>
-                                </td>
-                            </tr>
-
-                            <tr id="category{{ $category->id }}" class="collapse">
-                                <td colspan="6">
-                                    <table class="table table-striped table-hover text-center align-middle mb-0">
-                                        <thead class="table-light">
-                                            <tr>
-                                                <th></th>
-                                                <th>Name</th>
-                                                <th>Price</th>
-                                                <th>Price Per Unit</th>
-                                                <th>Quantity</th>
-                                                <th>Direction</th>
-                                                <th>Total</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($category->normalTransactions as $transaction)
-                                                <tr>
-                                                    <td class="fw-bold"></td>
-                                                    <td class="fw-semibold text-truncate">{{ $transaction->name }}</td>
-                                                    <td class="fw-bold">E£
-                                                        {{ number_format($transaction->price * $transaction->quantity, 2) }}
-                                                    </td>
-                                                    <td class="fw-bold">E£ {{ number_format($transaction->price, 2) }}</td>
-                                                    <td class="fw-bold">{{ number_format($transaction->quantity, 2) }}</td>
-                                                    <td>
-                                                        @if ($transaction->direction === 'credit')
-                                                            <span class="badge bg-success">
-                                                                <i class="bi bi-arrow-down-circle me-1"></i> Credit
-                                                            </span>
-                                                        @elseif ($transaction->direction === 'debit')
-                                                            <span class="badge bg-danger">
-                                                                <i class="bi bi-arrow-up-circle me-1"></i> Debit
-                                                            </span>
-                                                        @else
-                                                            <span class="badge bg-secondary">N/A</span>
-                                                        @endif
-                                                    </td>
-                                                    <td class="fw-bold">E£
-                                                        {{ number_format($transaction->quantity * $transaction->price, 2) }}
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </td>
-                            </tr>
-                        @endforeach
-
-                        @if($categories->count() === 0)
+                        @forelse($rootCategories as $category)
+                            @if($category->children && $category->children->count() > 0)
+                                <tr class="table-secondary parent-row" data-category-id="{{ $category->id }}">
+                                    @php renderMonthYearCategoryRow($category, 0, true) @endphp
+                                </tr>
+                            @else
+                                <tr class="table-secondary">
+                                    @php renderMonthYearCategoryRow($category, 0, true) @endphp
+                                </tr>
+                            @endif
+                        @empty
                             <tr>
                                 <td colspan="6" class="text-center py-5">
                                     <i class="bi bi-inbox fs-1 text-muted mb-3 d-block"></i>
@@ -260,7 +201,7 @@
                                     <p class="text-muted">There are no transactions for this month yet.</p>
                                 </td>
                             </tr>
-                        @endif
+                        @endforelse
                     </tbody>
                 </table>
             </div>

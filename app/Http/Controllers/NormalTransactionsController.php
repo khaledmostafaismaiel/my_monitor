@@ -39,7 +39,7 @@ class NormalTransactionsController extends Controller
             ->orderBy("date", "desc")
             ->paginate(10);
 
-        $all_categories = auth()->user()->family->categories()->orderBy("name")
+        $all_categories = auth()->user()->family->categories()->whereNotNull('parent_id')->orderBy("name")
             ->get();
 
         $users = auth()->user()

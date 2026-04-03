@@ -47,6 +47,22 @@
                             id="categoryLimit{{ $category->id }}" name="limit" value="{{ $category->limit }}"
                             placeholder="Enter spending limit...">
                     </div>
+
+                    <!-- Parent Category -->
+                    <div class="mb-3">
+                        <label for="categoryParent{{ $category->id }}"
+                            class="form-label fw-semibold text-secondary small">Parent Category (Optional)</label>
+                        <select class="form-select"
+                            style="border: 1px solid #e2e8f0; border-radius: 8px; padding: 0.5rem 1rem;"
+                            id="categoryParent{{ $category->id }}" name="parent_id">
+                            <option value="">No Parent</option>
+                            @foreach($allCategories as $cat)
+                                @if($cat->id !== $category->id)
+                                    <option value="{{ $cat->id }}" {{ $category->parent_id == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
+                                @endif
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
 
                 <!-- Modal Footer -->

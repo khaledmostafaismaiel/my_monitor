@@ -42,6 +42,20 @@
                         <input type="number" step="0.01" min="0" class="form-control-custom" id="categoryLimit"
                             name="limit" placeholder="Enter spending limit...">
                     </div>
+
+                    <!-- Parent Category -->
+                    <div class="mb-3">
+                        <label for="categoryParent" class="form-label fw-semibold text-secondary small">Parent Category
+                            (Optional)</label>
+                        <select class="form-select"
+                            style="border: 1px solid #e2e8f0; border-radius: 8px; padding: 0.5rem 1rem;"
+                            id="categoryParent" name="parent_id">
+                            <option value="">No Parent</option>
+                            @foreach($allCategories as $cat)
+                                <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
 
                 <!-- Modal Footer -->

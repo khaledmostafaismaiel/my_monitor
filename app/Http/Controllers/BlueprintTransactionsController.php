@@ -43,7 +43,7 @@ class BlueprintTransactionsController extends Controller
             ->users()
             ->get();
 
-        $all_categories = auth()->user()->family->categories()->orderBy("name")
+        $all_categories = auth()->user()->family->categories()->whereNotNull('parent_id')->orderBy("name")
             ->get();
 
         $all_wallets = auth()->user()->family->wallets()->orderBy("name")

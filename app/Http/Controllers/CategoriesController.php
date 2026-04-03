@@ -11,17 +11,54 @@ class CategoriesController extends Controller
 {
     public function index()
     {
-        $categories = Category::where('family_id', auth()->user()->family_id)
-            ->when(null !== \request("name"), function($query){
-                $query->where("name", "LIKE", "%".\request("name")."%");
-            })
-            ->when(null !== \request("status"), function($query){
-                $query->where("status", \request("status"));
-            })
+        $allCategories = Category::where('family_id', auth()->user()->family_id)
             ->orderBy("name")
-            ->paginate(10);
+            ->get();
 
-        return view('categories' ,compact('categories'));
+        $categoryTree = $this->buildTree($allCategories);
+        $rootCategories = $categoryTree->slice(0, 10);
+        $hasMore = $categoryTree->count() > 10;
+
+        return view('categories' ,compact('rootCategories', 'allCategories', 'hasMore'));
+    }
+
+    private function buildTree($categories)
+    {
+        $grouped = $categories->groupBy('parent_id');
+        $rootCategories = $grouped->get(null) ?? collect();
+
+        $mainCategory = $rootCategories->firstWhere('name', 'Main');
+        
+        if ($mainCategory) {
+            $mainChildren = $grouped->get($mainCategory->id) ?? collect();
+            
+            if ($mainChildren->isNotEmpty()) {
+                $result = collect([$this->addChildren($mainCategory, $grouped)]);
+                
+                $otherRoots = $rootCategories->filter(fn($c) => $c->name !== 'Main');
+                return $result->concat($otherRoots->map(function ($category) use ($grouped) {
+                    return $this->addChildren($category, $grouped);
+                }));
+            }
+        }
+
+        return $rootCategories->map(function ($category) use ($grouped) {
+            return $this->addChildren($category, $grouped);
+        });
+    }
+
+    public function create()
+    {
+        return redirect('/categories');
+    }
+
+    private function addChildren($category, $grouped)
+    {
+        $children = $grouped->get($category->id) ?? collect();
+        $category->children = $children->map(function ($child) use ($grouped) {
+            return $this->addChildren($child, $grouped);
+        });
+        return $category;
     }
 
     public function store(CategoryStoreRequest $request)

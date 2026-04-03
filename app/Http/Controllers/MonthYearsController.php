@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\MonthYear;
+use App\Models\Category;
 use DB;
 use Illuminate\Http\Request;
 use App\Http\Requests\MonthYearStoreRequest;
@@ -25,6 +26,40 @@ class MonthYearsController extends Controller
         );
 
         return redirect('/');
+    }
+
+    private function buildTree($categories)
+    {
+        $grouped = $categories->groupBy('parent_id');
+        $rootCategories = $grouped->get(null) ?? collect();
+
+        $mainCategory = $rootCategories->firstWhere('name', 'Main');
+        
+        if ($mainCategory) {
+            $mainChildren = $grouped->get($mainCategory->id) ?? collect();
+            
+            if ($mainChildren->isNotEmpty()) {
+                $result = collect([$this->addChildren($mainCategory, $grouped)]);
+                
+                $otherRoots = $rootCategories->filter(fn($c) => $c->name !== 'Main');
+                return $result->concat($otherRoots->map(function ($category) use ($grouped) {
+                    return $this->addChildren($category, $grouped);
+                }));
+            }
+        }
+
+        return $rootCategories->map(function ($category) use ($grouped) {
+            return $this->addChildren($category, $grouped);
+        });
+    }
+
+    private function addChildren($category, $grouped)
+    {
+        $children = $grouped->get($category->id) ?? collect();
+        $category->children = $children->map(function ($child) use ($grouped) {
+            return $this->addChildren($child, $grouped);
+        });
+        return $category;
     }
 
     public function show(MonthYear $monthYear)
@@ -92,6 +127,11 @@ class MonthYearsController extends Controller
             ])
             ->get();
 
-        return view('month_year', compact('monthYear', 'categories', 'categorySummary', 'prevMonthYear', 'nextMonthYear'));
+        $allCategories = auth()->user()->family->categories()->orderBy("name")->get();
+        $categoryTree = $this->buildTree($allCategories);
+        $rootCategories = $categoryTree->slice(0, 10);
+        $hasMore = $categoryTree->count() > 10;
+
+        return view('month_year', compact('monthYear', 'categories', 'categorySummary', 'prevMonthYear', 'nextMonthYear', 'rootCategories', 'hasMore'));
     }
 }

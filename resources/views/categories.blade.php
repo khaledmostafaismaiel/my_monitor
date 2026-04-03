@@ -52,6 +52,45 @@
 
         @include('layouts/add_category')
 
+@php
+function renderCategoryRow($category, $level = 0, $collapsed = false) {
+    $display = $collapsed ? 'display:none;' : '';
+    $hasChildren = $category->children && $category->children->count() > 0;
+    $chevronClass = $hasChildren ? ($collapsed ? 'bi-chevron-right' : 'bi-chevron-down') : '';
+    $cursorStyle = $hasChildren ? 'cursor:pointer;' : '';
+    $iconClass = $hasChildren ? 'text-warning' : 'text-muted';
+    $rowClass = $hasChildren ? 'parent-row' : '';
+    
+    $parentId = $category->parent_id ?? '';
+    echo '<tr class="group-row child-row ' . $rowClass . '" data-category-id="' . $category->id . '" data-parent-id="' . $parentId . '" data-children-parent-id="' . $category->id . '" style="' . $display . '">';
+    echo '<td class="ps-4 py-3"><div class="d-flex align-items-center gap-2" style="padding-left: ' . ($level * 24) . 'px' . $cursorStyle . '">';
+    if ($hasChildren) {
+        echo '<i class="bi ' . $chevronClass . ' toggle-icon" style="cursor:pointer;"></i>';
+    } else {
+        echo '<span style="width:16px;display:inline-block;"></span>';
+    }
+    echo '<i class="bi bi-folder ' . $iconClass . '"></i>';
+    echo '<span class="fw-semibold text-secondary">' . ucfirst($category->name) . '</span>';
+    if ($hasChildren) {
+        echo '<span class="text-muted small">(' . $category->children->count() . ')</span>';
+    }
+    echo '</div></td>';
+    echo '<td class="py-3"><span class="text-secondary fw-medium">' . ($category->limit ? 'E£ ' . number_format($category->limit, 2) : 'No limit') . '</span></td>';
+    $badgeClass = $category->status == 'active' ? 'bg-success-subtle text-success' : 'bg-danger-subtle text-danger';
+    echo '<td class="py-3"><span class="badge ' . $badgeClass . ' rounded-pill px-3 py-2">' . ucfirst($category->status) . '</span></td>';
+    echo '<td class="pe-4 py-3 text-end">';
+    echo '<button type="button" class="btn btn-sm btn-outline-light text-secondary border shadow-sm rounded-pill px-3 me-2" data-bs-toggle="modal" data-bs-target="#editCategory' . $category->id . '"><i class="bi bi-pencil"></i> Edit</button>';
+    echo '<button type="button" class="btn btn-sm btn-outline-danger border shadow-sm rounded-pill px-3" data-bs-toggle="modal" data-bs-target="#deleteCategory' . $category->id . '"><i class="bi bi-trash"></i> Delete</button>';
+    echo '</td></tr>';
+    
+    if ($hasChildren) {
+        foreach ($category->children as $child) {
+            renderCategoryRow($child, $level + 1, $collapsed);
+        }
+    }
+}
+@endphp
+
         <!-- Category Table -->
         <div class="card-custom overflow-hidden">
             <div class="table-responsive">
@@ -65,12 +104,48 @@
                         </tr>
                     </thead>
                     <tbody class="border-top-0">
-                        @forelse($categories as $category)
-                            <tr class="group-row">
+                        @forelse($rootCategories as $category)
+                            @if($category->children && $category->children->count() > 0)
+                                <tr class="group-row bg-light parent-row" data-category-id="{{ $category->id }}">
+                                    <td class="ps-4 py-3">
+                                        <div class="d-flex align-items-center gap-2">
+                                            <i class="bi bi-chevron-right toggle-icon" style="cursor:pointer;"></i>
+                                            <i class="bi bi-folder-fill text-primary-custom"></i>
+                                            <span class="fw-bold text-secondary">{{ ucfirst($category->name) }}</span>
+                                            <span class="text-muted small">({{ $category->children->count() }})</span>
+                                        </div>
+                                    </td>
+                                    <td class="py-3">
+                                        <span class="text-secondary fw-medium">
+                                            {{ $category->limit ? 'E£ ' . number_format($category->limit, 2) : 'No limit' }}
+                                        </span>
+                                    </td>
+                                    <td class="py-3">
+                                        <span
+                                            class="badge {{ $category->status == 'active' ? 'bg-success-subtle text-success' : 'bg-danger-subtle text-danger' }} rounded-pill px-3 py-2">
+                                            {{ ucfirst($category->status) }}
+                                        </span>
+                                    </td>
+                                    <td class="pe-4 py-3 text-end">
+                                        <button type="button"
+                                            class="btn btn-sm btn-outline-light text-secondary border shadow-sm rounded-pill px-3 me-2"
+                                            data-bs-toggle="modal" data-bs-target="#editCategory{{ $category->id }}">
+                                            <i class="bi bi-pencil"></i> Edit
+                                        </button>
+                                        <button type="button"
+                                            class="btn btn-sm btn-outline-danger border shadow-sm rounded-pill px-3"
+                                            data-bs-toggle="modal" data-bs-target="#deleteCategory{{ $category->id }}">
+                                            <i class="bi bi-trash"></i> Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                                @php renderCategoryRow($category, 1, true) @endphp
+                            @else
+                            <tr class="group-row bg-light">
                                 <td class="ps-4 py-3">
                                     <div class="d-flex align-items-center gap-2">
-                                        <i class="bi bi-tags text-primary-custom"></i>
-                                        <span class="fw-semibold text-secondary">{{ ucfirst($category->name) }}</span>
+                                        <i class="bi bi-folder-fill text-primary-custom"></i>
+                                        <span class="fw-bold text-secondary">{{ ucfirst($category->name) }}</span>
                                     </div>
                                 </td>
                                 <td class="py-3">
@@ -97,6 +172,7 @@
                                     </button>
                                 </td>
                             </tr>
+                            @endif
                         @empty
                             <tr>
                                 <td colspan="4" class="text-center py-5">
@@ -120,18 +196,12 @@
                     </tbody>
                 </table>
             </div>
-
-            @if($categories->hasPages())
-                <div class="p-4 border-top bg-light">
-                    {{ $categories->appends(request()->query())->links() }}
-                </div>
-            @endif
         </div>
     </div>
 @endsection
 
 @push('modals')
-    @foreach($categories as $category)
+    @foreach($allCategories as $category)
         @include('layouts/edit_category', ['category' => $category, 'modalId' => "editCategory{$category->id}"])
         @include('layouts/delete_category', ['category' => $category, 'modalId' => "deleteCategory{$category->id}"])
     @endforeach
@@ -174,6 +244,28 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
+        // Use event delegation for dynamically rendered rows
+        document.addEventListener('click', function(e) {
+            const toggleIcon = e.target.closest('.toggle-icon');
+            if (toggleIcon) {
+                const row = toggleIcon.closest('tr');
+                const categoryId = row.dataset.categoryId || row.dataset.childrenParentId;
+                const childRows = document.querySelectorAll('.child-row[data-parent-id="' + categoryId + '"]');
+                
+                childRows.forEach(function(childRow) {
+                    if (childRow.style.display === 'none') {
+                        childRow.style.display = '';
+                        toggleIcon.classList.remove('bi-chevron-right');
+                        toggleIcon.classList.add('bi-chevron-down');
+                    } else {
+                        childRow.style.display = 'none';
+                        toggleIcon.classList.remove('bi-chevron-down');
+                        toggleIcon.classList.add('bi-chevron-right');
+                    }
+                });
+            }
+        });
+
         const toggleBtn = document.getElementById('toggleSearchBtn');
         const searchSection = document.getElementById('searchSection');
         const form = document.querySelector("#filter_categories_form");

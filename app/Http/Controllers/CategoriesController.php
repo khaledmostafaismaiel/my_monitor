@@ -12,6 +12,7 @@ class CategoriesController extends Controller
     public function index()
     {
         $allCategories = Category::where('family_id', auth()->user()->family_id)
+            ->with('children')
             ->orderBy("name")
             ->get();
 
@@ -92,6 +93,13 @@ class CategoriesController extends Controller
 
     public function destroy(CategoryDestroyRequest $request, Category $category)
     {
+        $category->load('children');
+        
+        if ($category->children && $category->children->count() > 0) {
+            session()->flash('message', 'Cannot delete category with children. Please delete or reassign child categories first.');
+            return redirect('/categories?page_number=1');
+        }
+        
         if($category->delete()){
             session()->flash('message','Category deleted successfully');
         }else{

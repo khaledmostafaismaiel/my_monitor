@@ -52,7 +52,7 @@
                             id="categoryParent" name="parent_id">
                             <option value="">No Parent</option>
                             @foreach($allCategories as $cat)
-                                <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                                <option value="{{ $cat->id }}">{{ $cat->name }}{{ $cat->children && $cat->children->count() > 0 ? ' (parent)' : '' }}</option>
                             @endforeach
                         </select>
                     </div>

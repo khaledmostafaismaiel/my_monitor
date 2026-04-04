@@ -10,33 +10,58 @@ use App\Http\Requests\BlueprintTransactionUpdateAndAddRequest;
 
 class BlueprintTransactionsController extends Controller
 {
+    private function buildTree($categories)
+    {
+        $map = [];
+        $tree = [];
+        
+        foreach ($categories as $cat) {
+            $map[$cat->id] = $cat;
+            $cat->children = collect();
+        }
+        
+        foreach ($categories as $cat) {
+            if ($cat->parent_id && isset($map[$cat->parent_id])) {
+                $map[$cat->parent_id]->children->push($cat);
+            } else {
+                $tree[] = $cat;
+            }
+        }
+        
+        return collect($tree);
+    }
+
     public function index()
     {
         $categories = auth()->user()->family->categories()
-        ->whereHas('blueprintTransactions', function ($query) {
-            $query->when(request("name") != "", function ($query) {
-                $query->where("transactions.name", "LIKE", "%" . request("name") . "%");
+            ->whereHas('blueprintTransactions', function ($query) {
+                $query->when(request("name") != "", function ($query) {
+                    $query->where("transactions.name", "LIKE", "%" . request("name") . "%");
+                })
+                ->when(request("direction") != "", function ($query) {
+                    $query->where("transactions.direction", request("direction"));
+                })
+                ->when(request("category_id") != "", function ($query) {
+                    $query->where("transactions.category_id", request("category_id"));
+                });
             })
-            ->when(request("direction") != "", function ($query) {
-                $query->where("transactions.direction", request("direction"));
-            })
-            ->when(request("category_id") != "", function ($query) {
-                $query->where("transactions.category_id", request("category_id"));
-            });
-        })
-        ->orderBy("name")
-        ->with(['blueprintTransactions' => function ($query) {
-            $query->when(request("name") != "", function ($query) {
-                $query->where("transactions.name", "LIKE", "%" . request("name") . "%");
-            })
-            ->when(request("direction") != "", function ($query) {
-                $query->where("transactions.direction", request("direction"));
-            })
-            ->when(request("category_id") != "", function ($query) {
-                $query->where("transactions.category_id", request("category_id"));
-            });
-        }])
-        ->paginate(10);
+            ->orderBy("name")
+            ->with(['blueprintTransactions' => function ($query) {
+                $query->when(request("name") != "", function ($query) {
+                    $query->where("transactions.name", "LIKE", "%" . request("name") . "%");
+                })
+                ->when(request("direction") != "", function ($query) {
+                    $query->where("transactions.direction", request("direction"));
+                })
+                ->when(request("category_id") != "", function ($query) {
+                    $query->where("transactions.category_id", request("category_id"));
+                });
+            }])
+            ->get();
+
+        $categoryTree = $this->buildTree($categories);
+        $rootCategories = $categoryTree->slice(0, 10);
+        $hasMore = $categoryTree->count() > 10;
 
         $users = auth()->user()
             ->family
@@ -53,7 +78,7 @@ class BlueprintTransactionsController extends Controller
         $all_month_years = auth()->user()->family->monthYears()->orderBy("id", "Desc")
             ->get();
 
-        return view('blueprint_transactions', compact('categories', 'users', 'all_categories', 'all_wallets', 'all_month_years'));
+        return view('blueprint_transactions', compact('rootCategories', 'users', 'all_categories', 'all_wallets', 'all_month_years', 'hasMore'));
     }
 
     public function store(BlueprintTransactionStoreRequest $request)

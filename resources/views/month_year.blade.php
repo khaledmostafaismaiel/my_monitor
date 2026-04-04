@@ -4,6 +4,8 @@
 
 @php
 function renderMonthYearCategoryRow($category, $level = 0, $collapsed = false) {
+    // debug comment
+    echo '<!--FUNC:'.$category->name.'-->';
     $display = $collapsed ? 'display:none;' : '';
     $hasChildren = $category->children && $category->children->count() > 0;
     $chevronClass = $hasChildren ? ($collapsed ? 'bi-chevron-right' : 'bi-chevron-down') : '';
@@ -183,25 +185,53 @@ function renderMonthYearCategoryRow($category, $level = 0, $collapsed = false) {
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($rootCategories as $category)
-                            @if($category->children && $category->children->count() > 0)
-                                <tr class="table-secondary parent-row" data-category-id="{{ $category->id }}">
-                                    @php renderMonthYearCategoryRow($category, 0, true) @endphp
-                                </tr>
-                            @else
-                                <tr class="table-secondary">
-                                    @php renderMonthYearCategoryRow($category, 0, true) @endphp
-                                </tr>
-                            @endif
-                        @empty
-                            <tr>
-                                <td colspan="6" class="text-center py-5">
-                                    <i class="bi bi-inbox fs-1 text-muted mb-3 d-block"></i>
-                                    <h5 class="text-muted">No transactions found</h5>
-                                    <p class="text-muted">There are no transactions for this month yet.</p>
+                        <?php foreach($rootCategories as $cat): ?>
+                            <?php $hasChildren = $cat->children && $cat->children->count() > 0; ?>
+                            <tr class="table-secondary parent-row" data-category-id="<?php echo e($cat->id); ?>">
+                                <td colspan="5" class="fw-bold text-start">
+                                    <div class="d-flex flex-column">
+                                        <a href="javascript:void(0);" class="category-toggle d-flex align-items-center">
+                                            <?php if($hasChildren): ?>
+                                                <i class="bi bi-chevron-right toggle-icon me-2"></i>
+                                            <?php else: ?>
+                                                <span style="width:16px;display:inline-block;" class="me-2"></span>
+                                            <?php endif; ?>
+                                            <i class="bi bi-folder<?php echo $hasChildren ? '-fill' : ''; ?> text-primary me-2"></i>
+                                            <span><?php echo e(ucfirst($cat->name)); ?></span>
+                                            <?php if($hasChildren): ?>
+                                                <span class="text-muted small ms-2">(<?php echo $cat->children->count(); ?>)</span>
+                                            <?php endif; ?>
+                                        </a>
+                                        <?php if($cat->limit): ?>
+                                            <?php $spent = abs($cat->total_spent ?? 0); ?>
+                                            <?php $percentage = $cat->limit > 0 ? ($spent / $cat->limit) * 100 : 0; ?>
+                                            <div class="mt-2 ms-4">
+                                                <small class="text-muted">Limit: E£ <?php echo number_format($cat->limit, 2); ?></small>
+                                                <div class="progress mt-1" style="height:8px;">
+                                                    <div class="progress-bar bg-<?php echo $percentage > 100 ? 'danger' : 'success'; ?>" style="width: <?php echo min($percentage, 100); ?>%"></div>
+                                                </div>
+                                            </div>
+                                        <?php else: ?>
+                                            <small class="text-muted mt-1 ms-4">No limit set</small>
+                                        <?php endif; ?>
+                                    </div>
                                 </td>
+                                <td class="fw-bold text-start">E£ <?php echo number_format($cat->total_spent ?? 0, 2); ?></td>
                             </tr>
-                        @endforelse
+                            <?php if($hasChildren): ?>
+                                <?php foreach($cat->children as $child): ?>
+                                    <tr class="child-row" data-parent-id="<?php echo e($cat->id); ?>" style="display:none;">
+                                        <td colspan="5" class="fw-bold text-start">
+                                            <div class="d-flex align-items-center" style="padding-left: 48px;">
+                                                <i class="bi bi-folder text-warning me-2"></i>
+                                                <span><?php echo e(ucfirst($child->name)); ?></span>
+                                            </div>
+                                        </td>
+                                        <td class="fw-bold text-start">E£ <?php echo number_format($child->total_spent ?? 0, 2); ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
                     </tbody>
                 </table>
             </div>
@@ -380,26 +410,33 @@ function renderMonthYearCategoryRow($category, $level = 0, $collapsed = false) {
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            // Collapse functionality for categories
-            const categoryRows = document.querySelectorAll('.category-toggle');
-            categoryRows.forEach(row => {
-                row.addEventListener('click', function () {
-                    const target = document.querySelector(this.dataset.target);
-                    const icon = this.querySelector('i');
-
-                    if (target.classList.contains('collapse')) {
-                        target.classList.remove('collapse');
-                        target.classList.add('collapsing');
-                        icon.classList.remove('bi-plus-circle');
-                        icon.classList.add('bi-dash-circle');
-                        setTimeout(() => target.classList.remove('collapsing'), 300);
-                    } else {
-                        target.classList.add('collapse');
-                        target.classList.remove('collapsing');
-                        icon.classList.remove('bi-dash-circle');
-                        icon.classList.add('bi-plus-circle');
-                    }
-                });
+            // Collapse functionality for categories using event delegation
+            document.addEventListener('click', function(e) {
+                const toggleLink = e.target.closest('.category-toggle');
+                if (toggleLink) {
+                    const row = toggleLink.closest('tr');
+                    const categoryId = row.dataset.categoryId;
+                    const icon = toggleLink.querySelector('.toggle-icon');
+                    
+                    // Find all child rows for this category
+                    const childRows = document.querySelectorAll('.child-row[data-parent-id="' + categoryId + '"]');
+                    
+                    childRows.forEach(function(childRow) {
+                        if (childRow.style.display === 'none') {
+                            childRow.style.display = '';
+                            if (icon) {
+                                icon.classList.remove('bi-chevron-right');
+                                icon.classList.add('bi-chevron-down');
+                            }
+                        } else {
+                            childRow.style.display = 'none';
+                            if (icon) {
+                                icon.classList.remove('bi-chevron-down');
+                                icon.classList.add('bi-chevron-right');
+                            }
+                        }
+                    });
+                }
             });
         });
     </script>

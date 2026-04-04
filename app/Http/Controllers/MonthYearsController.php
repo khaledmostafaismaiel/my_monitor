@@ -30,36 +30,23 @@ class MonthYearsController extends Controller
 
     private function buildTree($categories)
     {
-        $grouped = $categories->groupBy('parent_id');
-        $rootCategories = $grouped->get(null) ?? collect();
-
-        $mainCategory = $rootCategories->firstWhere('name', 'Main');
+        $map = [];
+        $tree = [];
         
-        if ($mainCategory) {
-            $mainChildren = $grouped->get($mainCategory->id) ?? collect();
-            
-            if ($mainChildren->isNotEmpty()) {
-                $result = collect([$this->addChildren($mainCategory, $grouped)]);
-                
-                $otherRoots = $rootCategories->filter(fn($c) => $c->name !== 'Main');
-                return $result->concat($otherRoots->map(function ($category) use ($grouped) {
-                    return $this->addChildren($category, $grouped);
-                }));
+        foreach ($categories as $cat) {
+            $map[$cat->id] = $cat;
+            $cat->children = collect();
+        }
+        
+        foreach ($categories as $cat) {
+            if ($cat->parent_id && isset($map[$cat->parent_id])) {
+                $map[$cat->parent_id]->children->push($cat);
+            } else {
+                $tree[] = $cat;
             }
         }
-
-        return $rootCategories->map(function ($category) use ($grouped) {
-            return $this->addChildren($category, $grouped);
-        });
-    }
-
-    private function addChildren($category, $grouped)
-    {
-        $children = $grouped->get($category->id) ?? collect();
-        $category->children = $children->map(function ($child) use ($grouped) {
-            return $this->addChildren($child, $grouped);
-        });
-        return $category;
+        
+        return collect($tree);
     }
 
     public function show(MonthYear $monthYear)
@@ -128,7 +115,26 @@ class MonthYearsController extends Controller
             ->get();
 
         $allCategories = auth()->user()->family->categories()->orderBy("name")->get();
+        
+        // Add total_spent from transactions to categories
+        $categorySpent = $categories->keyBy('id');
+        $allCategories = $allCategories->map(function($cat) use ($categorySpent) {
+            if (isset($categorySpent[$cat->id])) {
+                $cat->total_spent = $categorySpent[$cat->id]->total_spent;
+            }
+            return $cat;
+        });
+        
         $categoryTree = $this->buildTree($allCategories);
+        
+        // Calculate parent totals as sum of children
+        $categoryTree = $categoryTree->map(function($root) {
+            if ($root->children && $root->children->count() > 0) {
+                $root->total_spent = $root->children->sum('total_spent');
+            }
+            return $root;
+        });
+        
         $rootCategories = $categoryTree->slice(0, 10);
         $hasMore = $categoryTree->count() > 10;
 

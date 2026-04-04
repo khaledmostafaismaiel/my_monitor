@@ -75,7 +75,104 @@
                     </tr>
                 </thead>
                 <tbody class="border-top-0">
-                    @foreach($categories as $category)
+                    @forelse($rootCategories as $category)
+                        @if($category->children && $category->children->count() > 0)
+                        <tr class="group-row bg-light parent-row" data-category-id="{{ $category->id }}">
+                            <td colspan="5" class="ps-4 py-3">
+                                <a href="javascript:void(0);" class="category-toggle d-flex align-items-center text-decoration-none">
+                                    <i class="bi bi-chevron-right toggle-icon me-2"></i>
+                                    <i class="bi bi-folder-fill text-primary me-2"></i>
+                                    <span class="fw-bold text-secondary">{{ $category->name }}</span>
+                                    <span class="text-muted small ms-2">({{ $category->children->count() }})</span>
+                                </a>
+                            </td>
+                        </tr>
+                        @foreach($category->children as $child)
+                        <tr class="group-row child-row bg-light" data-parent-id="{{ $category->id }}" style="display:none;">
+                            <td colspan="5" class="ps-4 py-3">
+                                <a href="javascript:void(0);" class="category-toggle d-flex align-items-center text-decoration-none" data-target="#category{{ $child->id }}">
+                                    <button class="btn btn-sm btn-light rounded-circle shadow-sm p-0 d-flex align-items-center justify-content-center me-2" 
+                                            style="width: 24px; height: 24px;">
+                                        <i class="bi bi-plus-circle small transition-transform text-primary-custom"></i>
+                                    </button>
+                                    <span class="fw-bold text-secondary">{{ $child->name }}</span>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr id="category{{ $child->id }}" class="collapse child-row" data-parent-id="{{ $category->id }}" style="display:none;">
+                            <td colspan="5" class="p-0 border-0">
+                                <div class="bg-light p-4">
+                                    <div class="card border-0 shadow-sm">
+                                        <div class="card-body p-0">
+                                            <table class="table table-sm mb-0">
+                                                <thead class="text-muted">
+                                                    <tr>
+                                                        <th class="ps-4 py-2 small fw-medium border-0"></th>
+                                                        <th class="py-2 small fw-medium border-0">Name</th>
+                                                        <th class="py-2 small fw-medium border-0">Price</th>
+                                                        <th class="py-2 small fw-medium border-0">Per Unit</th>
+                                                        <th class="py-2 small fw-medium border-0">Qty</th>
+                                                        <th class="py-2 small fw-medium border-0">Direction</th>
+                                                        <th class="pe-4 py-2 small fw-medium border-0 text-end">Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($child->blueprintTransactions as $transaction)
+                                                        <tr>
+                                                            <td class="ps-4 py-2 border-0"></td>
+                                                            <td class="py-2 border-0">
+                                                                <span class="text-secondary small fw-semibold">{{ $transaction->name }}</span>
+                                                            </td>
+                                                            <td class="py-2 border-0">
+                                                                <span class="small fw-bold text-secondary">E£ {{ number_format($transaction->price * $transaction->quantity, 2) }}</span>
+                                                            </td>
+                                                            <td class="py-2 border-0">
+                                                                <span class="small text-secondary">E£ {{ number_format($transaction->price, 2) }}</span>
+                                                            </td>
+                                                            <td class="py-2 border-0">
+                                                                <span class="small text-secondary">{{ number_format($transaction->quantity, 2) }}</span>
+                                                            </td>
+                                                            <td class="py-2 border-0">
+                                                                @if ($transaction->direction === 'credit')
+                                                                    <span class="badge bg-success-subtle text-success rounded-pill px-2 py-1 small">
+                                                                        <i class="bi bi-arrow-down-circle"></i> Credit
+                                                                    </span>
+                                                                @elseif ($transaction->direction === 'debit')
+                                                                    <span class="badge bg-danger-subtle text-danger rounded-pill px-2 py-1 small">
+                                                                        <i class="bi bi-arrow-up-circle"></i> Debit
+                                                                    </span>
+                                                                @else
+                                                                    <span class="badge bg-secondary rounded-pill px-2 py-1 small">N/A</span>
+                                                                @endif
+                                                            </td>
+                                                            <td class="pe-4 py-2 border-0 text-end">
+                                                                <button type="button" class="btn btn-sm btn-outline-success border shadow-sm rounded-pill px-2 me-1" data-bs-toggle="modal" data-bs-target="#addNormalTransaction{{ $transaction->id }}" title="Add as Normal">
+                                                                    <i class="bi bi-check-circle"></i>
+                                                                </button>
+                                                                <button type="button" class="btn btn-sm btn-outline-secondary border shadow-sm rounded-pill px-2 me-1" data-bs-toggle="modal" data-bs-target="#addDraftTransaction{{ $transaction->id }}" title="Add as Draft">
+                                                                    <i class="bi bi-file-earmark"></i>
+                                                                </button>
+                                                                <button type="button" class="btn btn-sm btn-outline-light text-secondary border shadow-sm rounded-pill px-2 me-1" data-bs-toggle="modal" data-bs-target="#editTransaction{{ $transaction->id }}" title="Edit">
+                                                                    <i class="bi bi-pencil"></i>
+                                                                </button>
+                                                                <button type="button" class="btn btn-sm btn-outline-warning border shadow-sm rounded-pill px-2 me-1" data-bs-toggle="modal" data-bs-target="#updateAndAddTransaction{{ $transaction->id }}" title="Add & Edit">
+                                                                    <i class="bi bi-pencil-square"></i>
+                                                                </button>
+                                                                <button type="button" class="btn btn-sm btn-outline-danger border shadow-sm rounded-pill px-2" data-bs-toggle="modal" data-bs-target="#deleteTransaction{{ $transaction->id }}" title="Delete">
+                                                                    <i class="bi bi-trash"></i>
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        @endforeach
+                        @else
                         <tr class="group-row bg-light">
                             <td colspan="5" class="ps-4 py-3">
                                 <a href="javascript:void(0);" class="category-toggle d-flex align-items-center text-decoration-none" data-target="#category{{ $category->id }}">
@@ -160,22 +257,34 @@
                                 </div>
                             </td>
                         </tr>
-                    @endforeach
+                        @endif
+                    @empty
+                        <tr>
+                            <td colspan="5" class="text-center py-5">
+                                <div class="py-4">
+                                    <div class="mb-3">
+                                        <div class="d-inline-flex align-items-center justify-content-center bg-light rounded-circle" style="width: 64px; height: 64px;">
+                                            <i class="bi bi-layout-text-sidebar-reverse text-muted fs-3"></i>
+                                        </div>
+                                    </div>
+                                    <h5 class="text-secondary fw-bold">No Blueprint Transactions</h5>
+                                    <p class="text-muted">Create your first blueprint transaction template.</p>
+                                    <button type="button" class="btn btn-primary-custom" data-bs-toggle="modal" data-bs-target="#addBlueprintTransaction">
+                                        Add First Blueprint
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
-
-        @if($categories->hasPages())
-            <div class="p-4 border-top bg-light">
-                {{ $categories->appends(request()->query())->links() }}
-            </div>
-        @endif
     </div>
 </div>
 @endsection
 
 @push('modals')
-    @foreach($categories as $category)
+    @foreach($rootCategories as $category)
         @foreach ($category->blueprintTransactions as $transaction)
             @include('layouts.add_normal_transaction', ['transaction' => $transaction, 'modalId' => "addNormalTransaction{$transaction->id}"])
             @include('layouts.add_draft_transaction', ['transaction' => $transaction, 'modalId' => "addDraftTransaction{$transaction->id}"])
@@ -183,6 +292,17 @@
             @include('layouts.update_and_add_transaction', ['transaction' => $transaction, 'modalId' => "updateAndAddTransaction{$transaction->id}"])
             @include('layouts.delete_blueprint_transaction', ['transaction' => $transaction, 'modalId' => "deleteTransaction{$transaction->id}"])
         @endforeach
+        @if($category->children)
+            @foreach($category->children as $child)
+                @foreach ($child->blueprintTransactions as $transaction)
+                    @include('layouts.add_normal_transaction', ['transaction' => $transaction, 'modalId' => "addNormalTransaction{$transaction->id}"])
+                    @include('layouts.add_draft_transaction', ['transaction' => $transaction, 'modalId' => "addDraftTransaction{$transaction->id}"])
+                    @include('layouts.edit_blueprint_transaction', ['transaction' => $transaction, 'modalId' => "editTransaction{$transaction->id}"])
+                    @include('layouts.update_and_add_transaction', ['transaction' => $transaction, 'modalId' => "updateAndAddTransaction{$transaction->id}"])
+                    @include('layouts.delete_blueprint_transaction', ['transaction' => $transaction, 'modalId' => "deleteTransaction{$transaction->id}"])
+                @endforeach
+            @endforeach
+        @endif
     @endforeach
 @endpush
 
@@ -266,6 +386,36 @@ document.addEventListener("DOMContentLoaded", function () {
         allowClear: true
     });
 
+    // Event delegation for parent category toggle
+    document.addEventListener('click', function(e) {
+        const toggleLink = e.target.closest('.parent-row .category-toggle');
+        if (toggleLink) {
+            e.preventDefault();
+            const row = toggleLink.closest('tr');
+            const categoryId = row.dataset.categoryId;
+            const icon = toggleLink.querySelector('.toggle-icon');
+            
+            const childRows = document.querySelectorAll('.child-row[data-parent-id="' + categoryId + '"]');
+            
+            childRows.forEach(function(childRow) {
+                if (childRow.style.display === 'none') {
+                    childRow.style.display = '';
+                    if (icon) {
+                        icon.classList.remove('bi-chevron-right');
+                        icon.classList.add('bi-chevron-down');
+                    }
+                } else {
+                    childRow.style.display = 'none';
+                    if (icon) {
+                        icon.classList.remove('bi-chevron-down');
+                        icon.classList.add('bi-chevron-right');
+                    }
+                }
+            });
+        }
+    });
+
+    // Original category toggle for child categories
     const categoryRows = document.querySelectorAll('.category-toggle');
     categoryRows.forEach(row => {
         row.addEventListener('click', function (e) {

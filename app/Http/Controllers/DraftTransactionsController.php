@@ -2,117 +2,79 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DraftTransactionStoreRequest;
+use App\Http\Requests\DraftTransactionTransferRequest;
+use App\Http\Requests\DraftTransactionUpdateRequest;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
-use App\Http\Requests\DraftTransactionStoreRequest;
-use App\Http\Requests\DraftTransactionUpdateRequest;
-use App\Http\Requests\DraftTransactionTransferRequest;
+use Inertia\Inertia;
 
 class DraftTransactionsController extends Controller
 {
-
-    public function index()
+    public function index(Request $request)
     {
-        $transactions = auth()->user()->family
-            ->draftTransactions()
-            ->when(\request("name") != "", function ($query) {
-                $query->where("name", "LIKE", "%" . \request("name") . "%");
-            })
-            ->when(\request("direction") != "", function ($query) {
-                $query->where("direction", \request("direction"));
-            })
-            ->when(\request("category_id") != "", function ($query) {
-                $query->where("category_id", \request("category_id"));
-            })
-            ->when(\request("month") != "" || \request("year") != "", function ($query) {
-                $query->whereHas('monthYear', function ($query) {
-                    $query->when(\request("month") != "", function ($query) {
-                        $query->where("month_years.month", \request("month"));
-                    })->when(\request("year") != "", function ($query) {
-                        $query->where("month_years.year", \request("year"));
-                    });
+        $family = auth()->user()->family;
+
+        $transactions = $family->draftTransactions()
+            ->when($request->filled('name'), fn ($q) => $q->where('name', 'LIKE', '%' . $request->name . '%'))
+            ->when($request->filled('direction'), fn ($q) => $q->where('direction', $request->direction))
+            ->when($request->filled('category_id'), fn ($q) => $q->where('category_id', $request->category_id))
+            ->when($request->filled('wallet_id'), fn ($q) => $q->where('wallet_id', $request->wallet_id))
+            ->when($request->filled('month') || $request->filled('year'), function ($q) use ($request) {
+                $q->whereHas('monthYear', function ($q) use ($request) {
+                    $q->when($request->filled('month'), fn ($q) => $q->whereRaw('CAST(month_years.month AS INTEGER) = ?', [(int) $request->month]))
+                      ->when($request->filled('year'), fn ($q) => $q->whereRaw('CAST(month_years.year AS INTEGER) = ?', [(int) $request->year]));
                 });
             })
-            ->when(\request("wallet_id") != "", function ($query) {
-                $query->where("wallet_id", \request("wallet_id"));
-            })
-            ->with('category', 'user')
-            ->orderBy("date", "desc")
-            ->paginate(10);
+            ->with('category', 'user', 'wallet', 'monthYear')
+            ->orderByDesc('date')
+            ->paginate(10)
+            ->withQueryString();
 
-        $all_categories = auth()->user()->family->categories()->whereNotNull('parent_id')->orderBy("name")
-            ->get();
-        $users = auth()->user()
-            ->family
-            ->users()
-            ->get();
-
-        $uniqueYears = auth()->user()
-            ->family
-            ->monthYears()
-            ->distinct('year')
-            ->pluck('year')
-            ->sortDesc();
-
-        $all_month_years = auth()->user()->family->monthYears()->orderBy("id", "Desc")
-            ->get();
-
-        $all_wallets = auth()->user()->family->wallets()->orderBy("name")
-            ->get();
-
-        return view('draft_transactions', compact('transactions', 'all_categories', 'users', 'uniqueYears', 'all_wallets', 'all_month_years'));
+        return Inertia::render('DraftTransactions/Index', [
+            'transactions' => $transactions,
+            'filters' => $request->only(['name', 'direction', 'category_id', 'wallet_id', 'month', 'year']),
+            'options' => [
+                'categories' => $family->categories()->whereNotNull('parent_id')->orderBy('name')->get(['id', 'name']),
+                'wallets' => $family->wallets()->orderBy('name')->get(['id', 'name']),
+                'month_years' => $family->monthYears()->orderByDesc('id')->get(['id', 'month', 'year']),
+                'years' => $family->monthYears()->distinct()->orderByDesc('year')->pluck('year'),
+            ],
+        ]);
     }
 
     public function store(DraftTransactionStoreRequest $request)
     {
-        Transaction::create(
-            array_merge(
-                $request->toArray(),
-                [
-                    'user_id'=> auth()->id(),
-                    'family_id'=> auth()->user()->family_id,
-                    'type'=> 'draft',
-                ]
-            )
-        );
+        Transaction::create(array_merge(
+            $request->validated(),
+            ['user_id' => auth()->id(), 'family_id' => auth()->user()->family_id, 'type' => 'draft'],
+        ));
 
-        return redirect('/draft_transactions');
+        return back()->with('message', 'Draft created.');
     }
 
-    public function update(DraftTransactionUpdateRequest $request, $id)
+    public function update(DraftTransactionUpdateRequest $request, Transaction $draftTransaction)
     {
-        $transaction = Transaction::findOrFail($id);
-
-        $transaction->update($request->toArray());
-
-        return redirect('/draft_transactions');
+        $draftTransaction->update($request->validated());
+        return back()->with('message', 'Draft updated.');
     }
 
-    public function destroy($id)
+    public function destroy(Transaction $draftTransaction)
     {
-        $transaction = Transaction::findOrFail($id);
-
-        $transaction->delete();
-
-        return redirect('/draft_transactions');
+        $draftTransaction->delete();
+        return back()->with('message', 'Draft deleted.');
     }
 
     public function transferToNormal(DraftTransactionTransferRequest $request)
     {
         $transaction = Transaction::findOrFail($request->id);
-
-        $transaction->name = $request->name;
-        $transaction->price = $request->price;
-        $transaction->quantity = $request->quantity;
-        $transaction->direction = $request->direction;
-        $transaction->category_id = $request->category_id;
-        $transaction->month_year_id = $request->month_year_id;
-        $transaction->date = $request->date;
-        $transaction->comment = $request->comment;
+        $transaction->fill($request->only([
+            'name', 'price', 'quantity', 'direction', 'category_id',
+            'month_year_id', 'date', 'comment', 'wallet_id',
+        ]));
         $transaction->type = 'normal';
-        $transaction->wallet_id = $request->wallet_id;
         $transaction->save();
 
-        return redirect('/draft_transactions');
+        return redirect('/normal_transactions')->with('message', 'Promoted to normal.');
     }
 }

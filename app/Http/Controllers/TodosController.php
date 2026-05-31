@@ -6,150 +6,118 @@ use App\Http\Requests\TodoDestroyRequest;
 use App\Http\Requests\TodoStoreRequest;
 use App\Http\Requests\TodoUpdateRequest;
 use App\Models\Todo;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class TodosController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $todos = Todo::visible(auth()->id(), auth()->user()->family_id)
+        $family = auth()->user()->family;
+
+        $todos = Todo::visible(auth()->id(), $family->id)
             ->roots()
             ->with('allChildren', 'user')
-            ->when(request("title") != "", function ($query) {
-                $query->where("title", "LIKE", "%" . request("title") . "%");
-            })
-            ->when(request("status") != "", function ($query) {
-                $query->where("status", request("status"));
-            })
-            ->when(request("priority") != "", function ($query) {
-                $query->where("priority", request("priority"));
-            })
-            ->when(request("scope") != "", function ($query) {
-                $query->where("scope", request("scope"));
-            })
-            ->when(request("month_year_id") != "", function ($query) {
-                $query->where("month_year_id", request("month_year_id"));
-            })
-            ->orderBy("priority", "desc")
-            ->orderBy("order")
-            ->orderBy("created_at", "desc")
-            ->paginate(10);
+            ->when($request->filled('title'), fn ($q) => $q->where('title', 'LIKE', '%' . $request->title . '%'))
+            ->when($request->filled('status'), fn ($q) => $q->where('status', $request->status))
+            ->when($request->filled('priority'), fn ($q) => $q->where('priority', $request->priority))
+            ->when($request->filled('scope'), fn ($q) => $q->where('scope', $request->scope))
+            ->when($request->filled('month_year_id'), fn ($q) => $q->where('month_year_id', $request->month_year_id))
+            ->orderByDesc('priority')
+            ->orderBy('order')
+            ->orderByDesc('created_at')
+            ->paginate(10)
+            ->withQueryString();
 
-        $all_month_years = auth()->user()->family->monthYears()
-            ->orderBy('id', 'desc')
-            ->get();
-
-        $allTodos = Todo::visible(auth()->id(), auth()->user()->family_id)
-            ->orderBy('title')
-            ->get();
-
-        return view('todos', compact('todos', 'all_month_years', 'allTodos'));
+        return Inertia::render('Todos/Index', [
+            'todos' => $todos,
+            'filters' => $request->only(['title', 'status', 'priority', 'scope', 'month_year_id']),
+            'options' => [
+                'month_years' => $family->monthYears()->orderByDesc('id')->get(['id', 'month', 'year']),
+                'allTodos' => Todo::visible(auth()->id(), $family->id)->orderBy('title')->get(['id', 'title', 'parent_id']),
+            ],
+        ]);
     }
 
     public function store(TodoStoreRequest $request)
     {
-        Todo::create(
-            array_merge(
-                $request->validated(),
-                [
-                    'family_id' => auth()->user()->family_id,
-                    'user_id' => auth()->id(),
-                ]
-            )
-        );
+        Todo::create(array_merge(
+            $request->validated(),
+            ['family_id' => auth()->user()->family_id, 'user_id' => auth()->id()],
+        ));
 
-        session()->flash('message', 'Todo created successfully');
-        return redirect('/todos');
+        return back()->with('message', 'Todo created.');
     }
 
-    public function update(TodoUpdateRequest $request, $id)
+    public function update(TodoUpdateRequest $request, Todo $todo)
     {
-        $todo = Todo::findOrFail($id);
-
-        if ($todo->update($request->validated())) {
-            session()->flash('message', 'Todo updated successfully');
-            return redirect('/todos');
-        } else {
-            session()->flash('message', 'Todo was not updated successfully');
-            return redirect('/todos');
-        }
+        $todo->update($request->validated());
+        return back()->with('message', 'Todo updated.');
     }
 
     public function destroy(TodoDestroyRequest $request, Todo $todo)
     {
-        if ($todo->delete()) {
-            session()->flash('message', 'Todo deleted successfully');
-        } else {
-            session()->flash('message', "Todo was not deleted successfully");
-        }
-        return redirect('/todos');
+        $todo->delete();
+        return back()->with('message', 'Todo deleted.');
     }
 
-    public function toggleStatus(Todo $todo)
+    public function toggleStatus(Request $request, Todo $todo)
     {
-        // Check visibility
         if ($todo->family_id !== auth()->user()->family_id) {
             abort(403);
         }
-
         if ($todo->scope === 'private' && $todo->user_id !== auth()->id()) {
             abort(403);
         }
 
         $statuses = ['pending', 'in_progress', 'completed'];
-        $currentIndex = array_search($todo->status, $statuses);
-        $nextIndex = ($currentIndex + 1) % count($statuses);
+        $explicit = $request->input('status');
 
-        $todo->update(['status' => $statuses[$nextIndex]]);
+        if (in_array($explicit, $statuses, true)) {
+            $next = $explicit;
+        } else {
+            $next = $statuses[(array_search($todo->status, $statuses) + 1) % count($statuses)];
+        }
 
-        session()->flash('message', 'Todo status updated');
-        return redirect('/todos');
+        $todo->update(['status' => $next]);
+
+        return back()->with('message', 'Status updated.');
     }
 
-    public function reorder()
+    public function reorder(Request $request)
     {
-        $orders = request('orders', []);
-        $parentId = request('parent_id');
-        $todoId = request('todo_id');
+        $orders = $request->input('orders', []);
+        $parentId = $request->input('parent_id');
+        $todoId = $request->input('todo_id');
 
-        // If a specific todo was moved to a new parent, update its parent_id
         if ($todoId) {
             $todo = Todo::find($todoId);
             if ($todo && $todo->family_id === auth()->user()->family_id) {
                 $newParentId = $parentId ?: null;
-
-                // Validate the new parent if set
                 if ($newParentId) {
                     $parent = Todo::find($newParentId);
                     if (!$parent || $parent->family_id !== auth()->user()->family_id) {
                         return response()->json(['success' => false, 'error' => 'Invalid parent']);
                     }
-
-                    // Check for circular reference
                     if ($parent->id == $todo->id) {
                         return response()->json(['success' => false, 'error' => 'Cannot be own parent']);
                     }
-
-                    // Check if new parent is a descendant of this todo
                     $descendantIds = $todo->descendants()->pluck('id')->toArray();
                     if (in_array($newParentId, $descendantIds)) {
                         return response()->json(['success' => false, 'error' => 'Cannot move to descendant']);
                     }
-
-                    // Public todos can only be under public parents
                     if ($todo->scope === 'public' && $parent->scope === 'private') {
                         return response()->json(['success' => false, 'error' => 'Public todos can only be under public parents']);
                     }
                 }
-
                 $todo->update(['parent_id' => $newParentId]);
             }
         }
 
-        // Update order for all items
         foreach ($orders as $id => $order) {
             $todo = Todo::find($id);
             if ($todo && $todo->family_id === auth()->user()->family_id) {
-                $todo->update(['order' => (int)$order]);
+                $todo->update(['order' => (int) $order]);
             }
         }
 

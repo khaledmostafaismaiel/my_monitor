@@ -29,7 +29,6 @@ class NormalTransactionUpdateRequest extends FormRequest
             'category_id' => 'required|exists:categories,id',
             'month_year_id' => 'required|exists:month_years,id',
             'date' => 'required|date',
-            'user_id' => 'required|exists:users,id',
             'comment' => 'nullable|string|max:1000',
             'wallet_id' => 'required|exists:wallets,id',
         ];

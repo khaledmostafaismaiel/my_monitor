@@ -23,15 +23,6 @@ class NormalTransactionTransferToDraftRequest extends FormRequest
     {
         return [
             'id' => 'required|exists:transactions,id',
-            'name' => 'required|string|max:255',
-            'price' => 'required|numeric|min:0',
-            'quantity' => 'required|numeric|min:1',
-            'direction' => 'required|in:debit,credit',
-            'category_id' => 'required|exists:categories,id',
-            'month_year_id' => 'required|exists:month_years,id',
-            'date' => 'required|date',
-            'comment' => 'nullable|string|max:500',
-            'wallet_id' => 'required|exists:wallets,id',
         ];
     }
 }

@@ -1,3 +1,83 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    :root {
+        --background: 220 20% 98%;
+        --foreground: 222 47% 11%;
+        --card: 0 0% 100%;
+        --card-foreground: 222 47% 11%;
+        --popover: 0 0% 100%;
+        --popover-foreground: 222 47% 11%;
+
+        --primary: 239 84% 67%;
+        --primary-foreground: 0 0% 100%;
+        --accent: 258 90% 66%;
+        --accent-foreground: 0 0% 100%;
+
+        --muted: 220 14% 96%;
+        --muted-foreground: 220 9% 46%;
+        --secondary: 220 14% 96%;
+        --secondary-foreground: 222 47% 11%;
+
+        --success: 160 84% 39%;
+        --success-foreground: 0 0% 100%;
+        --warning: 38 92% 50%;
+        --warning-foreground: 222 47% 11%;
+        --destructive: 0 84% 60%;
+        --destructive-foreground: 0 0% 100%;
+        --info: 217 91% 60%;
+        --info-foreground: 0 0% 100%;
+
+        --border: 220 13% 91%;
+        --input: 220 13% 91%;
+        --ring: 239 84% 67%;
+
+        --radius: 0.75rem;
+    }
+
+    .dark {
+        --background: 222 47% 6%;
+        --foreground: 210 20% 96%;
+        --card: 222 40% 10%;
+        --card-foreground: 210 20% 96%;
+        --popover: 222 40% 10%;
+        --popover-foreground: 210 20% 96%;
+
+        --primary: 239 84% 72%;
+        --primary-foreground: 222 47% 6%;
+        --accent: 258 90% 75%;
+        --accent-foreground: 222 47% 6%;
+
+        --muted: 222 24% 16%;
+        --muted-foreground: 220 9% 64%;
+        --secondary: 222 24% 16%;
+        --secondary-foreground: 210 20% 96%;
+
+        --success: 160 64% 50%;
+        --success-foreground: 222 47% 6%;
+        --warning: 38 92% 58%;
+        --warning-foreground: 222 47% 6%;
+        --destructive: 0 70% 60%;
+        --destructive-foreground: 222 47% 6%;
+        --info: 217 91% 68%;
+        --info-foreground: 222 47% 6%;
+
+        --border: 222 24% 18%;
+        --input: 222 24% 18%;
+        --ring: 239 84% 72%;
+    }
+
+    html {
+        color-scheme: light;
+    }
+
+    html.dark {
+        color-scheme: dark;
+    }
+
+    body {
+        @apply bg-background text-foreground antialiased;
+    }
+}

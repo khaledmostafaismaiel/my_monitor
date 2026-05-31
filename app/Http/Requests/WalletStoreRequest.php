@@ -23,6 +23,7 @@ class WalletStoreRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'min:2', 'max:100'],
+            'status' => ['nullable', 'in:active,inactive'],
         ];
     }
 }

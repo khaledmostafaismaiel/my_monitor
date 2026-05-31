@@ -2,42 +2,69 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\MonthYear;
-use App\Models\Category;
-use DB;
-use Illuminate\Http\Request;
 use App\Http\Requests\MonthYearStoreRequest;
+use App\Models\MonthYear;
+use App\Models\Transaction;
+use Inertia\Inertia;
 
 class MonthYearsController extends Controller
 {
-
     public function store(MonthYearStoreRequest $request)
     {
-        $monthYear = $request->month_year;
+        [$year, $month] = explode('-', $request->month_year);
 
-        list($year, $month) = explode('-', $monthYear);
+        MonthYear::updateOrCreate([
+            'family_id' => auth()->user()->family_id,
+            'year' => $year,
+            'month' => $month,
+        ]);
 
-        MonthYear::updateOrCreate(
-            [
-                'family_id' => auth()->user()->family_id,
-                'year' => $year,
-                'month' => $month,
-            ]
-        );
+        return redirect('/')->with('message', 'Month added.');
+    }
 
-        return redirect('/');
+    public function update(MonthYearStoreRequest $request, MonthYear $monthYear)
+    {
+        abort_unless($monthYear->family_id === auth()->user()->family_id, 403);
+
+        [$year, $month] = explode('-', $request->month_year);
+
+        $duplicate = MonthYear::where('family_id', auth()->user()->family_id)
+            ->where('year', $year)
+            ->where('month', $month)
+            ->where('id', '!=', $monthYear->id)
+            ->exists();
+
+        if ($duplicate) {
+            return back()->with('error', 'That month already exists.');
+        }
+
+        $monthYear->update(['year' => $year, 'month' => $month]);
+
+        return back()->with('message', 'Month updated.');
+    }
+
+    public function destroy(MonthYear $monthYear)
+    {
+        abort_unless($monthYear->family_id === auth()->user()->family_id, 403);
+
+        $txCount = Transaction::where('month_year_id', $monthYear->id)->count();
+        if ($txCount > 0) {
+            return back()->with('error', "Cannot delete a month that has {$txCount} transaction(s). Remove or reassign them first.");
+        }
+
+        $monthYear->delete();
+
+        return back()->with('message', 'Month deleted.');
     }
 
     private function buildTree($categories)
     {
         $map = [];
         $tree = [];
-        
         foreach ($categories as $cat) {
             $map[$cat->id] = $cat;
             $cat->children = collect();
         }
-        
         foreach ($categories as $cat) {
             if ($cat->parent_id && isset($map[$cat->parent_id])) {
                 $map[$cat->parent_id]->children->push($cat);
@@ -45,54 +72,32 @@ class MonthYearsController extends Controller
                 $tree[] = $cat;
             }
         }
-        
         return collect($tree);
     }
 
     public function show(MonthYear $monthYear)
     {
-        // Calculate previous and next month/year for navigation
-        $prevMonthYear = MonthYear::where('family_id', auth()->user()->family_id)
-            ->where(function ($query) use ($monthYear) {
-                $query->where('year', '<', $monthYear->year)
-                    ->orWhere(function ($q) use ($monthYear) {
-                        $q->where('year', '=', $monthYear->year)
-                            ->where('month', '<', $monthYear->month);
-                    });
+        $family = auth()->user()->family;
+
+        $prev = MonthYear::where('family_id', $family->id)
+            ->where(function ($q) use ($monthYear) {
+                $q->where('year', '<', $monthYear->year)
+                  ->orWhere(function ($q) use ($monthYear) {
+                      $q->where('year', $monthYear->year)->where('month', '<', $monthYear->month);
+                  });
             })
-            ->orderBy('year', 'desc')
-            ->orderBy('month', 'desc')
-            ->first();
+            ->orderByDesc('year')->orderByDesc('month')->first();
 
-        $nextMonthYear = MonthYear::where('family_id', auth()->user()->family_id)
-            ->where(function ($query) use ($monthYear) {
-                $query->where('year', '>', $monthYear->year)
-                    ->orWhere(function ($q) use ($monthYear) {
-                        $q->where('year', '=', $monthYear->year)
-                            ->where('month', '>', $monthYear->month);
-                    });
+        $next = MonthYear::where('family_id', $family->id)
+            ->where(function ($q) use ($monthYear) {
+                $q->where('year', '>', $monthYear->year)
+                  ->orWhere(function ($q) use ($monthYear) {
+                      $q->where('year', $monthYear->year)->where('month', '>', $monthYear->month);
+                  });
             })
-            ->orderBy('year', 'asc')
-            ->orderBy('month', 'asc')
-            ->first();
+            ->orderBy('year')->orderBy('month')->first();
 
-        $categorySummary = $monthYear->normalTransactions()
-            ->with('category')
-            ->get()
-            ->groupBy('category_id')
-            ->map(function ($categoryTransactions) {
-                return [
-                    'category' => $categoryTransactions->first()->category->name,
-                    'total_spent' => abs($categoryTransactions->sum(function ($transaction) {
-                        $amount = $transaction->price * $transaction->quantity;
-                        // Credit = income (positive), Debit = expense (negative)
-                        return $transaction->direction === 'credit' ? $amount : -$amount;
-                    }))
-                ];
-            });
-
-        $categories = auth()->user()
-            ->family->categories()
+        $categories = $family->categories()
             ->select('categories.*')
             ->selectRaw("SUM(
                 CASE
@@ -106,38 +111,42 @@ class MonthYearsController extends Controller
             ->where('transactions.type', 'normal')
             ->groupBy('categories.id')
             ->orderByDesc('total_spent')
-            ->with([
-                'normalTransactions' => function ($query) use ($monthYear) {
-                    $query->where('month_year_id', $monthYear->id)
-                        ->where('type', 'normal');
-                }
-            ])
+            ->with(['normalTransactions' => function ($query) use ($monthYear) {
+                $query->where('month_year_id', $monthYear->id)
+                    ->where('type', 'normal')
+                    ->with('wallet')
+                    ->orderByDesc('date');
+            }])
             ->get();
 
-        $allCategories = auth()->user()->family->categories()->orderBy("name")->get();
-        
-        // Add total_spent from transactions to categories
+        $allCategories = $family->categories()->orderBy('name')->get();
         $categorySpent = $categories->keyBy('id');
-        $allCategories = $allCategories->map(function($cat) use ($categorySpent) {
+        $allCategories = $allCategories->map(function ($cat) use ($categorySpent) {
             if (isset($categorySpent[$cat->id])) {
                 $cat->total_spent = $categorySpent[$cat->id]->total_spent;
+                $cat->normal_transactions = $categorySpent[$cat->id]->normalTransactions;
             }
             return $cat;
         });
-        
+
         $categoryTree = $this->buildTree($allCategories);
-        
-        // Calculate parent totals as sum of children
-        $categoryTree = $categoryTree->map(function($root) {
+        $categoryTree = $categoryTree->map(function ($root) {
             if ($root->children && $root->children->count() > 0) {
                 $root->total_spent = $root->children->sum('total_spent');
             }
             return $root;
         });
-        
-        $rootCategories = $categoryTree->slice(0, 10);
-        $hasMore = $categoryTree->count() > 10;
 
-        return view('month_year', compact('monthYear', 'categories', 'categorySummary', 'prevMonthYear', 'nextMonthYear', 'rootCategories', 'hasMore'));
+        return Inertia::render('MonthYears/Show', [
+            'monthYear' => $monthYear,
+            'prev' => $prev,
+            'next' => $next,
+            'rootCategories' => $categoryTree->values(),
+            'options' => [
+                'categories' => $family->categories()->whereNotNull('parent_id')->orderBy('name')->get(['id', 'name']),
+                'wallets' => $family->wallets()->orderBy('name')->get(['id', 'name']),
+                'month_years' => $family->monthYears()->orderByDesc('id')->get(['id', 'month', 'year']),
+            ],
+        ]);
     }
 }

@@ -1,42 +1,37 @@
-FROM php:7.2-apache
+FROM php:8.3-apache
 
-# Set working directory
 WORKDIR /var/www/html
 
-# Install dependencies
 RUN apt-get update && apt-get install -y \
-    libpng-dev \
-    libjpeg-dev \
-    libfreetype6-dev \
-    libzip-dev \
-    zip \
-    unzip \
-    git \
-    curl
+        libpng-dev \
+        libjpeg-dev \
+        libfreetype6-dev \
+        libzip-dev \
+        libonig-dev \
+        libxml2-dev \
+        libicu-dev \
+        libpq-dev \
+        zip \
+        unzip \
+        git \
+        curl \
+        gnupg \
+        ca-certificates \
+    && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs \
+    && rm -rf /var/lib/apt/lists/*
 
-# Install PHP extensions
-RUN docker-php-ext-install pdo pdo_mysql zip gd
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install pdo pdo_mysql pdo_pgsql pgsql zip gd mbstring bcmath intl exif pcntl
 
-# Apache configuration
 COPY ./apache.conf /etc/apache2/sites-available/000-default.conf
-RUN a2enmod rewrite
+RUN a2enmod rewrite headers
 
-# Copy the current directory contents to the container
-COPY .. /var/www/html
-
-# Install Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Enable Xdebug for development
-# RUN pecl install xdebug && docker-php-ext-enable xdebug
-# COPY ./xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
+RUN usermod -u 1000 www-data && groupmod -g 1000 www-data \
+    && chown -R www-data:www-data /var/www/html
 
-# Set appropriate permissions
-RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html/storage
-
-# Expose port 80 to the outside world
 EXPOSE 80
 
-# Start Apache
 CMD ["apache2-foreground"]

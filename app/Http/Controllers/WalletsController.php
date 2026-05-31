@@ -3,55 +3,55 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\WalletDestroyRequest;
-use App\Models\Wallet;
 use App\Http\Requests\WalletStoreRequest;
 use App\Http\Requests\WalletUpdateRequest;
+use App\Models\Wallet;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class WalletsController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $wallets = auth()->user()->family
             ->wallets()
-            ->when(\request("name") != "", function ($query) {
-                $query->where("name", "LIKE", "%" . \request("name") . "%");
+            ->when($request->filled('name'), function ($query) use ($request) {
+                $query->where('name', 'LIKE', '%' . $request->name . '%');
             })
-            ->when(null !== \request("status"), function($query){
-                $query->where("status", \request("status"));
+            ->when($request->filled('status'), function ($query) use ($request) {
+                $query->where('status', $request->status);
             })
-            ->orderBy("name", "asc")
-            ->paginate(10);
+            ->orderBy('name')
+            ->paginate(10)
+            ->withQueryString();
 
-        return view('wallets', compact('wallets'));
+        return Inertia::render('Wallets/Index', [
+            'wallets' => $wallets,
+            'filters' => $request->only(['name', 'status']),
+        ]);
     }
 
     public function store(WalletStoreRequest $request)
     {
-        Wallet::create(
-            array_merge(
-                $request->toArray(),
-                [
-                    'family_id'=> auth()->user()->family_id,
-                ]
-            )
-        );
+        Wallet::create(array_merge(
+            $request->validated(),
+            ['family_id' => auth()->user()->family_id],
+        ));
 
-        return redirect('/wallets');
+        return back()->with('message', 'Wallet created.');
     }
 
-    public function update(WalletUpdateRequest $request, $id)
+    public function update(WalletUpdateRequest $request, Wallet $wallet)
     {
-        $wallet = Wallet::findOrFail($id);
+        $wallet->update($request->validated());
 
-        $wallet->update($request->toArray());
-
-        return redirect('/wallets');
+        return back()->with('message', 'Wallet updated.');
     }
 
     public function destroy(WalletDestroyRequest $request, Wallet $wallet)
     {
         $wallet->delete();
 
-        return redirect('/wallets');
+        return back()->with('message', 'Wallet deleted.');
     }
 }

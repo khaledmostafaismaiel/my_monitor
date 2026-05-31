@@ -5,34 +5,39 @@ namespace App\Http\Controllers;
 use App\Models\Family;
 use App\Models\User;
 use App\Models\OTP;
-use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class UsersController extends Controller
 {
-
     public function register()
     {
-        return view('auth.login');
+        return Inertia::render('Auth/Login');
     }
 
-    public function sign_in()
+    public function sign_in(Request $request)
     {
-        if(\Auth::attempt(['email' => \request('user_name'), 'password' => \request('password')])){
-            return redirect('/');
-        }else{
-            return redirect()->back()->withErrors(['email' => 'Email or Password is not correct.']);
+        $credentials = $request->validate([
+            'user_name' => 'required|email',
+            'password' => 'required|string',
+        ]);
 
-            return redirect('/login');
+        if (Auth::attempt(['email' => $credentials['user_name'], 'password' => $credentials['password']])) {
+            $request->session()->regenerate();
+            return redirect()->intended('/');
         }
+
+        return back()->withErrors(['user_name' => 'Email or password is incorrect.']);
     }
 
-    public function sign_out()
+    public function sign_out(Request $request)
     {
-        auth()->logout();
-
-        return redirect('/');
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect('/users/register');
     }
 
     public function sign_up(Request $request)
@@ -48,73 +53,69 @@ class UsersController extends Controller
             'family_name' => 'required_if:family_option,create|nullable|string|max:255',
         ]);
 
-        if($request->family_option == "join"){
+        if ($request->family_option === 'join') {
             $family = Family::find($request->family_id);
-            if($family){
-                $user = User::create(
-                    array_merge(
-                        Arr::except($request->toArray(), ['password']),
-                        [
-                            'family_id'=> $family->id,
-                            'password'=> bcrypt($request->password),
-                        ]
-                    )
-                );
 
-                $user->otps()->create(
-                    [
-                        "body"=> (string)rand(000000, 999999),
-                        "expire_at"=> now()->addMinutes(10),
-                    ]
-                );
-            }else{
-
+            if (!$family) {
+                return back()->withErrors(['family_id' => 'No family found with that ID.']);
             }
 
-            return view('auth.verify');
-        }else{
-            $family = Family::create(
+            $user = User::create(array_merge(
+                Arr::except($request->toArray(), ['password', 'password_confirmation', 'terms']),
                 [
-                    "name"=>$request->family_name,
-                ]
-            );
+                    'family_id' => $family->id,
+                    'password' => bcrypt($request->password),
+                ],
+            ));
 
-            $user = User::create(
-                array_merge(
-                    Arr::except($request->toArray(), ['password']),
-                    [
-                        'family_id'=> $family->id,
-                        'email_verified_at'=> now(),
-                        'password'=> bcrypt($request->password),
-                    ]
-                )
-            );
+            $user->otps()->create([
+                'body' => (string) random_int(100000, 999999),
+                'expire_at' => now()->addMinutes(10),
+            ]);
 
-            Auth::login($user);
-
-            return redirect('/');
-
+            return redirect()->route('verification.notice')
+                ->with('pending_user_email', $user->email);
         }
+
+        $family = Family::create(['name' => $request->family_name]);
+
+        $user = User::create(array_merge(
+            Arr::except($request->toArray(), ['password', 'password_confirmation', 'terms']),
+            [
+                'family_id' => $family->id,
+                'email_verified_at' => now(),
+                'password' => bcrypt($request->password),
+            ],
+        ));
+
+        Auth::login($user);
+
+        return redirect('/');
+    }
+
+    public function show_verify_otp(Request $request)
+    {
+        return Inertia::render('Auth/VerifyOtp', [
+            'email' => $request->session()->get('pending_user_email'),
+        ]);
     }
 
     public function verify_otp(Request $request)
     {
-        $otp = OTP::where("body", $request->otp1.$request->otp2.$request->otp3.$request->otp4.$request->otp5.$request->otp6)->first();
+        $code = $request->otp1 . $request->otp2 . $request->otp3 . $request->otp4 . $request->otp5 . $request->otp6;
 
-        if($otp){
-            $user = $otp->user;
+        $otp = OTP::where('body', $code)->first();
 
-            $user->update(['email_verified_at'=> now()]);
-
-            Auth::login($user);
-
-            $otp->delete();
-
-            return redirect('/');
-        }else{
-            return redirect('/');
-
-            return redirect()->back()->withErrors(['otp' => 'Invalid OTP. Please try again.']);
+        if (!$otp) {
+            return back()->withErrors(['otp1' => 'Invalid OTP. Please try again.']);
         }
+
+        $user = $otp->user;
+        $user->update(['email_verified_at' => now()]);
+
+        Auth::login($user);
+        $otp->delete();
+
+        return redirect('/');
     }
 }

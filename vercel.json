@@ -1,31 +1,35 @@
 {
     "version": 2,
     "builds": [
-      {
-        "src": "public/index.php",
-        "use": "vercel-php@latest"
-      }
+        {
+            "src": "package.json",
+            "use": "@vercel/static-build",
+            "config": { "distDir": "public/build" }
+        },
+        {
+            "src": "public/index.php",
+            "use": "vercel-php@latest",
+            "config": {
+                "includeFiles": "public/build/**"
+            }
+        }
     ],
     "routes": [
-      {
-        "src": "/(.*)\\.(css|js|png|jpg|jpeg|gif|svg|woff2?|ttf|eot)$",
-        "dest": "/public/$1.$2"
-      },
-      {
-        "src": "/(.*)",
-        "dest": "/public/index.php"
-      }
+        { "src": "/build/(.*)",          "dest": "/$1" },
+        { "src": "/favicon\\.svg",       "dest": "/favicon.svg" },
+        { "src": "/favicon\\.ico",       "dest": "/favicon.ico" },
+        { "src": "/(.*)",                "dest": "/public/index.php" }
     ],
     "env": {
-      "APP_STORAGE_PATH": "/tmp/storage",
-      "CACHE_DRIVER": "array",
-      "SESSION_DRIVER": "cookie",
-      "LOG_CHANNEL": "stderr",
-      "VIEW_COMPILED_PATH": "/tmp/views",
-      "APP_CONFIG_CACHE": "/tmp/config.php",
-      "APP_EVENTS_CACHE": "/tmp/events.php",
-      "APP_PACKAGES_CACHE": "/tmp/packages.php",
-      "APP_ROUTES_CACHE": "/tmp/routes.php",
-      "APP_SERVICES_CACHE": "/tmp/services.php"
+        "APP_STORAGE_PATH":     "/tmp/storage",
+        "CACHE_DRIVER":         "array",
+        "SESSION_DRIVER":       "cookie",
+        "LOG_CHANNEL":          "stderr",
+        "VIEW_COMPILED_PATH":   "/tmp/views",
+        "APP_CONFIG_CACHE":     "/tmp/config.php",
+        "APP_EVENTS_CACHE":     "/tmp/events.php",
+        "APP_PACKAGES_CACHE":   "/tmp/packages.php",
+        "APP_ROUTES_CACHE":     "/tmp/routes.php",
+        "APP_SERVICES_CACHE":   "/tmp/services.php"
     }
-  }
+}

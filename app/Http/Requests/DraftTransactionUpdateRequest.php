@@ -29,7 +29,6 @@ class DraftTransactionUpdateRequest extends FormRequest
             'category_id' => 'nullable|exists:categories,id',
             'month_year_id' => 'required|exists:month_years,id',
             'date' => 'nullable|date',
-            'user_id' => 'required|exists:users,id',
             'comment' => 'nullable|string|max:1000',
         ];
     }

@@ -2,107 +2,78 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\NormalTransactionStoreRequest;
+use App\Http\Requests\NormalTransactionTransferToDraftRequest;
+use App\Http\Requests\NormalTransactionUpdateRequest;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
-use App\Http\Requests\NormalTransactionStoreRequest;
-use App\Http\Requests\NormalTransactionUpdateRequest;
-use App\Http\Requests\NormalTransactionTransferToDraftRequest;
+use Inertia\Inertia;
 
 class NormalTransactionsController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $transactions = auth()->user()->family
-            ->normalTransactions()
-            ->when(\request("name") != "", function ($query) {
-                $query->where("name", "LIKE", "%" . \request("name") . "%");
-            })
-            ->when(\request("direction") != "", function ($query) {
-                $query->where("direction", \request("direction"));
-            })
-            ->when(\request("category_id") != "", function ($query) {
-                $query->where("category_id", \request("category_id"));
-            })
-            ->when(\request("month") != "" || \request("year") != "", function ($query) {
-                $query->whereHas('monthYear', function ($query) {
-                    $query->when(\request("month") != "", function ($query) {
-                        $query->where("month_years.month", \request("month"));
-                    })->when(\request("year") != "", function ($query) {
-                        $query->where("month_years.year", \request("year"));
-                    });
+        $family = auth()->user()->family;
+
+        $transactions = $family->normalTransactions()
+            ->when($request->filled('name'), fn ($q) => $q->where('name', 'LIKE', '%' . $request->name . '%'))
+            ->when($request->filled('direction'), fn ($q) => $q->where('direction', $request->direction))
+            ->when($request->filled('category_id'), fn ($q) => $q->where('category_id', $request->category_id))
+            ->when($request->filled('wallet_id'), fn ($q) => $q->where('wallet_id', $request->wallet_id))
+            ->when($request->filled('month') || $request->filled('year'), function ($q) use ($request) {
+                $q->whereHas('monthYear', function ($q) use ($request) {
+                    $q->when($request->filled('month'), fn ($q) => $q->whereRaw('CAST(month_years.month AS INTEGER) = ?', [(int) $request->month]))
+                      ->when($request->filled('year'), fn ($q) => $q->whereRaw('CAST(month_years.year AS INTEGER) = ?', [(int) $request->year]));
                 });
             })
-            ->when(\request("wallet_id") != "", function ($query) {
-                $query->where("wallet_id", \request("wallet_id"));
-            })
-            ->with('category', 'user')
-            ->orderBy("date", "desc")
-            ->paginate(10);
+            ->with('category', 'user', 'wallet', 'monthYear')
+            ->orderByDesc('date')
+            ->paginate(10)
+            ->withQueryString();
 
-        $all_categories = auth()->user()->family->categories()->whereNotNull('parent_id')->orderBy("name")
-            ->get();
-
-        $users = auth()->user()
-            ->family
-            ->users()
-            ->get();
-
-        $uniqueYears = auth()->user()
-            ->family
-            ->monthYears()
-            ->distinct('year')
-            ->pluck('year')
-            ->sortDesc();
-
-        $all_wallets = auth()->user()->family->wallets()->orderBy("name")
-            ->get();
-
-        $all_month_years = auth()->user()->family->monthYears()->orderBy("id", "Desc")
-            ->get();
-
-        return view('normal_transactions', compact('transactions', 'all_categories', 'users', 'uniqueYears', 'all_wallets', 'all_month_years'));
+        return Inertia::render('NormalTransactions/Index', [
+            'transactions' => $transactions,
+            'filters' => $request->only(['name', 'direction', 'category_id', 'wallet_id', 'month', 'year']),
+            'options' => $this->options($family),
+        ]);
     }
 
     public function store(NormalTransactionStoreRequest $request)
     {
-        Transaction::create(
-            array_merge(
-                $request->toArray(),
-                [
-                    'user_id'=> auth()->id(),
-                    'family_id'=> auth()->user()->family_id,
-                    'type'=> 'normal',
-                ]
-            )
-        );
+        Transaction::create(array_merge(
+            $request->validated(),
+            ['user_id' => auth()->id(), 'family_id' => auth()->user()->family_id, 'type' => 'normal'],
+        ));
 
-        return redirect('/normal_transactions');
+        return back()->with('message', 'Transaction created.');
     }
 
-    public function update(NormalTransactionUpdateRequest $request, $id)
+    public function update(NormalTransactionUpdateRequest $request, Transaction $normalTransaction)
     {
-        $transaction = Transaction::findOrFail($id);
-
-        $transaction->update($request->toArray());
-
-        return redirect('/normal_transactions');
+        $normalTransaction->update($request->validated());
+        return back()->with('message', 'Transaction updated.');
     }
 
-    public function destroy($id)
+    public function destroy(Transaction $normalTransaction)
     {
-        $transaction = Transaction::findOrFail($id);
-
-        $transaction->delete();
-
-        return redirect('/normal_transactions');
+        $normalTransaction->delete();
+        return back()->with('message', 'Transaction deleted.');
     }
 
     public function transferToDraft(NormalTransactionTransferToDraftRequest $request)
     {
         $transaction = Transaction::findOrFail($request->id);
+        $transaction->update(['type' => 'draft']);
+        return redirect('/draft_transactions')->with('message', 'Moved to drafts.');
+    }
 
-        $transaction->update(["type"=>"draft"]);
-
-        return redirect('/draft_transactions');
+    private function options($family): array
+    {
+        return [
+            'categories' => $family->categories()->whereNotNull('parent_id')->orderBy('name')->get(['id', 'name']),
+            'wallets' => $family->wallets()->orderBy('name')->get(['id', 'name']),
+            'month_years' => $family->monthYears()->orderByDesc('id')->get(['id', 'month', 'year']),
+            'years' => $family->monthYears()->distinct()->orderByDesc('year')->pluck('year'),
+        ];
     }
 }

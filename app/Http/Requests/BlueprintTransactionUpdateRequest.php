@@ -27,7 +27,6 @@ class BlueprintTransactionUpdateRequest extends FormRequest
             'quantity' => 'required|numeric|min:1',
             'direction' => 'required|in:debit,credit',
             'category_id' => 'required|exists:categories,id',
-            'user_id' => 'required|exists:users,id',
             'comment' => 'nullable|string|max:1000',
         ];
     }

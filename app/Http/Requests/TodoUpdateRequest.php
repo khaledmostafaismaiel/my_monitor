@@ -16,17 +16,23 @@ class TodoUpdateRequest extends FormRequest
     {
         $todo = Todo::find($this->route('todo'));
 
-        if (!$todo) {
+        if (!$todo instanceof Todo) {
+            return false;
+        }
+
+        $user = auth()->user();
+
+        if (!$user) {
             return false;
         }
 
         // Must be in same family
-        if ($todo->family_id !== auth()->user()->family_id) {
+        if ($todo->family_id !== $user->family_id) {
             return false;
         }
 
         // If private, must be owner
-        if ($todo->scope === 'private' && $todo->user_id !== auth()->id()) {
+        if ($todo->scope === 'private' && $todo->user_id !== $user->id) {
             return false;
         }
 

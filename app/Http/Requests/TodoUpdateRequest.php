@@ -14,6 +14,12 @@ class TodoUpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
+        $user = $this->user();
+
+        if (!$user) {
+            return false;
+        }
+
         $todo = Todo::find($this->route('todo'));
 
         if (!$todo) {
@@ -21,12 +27,12 @@ class TodoUpdateRequest extends FormRequest
         }
 
         // Must be in same family
-        if ($todo->family_id !== auth()->user()->family_id) {
+        if ($todo->family_id !== $user->family_id) {
             return false;
         }
 
         // If private, must be owner
-        if ($todo->scope === 'private' && $todo->user_id !== auth()->id()) {
+        if ($todo->scope === 'private' && $todo->user_id !== $user->id) {
             return false;
         }
 
@@ -91,10 +97,10 @@ class TodoUpdateRequest extends FormRequest
 
                 $parent = Todo::find($this->parent_id);
                 if ($parent) {
-                    if ($parent->family_id !== auth()->user()->family_id) {
+                    if ($parent->family_id !== $this->user()?->family_id) {
                         $validator->errors()->add('parent_id', 'Invalid parent todo');
                     }
-                    if ($parent->scope === 'private' && $parent->user_id !== auth()->id()) {
+                    if ($parent->scope === 'private' && $parent->user_id !== $this->user()?->id) {
                         $validator->errors()->add('parent_id', 'Cannot move to a private todo you do not own');
                     }
                     // Public children can only be added to public parents

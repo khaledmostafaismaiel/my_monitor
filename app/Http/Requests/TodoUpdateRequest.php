@@ -14,7 +14,7 @@ class TodoUpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        $todo = Todo::find($this->route('todo'));
+        $todo = $this->route('todo');
 
         if (!$todo instanceof Todo) {
             return false;
@@ -26,12 +26,10 @@ class TodoUpdateRequest extends FormRequest
             return false;
         }
 
-        // Must be in same family
         if ($todo->family_id !== $user->family_id) {
             return false;
         }
 
-        // If private, must be owner
         if ($todo->scope === 'private' && $todo->user_id !== $user->id) {
             return false;
         }
@@ -62,6 +60,9 @@ class TodoUpdateRequest extends FormRequest
     public function withValidator($validator)
     {
         $validator->after(function ($validator) {
+            $todo = $this->route('todo');
+            $user = $this->user();
+
             // Validate due_date is within month_year interval if both are provided
             if ($this->month_year_id && $this->due_date) {
                 $monthYear = MonthYear::find($this->month_year_id);
@@ -81,26 +82,21 @@ class TodoUpdateRequest extends FormRequest
 
             // Validate parent_id is not self or descendant
             if ($this->parent_id) {
-                $todoId = $this->route('todo');
-                $todo = Todo::find($todoId);
-
-                if ($this->parent_id == $todoId) {
+                if ($this->parent_id == $todo->id) {
                     $validator->errors()->add('parent_id', 'A todo cannot be its own parent');
                 }
 
-                if ($todo) {
-                    $descendantIds = $todo->descendants()->pluck('id')->toArray();
-                    if (in_array($this->parent_id, $descendantIds)) {
-                        $validator->errors()->add('parent_id', 'Cannot set a descendant as parent');
-                    }
+                $descendantIds = $todo->descendants()->pluck('id')->toArray();
+                if (in_array($this->parent_id, $descendantIds)) {
+                    $validator->errors()->add('parent_id', 'Cannot set a descendant as parent');
                 }
 
                 $parent = Todo::find($this->parent_id);
                 if ($parent) {
-                    if ($parent->family_id !== auth()->user()->family_id) {
+                    if ($parent->family_id !== $user?->family_id) {
                         $validator->errors()->add('parent_id', 'Invalid parent todo');
                     }
-                    if ($parent->scope === 'private' && $parent->user_id !== auth()->id()) {
+                    if ($parent->scope === 'private' && $parent->user_id !== $user?->id) {
                         $validator->errors()->add('parent_id', 'Cannot move to a private todo you do not own');
                     }
                     // Public children can only be added to public parents
@@ -111,10 +107,7 @@ class TodoUpdateRequest extends FormRequest
             }
 
             // If changing to public, check if current parent allows it
-            $todoId = $this->route('todo');
-            $todo = Todo::find($todoId);
             if ($todo && $todo->parent_id && !$this->parent_id) {
-                // Parent not being changed, use existing parent
                 $existingParent = $todo->parent;
                 if ($existingParent && $this->scope === 'public' && $existingParent->scope === 'private') {
                     $validator->errors()->add('scope', 'Cannot make todo public when parent is private');

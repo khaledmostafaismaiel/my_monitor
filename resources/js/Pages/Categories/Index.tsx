@@ -148,22 +148,34 @@ function StatusProvider({ children }: PropsWithChildren) {
             const current = overrides.get(c.id) ?? c.status ?? 'active';
             if (current === next) return;
             setOverrides((prev) => new Map(prev).set(c.id, next));
-            axios
-                .put(`/categories/${c.id}`, {
+            // Must go through Inertia's router, not a raw axios call: the update
+            // endpoint responds with a 302 (`back()`), and Inertia's own request
+            // headers make Laravel turn that into a 303 so the browser follows
+            // with GET. A plain axios PUT keeps the PUT method on redirect,
+            // re-hitting `/categories` with PUT — which 405s even though the
+            // underlying update already succeeded.
+            router.put(
+                `/categories/${c.id}`,
+                {
                     name: c.name,
                     status: next,
                     limit: c.limit ?? null,
                     parent_id: c.parent_id ?? null,
-                })
-                .then(() => router.reload({ only: ['categories'] }))
-                .catch(() => {
-                    setOverrides((prev) => {
-                        const m = new Map(prev);
-                        m.delete(c.id);
-                        return m;
-                    });
-                    toast('Could not update status. Please try again.', 'error');
-                });
+                },
+                {
+                    preserveScroll: true,
+                    preserveState: true,
+                    only: ['categories'],
+                    onError: () => {
+                        setOverrides((prev) => {
+                            const m = new Map(prev);
+                            m.delete(c.id);
+                            return m;
+                        });
+                        toast('Could not update status. Please try again.', 'error');
+                    },
+                },
+            );
         },
     }), [overrides]);
 

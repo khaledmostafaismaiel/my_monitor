@@ -14,6 +14,8 @@ import {
     PencilSquareIcon,
     TrashIcon,
     BoltIcon,
+    CheckCircleIcon,
+    DocumentPlusIcon,
     MagnifyingGlassIcon,
     FolderIcon,
     ChevronRightIcon,
@@ -63,6 +65,20 @@ const EXPANSION_KEY = 'blueprints.expanded';
 
 const fmt = (n: number | string) =>
     new Intl.NumberFormat('en-EG', { minimumFractionDigits: 2 }).format(Number(n) || 0);
+
+// Only carry the template fields over to a new transaction — not the
+// blueprint row's own date/wallet/month, which don't apply to a fresh one.
+function asTemplate(row: BlueprintRow): Partial<Transaction> {
+    return {
+        name: row.name,
+        price: row.price,
+        quantity: row.quantity,
+        direction: row.direction,
+        category_id: row.category_id,
+        category: row.category,
+        comment: row.comment,
+    };
+}
 
 // ───── Expansion context ────────────────────────────────────────────
 type ExpansionApi = {
@@ -187,6 +203,8 @@ function BlueprintPage({ rootCategories, filters, options }: Props) {
     >(null);
     const [deleteTarget, setDeleteTarget] = useState<BlueprintRow | null>(null);
     const [addTarget, setAddTarget] = useState<BlueprintRow | null>(null);
+    const [createNormalTarget, setCreateNormalTarget] = useState<BlueprintRow | null>(null);
+    const [createDraftTarget, setCreateDraftTarget] = useState<BlueprintRow | null>(null);
 
     const filterForm = useForm({
         name: filters.name ?? '',
@@ -381,6 +399,8 @@ function BlueprintPage({ rootCategories, filters, options }: Props) {
                             onEdit={(row) => setFormOpen({ mode: 'edit', row })}
                             onDelete={(row) => setDeleteTarget(row)}
                             onAdd={(row) => setAddTarget(row)}
+                            onCreateNormal={(row) => setCreateNormalTarget(row)}
+                            onCreateDraft={(row) => setCreateDraftTarget(row)}
                             onCreateUnderCategory={(catId) => setFormOpen({ mode: 'create', categoryId: catId })}
                         />
                     ))
@@ -435,6 +455,32 @@ function BlueprintPage({ rootCategories, filters, options }: Props) {
                 title="Update & add as transaction"
                 extraData={addTarget ? { id: addTarget.id } : undefined}
             />
+
+            <TransactionFormModal
+                show={!!createNormalTarget}
+                onClose={() => setCreateNormalTarget(null)}
+                scope="normal"
+                mode="create"
+                transaction={createNormalTarget ? asTemplate(createNormalTarget) : undefined}
+                endpoint="/normal_transactions"
+                categories={options.categories}
+                wallets={options.wallets}
+                monthYears={options.month_years}
+                title="Create transaction from blueprint"
+            />
+
+            <TransactionFormModal
+                show={!!createDraftTarget}
+                onClose={() => setCreateDraftTarget(null)}
+                scope="draft"
+                mode="create"
+                transaction={createDraftTarget ? asTemplate(createDraftTarget) : undefined}
+                endpoint="/draft_transactions"
+                categories={options.categories}
+                wallets={options.wallets}
+                monthYears={options.month_years}
+                title="Create draft from blueprint"
+            />
         </AuthenticatedLayout>
     );
 }
@@ -446,6 +492,8 @@ function CategoryBranch({
     onEdit,
     onDelete,
     onAdd,
+    onCreateNormal,
+    onCreateDraft,
     onCreateUnderCategory,
 }: {
     node: CategoryNode;
@@ -453,6 +501,8 @@ function CategoryBranch({
     onEdit: (row: BlueprintRow) => void;
     onDelete: (row: BlueprintRow) => void;
     onAdd: (row: BlueprintRow) => void;
+    onCreateNormal: (row: BlueprintRow) => void;
+    onCreateDraft: (row: BlueprintRow) => void;
     onCreateUnderCategory: (categoryId: number) => void;
 }) {
     const { isExpanded, toggle } = useExpansion();
@@ -513,7 +563,14 @@ function CategoryBranch({
                 <div className="border-t border-border px-4 pb-3 pt-2">
                     {hasTransactions && (
                         <ul className="divide-y divide-border">
-                            {node.blueprint_transactions.map((t) => {
+                            {node.blueprint_transactions.map((row) => {
+                                // The tree only nests a blueprint under its own category, so
+                                // the category is implicit here even though it isn't eager-loaded
+                                // on the transaction itself.
+                                const t: BlueprintRow = {
+                                    ...row,
+                                    category: row.category ?? ({ id: node.id, name: node.name } as BlueprintRow['category']),
+                                };
                                 const total = Number(t.price) * Number(t.quantity);
                                 return (
                                     <li
@@ -537,7 +594,13 @@ function CategoryBranch({
                                             {t.direction === 'credit' ? '+' : '-'}E£ {fmt(total)}
                                         </span>
                                         <div className="flex gap-1 opacity-0 transition-opacity group-hover:opacity-100 focus-within:opacity-100 pointer-coarse:opacity-100">
-                                            <IconButton onClick={() => onAdd(t)} title="Use to create a transaction" tone="warning">
+                                            <IconButton onClick={() => onCreateNormal(t)} title="Transfer to normal transaction" tone="success">
+                                                <CheckCircleIcon className="h-4 w-4" />
+                                            </IconButton>
+                                            <IconButton onClick={() => onCreateDraft(t)} title="Create draft">
+                                                <DocumentPlusIcon className="h-4 w-4" />
+                                            </IconButton>
+                                            <IconButton onClick={() => onAdd(t)} title="Update blueprint & add as transaction" tone="warning">
                                                 <BoltIcon className="h-4 w-4" />
                                             </IconButton>
                                             <IconButton onClick={() => onEdit(t)} title="Edit">
@@ -574,6 +637,8 @@ function CategoryBranch({
                                     onEdit={onEdit}
                                     onDelete={onDelete}
                                     onAdd={onAdd}
+                                    onCreateNormal={onCreateNormal}
+                                    onCreateDraft={onCreateDraft}
                                     onCreateUnderCategory={onCreateUnderCategory}
                                 />
                             ))}
@@ -613,7 +678,7 @@ function IconButton({
     onClick: () => void;
     title: string;
     danger?: boolean;
-    tone?: 'warning';
+    tone?: 'warning' | 'success';
 }) {
     return (
         <button
@@ -624,7 +689,8 @@ function IconButton({
                 'rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-muted',
                 danger && 'hover:text-destructive',
                 tone === 'warning' && 'hover:text-warning',
-                !danger && tone !== 'warning' && 'hover:text-primary',
+                tone === 'success' && 'hover:text-success',
+                !danger && !tone && 'hover:text-primary',
             )}
         >
             {children}

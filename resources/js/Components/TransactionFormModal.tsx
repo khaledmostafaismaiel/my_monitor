@@ -1,4 +1,4 @@
-import { FormEventHandler, useEffect } from 'react';
+import { FormEventHandler, useEffect, useMemo } from 'react';
 import { useForm } from '@inertiajs/react';
 import Modal from './Modal';
 import FormField from './FormField';
@@ -48,6 +48,17 @@ export default function TransactionFormModal({
     extraData,
 }: Props) {
     const includeWalletAndMonth = scope !== 'blueprint';
+
+    // The category dropdown is normally scoped to sub-categories, but a transaction
+    // can be filed directly under a root category. When that happens, splice its
+    // current category in so the field shows the real value instead of going blank.
+    const categoryOptions = useMemo(() => {
+        const currentId = transaction?.category_id;
+        if (currentId == null || categories.some((c) => c.id === currentId)) {
+            return categories;
+        }
+        return [{ id: currentId, name: transaction?.category?.name ?? `Category #${currentId}` }, ...categories];
+    }, [categories, transaction?.category_id, transaction?.category?.name]);
 
     const form = useForm({
         name: transaction?.name ?? '',
@@ -159,7 +170,7 @@ export default function TransactionFormModal({
                                 value={form.data.category_id}
                                 onChange={(e) => form.setData('category_id', e.target.value)}
                                 placeholder="Select a category"
-                                options={categories.map((c) => ({ value: c.id, label: c.name }))}
+                                options={categoryOptions.map((c) => ({ value: c.id, label: c.name }))}
                                 required
                             />
                         </FormField>
